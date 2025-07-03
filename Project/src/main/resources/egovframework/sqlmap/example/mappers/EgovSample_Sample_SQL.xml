@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.example.sample.service.impl.SampleMapper">
+
+  <resultMap id="sample" type="egovframework.example.sample.service.SampleVO">
+    <result property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="description" column="description"/>
+    <result property="useYn" column="use_yn"/>
+    <result property="regUser" column="reg_user"/>
+  </resultMap>
+
+  <insert id="insertSample" parameterType="SampleVO">
+    INSERT INTO SAMPLE (
+      ID, NAME, DESCRIPTION, USE_YN, REG_USER
+    ) VALUES (
+      #{id}, #{name}, #{description}, #{useYn}, #{regUser}
+    )
+  </insert>
+
+  <update id="updateSample" parameterType="SampleVO">
+    UPDATE SAMPLE
+    SET NAME = #{name},
+        DESCRIPTION = #{description},
+        USE_YN = #{useYn},
+        REG_USER = #{regUser}
+    WHERE ID = #{id}
+  </update>
+
+  <delete id="deleteSample" parameterType="SampleVO">
+    DELETE FROM SAMPLE
+    WHERE ID = #{id}
+  </delete>
+
+  <select id="selectSample" parameterType="SampleVO" resultMap="sample">
+    SELECT ID, NAME, DESCRIPTION, USE_YN, REG_USER
+    FROM SAMPLE
+    WHERE ID = #{id}
+  </select>
+
+  <!-- Oracle 페이징 처리 -->
+  <select id="selectSampleList" parameterType="searchVO" resultType="egovMap">
+    SELECT * FROM (
+      SELECT ROWNUM AS rn, inner_query.*
+      FROM (
+        SELECT ID, NAME, DESCRIPTION, USE_YN, REG_USER
+        FROM SAMPLE
+        <where>
+          <if test="searchKeyword != null and searchKeyword != ''">
+            <choose>
+              <when test="searchCondition == 0">
+                AND ID LIKE '%' || #{searchKeyword} || '%'
+              </when>
+              <when test="searchCondition == 1">
+                AND NAME LIKE '%' || #{searchKeyword} || '%'
+              </when>
+            </choose>
+          </if>
+        </where>
+        ORDER BY ID ASC
+      ) inner_query
+      WHERE ROWNUM &lt;= #{firstIndex + recordCountPerPage}
+    )
+    WHERE rn &gt; #{firstIndex}
+  </select>
+
+  <select id="selectSampleListTotCnt" parameterType="searchVO" resultType="int">
+    SELECT COUNT(*) FROM SAMPLE
+    <where>
+      <if test="searchKeyword != null and searchKeyword != ''">
+        <choose>
+          <when test="searchCondition == 0">
+            AND ID LIKE '%' || #{searchKeyword} || '%'
+          </when>
+          <when test="searchCondition == 1">
+            AND NAME LIKE '%' || #{searchKeyword} || '%'
+          </when>
+        </choose>
+      </if>
+    </where>
+  </select>
+
+</mapper>

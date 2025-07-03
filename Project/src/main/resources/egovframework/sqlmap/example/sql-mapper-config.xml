@@ -17,8 +17,8 @@
 		<typeAlias
 			type="egovframework.example.board.service.BoardVO" alias="BoardVO" />
 
+		<typeAlias
 			type="egovframework.example.member.service.MemberVO" alias="MemberVO" />
-
 
 		<typeAlias alias="egovMap"
 			type="org.egovframe.rte.psl.dataaccess.util.EgovMap" />

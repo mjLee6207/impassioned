@@ -25,6 +25,7 @@ public class BoardController {
 //	전체조회
 	@GetMapping("/board/board.do")
 	public String name(@ModelAttribute Criteria criteria, Model model) {
+		 criteria.setPageUnit(10);
 //		1) 등차자동계산 클래스: PaginationInfo
 //		   - 필요정보: (1) 현재페이지번호(pageIndex),(2) 보일 개수(pageUnit): 3
 		PaginationInfo paginationInfo = new PaginationInfo();

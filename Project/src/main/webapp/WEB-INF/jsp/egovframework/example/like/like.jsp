@@ -3,10 +3,23 @@
 <head>
     <title>좋아요 테스트</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+        #likeButton {
+            font-size: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: gray; /* 좋아요 안 한 상태 (빈 하트) */
+        }
+
+        #likeButton.liked {
+            color: red; /* 좋아요 한 상태 (빨간 하트) */
+        }
+    </style>
 </head>
 <body>
     <h2>좋아요 테스트</h2>
-    <button id="likeButton" onclick="toggleLike()">좋아요</button>
+<button id="likeButton" onclick="toggleLike()">♡</button>
     <p id="likeCount">좋아요 수: </p>
 
     <script>
@@ -94,7 +107,7 @@
         }
 
         function updateButton(isLiked) {
-            $("#likeButton").text(isLiked ? "좋아요 취소" : "좋아요");
+           $("#likeButton").html(isLiked ? "♥" : "♡");
         }
 
         function checkInitialStatus() {

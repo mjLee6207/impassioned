@@ -45,7 +45,7 @@ public class BoardController {
 //		페이지 모든 정보: paginationInfo
 		model.addAttribute("paginationInfo", paginationInfo);
 
-		return "board/board_all";
+		return "board/boardlist";
 	}
 
 //	추가 페이지 열기

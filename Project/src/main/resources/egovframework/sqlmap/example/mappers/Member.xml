@@ -6,7 +6,7 @@
 
   <!-- 로그인 인증 -->
   <select id="authenticate" parameterType="MemberVO" resultType="MemberVO">
-    SELECT * FROM MEMBER WHERE ID = #{id} AND PASSWORD = #{password}
+    SELECT * FROM MEMBER WHERE ID = #{id} 
   </select>
 
   <!-- 회원가입 -->

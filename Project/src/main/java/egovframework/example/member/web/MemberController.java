@@ -68,7 +68,7 @@ public class MemberController {
     @GetMapping("/member/logout.do")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/member/login";
+        return "redirect:/";
     }
 
     // 이메일 인증 코드 전송

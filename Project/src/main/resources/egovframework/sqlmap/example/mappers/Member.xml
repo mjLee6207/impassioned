@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="egovframework.example.member.service.impl.MemberMapper">
-
+  
   <!-- 로그인 인증 -->
   <select id="authenticate" parameterType="MemberVO" resultType="MemberVO">
     SELECT * FROM MEMBER WHERE ID = #{id} 
@@ -11,8 +11,8 @@
 
   <!-- 회원가입 -->
   <insert id="register" parameterType="MemberVO">
-    INSERT INTO MEMBER (MEMBER_IDX, ID, EMAIL, PASSWORD, ROLE, NICKNAME)
-    VALUES (MEMBER_SEQ.NEXTVAL, #{id}, #{email}, #{password}, 'USER', #{nickname})
+    INSERT INTO MEMBER (MEMBER_IDX, ID, EMAIL, PASSWORD, ROLE, NICKNAME, JOIN_DATE)
+    VALUES (MEMBER_SEQ.NEXTVAL, #{id}, #{email}, #{password}, 'USER', #{nickname}, SYSDATE)
   </insert>
 
   <!-- 닉네임 중복 검사 -->

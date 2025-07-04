@@ -16,4 +16,6 @@ public interface BoardService {
 	int update(BoardVO boardVO); // update 메소드
 
 	int delete(BoardVO boardVO); // delete 메소드
+	
+	void increaseViewCount(int boardId) throws Exception; // 조회수 증가
 }

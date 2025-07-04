@@ -20,4 +20,6 @@ public interface BoardMapper {
 	public int update(BoardVO boardVO); // update 메소드
 
 	public int delete(BoardVO boardVO); // delete 메소드
+	
+	public int increaseViewCount(int boardId); // 조회수 증가
 }

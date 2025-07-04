@@ -34,15 +34,15 @@
 
 		INSERT INTO BOARD (
 		BOARD_ID, CATEGORY, TITLE, PREPARE, CONTENT,
-		THUMBNAIL, WRITE_DATE
+		THUMBNAIL, WRITE_DATE, VIEW_COUNT
 		)
 		VALUES (
 		#{boardId}, #{category}, #{title}, #{prepare}, #{content},
-		#{thumbnail}, SYSDATE
+		#{thumbnail}, SYSDATE, #{viewCount}
 		)
 	</insert>
 
-	<!-- 게시글 상세 조회 -->
+	<!-- 수정 게시글 상세 조회 -->
 	<select id="selectBoard" parameterType="int"
 		resultType="BoardVO">
 		SELECT *
@@ -67,5 +67,12 @@
 		DELETE FROM BOARD
 		WHERE BOARD_ID = #{boardId}
 	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="increaseViewCount" parameterType="int">
+	    UPDATE BOARD
+	    SET VIEW_COUNT = VIEW_COUNT + 1
+	    WHERE BOARD_ID = #{boardId}
+	</update>
 
 </mapper>

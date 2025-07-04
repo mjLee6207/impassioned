@@ -98,4 +98,23 @@ public class BoardController {
 		boardService.delete(boardVO);
 		return "redirect:/board/board.do";
 	}
+	
+//		상세조회: 읽기 전용 페이지 (조회만 가능)
+	@GetMapping("/board/view.do")
+	public String view(@RequestParam("boardId") int boardId, Model model) {
+//		조회수 증가
+	    try {	        
+	        boardService.increaseViewCount(boardId);
+	    } catch (Exception e) {
+	        log.error("조회수 증가 실패: ", e);
+	    }
+//	    상세 게시글 조회
+	    BoardVO board = boardService.selectBoard(boardId);
+	    if (board == null) {
+	        throw new RuntimeException("해당 게시글을 찾을 수 없습니다.");
+	    }
+	    model.addAttribute("board", board);
+	    return "board/boardview"; // 읽기 전용 JSP로 이동
+	}
+	
 }

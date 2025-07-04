@@ -18,21 +18,21 @@
 </head>
 <body>
 	<jsp:include page="/common/header.jsp"></jsp:include>
-<%-- ${boards} <br>
+	<%-- ${boards} <br>
 ${paginationInfo.totalPageCount} : 총페이지수 <br>
 ${paginationInfo.currentPageNo} : 현재페이지<br>
 ${paginationInfo.recordCountPerPage} : 보일개수<br> --%>
 	<div class="page mt3">
 		<form id="listForm" name="listForm" method="get">
-			<!-- 수정페이지 열기때문에 필요 -->
+			<!-- 수정페이지 열기에 필요 -->
 			<input type="hidden" id="boardId" name="boardId">
 			<!-- 컨트롤러로 보낼 페이지번호 -->
 			<input type="hidden" id="pageIndex" name="pageIndex">
 
-			<!-- jsp -> 컨트롤러(검색어): input 태그의 name 속성을 이용 -->
+			<!-- jsp 컨트롤러(검색어)-->
 			<div class="input-group mb3 mt3">
 				<input type="text" class="form-control" id="searchKeyword"
-					name="searchKeyword" placeholder="레시피 번호 입력">
+					name="searchKeyword" placeholder="레시피 제목 입력">
 				<button class="btn btn-primary" type="button"
 					onclick="fn_egov_selectList()">검색</button>
 			</div>

@@ -4,6 +4,8 @@
 :root {
     --black: black;
     --gray: gray;
+    --main-green: #1e8a57;
+    --hover-green: #118e6a;
 }
 * {margin: 0;padding: 0;box-sizing: border-box;}
 body {font-family: "Montserrat","Noto Sans KR", sans-serif;line-height: 1.6;}
@@ -88,14 +90,14 @@ a {text-decoration: none;color: var(--black);}
 .col2,.col3 {width: 99% !important; padding:1% !important; float:left !important;}
 /* TODO: 태블릿 */
 @media screen and (min-width: 768px){
-	/* 박스 중앙정렬 */
-	.flex-center{display:flex; justify-content: center;}
-	.flex-vcenter{display:flex; align-items: center;}
+   /* 박스 중앙정렬 */
+   .flex-center{display:flex; justify-content: center;}
+   .flex-vcenter{display:flex; align-items: center;}
     .page {width: 90vw;}
     /* 박스 2개 배치 */
- 	.col2 {width:49% !important;}
+    .col2 {width:49% !important;}
     /* 박스 3개 배치 */
- 	.col3 {width:32% !important;}
+    .col3 {width:32% !important;}
 }
 /* TODO: pc */
 @media screen and (min-width: 1024px){

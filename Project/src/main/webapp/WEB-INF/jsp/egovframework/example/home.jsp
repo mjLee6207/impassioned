@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,8 +15,19 @@
 <body>
 <jsp:include page="/common/header.jsp" />
 <div class="page mt5">
-	Hello world!
-</div>
+	<h2>메인 페이지</h2>
+<c:choose>
+  <c:when test="${not empty sessionScope.loginUser}">
+    <p>${sessionScope.loginUser.nickname}님 환영합니다!</p>
+    <a href="${pageContext.request.contextPath}/member/logout.do">로그아웃</a>
+    <a href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
+  </c:when>
+  <c:otherwise>
+    <a href="${pageContext.request.contextPath}/member/login.do">로그인</a>
+    <a href="${pageContext.request.contextPath}/member/login.do">회원가입</a>
+  </c:otherwise>
+</c:choose>
+</div>	
 <!-- 꼬리말 -->
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

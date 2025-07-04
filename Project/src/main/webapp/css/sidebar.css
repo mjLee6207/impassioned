@@ -1,10 +1,11 @@
-@charset "UTF-8";
+
 .profile-card {
     width: 260px; background: #fff; border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     padding: 28px 20px 20px 20px; text-align: center;
     border: 1px solid #f0f0f0; min-width: 220px;
     display: flex; flex-direction: column; align-items: center;
+    margin-right:50px;
 }
 .profile-img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: #eaeaea; margin-bottom: 10px;}
 .username { font-weight: bold; font-size: 1.15rem; margin-bottom: 2px; }
@@ -21,7 +22,13 @@
 .card-menu-btn:focus,
 .card-menu-btn:hover {
     background: #f8f7f3;
-    color: #118e6a !important;   /* 여기서 초록색(#118e6a) */
+    color: #118e6a !important;   
 }
 .logout-btn { margin-top: 5px; background: #f8f7f3; color: #1e8a57; font-weight: 500; }
 .logout-btn:hover, .logout-btn:focus { background: #f6f6f6; color: #118e6a !important; }
+@media (max-width: 768px) {
+	/* 반응형일때 사이드바 숨김 */
+    .profile-card {
+        display: none;
+    }
+ }   

@@ -67,10 +67,10 @@
         <!-- memberVO 가 세션에 없으면 메뉴을 보이고, 있으면 안보임 -->
         <c:if test="${sessionScope.memberVO == null}">
         	<li class="nav-item">
-	          <a class="nav-link active" href="/register.do"> 회원가입 </a>
+	          <a class="nav-link active" href="/member/register.do"> 회원가입 </a>
 	        </li>
 	        <li class="nav-item">
-	           <a class="nav-link active" href="/login.do"> 로그인 </a>
+	           <a class="nav-link active" href="/member/login.do"> 로그인 </a>
 	        </li>
         </c:if>
 
@@ -80,7 +80,7 @@
         <!-- memberVO 가 세션에 있으면 메뉴을 보이고, 없으면 안보임 -->
         <c:if test="${sessionScope.memberVO != null}">
 	         <li class="nav-item">
-	           <a href="/logout.do" class="nav-link active"> 로그아웃
+	           <a href="/member/logout.do" class="nav-link active"> 로그아웃
 	           </a>
 	         </li>
 	    </c:if>

@@ -25,6 +25,7 @@ public class BoardController {
 //	전체조회
 	@GetMapping("/board/board.do")
 	public String name(@ModelAttribute Criteria criteria, Model model) {
+		 criteria.setPageUnit(10);
 //		1) 등차자동계산 클래스: PaginationInfo
 //		   - 필요정보: (1) 현재페이지번호(pageIndex),(2) 보일 개수(pageUnit): 3
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -45,20 +46,20 @@ public class BoardController {
 //		페이지 모든 정보: paginationInfo
 		model.addAttribute("paginationInfo", paginationInfo);
 
-		return "board/board_all";
+		return "board/boardlist";
 	}
 
 //	추가 페이지 열기
 	@GetMapping("/board/addition.do")
 	public String createBoardView() {
-		return "board/add_board";
+		return "board/boardwrite";
 	}
 		
 	// 글 작성 폼 화면 보여주기
 	@GetMapping("/board/add.do")
 	public String showAddForm(Model model) {
 	    model.addAttribute("boardVO", new BoardVO()); // 빈 폼 바인딩
-	    return "board/add_board"; // 글 작성 폼 JSP or HTML 경로
+	    return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
 	}
 
 //	insert : 저장 버튼 클릭시
@@ -78,7 +79,7 @@ public class BoardController {
 //		서비스의 상세조회
 		BoardVO boardVO = boardService.selectBoard(boardId);
 		model.addAttribute("boardVO", boardVO);
-		return "board/update_board";
+		return "board/boardupdate";
 	}
 
 	

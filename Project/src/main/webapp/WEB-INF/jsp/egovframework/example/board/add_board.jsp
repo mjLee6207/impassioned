@@ -15,6 +15,7 @@ body {
 	background: #f8f9fa;
 }
 
+
 .main-wrap {
 	display: flex;
 	gap: 24px;
@@ -132,6 +133,127 @@ body {
 .post-btns .btn {
 	min-width: 90px;
 }
+
+
+
+.main-wrap {
+	display: flex;
+	gap: 24px;
+	max-width: 1100px;
+	margin: 32px auto 0 auto;
+}
+
+.profile-card {
+	width: 260px;
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+	padding: 28px 20px 20px 20px;
+	text-align: center;
+	border: 1px solid #f0f0f0;
+	min-width: 220px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profile-img {
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+	object-fit: cover;
+	background: #eaeaea;
+	margin-bottom: 10px;
+}
+
+.username {
+	font-weight: bold;
+	font-size: 1.15rem;
+	margin-bottom: 2px;
+}
+
+.useremail, .joindate {
+	color: #b1b1b1;
+	font-size: 0.97rem;
+	margin-bottom: 2px;
+}
+
+.side-menu {
+	list-style: none;
+	padding: 0;
+	margin-top: 36px;
+	width: 100%;
+}
+
+.side-menu li {
+	padding: 13px 0;
+	font-size: 1.09rem;
+	color: #222;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: background 0.15s, color 0.13s;
+	border-radius: 9px;
+	margin-bottom: 6px;
+	font-weight: 500;
+}
+
+.side-menu li.active, .side-menu li:hover {
+	background: #f7f7f7;
+	color: #218859;
+}
+
+.board-wrap {
+	flex: 1;
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+	padding: 36px 38px 38px 38px;
+	min-width: 0;
+}
+
+.category-tabs {
+	display: flex;
+	gap: 32px;
+	margin-bottom: 23px;
+	border-bottom: 2.5px solid #eee;
+}
+
+.category-tab {
+	font-size: 1.12rem;
+	color: #aaa;
+	padding: 13px 6px 10px 6px;
+	background: none;
+	border: none;
+	border-bottom: 2.5px solid transparent;
+	font-weight: 600;
+	cursor: pointer;
+	transition: .11s;
+}
+
+.category-tab.active {
+	color: #118e6a;
+	border-bottom: 2.5px solid #1e8a57;
+}
+
+.category-badge {
+	background: #e8f8f1;
+	color: #118e6a;
+	font-size: 1rem;
+	border-radius: 7px;
+	padding: 3px 15px 4px 15px;
+	margin-right: 10px;
+}
+
+.post-btns {
+	margin-top: 38px;
+}
+
+.post-btns .btn {
+	min-width: 90px;
+}
+
 
 @media ( max-width : 991px) {
 	.main-wrap {

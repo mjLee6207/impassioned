@@ -1,105 +1,10 @@
-@charset "UTF-8";
-
-
-
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-}
-
 .footer {
   background-color: #f9fafb;
   padding: 0 60px;
-  color: #333;
   font-size: 14px;
-  margin-top: 20px;
-}
-
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 0 auto;
-  max-width: 1200px;
-}
-
-.footer-left, .footer-right {
-  flex: 1;
-  padding: 0 20px;
-  min-width: 300px;
-}
-
-.footer-left h3, .footer-right h5 {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.footer-left {
-  margin-top: 15px;
-}
-
-.contact-number {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.social-icons {
-  margin-top: 15px;
-}
-
-.social-icons img {
-  width: 36px;
-  height: 36px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background-color: #cfd8dc;
-  padding: 6px;
-  margin-bottom: 13px;
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.footer-links a {
-  text-decoration: none;
   color: #333;
 }
 
-.footer-info {
-  margin-top: 20px;
-  padding-bottom: 10px;
-}
-
-.footer-info p {
-  margin: 4px 0;
-  line-height: 1;
-}
-
-.footer-bottom {
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-  text-align: center;
-  color: #666;
-  font-size: 13px;
-  padding-bottom: 0;
-  margin-bottom: 0;
-  position: relative;
-}
-
-.footer-bottom p {
-  margin: 4px 0;
-  line-height: 1;
-  color: #333;
-  font-size: 11px; /* ⬅ 글씨 더 작게 */
-  padding: 20px 40px; /* ⬅ 상하좌우 여백 줄임 */
-}
-
-/* ━ 구분선 */
 .footer-divider {
   border: none;
   border-top: 1px solid #ccc;
@@ -107,29 +12,30 @@ body {
   margin-bottom: 16px;
 }
 
-/* 좌우 정렬 박스 */
 .footer-content-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
+  align-items: center; /* ← 가운데 정렬 */
+  gap: 40px;
   flex-wrap: wrap;
+  min-height: 160px; /* 원 높이에 맞게 공간 확보 */
 }
 
 /* 왼쪽 텍스트 */
 .footer-bottom-half {
   flex: 1;
-  min-width: 280px;
+  min-width: 320px;
   text-align: left;
+  padding-top: 30px; /* ← 글자 위치 아래로 살짝 내림 */
 }
 
 .footer-bottom-half h3 {
-  font-size: 13px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  margin-bottom: 6px;
 }
 
 .contact-number {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   margin-bottom: 4px;
 }
@@ -137,7 +43,7 @@ body {
 .footer-bottom-half p {
   margin: 2px 0;
   line-height: 1.4;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .footer-bottom-half a {
@@ -154,26 +60,28 @@ body {
   margin-top: 10px;
 }
 
-/* 오른쪽 원형 */
+/* 오른쪽 프로필 원 */
 .footer-workers {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 24px;
   justify-content: flex-end;
   align-items: center;
-  min-width: 300px;
+  flex-wrap: wrap;
+  padding-right: 10px;
+  transform: translateY(-20px); /* ← 높이 조정 */
 }
 
 .circle {
-  width: 55px;  /* ⬅ 원형 크기 축소 */
-  height: 55px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  background-color: #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: bold;
-  color: #444;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }

@@ -59,13 +59,7 @@ body { background: #f8f9fa; }
 @media (max-width: 768px) {
     .container-box { flex-direction: column; max-width: 100%; }
     .write-box { padding: 18px 3vw; }
-}
-
-@media (max-width: 600px) {
-
-@media (max-width: 768px) {
-
-    .btn-row { flex-direction: column; gap: 12px; }
-    .btn-row > button { width: 100%; min-width: unset; max-width: unset; }
+.btn-row { flex-direction: column; gap: 12px; }
+    .btn-row > button { width: 100%; min-width: unset; max-width: unset;
 }
 }

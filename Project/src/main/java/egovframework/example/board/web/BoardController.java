@@ -51,8 +51,10 @@ public class BoardController {
 
 //	추가 페이지 열기
 	@GetMapping("/board/addition.do")
-	public String createBoardView() {
+	public String createBoardView() {d
 		return "board/boardwrite";
+		return "board/board_write";
+
 	}
 		
 	// 글 작성 폼 화면 보여주기

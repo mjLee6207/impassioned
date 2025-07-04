@@ -57,7 +57,7 @@
         <!-- 상세 내용 -->
         <div class="post-section-title">재료준비</div>
         <div class="post-content">
-            <c:out value="${post.ingredient}" escapeXml="false"/>
+            <c:out value="${post.prepare}" escapeXml="false"/>
         </div>
         <div class="post-section-title">조리법</div>
         <div class="post-content">

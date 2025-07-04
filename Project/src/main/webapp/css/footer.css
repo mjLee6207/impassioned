@@ -1,4 +1,7 @@
 @charset "UTF-8";
+
+
+
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -91,4 +94,86 @@ body {
 .footer-bottom p {
   margin: 4px 0;
   line-height: 1;
+  color: #333;
+  font-size: 11px; /* ⬅ 글씨 더 작게 */
+  padding: 20px 40px; /* ⬅ 상하좌우 여백 줄임 */
+}
+
+/* ━ 구분선 */
+.footer-divider {
+  border: none;
+  border-top: 1px solid #ccc;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* 좌우 정렬 박스 */
+.footer-content-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* 왼쪽 텍스트 */
+.footer-bottom-half {
+  flex: 1;
+  min-width: 280px;
+  text-align: left;
+}
+
+.footer-bottom-half h3 {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.contact-number {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.footer-bottom-half p {
+  margin: 2px 0;
+  line-height: 1.4;
+  font-size: 11px;
+}
+
+.footer-bottom-half a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.footer-bottom-half a:hover {
+  text-decoration: underline;
+}
+
+.legal {
+  color: #666;
+  margin-top: 10px;
+}
+
+/* 오른쪽 원형 */
+.footer-workers {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 300px;
+}
+
+.circle {
+  width: 55px;  /* ⬅ 원형 크기 축소 */
+  height: 55px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: #444;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }

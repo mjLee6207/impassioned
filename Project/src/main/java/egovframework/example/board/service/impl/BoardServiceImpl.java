@@ -50,4 +50,15 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.delete(boardVO);
 	}
 
+	@Override
+	public void increaseViewCount(int boardId) throws Exception {
+		// TODO Auto-generated method stub
+		boardMapper.increaseViewCount(boardId);
+	}
+
+	@Override
+	public BoardVO selectBoardDetail(int boardId) {
+		// TODO Auto-generated method stub
+		return boardMapper.selectBoardDetail(boardId);
+	}
 }

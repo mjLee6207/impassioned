@@ -11,9 +11,13 @@ public interface BoardService {
 
 	int insert(BoardVO boardVO); // insert
 
-	BoardVO selectBoard(int boardId); // 상세조회
+	BoardVO selectBoard(int boardId); // 수정페이지 조회
+	
+	BoardVO selectBoardDetail(int boardId); // 공개 상세조회용
 
 	int update(BoardVO boardVO); // update 메소드
 
 	int delete(BoardVO boardVO); // delete 메소드
+	
+	void increaseViewCount(int boardId) throws Exception; // 조회수 증가
 }

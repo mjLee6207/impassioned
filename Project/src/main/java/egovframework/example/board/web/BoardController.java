@@ -2,6 +2,8 @@ package egovframework.example.board.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
 import egovframework.example.common.Criteria;
+import egovframework.example.member.service.MemberVO;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -49,13 +52,12 @@ public class BoardController {
 		return "board/boardlist";
 	}
 
-//	추가 페이지 열기
-	@GetMapping("/board/addition.do")
-	public String createBoardView() {d
-		return "board/boardwrite";
-		return "board/board_write";
-
-	}
+	/*
+	 * // 추가 페이지 열기
+	 * 
+	 * @GetMapping("/board/addition.do") public String createBoardView() { return
+	 * "board/boardwrite"; }
+	 */
 		
 	// 글 작성 폼 화면 보여주기
 	@GetMapping("/board/add.do")
@@ -64,30 +66,37 @@ public class BoardController {
 	    return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
 	}
 
-//	insert : 저장 버튼 클릭시
+	// insert : 저장 버튼 클릭시
 	@PostMapping("/board/add.do")
-	public String insert(@ModelAttribute BoardVO boardVO) {
-//		boardVO 내용 확인
-		log.info("테스트3 :" + boardVO);
-//		서비스의 insert 실행
-		boardService.insert(boardVO);
+	public String insert(@ModelAttribute BoardVO boardVO, HttpSession session) {
+	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	    if (loginUser == null) {
+	        return "redirect:/member/login.do"; // 비로그인 시 로그인 페이지로
+	    }
+	    // 서버에서 로그인된 사용자의 인덱스 강제 설정
+	    boardVO.setWriterIdx(loginUser.getMemberIdx().intValue());
 
-		return "redirect:/board/board.do";
+	    log.info("작성자 포함 게시글: {}", boardVO);
+	    boardService.insert(boardVO);
+
+	    return "redirect:/board/board.do";
 	}
 
-//	수정페이지 열기(상세조회)
+//	수정페이지 열기
 	@GetMapping("/board/edition.do")
-	public String updateBoardView(@RequestParam int boardId, Model model) {
-//		서비스의 상세조회
-		BoardVO boardVO = boardService.selectBoard(boardId);
-		model.addAttribute("boardVO", boardVO);
-		return "board/boardupdate";
+	public String updateBoardView(@RequestParam("boardId") int boardId, Model model) {
+	    BoardVO boardVO = boardService.selectBoard(boardId);
+	    if (boardVO == null) {
+	        throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+	    }
+	    model.addAttribute("boardVO", boardVO);
+	    return "board/boardupdate";
 	}
 
 	
 //	수정: 버튼 클릭시 실행
 	@PostMapping("/board/edit.do")
-	public String update(@RequestParam int boardId, @ModelAttribute BoardVO boardVO) {
+	public String update(@ModelAttribute BoardVO boardVO) {
 //		서비스의 수정 실행
 		boardService.update(boardVO);
 		return "redirect:/board/board.do";
@@ -99,5 +108,25 @@ public class BoardController {
 //		서비스의 삭제 실행
 		boardService.delete(boardVO);
 		return "redirect:/board/board.do";
+	}
+	
+	//	상세조회: 읽기 전용 페이지 (조회만 가능)
+	@GetMapping("/board/view.do")
+	public String view(@RequestParam("boardId") int boardId, Model model) {
+	    // 조회수 증가
+	    try {
+	        boardService.increaseViewCount(boardId);
+	    } catch (Exception e) {
+	        log.error("조회수 증가 실패: ", e);
+	    }
+	
+	    // 닉네임 포함 상세 게시글 조회
+	    BoardVO board = boardService.selectBoardDetail(boardId); // ✅ 변경
+	    if (board == null) {
+	        throw new RuntimeException("해당 게시글을 찾을 수 없습니다.");
+	    }
+	
+	    model.addAttribute("board", board);
+	    return "board/boardview"; // 읽기 전용 JSP로 이동
 	}
 }

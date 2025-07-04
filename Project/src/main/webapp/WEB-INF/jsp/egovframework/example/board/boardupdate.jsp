@@ -19,29 +19,33 @@
 <jsp:include page="/common/sidebar.jsp" />
         <div class="write-box">
         <h3 class="mb-4">🍳 요리 게시글 수정</h3>
-        <form id="addForm" action="${pageContext.request.contextPath}/board/writeProcess.do" method="post" enctype="multipart/form-data">
+        <form id="addForm" action="${pageContext.request.contextPath}/board/edition.do" method="post" enctype="multipart/form-data">
+        <!-- 컨트롤러 확인용 -->
+        <input type="hidden" name="boardId" value="${boardVO.boardId}" />
             <!-- 카테고리 선택 -->
             <label for="category" class="form-label">카테고리</label>
             <select class="form-select" id="category" name="category" required>
-                <option value="" selected disabled>카테고리를 선택하세요</option>
-                <option value="한식">한식</option>
-                <option value="중식">중식</option>
-                <option value="일식">일식</option>
-                <option value="양식">양식</option>
-                <option value="디저트">디저트</option>
+			    <option value="" disabled ${empty boardVO.category ? 'selected' : ''}>카테고리를 선택하세요</option>
+			    <option value="한식" ${boardVO.category == '한식' ? 'selected' : ''}>한식</option>
+			    <option value="중식" ${boardVO.category == '중식' ? 'selected' : ''}>중식</option>
+			    <option value="일식" ${boardVO.category == '일식' ? 'selected' : ''}>일식</option>
+			    <option value="양식" ${boardVO.category == '양식' ? 'selected' : ''}>양식</option>
+			    <option value="디저트" ${boardVO.category == '디저트' ? 'selected' : ''}>디저트</option>
             </select>
-            <!-- 제목 -->
-            <label for="title" class="form-label">제목</label>
-            <input type="text" class="form-control" id="title" name="title" maxlength="100" required />
-
-            <!-- 재료준비 -->
-            <label for="ingredients" class="form-label">재료준비</label>
-            <textarea class="form-control" id="ingredients" name="ingredients" rows="3" maxlength="1000" placeholder="예: 달걀 2개, 양파 1개, 소금 약간 등" required></textarea>
-
-            <!-- 조리법 -->
-            <label for="instructions" class="form-label">조리법</label>
-            <textarea class="form-control" id="instructions" name="instructions" rows="6" maxlength="10000" placeholder="조리 과정을 단계별로 자세히 적어주세요." required></textarea>
-
+				<!-- 제목 -->
+				<label for="title" class="form-label">제목</label>
+				<input type="text" class="form-control" id="title" name="title"
+				       value="${boardVO.title}" maxlength="100" required />
+				
+				<!-- 재료준비 -->
+				<label for="ingredients" class="form-label">재료준비</label>
+				<textarea class="form-control" id="prepare" name="prepare" rows="3"
+				          maxlength="1000" required>${boardVO.prepare}</textarea>
+				
+				<!-- 조리법 -->
+				<label for="instructions" class="form-label">조리법</label>
+				<textarea class="form-control" id="content" name="content" rows="6"
+				          maxlength="10000" required>${boardVO.content}</textarea>
             <!-- 사진 파일 업로드 -->
             <label for="image" class="form-label">사진 업로드</label>
             <input type="file" class="form-control" id="image" name="image" accept="image/*" />
@@ -58,15 +62,14 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 function fn_save() {
-	alert("fn_save 주석처리해둠.")
-	/* 준비되면 주석지우세요 */
-	/* $("#addForm").attr("action","<c:out value='/board/edit.do' />").submit(); */
+    $("#addForm").attr("action","<c:out value='/board/edit.do' />")
+    			.submit();
 }
 
 function fn_delete() {
-	alert("주의:삭제하면 안살려줍니다 fn_delete 주석처리해둠.")
-	/* 준비되면 주석지우세요 */
-	/* $("#addForm").attr("action","<c:out value='/board/delete.do' />").submit(); */
+    if (confirm("정말 삭제하시겠습니까? 복구되지 않습니다.")) {
+        $("#addForm").attr("action","<c:out value='/board/delete.do' />").submit();
+    }
 }
 </script>
 </body>

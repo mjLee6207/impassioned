@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -45,21 +46,29 @@
                     </div>
                     <table id="myPostsTable" class="table table-hover text-center">
                         <thead>
-                            <tr><th>제목</th><th>작성일</th><th>조회수</th></tr>
+                            <tr>
+                                <th>제목</th>
+                                <th>작성일</th>
+                                <!-- <th>조회수</th> -->
+                            </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="post" items="${myPosts}">
                                 <tr>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/post/view.do?id=${post.id}" class="text-decoration-none">${post.title}</a>
+                                        <a href="${pageContext.request.contextPath}/post/view.do?id=${post.boardId}" class="text-decoration-none">${post.title}</a>
                                     </td>
-                                    <td>${post.createdDate}</td>
+                                    <td>
+                                        <fmt:formatDate value="${post.writeDate}" pattern="yyyy-MM-dd" />
+                                    </td>
+                                    <!-- 조회수 컬럼이 VO/쿼리에 있으면 아래 주석 해제
                                     <td>${post.viewCount}</td>
+                                    -->
                                 </tr>
                             </c:forEach>
                             <c:if test="${empty myPosts}">
                                 <tr>
-                                    <td colspan="3" class="text-secondary">아직 작성한 게시글이 없습니다.</td>
+                                    <td colspan="2" class="text-secondary">아직 작성한 게시글이 없습니다.</td>
                                 </tr>
                             </c:if>
                         </tbody>
@@ -76,7 +85,11 @@
                     </div>
                     <table id="likedPostsTable" class="table table-hover text-center">
                         <thead>
-                            <tr><th>제목</th><th>작성일</th><th>조회수</th></tr>
+                            <tr>
+                                <th>제목</th>
+                                <th>작성일</th>
+                                <!-- <th>조회수</th> -->
+                            </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="like" items="${likedPosts}">
@@ -84,13 +97,17 @@
                                     <td>
                                         <a href="${pageContext.request.contextPath}/post/view.do?id=${like.boardId}" class="text-decoration-none">${like.title}</a>
                                     </td>
-                                    <td>${like.writeDate}</td>
+                                    <td>
+                                        <fmt:formatDate value="${like.writeDate}" pattern="yyyy-MM-dd" />
+                                    </td>
+                                    <!-- 조회수 컬럼이 있으면 아래 사용
                                     <td>${like.viewCount}</td>
+                                    -->
                                 </tr>
                             </c:forEach>
                             <c:if test="${empty likedPosts}">
                                 <tr>
-                                    <td colspan="3" class="text-secondary">아직 좋아요한 게시글이 없습니다.</td>
+                                    <td colspan="2" class="text-secondary">아직 좋아요한 게시글이 없습니다.</td>
                                 </tr>
                             </c:if>
                         </tbody>

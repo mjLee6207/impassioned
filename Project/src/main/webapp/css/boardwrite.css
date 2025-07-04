@@ -1,8 +1,5 @@
-
-	body { background: #f8f9fa; }
-
-
-.container-box {
+body { background: #f8f9fa; }
+.container {
     display: flex;
     flex-direction: row;
     margin-top: 32px;

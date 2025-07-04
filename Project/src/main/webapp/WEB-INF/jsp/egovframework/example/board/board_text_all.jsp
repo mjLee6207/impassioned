@@ -15,6 +15,8 @@
 	crossorigin="anonymous">
 <!-- 	개발자 css -->
 <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/board_write.css">
+
 </head>
 <body>
 	<jsp:include page="/common/header.jsp"></jsp:include>

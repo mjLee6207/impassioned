@@ -9,8 +9,8 @@
 <body>
 <div class="profile-card">
     <img src="${member.profileImagePath != null ? member.profileImagePath : '/img/profile-default.png'}" class="profile-img" alt="프로필 사진">
-    <div class="username">이름: <b>${member.name}</b></div>
-    <div class="useremail">이메일: ${member.email}</div>
+    <div class="username">이름: <b>${member.nickname}</b></div>
+    <div class="useremail">이메일: ${member.id}</div>
     <div class="joindate">가입일: ${member.joinDate}</div>
     <div class="card-menu">
           <button class="card-menu-btn" type="button"><i class="bi bi-person"></i>내 정보 수정</button> 

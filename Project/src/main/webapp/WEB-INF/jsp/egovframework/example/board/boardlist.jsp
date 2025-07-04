@@ -27,12 +27,15 @@
         </div>
 
         <!-- 검색창 -->
-        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px;">
-            <input type="text" class="search-input" placeholder="한식 게시글 검색..." style="border-radius:8px; border:1.1px solid #dde1e8; padding:8px 12px; font-size:1.07rem;">
-            <button class="search-btn" style="margin-left:8px; color:var(--main-green); border:none; background:none; font-size:1.2rem;">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
+<form action="${pageContext.request.contextPath}/board/board.do" method="get" style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px;">
+    <input type="text" class="search-input" 
+           id="searchKeyword" name="searchKeyword"
+           value="${criteria.searchKeyword}"
+           placeholder="제목으로검색" style="border-radius:8px; border:1.1px solid #dde1e8; padding:8px 12px; font-size:1.07rem;">
+    <button type="submit" class="search-btn" style="margin-left:8px; color:var(--main-green); border:none; background:none; font-size:1.2rem;">
+        <i class="bi bi-search"></i>
+    </button>
+</form>
 
         <!-- 인기게시글 영역 -->
         <div class="popular-posts-section">
@@ -62,14 +65,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="post" items="${latestPosts}">
+                <c:forEach var="post" items="${boards}">
                     <tr>
                         <td style="text-align:left;">
-                            <a href="${pageContext.request.contextPath}/post/view.do?id=${post.id}" class="post-title-link">${post.title}</a>
+                            <a href="${pageContext.request.contextPath}/post/view.do?id=${post.boardId}" class="post-title-link">${post.title}</a>
                         </td>
-                        <td>${post.author}</td>
-                        <td>${post.createdDate}</td>
-                        <td>${post.viewCount}</td>
+                        <td>${post.title}</td>
+                        <td>${post.writerIdx}</td>
+                        <td>${post.writeDate}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -81,5 +84,18 @@
         </div>
     </div>
 </div>
+<script>
+// 엔터키 쳤을때 검색되도록 만든거 
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.querySelector("#searchKeyword");
+    input?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault(); // form 중복 제출 방지
+        input.form?.submit(); // form 전송 실행
+      }
+    });
+  });
+</script>
+
 </body>
 </html>

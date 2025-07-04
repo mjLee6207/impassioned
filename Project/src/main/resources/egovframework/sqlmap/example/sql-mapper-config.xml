@@ -18,8 +18,11 @@
 			type="egovframework.example.board.service.BoardVO" alias="BoardVO" />
  	<typeAlias
 			type="egovframework.example.member.service.MemberVO" alias="MemberVO" />
+<<<<<<< Updated upstream
 
 			
+=======
+>>>>>>> Stashed changes
 		<typeAlias alias="egovMap"
 			type="org.egovframe.rte.psl.dataaccess.util.EgovMap" />
 		<typeAlias alias="searchVO"

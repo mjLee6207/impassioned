@@ -5,68 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>로그인 & 회원가입</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html {
-      height: 100%; font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5; display: flex; justify-content: center; align-items: center;
-    }
-    .wrapper {
-      width: 960px; height: 600px; margin: auto;
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    }
-    .container { display: flex; height: 600px; }
-    .left-slide {
-      flex: 1; position: relative; overflow: hidden;
-    }
-    .slide-image {
-      position: absolute; width: 100%; height: 100%; object-fit: cover;
-      opacity: 0; transition: opacity 1s ease-in-out;
-    }
-    .slide-image.active { opacity: 1; }
-    .right-login {
-      flex: 1; background: #fff; display: flex; align-items: center; justify-content: center;
-    }
-    .form-box {
-      width: 100%; max-width: 350px; padding: 2rem;
-    }
-    .form-box h1 { margin-bottom: 1rem; text-align: center; }
-    .form-group {
-      display: flex; margin: 0.3rem 0;
-    }
-    .form-group input {
-      flex: 1; padding: 0.8rem;
-      border: 1px solid #ccc; border-radius: 5px 0 0 5px;
-    }
-    .form-group button {
-      padding: 0.8rem; background-color: #007bff; color: white;
-      border: none; border-radius: 0 5px 5px 0; cursor: pointer;
-    }
-    .form-box input[type=password],
-    .form-box input[type=email],
-    .form-box input[type=text] {
-      width: 100%; padding: 0.8rem; margin: 0.3rem 0;
-      border: 1px solid #ccc; border-radius: 5px;
-    }
-    .form-box button.submit-btn {
-      width: 100%; padding: 0.8rem; margin-top: 0.5rem;
-      background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;
-    }
-    .form-box span { font-size: 0.9em; color: red; display: block; margin-top: 5px; }
-    .toggle-link {
-      margin-top: 1rem; text-align: center; color: #007bff;
-      cursor: pointer; display: block;
-    }
-  </style>
+      <link rel="stylesheet" href="/css/login.css" />
 </head>
 <body>
 <div class="wrapper">
   <div class="container">
     <div class="left-slide">
-      <img src="./img/a.jpg" class="slide-image active" />
-      <img src="./img/b.jpg" class="slide-image" />
-      <img src="./img/c.jpg" class="slide-image" />
+    <img src="${pageContext.request.contextPath}/images/3조사진/마크사진.png"  alt="마크" />
     </div>
 
     <div class="right-login">
@@ -89,9 +34,9 @@
         </div>
         <span id="idStatus"></span>
 
-        <input type="email" id="email" name="email" placeholder="이메일" required />
         <div class="form-group">
-          <button type="button" onclick="sendEmailCode()">인증번호 전송</button>
+         <input type="email" id="email" name="email" placeholder="이메일" required />
+         <button type="button" onclick="sendEmailCode()">인증요청</button>
         </div>
         <div class="form-group">
           <input type="text" id="emailCode" placeholder="인증번호 입력" />

@@ -9,7 +9,7 @@
     <!-- 공통 스타일시트 연결 -->
     <link rel="stylesheet" href="/css/home.css" />
        <link rel="stylesheet" href="/css/style.css">
-              <link rel="stylesheet" href="/css/footer.css">
+      <link rel="stylesheet" href="/css/footer.css">
 </head>
 <body>
 <jsp:include page="/common/header.jsp" />

@@ -1,0 +1,74 @@
+/* /css/mypost.css */
+.right-box {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px 36px;
+    min-height: 400px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    border: 1px solid #ececec;
+}
+.tab-menu {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 28px;
+    border-bottom: 2px solid #e9e9e9;
+}
+.tab-menu div {
+    font-size: 1.11rem;
+    font-weight: 500;
+    padding-bottom: 11px;
+    cursor: pointer;
+    transition: color 0.17s;
+    position: relative;
+}
+.tab-menu .active#tab-myPosts { color: #118e6a; }
+.tab-menu .active#tab-likedPosts { color: #e9620b; }
+.tab-menu .active:after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #118e6a;
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    border-radius: 2px;
+}
+.search-area {
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}
+.search-input { max-width: 240px; }
+.search-btn {
+    border: none;
+    background: none;
+    padding: 0 6px;
+    color: #118e6a;
+    font-size: 1.15rem;
+    transition: color 0.14s;
+    cursor: pointer;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-btn:hover, .search-btn:focus {
+    background: #e3f7ef;
+    color: #0c7c4a;
+    outline: none;
+}
+.table th, .table td { vertical-align: middle !important; }
+
+@media (max-width: 768px) {
+    .right-box {
+        padding: 18px 3vw 10px 3vw;
+        min-height: unset;
+    }
+    .tab-menu { gap: 13px; }
+    .tab-menu div { font-size: 1.08rem; padding-bottom: 9px; }
+}

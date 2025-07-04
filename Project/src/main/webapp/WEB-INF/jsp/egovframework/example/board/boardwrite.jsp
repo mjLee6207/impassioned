@@ -19,7 +19,7 @@
 <jsp:include page="/common/sidebar.jsp" />
         <div class="write-box">
         <h3 class="mb-4">🍳 요리 게시글 작성</h3>
-        <form action="${pageContext.request.contextPath}/board/writeProcess.do" method="post" enctype="multipart/form-data">
+        <form action="${pageContext.request.contextPath}/board/add.do" method="post" enctype="multipart/form-data">
             <!-- 카테고리 선택 -->
             <label for="category" class="form-label">카테고리</label>
             <select class="form-select" id="category" name="category" required>
@@ -36,11 +36,11 @@
 
             <!-- 재료준비 -->
             <label for="ingredients" class="form-label">재료준비</label>
-            <textarea class="form-control" id="ingredients" name="ingredients" rows="3" maxlength="1000" placeholder="예: 달걀 2개, 양파 1개, 소금 약간 등" required></textarea>
+            <textarea class="form-control" id="prepare" name="prepare" rows="3" maxlength="1000" placeholder="예: 달걀 2개, 양파 1개, 소금 약간 등" required></textarea>
 
             <!-- 조리법 -->
             <label for="instructions" class="form-label">조리법</label>
-            <textarea class="form-control" id="instructions" name="instructions" rows="6" maxlength="10000" placeholder="조리 과정을 단계별로 자세히 적어주세요." required></textarea>
+            <textarea class="form-control" id="content" name="content" rows="6" maxlength="10000" placeholder="조리 과정을 단계별로 자세히 적어주세요." required></textarea>
 
             <!-- 사진 파일 업로드 -->
             <label for="image" class="form-label">사진 업로드</label>

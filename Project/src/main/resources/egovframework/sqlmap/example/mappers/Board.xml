@@ -25,7 +25,7 @@
 
 	<!-- 게시글 등록 -->
 	<insert id="insert" parameterType="BoardVO">
-
+	
 		<!-- 시퀀스에서 다음 값 조회 -->
 		<selectKey keyProperty="boardId" resultType="int"
 			order="BEFORE">
@@ -34,11 +34,11 @@
 
 		INSERT INTO BOARD (
 		BOARD_ID, CATEGORY, TITLE, PREPARE, CONTENT,
-		THUMBNAIL, WRITE_DATE, VIEW_COUNT
+		THUMBNAIL, WRITE_DATE, VIEW_COUNT, WRITER_IDX
 		)
 		VALUES (
 		#{boardId}, #{category}, #{title}, #{prepare}, #{content},
-		#{thumbnail}, SYSDATE, #{viewCount}
+		#{thumbnail}, SYSDATE, #{viewCount}, #{writerIdx}
 		)
 	</insert>
 
@@ -75,4 +75,11 @@
 	    WHERE BOARD_ID = #{boardId}
 	</update>
 
+	<!-- 닉네임 포함된 상세조회: 공개용 상세보기 -->
+	<select id="selectBoardDetail" parameterType="int" resultType="BoardVO">
+		SELECT B.*, M.NICKNAME
+		FROM BOARD B
+		LEFT JOIN MEMBER M ON B.WRITER_IDX = M.MEMBER_IDX
+		WHERE B.BOARD_ID = #{boardId}
+	</select>
 </mapper>

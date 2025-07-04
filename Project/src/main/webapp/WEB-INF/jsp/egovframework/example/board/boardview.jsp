@@ -53,7 +53,7 @@
                     <c:when test="${board.category eq 'dessert'}">디저트</c:when>
                 </c:choose>
             </span>
-            작성자: <b>${board.writerIdx}</b>
+            작성자: <b>${board.nickname}</b>
             | 작성일: ${board.writeDate}
             | 조회수: ${board.viewCount}
         </div>
@@ -61,7 +61,7 @@
         <!-- 상세 내용 -->
         <div class="post-section-title">재료준비</div>
         <div class="post-content">
-            <c:out value="${board.ingredient}" escapeXml="false"/>
+            <c:out value="${board.prepare}" escapeXml="false"/>
         </div>
 
         <div class="post-section-title">조리법</div>

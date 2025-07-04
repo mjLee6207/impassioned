@@ -22,7 +22,7 @@
     </div>
     
     <div class="card-menu">
-        <button class="card-menu-btn" type="button"><i class="bi bi-person"></i>내 정보 수정</button> 
+        <button class="card-menu-btn mypage-btn" type="button"><i class="bi bi-person"></i>내 정보 수정</button> 
         <button class="card-menu-btn logout-btn" type="button"><i class="bi bi-box-arrow-right"></i>로그아웃</button>
     </div>
 </div>
@@ -32,6 +32,11 @@
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".logout-btn").addEventListener("click", function () {
       location.href = "/member/logout.do";  // 로그아웃 경로로 이동
+    });
+
+    // 내 정보 수정 → 마이페이지 이동
+    document.querySelector(".mypage-btn").addEventListener("click", function () {
+      location.href = "/mypage/mypage.do"; // 🔁 실제 마이페이지 URL로 수정
     });
   });
 </script>

@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.example.member.service.MemberVO;
-import egovframework.example.mypage.service.MypageMyPostService;
 import egovframework.example.mypage.service.MypageMyPostVO;
-import egovframework.example.mypage.service.MypageLikeService;
+import egovframework.example.mypage.service.MypageService;
 import egovframework.example.mypage.service.MypageLikeVO;
 
 @Controller
@@ -22,10 +21,7 @@ import egovframework.example.mypage.service.MypageLikeVO;
 public class MypageController {
 
     @Autowired
-    private MypageMyPostService mypageMyPostService;
-
-    @Autowired
-    private MypageLikeService mypageLikeService;
+    private MypageService mypageLikeService;
 
     @GetMapping("/mypage.do")
     public String showMypage(HttpSession session, Model model) {
@@ -38,7 +34,7 @@ public class MypageController {
         Long memberIdx = loginUser.getMemberIdx();
 
         // 내가 쓴 글
-        List<MypageMyPostVO> myPosts = mypageMyPostService.selectMyPosts(memberIdx);
+        List<MypageMyPostVO> myPosts = mypageLikeService.selectMyPosts(memberIdx);
         model.addAttribute("myPosts", myPosts);
 
         // 좋아요한 글

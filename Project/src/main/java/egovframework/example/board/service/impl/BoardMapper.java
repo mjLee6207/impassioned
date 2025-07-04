@@ -15,7 +15,9 @@ public interface BoardMapper {
 
 	public int insert(BoardVO boardVO); // insert
 
-	public BoardVO selectBoard(int boardId); // 상세조회
+	public BoardVO selectBoard(int boardId); // 수정페이지로딩
+	
+	public BoardVO selectBoardDetail(int boardId); // 공개 상세조회용
 
 	public int update(BoardVO boardVO); // update 메소드
 

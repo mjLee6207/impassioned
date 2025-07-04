@@ -26,7 +26,6 @@ public class BoardVO extends Criteria {
 	private String title;           // 제목
 	private String prepare;         // 재료준비
 	private String content;         // 내용
-	private String ingredient;      // 재료
 	private String thumbnail;       // 썸네일 이미지 경로/URL
 	private Date writeDate;         // 작성일
 	private int writerIdx;          // 작성자 회원 번호

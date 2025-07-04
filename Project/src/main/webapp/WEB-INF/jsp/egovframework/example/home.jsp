@@ -19,7 +19,8 @@
   <c:when test="${not empty sessionScope.loginUser}">
     <p>${sessionScope.loginUser.nickname}님 환영합니다!</p>
     <a href="${pageContext.request.contextPath}/member/logout.do">로그아웃</a>
-    
+    <a href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
+
   </c:when>
   <c:otherwise>
     <a href="${pageContext.request.contextPath}/member/login.do">로그인</a>

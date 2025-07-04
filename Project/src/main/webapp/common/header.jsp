@@ -21,7 +21,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="<c:url value='/board/board.do'/>">Board</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/board/addition.do'/>">Add Board</a></li>
+            <li><a class="dropdown-item" href="<c:url value='/board/addition.do'/>">게시판 글쓰기</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">

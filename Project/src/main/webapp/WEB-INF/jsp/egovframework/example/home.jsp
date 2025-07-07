@@ -25,22 +25,8 @@
 
 </head>
 <body>
-	<!-- ✅ 상단 로그인/로그아웃/마이페이지 영역 -->
-	<div class="top-bar">
-		<c:choose>
-			<c:when test="${not empty sessionScope.loginUser}">
-				<p>${sessionScope.loginUser.nickname}님환영합니다!</p>
-				<a href="${pageContext.request.contextPath}/member/logout.do">로그아웃</a>
-				<a href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
+<jsp:include page="/common/header2.jsp" />
 
-			</c:when>
-			<c:otherwise>
-				<!-- hyj 7/7 영문변환 및 &nbsp; 추가 -->
-				<a href="${pageContext.request.contextPath}/member/login.do"><h6>LOGIN</h6></a>&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="${pageContext.request.contextPath}/member/login.do"><h6>JOIN US</h6></a>&nbsp;&nbsp;&nbsp;
-  </c:otherwise>
-		</c:choose>
-	</div>
 
 	<!-- ✅ 사이트 로고 영역 -->
 	<div class="logo">CheForest</div>
@@ -72,12 +58,13 @@
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
 			<p class="title">크림치즈 라즈베리 무스</p>
 		</a>
-
+		
 		<!-- 예시 레시피 카드 4 -->
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p>
+			<p class="title">양갈비 스테이크와 소스 6종</p></a>
 	</div>
+	
 
 	<!-- ✅ 오늘의 추천 레시피 제목 -->
 	<div class="section-title">👨‍🍳 한식 레시피</div>
@@ -148,26 +135,26 @@
 		<!-- 예시 레시피 카드 1 -->
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
-			<p class="title">바질 크림소스 라자냐</p>
+			<p class="title">마파두부</p>
 		</a>
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
-			<p class="title">단호박 무스를 곁들인 비프웰링턴</p>
+			<p class="title">동파육</p>
 		</a>
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
-			<p class="title">크림치즈 라즈베리 무스</p>
+			<p class="title">중화새우볶음밥</p>
 		</a>
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p>
+			<p class="title">딤섬</p>
 			
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p>
+			<p class="title">해신탕</p>
 		</a>
 	</div>
 
@@ -177,26 +164,56 @@
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
-			<p class="title">바질 크림소스 라자냐</p>
+			<p class="title">히츠마부시(장어덮밥)</p>
 		</a>
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
-			<p class="title">단호박 무스를 곁들인 비프웰링턴</p>
+			<p class="title">돈카츠</p>
 		</a>
 		
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
-			<p class="title">크림치즈 라즈베리 무스</p>
+			<p class="title">타마고야끼</p>
 		</a>
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p>
+			<p class="title">오니기리</p>
 			
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p>
+			<p class="title">야끼소바</p>
+		</a>
+
+		</div>
+		
+		<div class="section-title">👨‍🍳 디저트 레시피</div>
+
+	<div class="recipes">
+
+		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
+			<p class="title">브라우니</p>
+		</a>
+
+		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
+			<p class="title">스콘</p>
+		</a>
+		
+		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
+			<p class="title">초코칩쿠키</p>
+		</a>
+
+		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			<p class="title">피칸파이</p>
+			
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
+			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			<p class="title">레몬파운드케이크</p>
 		</a>
 
 		</div>

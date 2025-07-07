@@ -18,9 +18,10 @@
     <nav class="main-navbar">
         <!-- 왼쪽 로고 + 메뉴 -->
         <div class="navbar-left">
-            <div class="main-logo">
-                <span>🍽️ CheForest</span>
-            </div>
+            <a href="http://localhost:8080/" class="main-logo">
+                <span>🍽️ CheForest             
+                </span>
+            </a>
             <div class="main-menu">
                 <!-- 레시피 드롭다운 -->
                 <div class="dropdown" id="dropdown-recipe">

@@ -89,15 +89,10 @@
             <div class="post-section-title">사진</div>
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
-
-
-
         <!-- ❤️ 좋아요 버튼(개수 포함) -->
         <div class="like-btn-wrap" style="text-align:center; margin-top:20px;">
             <button type="button" class="like-btn" id="likeBtn" data-board-id="${board.boardId}" data-member-idx="${loginUser.memberIdx}">♡</button>
             <span class="like-count" id="likeCountText">0</span>
-
-
         </div>
         <!-- 버튼 -->
         <div class="post-btns">
@@ -150,17 +145,11 @@
     </div>
 </div>
 
-
-
 <!-- 7월 7일 좋아요 구현을 위해 오전에 넣음  -->
-
-
 <script>
     function moveCategory(category) {
         window.location.href = '/board/board.do?category=' + category;
     }
-
-
 
     $(document).ready(function () {
         console.log("✅ 좋아요 스크립트 실행 시작");
@@ -215,8 +204,6 @@
             });
         });
     });
-
-
 </script>
 </body>
 </html>

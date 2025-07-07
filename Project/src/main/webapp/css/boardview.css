@@ -1,8 +1,11 @@
 @charset "UTF-8";
 /* post.css */
 /* style.css, sidebar.css에 없는 상세뷰 전용 스타일만 작성 */
+.main-wrap{
+	margin-top: 20px;
+}
 .board-wrap {
-    background: #fff;
+	background: #fff;
     border-radius: 16px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     padding: 36px 38px 38px 38px;

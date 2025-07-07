@@ -73,6 +73,15 @@
             <div class="post-section-title">사진</div>
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
+        
+     <!-- ❤️ 좋아요 버튼(개수 포함) -->
+    <div class="like-btn-wrap">
+        <button type="button" class="like-btn" onclick="likePost()">
+            <i class="bi bi-heart-fill"></i>
+            <span>좋아요</span>
+            <span class="like-count">(${likeCount})</span>
+        </button>
+    </div>
 
         <!-- 버튼 -->
         <div class="post-btns">
@@ -91,6 +100,10 @@
     function moveCategory(category) {
         window.location.href = '/board/board.do?category=' + category;
     }
+    function likePost() {
+    // 좋아요 기능: ajax/submit 등으로 구현!
+    alert('좋아요가 눌렸습니다!');
+}
 </script>
 </body>
 </html>

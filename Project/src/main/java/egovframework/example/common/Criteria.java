@@ -44,4 +44,5 @@ public class Criteria {
 	/** 7/7 카테고리 추가(민중) */
 	private String category;
 
+
 }

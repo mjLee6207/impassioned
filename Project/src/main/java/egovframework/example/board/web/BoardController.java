@@ -56,6 +56,7 @@ public class BoardController {
    }
 
 
+
    /*
     * // 추가 페이지 열기
     * 
@@ -137,7 +138,6 @@ public class BoardController {
        model.addAttribute("boardVO", boardVO);
        return "board/boardupdate";
    }
-
 	// 수정: 버튼 클릭시 실행
 	// 7/7일 수정 후 원래 카테고리로 돌아가기, 리퀘스트팜,리턴 추가 (민중)
 	@PostMapping("/board/edit.do")

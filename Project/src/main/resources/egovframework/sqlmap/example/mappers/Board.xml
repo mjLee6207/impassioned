@@ -6,6 +6,7 @@
    namespace="egovframework.example.board.service.impl.BoardMapper">
    
 
+
 	<!-- 7/7 카테고리별 게시글 목록 조회(민중) -->
 	<select id="selectBoardList" parameterType="Criteria" resultType="BoardVO">
 		SELECT *
@@ -48,6 +49,7 @@
       )
    </insert>
 
+
    <!-- 수정 게시글 상세 조회 -->
    <select id="selectBoard" parameterType="int"
       resultType="BoardVO">
@@ -55,6 +57,7 @@
       FROM BOARD
       WHERE BOARD_ID = #{boardId}
    </select>
+
 
    <!-- 게시글 수정 -->
    <update id="update" parameterType="BoardVO">
@@ -81,7 +84,6 @@
 	    SET VIEW_COUNT = VIEW_COUNT + 1
 	    WHERE BOARD_ID = #{boardId}
 	</update>
-
 
    <!-- 닉네임 포함된 상세조회: 공개용 상세보기 -->
    <select id="selectBoardDetail" parameterType="int" resultType="BoardVO">

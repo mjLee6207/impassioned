@@ -91,6 +91,7 @@
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
 
+
         <!-- ❤️ 좋아요 버튼(개수 포함) -->
         <!-- ❤️ 좋아요 버튼 -->
 
@@ -104,6 +105,7 @@
             <input type="hidden" name="boardId" value="${board.boardId}" />
             <input type="hidden" name="category" value="${board.category}" />
         </form>
+
 
         <!-- 버튼 -->
         <div class="post-btns">
@@ -162,6 +164,7 @@
 
 
 <!-- 스크립트 -->
+
 
 <script>
     function moveCategory(category) {

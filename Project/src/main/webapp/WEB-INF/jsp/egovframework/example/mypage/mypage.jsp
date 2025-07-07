@@ -96,6 +96,7 @@
                                     <td>
                                         <a href="${pageContext.request.contextPath}/board/view.do?boardId=${like.boardId}" class="text-decoration-none">${like.title}</a>
 
+
                                     </td>
                                     <td>
                                         <fmt:formatDate value="${like.writeDate}" pattern="yyyy-MM-dd" />

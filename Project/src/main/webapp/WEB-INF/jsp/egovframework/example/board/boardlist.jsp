@@ -28,6 +28,7 @@
 		<!-- 본문 컨텐츠 영역 -->
 		<div class="content-area">
 
+
 			<!-- 카테고리 탭 -->
 			<div class="category-tabs">
 				<a href="${pageContext.request.contextPath}/board/board.do?category=한식"
@@ -72,6 +73,7 @@
 					<i class="bi bi-search"></i>
 				</button>
 			</form>
+
 
 			<!-- 인기게시글 영역 (여기만 c:choose로 대체) -->
 			<div class="popular-posts-section">

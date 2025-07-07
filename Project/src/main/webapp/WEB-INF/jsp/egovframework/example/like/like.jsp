@@ -1,135 +1,115 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>좋아요 테스트</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <style>
-        #likeButton {
-            font-size: 32px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            color: gray; /* 좋아요 안 한 상태 (빈 하트) */
-        }
-
-        #likeButton.liked {
-            color: red; /* 좋아요 한 상태 (빨간 하트) */
-        }
-    </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .like-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .likeButton {
+      font-size: 32px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: gray;
+    }
+    .likeButton.liked {
+      color: red;
+    }
+    .likeCount {
+      margin-top: 6px;
+      font-size: 14px;
+      color: black;
+    }
+  </style>
 </head>
 <body>
-    <h2>좋아요 테스트</h2>
-<button id="likeButton" onclick="toggleLike()">♡</button>
-    <p id="likeCount">좋아요 수: </p>
 
-    <script>
-        const contextPath = "<%= request.getContextPath() %>";
-        const boardId = 123;
+  <%-- 로그인 여부 체크 (전역) --%>
+  <%
+    Object sessionUser = session.getAttribute("memberIdx");
+    int memberIdx = (sessionUser == null) ? -1 : Integer.parseInt(sessionUser.toString());
+  %>
 
-        // 로그인된 사용자의 memberIdx 세션에서 받아오기 (없으면 -1)
-        const memberIdx = <%= session.getAttribute("memberIdx") == null ? -1 : session.getAttribute("memberIdx") %>;
+  <script>
+    const memberIdxGlobal = <%= memberIdx %>;
+    if (memberIdxGlobal === -1) {
+      alert("로그인 후 이용 가능한 기능입니다.");
+    }
+  </script>
 
-        if (memberIdx === -1) {
-            alert("로그인 후 이용 가능한 기능입니다.");
-            $("#likeButton").prop("disabled", true);
+  <%-- 예시 게시글 1개 --%>
+  <div class="post" data-board-id="123">
+    <div class="like-wrap">
+      <button class="likeButton" data-board-id="123" data-member-idx="<%= memberIdx %>">♡</button>
+      <div class="likeCount" data-board-id="123">좋아요</div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $(".likeButton").each(function () {
+        const $btn = $(this);
+        const boardId = $btn.data("board-id");
+        const memberIdx = $btn.data("member-idx");
+
+        // 🔒 로그인 안 한 경우 버튼 비활성화
+        if (memberIdx === -1 || memberIdx === "-1") {
+          $btn.prop("disabled", true);
+          return;
         }
 
-        function toggleLike() {
-            if (memberIdx === -1) {
-                alert("로그인 후 이용해주세요.");
-                return;
+        // ♥ 상태 확인
+        $.ajax({
+          url: "/checkLike.do",
+          type: "GET",
+          data: { boardId, memberIdx },
+          success: function (exists) {
+            if (exists === true || exists === "true") {
+              $btn.text("♥").addClass("liked");
             }
+          }
+        });
 
-            $.ajax({
-                url: contextPath + "/checkLike.do",
-                type: "GET",
-                data: {
-                    boardId: boardId,
-                    memberIdx: memberIdx
-                },
-                success: function(exists) {
-                    if (exists === true || exists === "true") {
-                        removeLike();
-                    } else {
-                        addLike();
-                    }
-                },
-                error: function(xhr) {
-                    console.error("상태 확인 실패:", xhr.responseText);
-                }
-            });
-        }
+        // 좋아요 수 표시
+        $.ajax({
+          url: "/countLike.do",
+          type: "GET",
+          data: { boardId },
+          success: function (count) {
+            $(`.likeCount[data-board-id=${boardId}]`).text("좋아요 수: " + count);
+          }
+        });
 
-        function addLike() {
-            $.ajax({
-                url: contextPath + "/addLike.do",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ boardId, memberIdx }),
-                success: function() {
-                    getLikeCount();
-                    updateButton(true);
-                },
-                error: function(xhr) {
-                    console.error("좋아요 등록 실패:", xhr.responseText);
-                }
-            });
-        }
+        // 클릭 이벤트
+        $btn.on("click", function () {
+          const isLiked = $btn.text() === "♥";
+          const url = isLiked ? "/cancelLike.do" : "/addLike.do";
 
-        function removeLike() {
-            $.ajax({
-                url: contextPath + "/cancelLike.do",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ boardId, memberIdx }),
-                success: function() {
-                    getLikeCount();
-                    updateButton(false);
-                },
-                error: function(xhr) {
-                    console.error("좋아요 취소 실패:", xhr.responseText);
-                }
-            });
-        }
+          $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ boardId, memberIdx }),
+            success: function () {
+              $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
 
-        function getLikeCount() {
-            $.ajax({
-                url: contextPath + "/countLike.do",
+              $.ajax({
+                url: "/countLike.do",
                 type: "GET",
                 data: { boardId },
-                success: function(count) {
-                    $("#likeCount").text("좋아요 수: " + count);
-                },
-                error: function(xhr) {
-                    console.error("좋아요 수 가져오기 실패:", xhr.responseText);
+                success: function (count) {
+                  $(`.likeCount[data-board-id=${boardId}]`).text("좋아요 수: " + count);
                 }
-            });
-        }
-
-        function updateButton(isLiked) {
-           $("#likeButton").html(isLiked ? "♥" : "♡");
-        }
-
-        function checkInitialStatus() {
-            if (memberIdx === -1) return;
-
-            $.ajax({
-                url: contextPath + "/checkLike.do",
-                type: "GET",
-                data: {
-                    boardId: boardId,
-                    memberIdx: memberIdx
-                },
-                success: function(exists) {
-                    updateButton(exists === true || exists === "true");
-                }
-            });
-        }
-
-        $(document).ready(function() {
-            getLikeCount();
-            checkInitialStatus();
+              });
+            }
+          });
         });
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>

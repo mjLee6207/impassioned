@@ -36,9 +36,8 @@
 			</c:when>
 			<c:otherwise>
 				<!-- hyj 7/7 영문변환 및 &nbsp; 추가 -->
-				<a href="${pageContext.request.contextPath}/member/login.do">LOGIN</a>&nbsp;&nbsp;&nbsp;
-    <a href="${pageContext.request.contextPath}/member/login.do">JOIN
-					US</a>&nbsp;&nbsp;&nbsp;
+				<a href="${pageContext.request.contextPath}/member/login.do"><h6>LOGIN</h6></a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="${pageContext.request.contextPath}/member/login.do"><h6>JOIN US</h6></a>&nbsp;&nbsp;&nbsp;
   </c:otherwise>
 		</c:choose>
 	</div>

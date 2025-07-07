@@ -48,7 +48,7 @@
             <input type="text" class="search-input"
                    id="searchKeyword" name="searchKeyword"
                    value="${criteria.searchKeyword}"
-                   placeholder="제목으로검색">
+                   placeholder="제목으로 검색">
             <button type="submit" class="search-btn">
                 <i class="bi bi-search"></i>
             </button>
@@ -56,7 +56,7 @@
 
         <!-- 인기게시글 영역 (여기만 c:choose로 대체) -->
         <div class="popular-posts-section">
-            <div class="popular-posts-title">인기게시글</div>
+            <div class="popular-posts-title"><h5>Best Post</h5></div>
             <div class="top-posts-row">
                 <c:choose>
                     <c:when test="${not empty topPosts}">

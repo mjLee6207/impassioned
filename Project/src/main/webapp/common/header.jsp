@@ -19,13 +19,12 @@
         <!-- 왼쪽 로고 + 메뉴 -->
         <div class="navbar-left">
             <div class="main-logo">
-                <span>🍽️ COOK</span>
-                <span class="logo-desc">요리정보포털</span>
+                <span>🍽️ CheForest</span>
             </div>
             <div class="main-menu">
                 <!-- 레시피 드롭다운 -->
                 <div class="dropdown" id="dropdown-recipe">
-                    <button class="dropdown-toggle" type="button">레시피</button>
+                    <button class="dropdown-toggle" type="button">Recipe</button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/recipe.do?category=korean">한식<span class="eng"> |　Korean</span></a>
                         <a class="dropdown-item" href="/recipe.do?category=western">양식<span class="eng"> |　Western</span></a>
@@ -36,7 +35,7 @@
                 </div>
                 <!-- 게시판 드롭다운 -->
                 <div class="dropdown" id="dropdown-board">
-                    <button class="dropdown-toggle" type="button">게시판</button>
+                    <button class="dropdown-toggle" type="button">Board</button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/board.do?category=korean">한식<span class="eng"> |　Korean</span></a>
                         <a class="dropdown-item" href="/board.do?category=western">양식<span class="eng"> |　Western</span></a>

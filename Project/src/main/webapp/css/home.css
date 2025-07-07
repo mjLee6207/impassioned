@@ -45,10 +45,11 @@ body {
 
 /* 추천 레시피 제목 */
 .section-title {
+	color: #4CAF50;
 	margin-top: 40px;
 	font-size: 20px;
 	font-weight: bold;
-	text-align: center;
+/* 	text-align: center; */
 
 }
 

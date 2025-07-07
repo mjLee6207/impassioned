@@ -111,6 +111,7 @@
     </div>
 </div>
 
+<!-- 7월 7일 좋아요 구현을 위해 오전에 넣음  -->
 <script>
     function moveCategory(category) {
         window.location.href = '/board/board.do?category=' + category;
@@ -126,7 +127,11 @@
         
         console.log("👍 boardId:", boardId, "memberIdx:", memberIdx);
 
-
+     // ✅ 1. 로그인 여부와 상관없이 좋아요 수는 항상 보여줌
+        $.get("/countLike.do", { boardId }, function (count) {
+            $("#likeCountText").text(count);
+        });
+     
         if (!memberIdx) {
             $btn.prop("disabled", true);
             return;
@@ -145,6 +150,11 @@
         $btn.on("click", function () {
             const isLiked = $btn.text() === "♥";
             const url = isLiked ? "/cancelLike.do" : "/addLike.do";
+            
+            if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
+                alert("로그인 후 이용해주세요 😊");
+                return;
+            }
 
             $.ajax({
                 url,

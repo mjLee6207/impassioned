@@ -203,5 +203,19 @@
 		</div>
 		<!-- 만들어놓은 꼬리말 jsp -->
 		<jsp:include page="/common/footer.jsp"></jsp:include>
+		
+		<!-- 7월 7일 2시20분 엔터키 검색 메인페이지 추가  -->
+		<script>
+    // 엔터키로 검색
+    document.addEventListener("DOMContentLoaded", () => {
+        const input = document.querySelector("#searchKeyword");
+        input?.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                input.form?.submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>

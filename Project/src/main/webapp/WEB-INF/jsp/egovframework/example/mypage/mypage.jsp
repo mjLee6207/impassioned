@@ -56,7 +56,7 @@
                             <c:forEach var="post" items="${myPosts}">
                                 <tr>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/post/view.do?id=${post.boardId}" class="text-decoration-none">${post.title}</a>
+                                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${post.boardId}" class="text-decoration-none">${post.title}</a>
                                     </td>
                                     <td>
                                         <fmt:formatDate value="${post.writeDate}" pattern="yyyy-MM-dd" />
@@ -88,21 +88,17 @@
                             <tr>
                                 <th>제목</th>
                                 <th>작성일</th>
-                                <!-- <th>조회수</th> -->
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="like" items="${likedPosts}">
                                 <tr>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/post/view.do?id=${like.boardId}" class="text-decoration-none">${like.title}</a>
+                                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${like.boardId}" class="text-decoration-none">${like.title}</a>
                                     </td>
                                     <td>
                                         <fmt:formatDate value="${like.writeDate}" pattern="yyyy-MM-dd" />
                                     </td>
-                                    <!-- 조회수 컬럼이 있으면 아래 사용
-                                    <td>${like.viewCount}</td>
-                                    -->
                                 </tr>
                             </c:forEach>
                             <c:if test="${empty likedPosts}">

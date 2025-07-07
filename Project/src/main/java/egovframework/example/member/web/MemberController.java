@@ -47,14 +47,22 @@ public class MemberController {
 
     // ✅ [로그인 처리]
     @PostMapping("/member/login.do")
-    public String login(MemberVO memberVO, HttpSession session, Model model) {
+    public String login(MemberVO memberVO,
+                        HttpSession session,
+                        Model model,
+                        @RequestParam(value = "redirect", required = false) String redirect) {
         try {
             MemberVO loginUser = memberService.authenticate(memberVO);
 
-            // 🔧 수정된 부분 (JSP에서 로그인 상태 판단을 위해 userId 세션에 저장)
+            // 🔧 로그인 정보 세션에 저장
             session.setAttribute("loginUser", loginUser); // 사용자 전체 정보
 
-            return "redirect:/index.jsp"; // 로그인 성공 시 메인 페이지로 이동
+            // ✅ redirect 파라미터가 존재하면 해당 경로로 이동
+            if (redirect != null && !redirect.trim().isEmpty()) {
+                return "redirect:" + redirect;
+            }
+
+            return "redirect:/index.jsp"; // 기본 메인 페이지
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
             return "member/login"; // 로그인 실패 시 다시 로그인 폼
@@ -97,5 +105,4 @@ public class MemberController {
         boolean success = inputCode != null && inputCode.equals(sessionCode);
         return Collections.singletonMap("success", success);
     }
-
 }

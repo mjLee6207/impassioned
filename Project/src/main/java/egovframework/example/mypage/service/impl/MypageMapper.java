@@ -8,6 +8,6 @@ import egovframework.example.mypage.service.MypageLikeVO;
 import egovframework.example.mypage.service.MypageMyPostVO;
 @Mapper
 public interface MypageMapper {
-    List<MypageLikeVO> selectLikedPosts(Long memberIdx);
-    List<MypageMyPostVO> selectMyPosts(Long memberIdx);
+    List<MypageLikeVO> selectLikedPosts(Long memberIdx);  // 내가 좋아요 한 글 
+    List<MypageMyPostVO> selectMyPosts(Long memberIdx);   // 내가 작성한 글
 }

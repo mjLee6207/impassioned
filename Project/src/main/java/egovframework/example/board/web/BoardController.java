@@ -1,5 +1,7 @@
 package egovframework.example.board.web;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -59,27 +61,37 @@ public class BoardController {
 	 * "board/boardwrite"; }
 	 */
 		
-	// 글 작성 폼 화면 보여주기
+//	글 작성 폼 화면 보여주기
 	@GetMapping("/board/add.do")
 	public String showAddForm(Model model) {
 	    model.addAttribute("boardVO", new BoardVO()); // 빈 폼 바인딩
 	    return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
 	}
 
-	// insert : 저장 버튼 클릭시
+//	insert : 저장 버튼 클릭시
+//	7/7 삭제 후 원래 카테고리로 돌아가기,  리퀘스트팜,리턴 추가 (민중)
 	@PostMapping("/board/add.do")
-	public String insert(@ModelAttribute BoardVO boardVO, HttpSession session) {
+	public String insert(@ModelAttribute BoardVO boardVO, HttpSession session) throws UnsupportedEncodingException {
 	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 	    if (loginUser == null) {
 	        return "redirect:/member/login.do"; // 비로그인 시 로그인 페이지로
 	    }
+	
+	    // 🔒 서버 측 category null 방어 로직 추가
+	    if (boardVO.getCategory() == null || boardVO.getCategory().isBlank()) {
+	        throw new IllegalArgumentException("카테고리는 필수입니다.");
+	    }
+	
 	    // 서버에서 로그인된 사용자의 인덱스 강제 설정
 	    boardVO.setWriterIdx(loginUser.getMemberIdx().intValue());
-
+	
 	    log.info("작성자 포함 게시글: {}", boardVO);
 	    boardService.insert(boardVO);
-
-	    return "redirect:/board/board.do";
+	
+	    // 한글 카테고리 URL 인코딩 처리 (작성 후 이동용)
+	    String encodedCategory = URLEncoder.encode(boardVO.getCategory(), "UTF-8");
+	
+	    return "redirect:/board/board.do?category=" + encodedCategory;
 	}
 
 //	수정페이지 열기
@@ -93,34 +105,56 @@ public class BoardController {
 	    return "board/boardupdate";
 	}
 
-	
-//	수정: 버튼 클릭시 실행
+	// 수정: 버튼 클릭시 실행
+	// 7/7일 수정 후 원래 카테고리로 돌아가기, 리퀘스트팜,리턴 추가 (민중)
 	@PostMapping("/board/edit.do")
-	public String update(@ModelAttribute BoardVO boardVO) {
-//		서비스의 수정 실행
-		boardService.update(boardVO);
-		return "redirect:/board/board.do";
+	public String update(@ModelAttribute BoardVO boardVO,
+	                     @RequestParam(required = false) String searchKeyword,
+	                     @RequestParam(required = false, defaultValue = "1") int pageIndex) throws UnsupportedEncodingException {
+
+	    // ✅ 카테고리 누락 방지
+	    if (boardVO.getCategory() == null || boardVO.getCategory().isBlank()) {
+	        throw new IllegalArgumentException("카테고리는 필수입니다.");
+	    }
+
+	    boardService.update(boardVO);
+
+	    String encodedCategory = URLEncoder.encode(boardVO.getCategory(), "UTF-8");
+	    return "redirect:/board/board.do?category=" + encodedCategory
+	         + "&searchKeyword=" + searchKeyword
+	         + "&pageIndex=" + pageIndex;
 	}
 
-//	삭제
+	// 삭제
+	// 7/7 삭제 후 원래 카테고리로 돌아가기,  리퀘스트팜,리턴 추가 (민중)
 	@PostMapping("/board/delete.do")
-	public String delete(@ModelAttribute BoardVO boardVO) {
-//		서비스의 삭제 실행
-		boardService.delete(boardVO);
-		return "redirect:/board/board.do";
+	public String delete(@ModelAttribute BoardVO boardVO,
+	                     @RequestParam(required = false) String searchKeyword,
+	                     @RequestParam(required = false, defaultValue = "1") int pageIndex) throws UnsupportedEncodingException {
+
+	    // ✅ 카테고리 누락 방지
+	    if (boardVO.getCategory() == null || boardVO.getCategory().isBlank()) {
+	        throw new IllegalArgumentException("카테고리는 필수입니다.");
+	    }
+
+	    boardService.delete(boardVO);
+
+	    String encodedCategory = URLEncoder.encode(boardVO.getCategory(), "UTF-8");
+	    return "redirect:/board/board.do?category=" + encodedCategory
+	         + "&searchKeyword=" + searchKeyword
+	         + "&pageIndex=" + pageIndex;
 	}
 	
-	//	상세조회: 읽기 전용 페이지 (조회만 가능)
+//	상세조회: 읽기 전용 페이지 (조회만 가능)
 	@GetMapping("/board/view.do")
-	public String view(@RequestParam("boardId") int boardId, Model model
-			, HttpSession session) {
+	public String view(@RequestParam("boardId") int boardId, Model model, HttpSession session) {
 	    // 조회수 증가
 	    try {
 	        boardService.increaseViewCount(boardId);
 	    } catch (Exception e) {
 	        log.error("조회수 증가 실패: ", e);
 	    }
-	
+
 	    // 닉네임 포함 상세 게시글 조회
 	    BoardVO board = boardService.selectBoardDetail(boardId); // ✅ 변경
 	    if (board == null) {

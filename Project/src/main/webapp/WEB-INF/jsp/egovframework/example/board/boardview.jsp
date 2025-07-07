@@ -33,9 +33,10 @@
 <body>
 <div class="main-wrap">
     <!-- 사이드바 -->
-     <div class="sidebar-wrap">
-    <jsp:include page="/common/sidebar.jsp"/>
-  </div>
+    <div class="sidebar-wrap">
+        <jsp:include page="/common/sidebar.jsp"/>
+    </div>
+
     <!-- 게시글 상세 -->
     <div class="board-wrap">
         <!-- 타이틀 -->
@@ -94,44 +95,50 @@
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
 
-        <!-- ❤️ 좋아요 버튼(개수 포함) -->
+        <!-- ❤️ 좋아요 버튼 -->
         <div class="like-btn-wrap" style="text-align:center; margin-top:20px;">
             <button type="button" class="like-btn" id="likeBtn" data-board-id="${board.boardId}" data-member-idx="${loginUser.memberIdx}">♡</button>
             <span class="like-count" id="likeCountText">0</span>
         </div>
+
+        <!-- 🔒 POST 방식 삭제를 위한 숨겨진 form -->
+        <form id="deleteForm" action="${pageContext.request.contextPath}/board/delete.do" method="post" style="display:none;">
+            <input type="hidden" name="boardId" value="${board.boardId}" />
+            <input type="hidden" name="category" value="${board.category}" />
+        </form>
 
         <!-- 버튼 -->
         <div class="post-btns">
             <a href="/board/board.do?category=${board.category}" class="btn btn-secondary btn-sm">목록</a>
             <c:if test="${loginUser.memberIdx eq board.writerIdx}">
                 <a href="/board/edition.do?boardId=${board.boardId}" class="btn btn-success btn-sm">수정</a>
-                <a href="/board/delete.do?boardId=${board.boardId}" class="btn btn-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                <button type="button" class="btn btn-danger btn-sm" onclick="fn_delete()">삭제</button>
             </c:if>
         </div>
     </div>
 </div>
 
-<!-- 7월 7일 좋아요 구현을 위해 오전에 넣음  -->
+<!-- 스크립트 -->
 <script>
     function moveCategory(category) {
         window.location.href = '/board/board.do?category=' + category;
     }
 
-    $(document).ready(function () {
-        console.log("✅ 좋아요 스크립트 실행 시작");
+    function fn_delete() {
+        if (confirm("정말 삭제하시겠습니까? 복구되지 않습니다.")) {
+            document.getElementById("deleteForm").submit();
+        }
+    }
 
-    	
+    $(document).ready(function () {
         const $btn = $("#likeBtn");
         const boardId = $btn.data("board-id");
         const memberIdx = $btn.data("member-idx");
-        
-        console.log("👍 boardId:", boardId, "memberIdx:", memberIdx);
 
-     // ✅ 1. 로그인 여부와 상관없이 좋아요 수는 항상 보여줌
         $.get("/countLike.do", { boardId }, function (count) {
             $("#likeCountText").text(count);
         });
-     
+
         if (!memberIdx) {
             $btn.prop("disabled", true);
             return;
@@ -143,16 +150,14 @@
             }
         });
 
-        $.get("/countLike.do", { boardId }, function (count) {
-            $("#likeCountText").text(count);
-        });
-
         $btn.on("click", function () {
             const isLiked = $btn.text() === "♥";
             const url = isLiked ? "/cancelLike.do" : "/addLike.do";
-            
+
             if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
                 alert("로그인 후 이용해주세요 😊");
+                const redirectUrl = encodeURIComponent(location.pathname + location.search);
+                location.href = "/member/login.do?redirect=" + redirectUrl;
                 return;
             }
 

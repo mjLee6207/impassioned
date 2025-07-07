@@ -22,6 +22,10 @@
         <form id="addForm" action="${pageContext.request.contextPath}/board/edition.do" method="post" enctype="multipart/form-data">
         <!-- 컨트롤러 확인용 -->
         <input type="hidden" name="boardId" value="${boardVO.boardId}" />
+        <!-- 7/7일 리다이렉트용 정보들(민중) -->
+		<input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
+		<input type="hidden" name="pageIndex" value="${param.pageIndex}" />
+		<input type="hidden" name="category" value="${param.category}" />
             <!-- 카테고리 선택 -->
             <label for="category" class="form-label">카테고리</label>
             <select class="form-select" id="category" name="category" required>

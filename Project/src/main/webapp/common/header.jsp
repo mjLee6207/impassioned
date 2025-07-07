@@ -18,9 +18,10 @@
     <nav class="main-navbar">
         <!-- 왼쪽 로고 + 메뉴 -->
         <div class="navbar-left">
-            <div class="main-logo">
-                <span>🍽️ CheForest</span>
-            </div>
+            <a href="http://localhost:8080/" class="main-logo">
+                <span>🍽️ CheForest             
+                </span>
+            </a>
             <div class="main-menu">
                 <!-- 레시피 드롭다운 -->
                 <div class="dropdown" id="dropdown-recipe">
@@ -37,11 +38,11 @@
                 <div class="dropdown" id="dropdown-board">
                     <button class="dropdown-toggle" type="button">Board</button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/board.do?category=korean">한식<span class="eng"> |　Korean</span></a>
-                        <a class="dropdown-item" href="/board.do?category=western">양식<span class="eng"> |　Western</span></a>
-                        <a class="dropdown-item" href="/board.do?category=chinese">중식<span class="eng"> |　Chinese</span></a>
-                        <a class="dropdown-item" href="/board.do?category=japanese">일식<span class="eng"> |　Japanese</span></a>
-                        <a class="dropdown-item" href="/board.do?category=dessert">디저트<span class="eng"> |　Dessert</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=korean">한식<span class="eng"> |　Korean</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=western">양식<span class="eng"> |　Western</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=chinese">중식<span class="eng"> |　Chinese</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=japanese">일식<span class="eng"> |　Japanese</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=dessert">디저트<span class="eng"> |　Dessert</span></a>
                     </div>
                 </div>
                 <!-- Event 드롭다운 -->

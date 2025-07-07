@@ -32,6 +32,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/common/header.jsp" />
 <div class="main-wrap">
     <!-- 사이드바 -->
     <div class="sidebar-wrap">

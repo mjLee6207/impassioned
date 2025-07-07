@@ -14,6 +14,7 @@
             b.WRITE_DATE     AS writeDate,
             b.THUMBNAIL      AS thumbnail,
             b.WRITER_IDX     AS writerIdx,
+            b.VIEW_COUNT     AS viewCount,
             m.NICKNAME       AS writerName,
             l.LIKE_DATE      AS likeDate
         FROM

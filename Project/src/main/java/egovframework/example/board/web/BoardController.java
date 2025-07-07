@@ -28,17 +28,25 @@ public class BoardController {
    @Autowired
    private BoardService boardService;
 
-//   전체조회
-   @GetMapping("/board/board.do")
-   public String name(@ModelAttribute Criteria criteria, Model model) {
-       criteria.setPageUnit(10);
-//      1) 등차자동계산 클래스: PaginationInfo
-//         - 필요정보: (1) 현재페이지번호(pageIndex),(2) 보일 개수(pageUnit): 3
-      PaginationInfo paginationInfo = new PaginationInfo();
-      paginationInfo.setCurrentPageNo(criteria.getPageIndex());
-      paginationInfo.setRecordCountPerPage(criteria.getPageUnit());
-//      등차를 자동 계산: firstRecordIndex 필드에 있음
-      criteria.setFirstIndex(paginationInfo.getFirstRecordIndex());
+
+//	전체조회
+	@GetMapping("/board/board.do")
+	public String name(
+			@ModelAttribute Criteria criteria,
+//			페이지네이션 분모가0 오류해결위해 삽입
+			@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex,	
+			Model model) {
+		criteria.setPageIndex(pageIndex);
+		 criteria.setPageUnit(10);
+//		1) 등차자동계산 클래스: PaginationInfo
+//		   - 필요정보: (1) 현재페이지번호(pageIndex),(2) 보일 개수(pageUnit): 3
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(criteria.getPageIndex());
+		paginationInfo.setRecordCountPerPage(criteria.getPageUnit());
+		paginationInfo.setPageSize(10); 
+//		등차를 자동 계산: firstRecordIndex 필드에 있음
+		criteria.setFirstIndex(paginationInfo.getFirstRecordIndex());
+
 
 //      전체조회 서비스 메소드 실행
       List<?> boards = boardService.selectBoardList(criteria);

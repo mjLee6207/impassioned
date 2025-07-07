@@ -44,7 +44,7 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
-                    <table id="myPostsTable" class="table table-hover text-center">
+                    <table id="myPostsTable" class="table table-hover text-start">
                         <thead>
                             <tr>
                                 <th>제목</th>
@@ -83,7 +83,7 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
-                    <table id="likedPostsTable" class="table table-hover text-center">
+                    <table id="likedPostsTable" class="table table-hover text-start">
                         <thead>
                             <tr>
                                 <th>제목</th>

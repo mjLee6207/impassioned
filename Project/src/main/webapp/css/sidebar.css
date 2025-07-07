@@ -58,6 +58,15 @@
 }
 .logout-btn { margin-top: 5px; background: #f8f7f3; color: #1e8a57; font-weight: 500; }
 .logout-btn:hover, .logout-btn:focus { background: #f6f6f6; color: #118e6a !important; }
+.login-btn {
+    background: #f8f7f3;
+    color: #1e8a57;
+    font-weight: 500;
+}
+.login-btn:hover, .login-btn:focus {
+    background: #f6f6f6;
+    color: #118e6a !important;
+}
 
 /* 반응형: 모바일에서는 사이드바 숨김, 본문만 표시 */
 @media (max-width: 991px) {

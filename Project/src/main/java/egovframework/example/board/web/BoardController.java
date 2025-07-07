@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
+import egovframework.example.board.service.ReviewVO;
 import egovframework.example.common.Criteria;
 import egovframework.example.member.service.MemberVO;
 import lombok.extern.log4j.Log4j2;
@@ -24,8 +25,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Controller
 public class BoardController {
-	@Autowired
-	private BoardService boardService;
+   @Autowired
+   private BoardService boardService;
+
 
 //	전체조회
 	@GetMapping("/board/board.do")
@@ -45,21 +47,22 @@ public class BoardController {
 //		등차를 자동 계산: firstRecordIndex 필드에 있음
 		criteria.setFirstIndex(paginationInfo.getFirstRecordIndex());
 
-//		전체조회 서비스 메소드 실행
-		List<?> boards = boardService.selectBoardList(criteria);
-		log.info("테스트 : " + boards);
-		model.addAttribute("boards", boards);
 
-//		페이지 번호 그리기: 페이지 플러그인(전체테이블 행 개수 필요함)
-		int totCnt = boardService.selectBoardListTotCnt(criteria);
-		paginationInfo.setTotalRecordCount(totCnt);
-		log.info("테스트2 : " + totCnt);
-//		페이지 모든 정보: paginationInfo
-		model.addAttribute("paginationInfo", paginationInfo);
+//      전체조회 서비스 메소드 실행
+      List<?> boards = boardService.selectBoardList(criteria);
+      log.info("테스트 : " + boards);
+      model.addAttribute("boards", boards);
 
-		return "board/boardlist";
-	}
+//      페이지 번호 그리기: 페이지 플러그인(전체테이블 행 개수 필요함)
+      int totCnt = boardService.selectBoardListTotCnt(criteria);
+      paginationInfo.setTotalRecordCount(totCnt);
+      log.info("테스트2 : " + totCnt);
+//      페이지 모든 정보: paginationInfo
+      model.addAttribute("paginationInfo", paginationInfo);
 
+      return "board/boardlist";
+   }
+ 
 	/*
 	 * // 추가 페이지 열기
 	 * 
@@ -67,12 +70,12 @@ public class BoardController {
 	 * "board/boardwrite"; }
 	 */
 		
-//	글 작성 폼 화면 보여주기
-	@GetMapping("/board/add.do")
-	public String showAddForm(Model model) {
-	    model.addAttribute("boardVO", new BoardVO()); // 빈 폼 바인딩
-	    return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
-	}
+// 글 작성 폼 화면 보여주기
+ @GetMapping("/board/add.do")
+ public String showAddForm(Model model) {
+     model.addAttribute("boardVO", new BoardVO()); // 빈 폼 바인딩
+     return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
+ }
 
 //	insert : 저장 버튼 클릭시
 //	7/7 삭제 후 원래 카테고리로 돌아가기,  리퀘스트팜,리턴 추가 (민중)
@@ -100,17 +103,17 @@ public class BoardController {
 	    return "redirect:/board/board.do?category=" + encodedCategory;
 	}
 
-//	수정페이지 열기
-	@GetMapping("/board/edition.do")
-	public String updateBoardView(@RequestParam("boardId") int boardId, Model model) {
-	    BoardVO boardVO = boardService.selectBoard(boardId);
-	    if (boardVO == null) {
-	        throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
-	    }
-	    model.addAttribute("boardVO", boardVO);
-	    return "board/boardupdate";
-	}
 
+//   수정페이지 열기
+   @GetMapping("/board/edition.do")
+   public String updateBoardView(@RequestParam("boardId") int boardId, Model model) {
+       BoardVO boardVO = boardService.selectBoard(boardId);
+       if (boardVO == null) {
+           throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+       }
+       model.addAttribute("boardVO", boardVO);
+       return "board/boardupdate";
+   }
 	// 수정: 버튼 클릭시 실행
 	// 7/7일 수정 후 원래 카테고리로 돌아가기, 리퀘스트팜,리턴 추가 (민중)
 	@PostMapping("/board/edit.do")
@@ -159,7 +162,10 @@ public class BoardController {
 	        boardService.increaseViewCount(boardId);
 	    } catch (Exception e) {
 	        log.error("조회수 증가 실패: ", e);
+	       
 	    }
+	    List<ReviewVO> reviews = boardService.selectReviewList(boardId);
+        model.addAttribute("reviews", reviews);
 
 	    // 닉네임 포함 상세 게시글 조회
 	    BoardVO board = boardService.selectBoardDetail(boardId); // ✅ 변경
@@ -173,4 +179,17 @@ public class BoardController {
 	    model.addAttribute("board", board);
 	    return "board/boardview"; // 읽기 전용 JSP로 이동
 	}
-}
+	@PostMapping("/board/review/add.do")
+	   public String addReview(@ModelAttribute ReviewVO reviewVO, HttpSession session) {
+	       MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	       if (loginUser == null) {
+	           return "redirect:/member/login.do";
+	       }
+	       reviewVO.setWriterIdx(loginUser.getMemberIdx().intValue());
+	       boardService.insertReview(reviewVO);
+	       // 댓글 작성 후 다시 상세페이지로 이동
+	       return "redirect:/board/view.do?boardId=" + reviewVO.getBoardId();
+	   }
+	}
+
+

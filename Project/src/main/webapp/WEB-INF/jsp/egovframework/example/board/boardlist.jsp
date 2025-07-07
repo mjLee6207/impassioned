@@ -31,6 +31,7 @@
 		<!-- 본문 컨텐츠 영역 -->
 		<div class="content-area">
 
+
 			<!-- 카테고리 탭 -->
 			<div class="category-tabs">
 				<a href="${pageContext.request.contextPath}/board/board.do?category=한식"
@@ -99,7 +100,33 @@
             </tbody>
         </table>
         <!-- 페이지네이션 샘플태그 -->
-		
+
+			<!-- 인기게시글 영역 (여기만 c:choose로 대체) -->
+			<div class="popular-posts-section">
+				<div class="popular-posts-title">
+					<h5>Best Post</h5>
+				</div>
+				<div class="top-posts-row">
+					<c:choose>
+						<c:when test="${not empty topPosts}">
+							<c:forEach var="board" items="${topPosts}">
+								<div class="top-post-card">
+									<a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}">
+										<img src="${board.thumbnail}" class="top-thumb-img" alt="썸네일" />
+										<div class="top-title">
+											<b>${board.title}</b>
+										</div>
+										<div class="top-author">${board.nickname}</div>
+									</a>
+								</div>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<div style="color: #aaa; font-size: 1rem;">인기 게시글이 아직 없습니다.</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
 
         <!-- 페이지네이션 -->
         <!-- 페이지 이동용 폼 (전용!) -->
@@ -108,6 +135,7 @@
 		    <input type="hidden" name="category" value="${param.category}" />
 		    <input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
 		</form>
+
 
 		<!-- 페이지네이션 -->
 	<div class="flex-center">

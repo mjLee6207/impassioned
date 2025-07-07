@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/css/boardlist.css">
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/pagination.css">
+
+
 </head>
 
 <body>
@@ -134,6 +136,7 @@
             }
         });
     });
+    
 
     // 페이지네이션
     function fn_link_page(pageNo){
@@ -142,6 +145,7 @@
         form.submit();
     }
 </script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // 처음으로

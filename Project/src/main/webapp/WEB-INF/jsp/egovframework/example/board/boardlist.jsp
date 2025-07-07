@@ -135,14 +135,12 @@
         });
     });
 
-    
     // 페이지네이션
     function fn_link_page(pageNo){
         var form = document.getElementById('searchForm');
         form.pageIndex.value = pageNo;
         form.submit();
     }
- 	
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -167,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
         a.setAttribute('title', '맨끝');
     });
 });
-</script>
+</script> 
 
 </body>
 </html>

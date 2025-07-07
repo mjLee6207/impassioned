@@ -37,8 +37,12 @@
                class="category-tab${param.category eq 'japanese' ? ' active' : ''}">일식</a>
             <a href="${pageContext.request.contextPath}/board/board.do?category=dessert"
                class="category-tab${param.category eq 'dessert' ? ' active' : ''}">디저트</a>
+               <!-- 글쓰기 버튼: 원하는 URL로 바꿔주세요 -->
         </div>
-
+<a href="${pageContext.request.contextPath}/board/write.do" class="write-btn">
+            <i class="bi bi-pencil-square"></i>
+            글쓰기
+        </a>
         <!-- 검색창 -->
         <form action="${pageContext.request.contextPath}/board/board.do" method="get" class="search-area">
             <input type="text" class="search-input"

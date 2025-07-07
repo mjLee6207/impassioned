@@ -36,7 +36,7 @@
     int memberIdx = (sessionUser == null) ? -1 : Integer.parseInt(sessionUser.toString());
   %>
 
-  <%-- 예시 게시글 --%>
+  <%-- 게시글 예시 --%>
   <div class="post" data-board-id="123">
     <p>게시글 123</p>
     <div class="like-wrap">
@@ -50,33 +50,34 @@
     const boardId = 123;
     const memberIdx = <%= memberIdx %>;
 
-    if (memberIdx === -1) {
-      alert("로그인 후 이용 가능한 기능입니다.");
-      $("#likeButton").prop("disabled", true);
-    }
-
-    function toggleLike() {
+    $(document).ready(function () {
       if (memberIdx === -1) {
-        alert("로그인 후 이용해주세요.");
+        alert("로그인 후 이용 가능한 기능입니다.");
+        $("#likeButton").prop("disabled", true);
         return;
       }
 
-      $.ajax({
-        url: contextPath + "/checkLike.do",
-        type: "GET",
-        data: { boardId, memberIdx },
-        success: function(exists) {
-          if (exists === true || exists === "true") {
-            removeLike();
-          } else {
-            addLike();
+      checkInitialStatus();
+      getLikeCount();
+
+      $("#likeButton").on("click", function () {
+        $.ajax({
+          url: contextPath + "/checkLike.do",
+          type: "GET",
+          data: { boardId, memberIdx },
+          success: function (exists) {
+            if (exists === true || exists === "true") {
+              removeLike();
+            } else {
+              addLike();
+            }
+          },
+          error: function (xhr) {
+            console.error("상태 확인 실패:", xhr.responseText);
           }
-        },
-        error: function(xhr) {
-          console.error("상태 확인 실패:", xhr.responseText);
-        }
+        });
       });
-    }
+    });
 
     function addLike() {
       $.ajax({
@@ -84,11 +85,11 @@
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ boardId, memberIdx }),
-        success: function() {
+        success: function () {
           getLikeCount();
           updateButton(true);
         },
-        error: function(xhr) {
+        error: function (xhr) {
           console.error("좋아요 등록 실패:", xhr.responseText);
         }
       });
@@ -100,11 +101,11 @@
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ boardId, memberIdx }),
-        success: function() {
+        success: function () {
           getLikeCount();
           updateButton(false);
         },
-        error: function(xhr) {
+        error: function (xhr) {
           console.error("좋아요 취소 실패:", xhr.responseText);
         }
       });
@@ -115,10 +116,10 @@
         url: contextPath + "/countLike.do",
         type: "GET",
         data: { boardId },
-        success: function(count) {
+        success: function (count) {
           $("#likeCount").text("좋아요 수: " + count);
         },
-        error: function(xhr) {
+        error: function (xhr) {
           console.error("좋아요 수 가져오기 실패:", xhr.responseText);
         }
       });
@@ -130,23 +131,15 @@
     }
 
     function checkInitialStatus() {
-      if (memberIdx === -1) return;
-
       $.ajax({
         url: contextPath + "/checkLike.do",
         type: "GET",
         data: { boardId, memberIdx },
-        success: function(exists) {
+        success: function (exists) {
           updateButton(exists === true || exists === "true");
         }
       });
     }
-
-    $(document).ready(function() {
-      getLikeCount();
-      checkInitialStatus();
-      $("#likeButton").click(toggleLike);
-    });
   </script>
 </body>
 </html>

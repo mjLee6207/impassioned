@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/mycorrection.css" />
-    <link rel="stylesheet" href="./css/mycorrection.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-</head>
+  
 <body>
 <form id="addForm" name="addForm" method="post" enctype="multipart/form-data" action="/mypage/update.do">
 <div class="container container-box">
@@ -54,8 +53,8 @@
                 <label for="nickname" class="form-label">닉네임</label>
                 <input type="text" id="nickname" name="nickname" class="form-control" value="${member.name}">
             </div>
-            <!-- 기본 submit 사용! onclick 제거 -->
-            <button type="submit" class="btn btn-edit mt-3">수정 완료</button>
+            <button type="submit" class="btn btn-edit mt-3"
+            onclick="fn_save()">수정 완료</button>
     </div>
 </div>
 </form>
@@ -72,10 +71,17 @@
         }
     }
 </script>
+<script type="text/javascript">
+	function fn_save() {
+		/* 저장 함수: 저장 URL(//edit.do) */
+		$("#addForm").attr("action",'<c:out value="/mypage/myposts.do" />')
+		.submit();		
+	}
+</script>
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <!-- 부트스트랩 js -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <!-- 유효성 체크 플러그인 -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>

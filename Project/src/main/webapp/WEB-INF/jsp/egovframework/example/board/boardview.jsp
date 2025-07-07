@@ -90,9 +90,18 @@
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
         <!-- ❤️ 좋아요 버튼(개수 포함) -->
+Updated upstream
         <div class="like-btn-wrap" style="text-align:center; margin-top:20px;">
             <button type="button" class="like-btn" id="likeBtn" data-board-id="${board.boardId}" data-member-idx="${loginUser.memberIdx}">♡</button>
             <span class="like-count" id="likeCountText">0</span>
+
+        <div class="like-btn-wrap">
+            <button type="button" class="like-btn" onclick="likePost()">
+                <i class="bi bi-heart-fill"></i>
+                <span>좋아요</span>
+                <span class="like-count">(${likeCount})</span>
+            </button>
+tashed changes
         </div>
         <!-- 버튼 -->
         <div class="post-btns">
@@ -144,12 +153,16 @@
         <!-- //댓글영역 -->
     </div>
 </div>
+Updated upstream
 
 <!-- 7월 7일 좋아요 구현을 위해 오전에 넣음  -->
+
+Stashed changes
 <script>
     function moveCategory(category) {
         window.location.href = '/board/board.do?category=' + category;
     }
+dated upstream
 
     $(document).ready(function () {
         console.log("✅ 좋아요 스크립트 실행 시작");
@@ -204,6 +217,18 @@
             });
         });
     });
+
+
+    function likePost() {
+        alert('좋아요가 눌렸습니다!');
+    }
+    // 댓글 글자 수 카운트
+    function updateCharCount() {
+        const textarea = document.getElementById("commentContent");
+        if (textarea) {
+            document.getElementById("charCount").innerText = textarea.value.length;
+        }
+    }
 
 </script>
 </body>

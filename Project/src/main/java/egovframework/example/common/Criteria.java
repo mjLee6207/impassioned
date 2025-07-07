@@ -17,25 +17,25 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Criteria {
-	/** 검색조건 */
-	private String searchCondition = "";
+   /** 검색조건 */
+   private String searchCondition = "";
 
-	/** 검색Keyword */
-	private String searchKeyword = "";
+   /** 검색Keyword */
+   private String searchKeyword = "";
 
-	/** 검색사용여부 */
-	private String searchUseYn = "";
+   /** 검색사용여부 */
+   private String searchUseYn = "";
 
-	/** 현재페이지 */
-	private int pageIndex = 1;
+   /** 현재페이지 */
+   private int pageIndex = 1;
 
-	/** 페이지갯수: 화면에 보일 행 개수 */
-	private int pageUnit = 3;
+   /** 페이지갯수: 화면에 보일 행 개수 */
+   private int pageUnit = 3;
 
-	/** firstIndex: 등차숫자 자동계산 */
-	private int firstIndex = 1;
+   /** firstIndex: 등차숫자 자동계산 */
+   private int firstIndex = 1;
 
-	private String insertTime;
+   private String insertTime;
 
-	private String updateTime;
+   private String updateTime;
 }

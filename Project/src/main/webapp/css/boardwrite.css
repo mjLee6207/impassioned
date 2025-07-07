@@ -1,29 +1,34 @@
-body { background: #f8f9fa; }
-.container {
-    display: flex;
-    flex-direction: row;
-    margin-top: 32px;
-    max-width: 1100px;
-}
+/* boardwrite.css */
+/* 오직 게시글 작성 폼(boardwrite.jsp) 전용 스타일 */
+
 .write-box {
-    flex: 1;
     background: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 32px 36px;
     box-shadow: 0 5px 8px rgba(0,0,0,0.03);
     border: 1px solid #ececec;
+    width: 100%;
+    /* margin: 0 auto;  삭제 - 중앙정렬 안함 */
 }
-.form-label { font-weight: 500; }
-.form-control, .form-control-file { margin-bottom: 18px; }
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 7px;
+}
+.form-control, .form-select {
+    margin-bottom: 18px;
+    border-radius: 10px;
+    font-size: 1.05rem;
+}
 #category.form-select { margin-bottom: 22px; }
 
 .btn-row {
     display: flex;
-    gap: 18px;           /* 버튼 사이 간격 */
+    gap: 18px;
     margin-top: 22px;
 }
 .btn-row > button {
-    flex: 1 1 0;         /* 두 버튼 같은 너비 */
+    flex: 1 1 0;
     min-width: 120px;
     max-width: 220px;
     height: 48px;
@@ -56,10 +61,15 @@ body { background: #f8f9fa; }
     background: #ececec;
     color: #fea700;
 }
-@media (max-width: 768px) {
-    .container-box { flex-direction: column; max-width: 100%; }
-    .write-box { padding: 18px 3vw; }
-.btn-row { flex-direction: column; gap: 12px; }
-    .btn-row > button { width: 100%; min-width: unset; max-width: unset;
+
+/* 반응형 */
+@media (max-width: 991px) {
+    .main-wrap { flex-direction: column; gap: 10px; }
+    .sidebar-wrap, .board-wrap { max-width: 99vw; width: 100%; }
+    .write-box { padding: 16px 2vw; }
 }
+@media (max-width: 768px) {
+    .write-box { padding: 8px 2vw; }
+    .btn-row { flex-direction: column; gap: 12px; }
+    .btn-row > button { width: 100%; min-width: unset; max-width: unset; }
 }

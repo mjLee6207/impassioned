@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/boardwrite.css">
+    <link rel="stylesheet" href="/css/boardlist.css">
     <link rel="stylesheet" href="/css/sidebar.css" />
 </head>
 <body>
@@ -18,108 +18,86 @@
 
 <div class="main-flex">
     <!-- 사이드바 영역 -->
-    <jsp:include page="/common/sidebar.jsp" />
+    <div class="sidebar">
+        <jsp:include page="/common/sidebar.jsp"/>
+    </div>
 
     <!-- 본문 컨텐츠 영역 -->
     <div class="content-area">
-        <!-- 탭 -->
+
+        <!-- 카테고리 탭 -->
         <div class="category-tabs">
-            <div class="category-tab active">한식</div>
-            <div class="category-tab">양식</div>
-            <div class="category-tab">중식</div>
-            <div class="category-tab">일식</div>
-            <div class="category-tab">디저트</div>
+            <a href="${pageContext.request.contextPath}/board/board.do?category=korean"
+               class="category-tab${param.category eq 'korean' || empty param.category ? ' active' : ''}">한식</a>
+            <a href="${pageContext.request.contextPath}/board/board.do?category=western"
+               class="category-tab${param.category eq 'western' ? ' active' : ''}">양식</a>
+            <a href="${pageContext.request.contextPath}/board/board.do?category=chinese"
+               class="category-tab${param.category eq 'chinese' ? ' active' : ''}">중식</a>
+            <a href="${pageContext.request.contextPath}/board/board.do?category=japanese"
+               class="category-tab${param.category eq 'japanese' ? ' active' : ''}">일식</a>
+            <a href="${pageContext.request.contextPath}/board/board.do?category=dessert"
+               class="category-tab${param.category eq 'dessert' ? ' active' : ''}">디저트</a>
         </div>
 
         <!-- 검색창 -->
-        <form action="${pageContext.request.contextPath}/board/board.do" method="get" style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px;">
-            <input type="text" class="search-input" 
+        <form action="${pageContext.request.contextPath}/board/board.do" method="get" class="search-area">
+            <input type="text" class="search-input"
                    id="searchKeyword" name="searchKeyword"
                    value="${criteria.searchKeyword}"
-                   placeholder="제목으로검색" style="border-radius:8px; border:1.1px solid #dde1e8; padding:8px 12px; font-size:1.07rem;">
-            <button type="submit" class="search-btn" style="margin-left:8px; color:var(--main-green); border:none; background:none; font-size:1.2rem;">
+                   placeholder="제목으로검색">
+            <button type="submit" class="search-btn">
                 <i class="bi bi-search"></i>
             </button>
         </form>
 
-        <!-- 인기게시글 영역 -->
+        <!-- 인기게시글 영역 (여기만 c:choose로 대체) -->
         <div class="popular-posts-section">
             <div class="popular-posts-title">인기게시글</div>
             <div class="top-posts-row">
-                <c:forEach var="board" items="${topPosts}">
-                    <div class="top-post-card">
-                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}">
-                            <img src="${board.thumbnail}" class="top-thumb-img" alt="썸네일" />
-                            <div class="top-title"><b>${board.title}</b></div>
-                            <div class="top-author">${board.nickname}</div>
-                        </a>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-
-        <!-- 검색 영역 -->
-        <div class="search-area">
-            <input type="text" id="searchInput" class="search-input" placeholder="한식 게시글 검색..." onkeyup="filterTable()">
-            <button class="search-btn" onclick="filterTable()"><i class="bi bi-search"></i></button>
-        </div>
-
-        <!-- 인기게시글 제목 -->
-        <div class="section-title">인기게시글</div>
-
-        <!-- 좋아요 많은 TOP4 가로 썸네일 (모바일 중앙정렬) -->
-        <div class="top-posts-row">
-            <div class="top-post-card">
-                <a href="#"><img src="./4594_13631_0621.jpg" class="top-thumb-img" alt="썸네일">
-                    <div class="top-title"><b>${board.title}</b></div>
-                    <div class="top-author">${board.nickname}</div>
-                </a>
-            </div>
-            <div class="top-post-card">
-                <a href="#"><img src="https://via.placeholder.com/140x100?text=%EC%8D%B4%EB%84%A4%EC%9D%BC" class="top-thumb-img" alt="썸네일">
-                    <div class="top-title"><b>${board.title}</b></div>
-                    <div class="top-author">${board.nickname}</div>
-                </a>
-            </div>
-            <div class="top-post-card">
-                <a href="#"><img src="https://via.placeholder.com/140x100?text=%EC%8D%B4%EB%84%A4%EC%9D%BC" class="top-thumb-img" alt="썸네일">
-                    <div class="top-title"><b>${board.title}</b></div>
-                    <div class="top-author">${board.nickname}</div>
-                </a>
-            </div>
-            <div class="top-post-card">
-                <a href="#"><img src="https://via.placeholder.com/140x100?text=%EC%8D%B4%EB%84%A4%EC%9D%BC" class="top-thumb-img" alt="썸네일">
-                    <div class="top-title"><b>${board.title}</b></div>
-                    <div class="top-author">${board.nickname}</div>
-                </a>
+                <c:choose>
+                    <c:when test="${not empty topPosts}">
+                        <c:forEach var="board" items="${topPosts}">
+                            <div class="top-post-card">
+                                <a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}">
+                                    <img src="${board.thumbnail}" class="top-thumb-img" alt="썸네일" />
+                                    <div class="top-title"><b>${board.title}</b></div>
+                                    <div class="top-author">${board.nickname}</div>
+                                </a>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <div style="color:#aaa; font-size:1rem;">인기 게시글이 아직 없습니다.</div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
 
         <!-- 최신글 테이블 -->
         <table class="post-table">
             <thead>
-                <tr>
-                    <th style="width:60%;">제목</th>
-                    <th style="width:14%;">작성자</th>
-                    <th style="width:13%;">작성일</th>
-                    <th style="width:13%;">조회수</th>
-                </tr>
+            <tr>
+                <th style="width:60%;">제목</th>
+                <th style="width:14%;">작성자</th>
+                <th style="width:13%;">작성일</th>
+                <th style="width:13%;">조회수</th>
+            </tr>
             </thead>
             <tbody>
-                <c:forEach var="board" items="${boards}">
-                    <tr>
-                        <td style="text-align:left;">
-                            <a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}" class="post-title-link">${board.title}</a>
-                        </td>
-                        <td>${board.nickname}</td>
-                        <td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>
-                        <td>${board.viewCount}</td>
-                    </tr>
-                </c:forEach>
+            <c:forEach var="board" items="${boards}">
+                <tr>
+                    <td style="text-align:left;">
+                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}" class="post-title-link">${board.title}</a>
+                    </td>
+                    <td>${board.nickname}</td>
+                    <td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>
+                    <td>${board.viewCount}</td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
 
-        <!-- 여기: 페이지번호 -->
+        <!-- 페이지네이션 -->
         <div class="flex-center">
             <ul class="pagination" id="pagination"></ul>
         </div>
@@ -127,27 +105,16 @@
 </div>
 
 <script>
-    // 엔터키 쳤을때 검색되도록 만든거 
+    // 엔터키로 검색
     document.addEventListener("DOMContentLoaded", () => {
         const input = document.querySelector("#searchKeyword");
         input?.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
-                e.preventDefault(); // form 중복 제출 방지
-                input.form?.submit(); // form 전송 실행
+                e.preventDefault();
+                input.form?.submit();
             }
         });
     });
-
-    // 검색 필터 (최신글 테이블만)
-    function filterTable() {
-        const keyword = document.getElementById('searchInput').value.toLowerCase();
-        const trs = document.querySelectorAll('.post-table tbody tr');
-        trs.forEach(tr => {
-            const rowText = tr.innerText.toLowerCase();
-            tr.style.display = rowText.includes(keyword) ? "" : "none";
-        });
-    }
 </script>
-
 </body>
 </html>

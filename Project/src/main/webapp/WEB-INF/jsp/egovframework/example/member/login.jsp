@@ -17,6 +17,7 @@
     <div class="right-login">
       <!-- 로그인 폼 -->
       <form class="form-box" id="loginForm" method="post" action="${pageContext.request.contextPath}/member/login.do">
+      <input type="hidden" name="redirect" value="${param.redirect}" />
         <h1>로그인</h1>
         <input type="email" name="id" placeholder="이메일" required />
         <input type="password" name="password" placeholder="비밀번호" required />

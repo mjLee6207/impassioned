@@ -62,39 +62,7 @@ public class BoardController {
 
       return "board/boardlist";
    }
-
-
-
-   /*
-    * // 추가 페이지 열기
-    * 
-    * @GetMapping("/board/addition.do") public String createBoardView() { return
-    * "board/boardwrite"; }
-    */
-      
-   // 글 작성 폼 화면 보여주기
-   @GetMapping("/board/add.do")
-   public String showAddForm(Model model) {
-       model.addAttribute("boardVO", new BoardVO()); // 빈 폼 바인딩
-       return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
-   }
-
-   // insert : 저장 버튼 클릭시
-   @PostMapping("/board/add.do")
-   public String insert(@ModelAttribute BoardVO boardVO, HttpSession session) {
-       MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-       if (loginUser == null) {
-           return "redirect:/member/login.do"; // 비로그인 시 로그인 페이지로
-       }
-       // 서버에서 로그인된 사용자의 인덱스 강제 설정
-       boardVO.setWriterIdx(loginUser.getMemberIdx().intValue());
-
-       log.info("작성자 포함 게시글: {}", boardVO);
-       boardService.insert(boardVO);
-
-       return "redirect:/board/board.do";
-   }
-
+ 
 	/*
 	 * // 추가 페이지 열기
 	 * 
@@ -102,12 +70,12 @@ public class BoardController {
 	 * "board/boardwrite"; }
 	 */
 		
-//	글 작성 폼 화면 보여주기
-	@GetMapping("/board/add.do")
-	public String showAddForm(Model model) {
-	    model.addAttribute("boardVO", new BoardVO()); // 빈 폼 바인딩
-	    return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
-	}
+// 글 작성 폼 화면 보여주기
+ @GetMapping("/board/add.do")
+ public String showAddForm(Model model) {
+     model.addAttribute("boardVO", new BoardVO()); // 빈 폼 바인딩
+     return "board/boardwrite"; // 글 작성 폼 JSP or HTML 경로
+ }
 
 //	insert : 저장 버튼 클릭시
 //	7/7 삭제 후 원래 카테고리로 돌아가기,  리퀘스트팜,리턴 추가 (민중)
@@ -194,7 +162,10 @@ public class BoardController {
 	        boardService.increaseViewCount(boardId);
 	    } catch (Exception e) {
 	        log.error("조회수 증가 실패: ", e);
+	       
 	    }
+	    List<ReviewVO> reviews = boardService.selectReviewList(boardId);
+        model.addAttribute("reviews", reviews);
 
 	    // 닉네임 포함 상세 게시글 조회
 	    BoardVO board = boardService.selectBoardDetail(boardId); // ✅ 변경
@@ -208,5 +179,17 @@ public class BoardController {
 	    model.addAttribute("board", board);
 	    return "board/boardview"; // 읽기 전용 JSP로 이동
 	}
-}
+	@PostMapping("/board/review/add.do")
+	   public String addReview(@ModelAttribute ReviewVO reviewVO, HttpSession session) {
+	       MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	       if (loginUser == null) {
+	           return "redirect:/member/login.do";
+	       }
+	       reviewVO.setWriterIdx(loginUser.getMemberIdx().intValue());
+	       boardService.insertReview(reviewVO);
+	       // 댓글 작성 후 다시 상세페이지로 이동
+	       return "redirect:/board/view.do?boardId=" + reviewVO.getBoardId();
+	   }
+	}
+
 

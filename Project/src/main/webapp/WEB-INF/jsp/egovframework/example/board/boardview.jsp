@@ -2,12 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<c:if test="${empty loginUser}">
-  <p style="color:red;">❌ 세션에 loginUser 없음</p>
-</c:if>
-<c:if test="${not empty loginUser}">
-  <p style="color:green;">✅ 세션 있음: memberIdx = ${loginUser.memberIdx}</p>
-</c:if>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -17,19 +11,6 @@
     <link rel="stylesheet" href="/css/boardview.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .like-btn {
-            border: none;
-            background: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: gray;
-        }
-        .like-btn.liked {
-            color: red;
-        }
-    </style>
 </head>
 <body>
 <jsp:include page="/common/header.jsp" />
@@ -92,31 +73,28 @@
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
 
-
         <!-- ❤️ 좋아요 버튼(개수 포함) -->
-        <!-- ❤️ 좋아요 버튼 -->
+        <div class="like-btn-wrap">
+            <button type="button" class="like-btn" onclick="likePost()">
+                <i class="bi bi-heart-fill"></i>
+                <span>좋아요</span>
+                <span class="like-count">(${likeCount})</span>
+            </button>
+        </div>
 
-        <div class="like-btn-wrap" style="text-align:center; margin-top:20px;">
-            <button type="button" class="like-btn" id="likeBtn" data-board-id="${board.boardId}" data-member-idx="${loginUser.memberIdx}">♡</button>
-            <span class="like-count" id="likeCountText">0</span>
-
-
-        <!-- 🔒 POST 방식 삭제를 위한 숨겨진 form -->
-        <form id="deleteForm" action="${pageContext.request.contextPath}/board/delete.do" method="post" style="display:none;">
-            <input type="hidden" name="boardId" value="${board.boardId}" />
-            <input type="hidden" name="category" value="${board.category}" />
-        </form>
-
-
-        <!-- 버튼 -->
-        <div class="post-btns">
+        <!-- ====== 버튼 영역 (목록/수정/삭제) ====== -->
+        <div class="post-btns" style="margin-top: 10px;">
             <a href="/board/board.do?category=${board.category}" class="btn btn-secondary btn-sm">목록</a>
             <c:if test="${loginUser.memberIdx eq board.writerIdx}">
                 <a href="/board/edition.do?boardId=${board.boardId}" class="btn btn-success btn-sm">수정</a>
-                <button type="button" class="btn btn-danger btn-sm" onclick="fn_delete()">삭제</button>
+                <a href="/board/delete.do?boardId=${board.boardId}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
             </c:if>
         </div>
-        <!-- ===== 댓글영역 ===== -->
+
+        <!-- ========== 댓글영역 ==========
+             ★ post-btns의 닫는 </div> 태그 "바로 아래"에 위치해야 함 ★
+        -->
         <div class="comment-section mt-4">
             <h6 class="mb-2">댓글 <span>(${fn:length(reviews)})</span></h6>
             <c:choose>
@@ -158,74 +136,11 @@
         <!-- //댓글영역 -->
     </div>
 </div>
-
-
-
-<!-- 7월 7일 좋아요 구현을 위해 오전에 넣음  -->
-
-
-<!-- 스크립트 -->
-
-
 <script>
+    // 탭 클릭 시 해당 카테고리 게시판 목록으로 이동
     function moveCategory(category) {
         window.location.href = '/board/board.do?category=' + category;
     }
-
-
-    function fn_delete() {
-        if (confirm("정말 삭제하시겠습니까? 복구되지 않습니다.")) {
-            document.getElementById("deleteForm").submit();
-        }
-    }
-
-    $(document).ready(function () {
-        const $btn = $("#likeBtn");
-        const boardId = $btn.data("board-id");
-        const memberIdx = $btn.data("member-idx");
-
-        $.get("/countLike.do", { boardId }, function (count) {
-            $("#likeCountText").text(count);
-        });
-
-        if (!memberIdx) {
-            $btn.prop("disabled", true);
-            return;
-        }
-
-        $.get("/checkLike.do", { boardId, memberIdx }, function (res) {
-            if (res === true || res === "true") {
-                $btn.text("♥").addClass("liked");
-            }
-        });
-
-        $btn.on("click", function () {
-            const isLiked = $btn.text() === "♥";
-            const url = isLiked ? "/cancelLike.do" : "/addLike.do";
-
-            if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
-                alert("로그인 후 이용해주세요 😊");
-                const redirectUrl = encodeURIComponent(location.pathname + location.search);
-                location.href = "/member/login.do?redirect=" + redirectUrl;
-                return;
-            }
-
-            $.ajax({
-                url,
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ boardId, memberIdx }),
-                success: function () {
-                    $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
-                    $.get("/countLike.do", { boardId }, function (count) {
-                        $("#likeCountText").text(count);
-                    });
-                }
-            });
-        });
-    });
-
-
     function likePost() {
         alert('좋아요가 눌렸습니다!');
     }
@@ -236,7 +151,6 @@
             document.getElementById("charCount").innerText = textarea.value.length;
         }
     }
-
 </script>
 </body>
 </html>

@@ -1,92 +1,138 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-		<img src="<c:url value='/images/simple-coding.png'/>" width="20" height="20" />
-    	simple-coding 
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            게시판
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="<c:url value='/board/board.do'/>">Board</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/board/addition.do'/>">게시판 글쓰기</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            사원(퀴즈)
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="<c:url value='/emp/emp.do'/>">Emp</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/emp/addition.do'/>">Add Emp</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Faq(마무리퀴즈)
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="<c:url value='/faq/faq.do'/>">Faq</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/faq/addition.do'/>">Add Faq</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            fileDb
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="<c:url value='/fileDb/fileDb.do'/>">fileDb</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/fileDb/addition.do'/>">Add fileDb</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            gallery
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="<c:url value='/gallery/gallery.do'/>">gallery</a></li>
-            <li><a class="dropdown-item" href="<c:url value='/gallery/addition.do'/>">Add gallery</a></li>
-          </ul>
-        </li>
-      </ul>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-      <!-- 메뉴(오른쪽) -->
-      <ul class="navbar-nav">
-        <!-- {/* TODO: 로그인 시작 */} -->
-        <!-- memberVO 가 세션에 없으면 메뉴을 보이고, 있으면 안보임 -->
-        <c:if test="${sessionScope.memberVO == null}">
-        	<li class="nav-item">
-	          <a class="nav-link active" href="/member/register.do"> 회원가입 </a>
-	        </li>
-	        <li class="nav-item">
-	           <a class="nav-link active" href="/member/login.do"> 로그인 </a>
-	        </li>
-        </c:if>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>header</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/header.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 
-        <!-- {/* 로그인 끝 */} -->
+    
+</head>
+<body>
+<div class="main-navbar-bg">
+    <nav class="main-navbar">
+        <!-- 왼쪽 로고 + 메뉴 -->
+        <div class="navbar-left">
+            <div class="main-logo">
+                <span>🍽️ COOK</span>
+                <span class="logo-desc">요리정보포털</span>
+            </div>
+            <div class="main-menu">
+                <!-- 레시피 드롭다운 -->
+                <div class="dropdown" id="dropdown-recipe">
+                    <button class="dropdown-toggle" type="button">레시피</button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/recipe.do?category=korean">한식<span class="eng"> |　Korean</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=western">양식<span class="eng"> |　Western</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=chinese">중식<span class="eng"> |　Chinese</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=japanese">일식<span class="eng"> |　Japanese</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=dessert">디저트<span class="eng"> |　Dessert</span></a>
+                    </div>
+                </div>
+                <!-- 게시판 드롭다운 -->
+                <div class="dropdown" id="dropdown-board">
+                    <button class="dropdown-toggle" type="button">게시판</button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/board.do?category=korean">한식<span class="eng"> |　Korean</span></a>
+                        <a class="dropdown-item" href="/board.do?category=western">양식<span class="eng"> |　Western</span></a>
+                        <a class="dropdown-item" href="/board.do?category=chinese">중식<span class="eng"> |　Chinese</span></a>
+                        <a class="dropdown-item" href="/board.do?category=japanese">일식<span class="eng"> |　Japanese</span></a>
+                        <a class="dropdown-item" href="/board.do?category=dessert">디저트<span class="eng"> |　Dessert</span></a>
+                    </div>
+                </div>
+                <!-- Event 드롭다운 -->
+                <div class="dropdown" id="dropdown-event">
+                    <button class="dropdown-toggle" type="button">Event</button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/event/coupon">레시피 추천</a>
+                        <a class="dropdown-item" href="/event/recipe">Recipe Event</a>
+                    </div>
+                </div>
+                <!-- Q&A 드롭다운 -->
+                <div class="dropdown" id="dropdown-qna">
+                    <button class="dropdown-toggle" type="button">Support</button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/qna/ask-chef">홈페이지 가이드</a>
+                        <a class="dropdown-item" href="/qna/support">Q&A</a>
 
-        <!-- {/* 로그아웃 시작 */} -->
-        <!-- memberVO 가 세션에 있으면 메뉴을 보이고, 없으면 안보임 -->
-        <c:if test="${sessionScope.memberVO != null}">
-	         <li class="nav-item">
-	           <a href="/member/logout.do" class="nav-link active"> 로그아웃
-	           </a>
-	         </li>
-	    </c:if>
-        <!-- {/* 로그아웃 끝 */} -->
-      </ul>
+                    </div>
+                </div>
+                <!-- Michelin 드롭다운 고도화-->
+                <!-- <div class="dropdown" id="dropdown-michelin">
+                    <button class="dropdown-toggle" type="button">Michelin</button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/michelin/seoul">서울</a>
+                        <a class="dropdown-item" href="/michelin/kyungi">경기</a>
+                        <a class="dropdown-item" href="/michelin/busan">부산</a>
+                        <a class="dropdown-item" href="/michelin/daegu">대구</a>
+                        <a class="dropdown-item" href="/michelin/daejeon">대전</a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <!-- 오른쪽: 검색창 + 로그인 -->
+      <div class="navbar-right">
+    	<div class="navbar-search">
+        <form action="/search.do" method="get" autocomplete="off">
+            <input type="text" name="q" class="search-input" placeholder="전체 레시피/게시글 검색...">
+            <button class="search-btn" type="submit"><i class="bi bi-search"></i></button>
+        </form>
     </div>
-  </div>
-</nav>
+
+  <c:choose>
+    <%-- 로그인한 경우 --%>
+    <c:when test="${not empty sessionScope.loginUser}">
+        <span class="welcome-msg">${sessionScope.loginUser.nickname}님 환영합니다.</span>
+        <%-- 마이페이지 버튼 --%>
+        <c:url var="mypageUrl" value="/mypage/mypage.do"/>
+        <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">마이페이지</button>
+        <%-- 로그아웃 버튼 --%>
+        <c:url var="logoutUrl" value="/member/logout.do"/>
+        <button class="head-logout-btn" onclick="location.href='${logoutUrl}'">로그아웃</button>
+    </c:when>
+    <%-- 로그인하지 않은 경우 --%>
+    <c:otherwise>
+        <c:url var="loginUrl" value="/member/login.do"/>
+        <button class="login-btn" onclick="location.href='${loginUrl}'">로그인</button>
+    </c:otherwise>
+</c:choose>
+</div>
+
+    </nav>
+</div>
+<script>
+    // 드롭다운 중복 방지: 하나만 열림
+    const dropdowns = document.querySelectorAll('.dropdown');
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('mouseenter', function() {
+            dropdowns.forEach(dd => {
+                if(dd !== this) dd.querySelector('.dropdown-menu').classList.remove('show');
+            });
+            this.querySelector('.dropdown-menu').classList.add('show');
+        });
+        dropdown.addEventListener('mouseleave', function() {
+            this.querySelector('.dropdown-menu').classList.remove('show');
+        });
+        // 모바일(터치) 대응: 클릭시에도 하나만 열림
+        dropdown.querySelector('.dropdown-toggle').addEventListener('click', function(e){
+            e.preventDefault();
+            dropdowns.forEach(dd => {
+                if(dd !== dropdown) dd.querySelector('.dropdown-menu').classList.remove('show');
+            });
+            dropdown.querySelector('.dropdown-menu').classList.toggle('show');
+        });
+    });
+    // 바깥 클릭시 드롭다운 닫기
+    document.body.addEventListener('click', function(e){
+        if(!e.target.closest('.dropdown')) {
+            dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show'));
+        }
+    });
+</script>
+</body>
+</html>

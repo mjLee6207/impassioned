@@ -19,7 +19,7 @@
     <div style="display: flex; gap: 32px; align-items: flex-start;">
         <!-- 1. 회원정보 영역(사이드바) -->
         <div>
-            <%@ include file="/common/sidebar.jsp" %>
+    <jsp:include page="/common/sidebar.jsp" />
         </div>
         <!-- 2. 마이페이지 본문 전체(오른쪽 박스) -->
         <div style="flex: 1;">

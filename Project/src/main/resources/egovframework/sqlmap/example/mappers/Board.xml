@@ -6,23 +6,28 @@
    namespace="egovframework.example.board.service.impl.BoardMapper">
    
 
-   <!-- 게시글 목록 조회 -->
-   <select id="selectBoardList" parameterType="Criteria"
-      resultType="BoardVO">
-      SELECT *
-      FROM BOARD
-      WHERE TITLE LIKE '%' || #{searchKeyword} || '%'
-      OFFSET #{firstIndex} ROWS
-      FETCH NEXT #{pageUnit} ROWS ONLY
-   </select>
+	<!-- 7/7 카테고리별 게시글 목록 조회(민중) -->
+	<select id="selectBoardList" parameterType="Criteria" resultType="BoardVO">
+		SELECT *
+		FROM BOARD
+		WHERE TITLE LIKE '%' || #{searchKeyword} || '%'
+		<if test="category != null and category != ''">
+			AND CATEGORY = #{category}
+		</if>
+		OFFSET #{firstIndex} ROWS
+		FETCH NEXT #{pageUnit} ROWS ONLY
+	</select>
 
-   <!-- 게시글 총 개수 -->
-   <select id="selectBoardListTotCnt" parameterType="Criteria"
-      resultType="int">
-      SELECT COUNT(*)
-      FROM BOARD
-      WHERE TITLE LIKE '%' || #{searchKeyword} || '%'
-   </select>
+	<!-- 7/7 카테고리별 게시글 총 개수(민중) -->
+	<select id="selectBoardListTotCnt" parameterType="Criteria" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE TITLE LIKE '%' || #{searchKeyword} || '%'
+		<if test="category != null and category != ''">
+			AND CATEGORY = #{category}
+		</if>
+	</select>
+
 
    <!-- 게시글 등록 -->
    <insert id="insert" parameterType="BoardVO">
@@ -63,18 +68,20 @@
       WHERE BOARD_ID = #{boardId}
    </update>
 
-   <!-- 게시글 삭제 -->
-   <delete id="delete" parameterType="BoardVO">
-      DELETE FROM BOARD
-      WHERE BOARD_ID = #{boardId}
-   </delete>
-   
-   <!-- 조회수 증가 -->
-   <update id="increaseViewCount" parameterType="int">
-       UPDATE BOARD
-       SET VIEW_COUNT = VIEW_COUNT + 1
-       WHERE BOARD_ID = #{boardId}
-   </update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="delete" parameterType="BoardVO">
+		DELETE FROM BOARD
+		WHERE BOARD_ID = #{boardId}
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	<update id="increaseViewCount" parameterType="int">
+	    UPDATE BOARD	
+	    SET VIEW_COUNT = VIEW_COUNT + 1
+	    WHERE BOARD_ID = #{boardId}
+	</update>
+
 
    <!-- 닉네임 포함된 상세조회: 공개용 상세보기 -->
    <select id="selectBoardDetail" parameterType="int" resultType="BoardVO">

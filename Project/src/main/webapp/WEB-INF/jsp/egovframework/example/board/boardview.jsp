@@ -13,9 +13,10 @@
 </head>
 <body>
 <div class="main-wrap">
-    <%-- 사이드바 포함 --%>
-    <jsp:include page="/common/sidebar.jsp"></jsp:include>
-
+    <!-- 사이드바 -->
+     <div class="sidebar-wrap">
+    <jsp:include page="/common/sidebar.jsp"/>
+  </div>
     <!-- 게시글 상세 -->
     <div class="board-wrap">
         <!-- 타이틀 -->

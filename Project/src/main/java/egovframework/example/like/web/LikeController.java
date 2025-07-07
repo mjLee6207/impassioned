@@ -2,17 +2,9 @@ package egovframework.example.like.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import egovframework.example.like.service.LikeService;
 import egovframework.example.like.service.LikeVO;
@@ -31,14 +23,14 @@ public class LikeController {
     public int addLike(@RequestBody Map<String, Object> map) {
         log.info("📥 addLike.do 요청: " + map);
 
-        int boardId = (int) map.get("boardId");
-        int memberIdx = (int) map.get("memberIdx");
-
-        LikeVO vo = new LikeVO();
-        vo.setBoardId(boardId);
-        vo.setMemberIdx(memberIdx);
-
         try {
+            int boardId = Integer.parseInt(map.get("boardId").toString());
+            int memberIdx = Integer.parseInt(map.get("memberIdx").toString());
+
+            LikeVO vo = new LikeVO();
+            vo.setBoardId(boardId);
+            vo.setMemberIdx(memberIdx);
+
             if (!likeService.existsLike(vo)) {
                 likeService.addLike(vo);
                 log.info("✅ 좋아요 등록 완료");
@@ -47,12 +39,10 @@ public class LikeController {
             }
 
             return likeService.countLikes(boardId);
-
         } catch (Exception e) {
             log.error("💥 좋아요 등록 중 에러: " + e.getMessage(), e);
             return -1;
         }
-        
     }
 
     /** ❌ 좋아요 취소 */
@@ -61,14 +51,14 @@ public class LikeController {
     public int removeLike(@RequestBody Map<String, Object> map) {
         log.info("📥 cancelLike.do 요청: " + map);
 
-        int boardId = (int) map.get("boardId");
-        int memberIdx = (int) map.get("memberIdx");
-
-        LikeVO vo = new LikeVO();
-        vo.setBoardId(boardId);
-        vo.setMemberIdx(memberIdx);
-
         try {
+            int boardId = Integer.parseInt(map.get("boardId").toString());
+            int memberIdx = Integer.parseInt(map.get("memberIdx").toString());
+
+            LikeVO vo = new LikeVO();
+            vo.setBoardId(boardId);
+            vo.setMemberIdx(memberIdx);
+
             if (likeService.existsLike(vo)) {
                 likeService.removeLike(vo);
                 log.info("✅ 좋아요 취소 완료");
@@ -113,7 +103,8 @@ public class LikeController {
     public String index() {
         return "sample/index"; // /WEB-INF/jsp/sample/index.jsp
     }
- // 좋아요 여부 확인 (프론트에서 등록/취소 여부 판단용)
+
+    /** 🔍 좋아요 여부 확인 */
     @GetMapping("/checkLike.do")
     @ResponseBody
     public boolean checkLike(@RequestParam int boardId, @RequestParam int memberIdx) {

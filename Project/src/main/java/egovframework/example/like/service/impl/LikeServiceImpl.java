@@ -2,14 +2,18 @@ package egovframework.example.like.service.impl;
 
 import java.util.List;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import egovframework.example.common.Criteria;
 import egovframework.example.like.service.LikeService;
 import egovframework.example.like.service.LikeVO;
 
 @Service("likeService")
+@Transactional
 public class LikeServiceImpl implements LikeService {
 
     @Autowired

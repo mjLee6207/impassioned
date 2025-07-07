@@ -1,6 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+<c:if test="${empty loginUser}">
+  <p style="color:red;">❌ 세션에 loginUser 없음</p>
+</c:if>
+<c:if test="${not empty loginUser}">
+  <p style="color:green;">✅ 세션 있음: memberIdx = ${loginUser.memberIdx}</p>
+</c:if>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -10,6 +16,19 @@
     <link rel="stylesheet" href="/css/post.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .like-btn {
+            border: none;
+            background: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: gray;
+        }
+        .like-btn.liked {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <div class="main-wrap">
@@ -74,37 +93,73 @@
             <div class="post-section-title">사진</div>
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
-        
-     <!-- ❤️ 좋아요 버튼(개수 포함) -->
-    <div class="like-btn-wrap">
-        <button type="button" class="like-btn" onclick="likePost()">
-            <i class="bi bi-heart-fill"></i>
-            <span>좋아요</span>
-            <span class="like-count">(${likeCount})</span>
-        </button>
-    </div>
+
+        <!-- ❤️ 좋아요 버튼(개수 포함) -->
+        <div class="like-btn-wrap" style="text-align:center; margin-top:20px;">
+            <button type="button" class="like-btn" id="likeBtn" data-board-id="${board.boardId}" data-member-idx="${loginUser.memberIdx}">♡</button>
+            <span class="like-count" id="likeCountText">0</span>
+        </div>
 
         <!-- 버튼 -->
         <div class="post-btns">
             <a href="/board/board.do?category=${board.category}" class="btn btn-secondary btn-sm">목록</a>
             <c:if test="${loginUser.memberIdx eq board.writerIdx}">
                 <a href="/board/edition.do?boardId=${board.boardId}" class="btn btn-success btn-sm">수정</a>
-                <a href="/board/delete.do?boardId=${board.boardId}" class="btn btn-danger btn-sm"
-                   onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                <a href="/board/delete.do?boardId=${board.boardId}" class="btn btn-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
             </c:if>
         </div>
     </div>
 </div>
 
 <script>
-    // 탭 클릭 시 해당 카테고리 게시판 목록으로 이동
     function moveCategory(category) {
         window.location.href = '/board/board.do?category=' + category;
     }
-    function likePost() {
-    // 좋아요 기능: ajax/submit 등으로 구현!
-    alert('좋아요가 눌렸습니다!');
-}
+
+    $(document).ready(function () {
+        console.log("✅ 좋아요 스크립트 실행 시작");
+
+    	
+        const $btn = $("#likeBtn");
+        const boardId = $btn.data("board-id");
+        const memberIdx = $btn.data("member-idx");
+        
+        console.log("👍 boardId:", boardId, "memberIdx:", memberIdx);
+
+
+        if (!memberIdx) {
+            $btn.prop("disabled", true);
+            return;
+        }
+
+        $.get("/checkLike.do", { boardId, memberIdx }, function (res) {
+            if (res === true || res === "true") {
+                $btn.text("♥").addClass("liked");
+            }
+        });
+
+        $.get("/countLike.do", { boardId }, function (count) {
+            $("#likeCountText").text(count);
+        });
+
+        $btn.on("click", function () {
+            const isLiked = $btn.text() === "♥";
+            const url = isLiked ? "/cancelLike.do" : "/addLike.do";
+
+            $.ajax({
+                url,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ boardId, memberIdx }),
+                success: function () {
+                    $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
+                    $.get("/countLike.do", { boardId }, function (count) {
+                        $("#likeCountText").text(count);
+                    });
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

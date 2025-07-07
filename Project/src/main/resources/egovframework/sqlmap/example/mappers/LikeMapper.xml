@@ -45,8 +45,8 @@
 
 <!-- 7. 좋아요 등록 -->
 <insert id="insertLike" parameterType="egovframework.example.like.service.LikeVO">
-    INSERT INTO BOARD_LIKE (BOARD_ID, MEMBER_IDX, LIKE_DATE)
-    VALUES (#{boardId}, #{memberIdx}, CURRENT_TIMESTAMP)
+    INSERT INTO BOARD_LIKE (LIKE_ID, BOARD_ID, MEMBER_IDX, LIKE_DATE)
+    VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{boardId}, #{memberIdx}, CURRENT_TIMESTAMP)
 </insert>
 
 <!-- 8. 좋아요 삭제 -->

@@ -30,28 +30,35 @@
 <body>
   <h2>좋아요 테스트</h2>
 
-  <%-- 로그인 여부 체크 --%>
+  <%-- 로그인 여부 체크 (전역) --%>
   <%
     Object sessionUser = session.getAttribute("memberIdx");
     int memberIdx = (sessionUser == null) ? -1 : Integer.parseInt(sessionUser.toString());
   %>
 
-  <%-- 예시 게시글 --%>
+  <script>
+    const memberIdxGlobal = <%= memberIdx %>;
+    const contextPath = "<%= request.getContextPath() %>";
+    const boardId = 123;
+
+    if (memberIdxGlobal === -1) {
+      alert("로그인 후 이용 가능한 기능입니다.");
+    }
+  </script>
+
+  <%-- 예시 게시글 1개 --%>
   <div class="post" data-board-id="123">
     <p>게시글 123</p>
     <div class="like-wrap">
       <button id="likeButton" class="likeButton" data-board-id="123" data-member-idx="<%= memberIdx %>">♡</button>
-      <div class="likeCount" id="likeCount">좋아요 수: </div>
+      <div class="likeCount" id="likeCount" data-board-id="123">좋아요 수: </div>
     </div>
   </div>
 
   <script>
-    const contextPath = "<%= request.getContextPath() %>";
-    const boardId = 123;
-    const memberIdx = <%= memberIdx %>;
+    const memberIdx = memberIdxGlobal;
 
     if (memberIdx === -1) {
-      alert("로그인 후 이용 가능한 기능입니다.");
       $("#likeButton").prop("disabled", true);
     }
 
@@ -64,7 +71,10 @@
       $.ajax({
         url: contextPath + "/checkLike.do",
         type: "GET",
-        data: { boardId, memberIdx },
+        data: {
+          boardId: boardId,
+          memberIdx: memberIdx
+        },
         success: function(exists) {
           if (exists === true || exists === "true") {
             removeLike();
@@ -135,7 +145,10 @@
       $.ajax({
         url: contextPath + "/checkLike.do",
         type: "GET",
-        data: { boardId, memberIdx },
+        data: {
+          boardId: boardId,
+          memberIdx: memberIdx
+        },
         success: function(exists) {
           updateButton(exists === true || exists === "true");
         }

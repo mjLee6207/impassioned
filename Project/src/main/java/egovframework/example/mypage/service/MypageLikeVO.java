@@ -14,4 +14,5 @@ public class MypageLikeVO {
     private String thumbnail;  // 썸네일 이미지
     private String writerName; // 작성자 이름
     private Date likeDate;     // 좋아요 누른 날짜
+    private int viewCount;		// 
 }

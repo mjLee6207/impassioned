@@ -13,7 +13,7 @@
     <title>요리 게시글 상세조회</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
-    <link rel="stylesheet" href="/css/post.css" />
+    <link rel="stylesheet" href="/css/boardview.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -31,6 +31,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/common/header.jsp" />
 <div class="main-wrap">
     <!-- 사이드바 -->
     <div class="sidebar-wrap">

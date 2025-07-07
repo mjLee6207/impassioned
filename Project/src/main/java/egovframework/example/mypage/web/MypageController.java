@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
+import egovframework.example.mypage.service.MypageLikeVO;
 import egovframework.example.mypage.service.MypageMyPostVO;
 import egovframework.example.mypage.service.MypageService;
-import egovframework.example.mypage.service.MypageLikeVO;
 
 @Controller
 @RequestMapping("/mypage")
@@ -22,6 +24,9 @@ public class MypageController {
 
     @Autowired
     private MypageService mypageLikeService;
+    @Autowired
+    private MemberService memberService; // 회원정보 수정 서비스
+
 
     @GetMapping("/mypage.do")
     public String showMypage(HttpSession session, Model model) {
@@ -43,4 +48,6 @@ public class MypageController {
 
         return "mypage/mypage"; // jsp 파일명에 맞게!
     }
+   
 }
+

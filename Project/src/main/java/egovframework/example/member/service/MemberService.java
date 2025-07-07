@@ -13,4 +13,6 @@ public interface MemberService {
     
     // 아이디 중복확인용 메서드
     boolean isIdAvailable(String id);
+
+
 }

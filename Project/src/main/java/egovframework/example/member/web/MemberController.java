@@ -97,4 +97,5 @@ public class MemberController {
         boolean success = inputCode != null && inputCode.equals(sessionCode);
         return Collections.singletonMap("success", success);
     }
+
 }

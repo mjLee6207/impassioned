@@ -112,7 +112,8 @@ public class BoardController {
 	
 	//	상세조회: 읽기 전용 페이지 (조회만 가능)
 	@GetMapping("/board/view.do")
-	public String view(@RequestParam("boardId") int boardId, Model model) {
+	public String view(@RequestParam("boardId") int boardId, Model model
+			, HttpSession session) {
 	    // 조회수 증가
 	    try {
 	        boardService.increaseViewCount(boardId);
@@ -125,7 +126,10 @@ public class BoardController {
 	    if (board == null) {
 	        throw new RuntimeException("해당 게시글을 찾을 수 없습니다.");
 	    }
-	
+	    // ✅ 세션에서 로그인 정보 꺼내서 모델에 추가
+	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	    model.addAttribute("loginUser", loginUser);
+	    
 	    model.addAttribute("board", board);
 	    return "board/boardview"; // 읽기 전용 JSP로 이동
 	}

@@ -30,54 +30,63 @@
 <body>
   <h2>좋아요 테스트</h2>
 
-  <%-- 로그인 여부 체크 --%>
+  <%-- 로그인 여부 체크 (전역) --%>
   <%
     Object sessionUser = session.getAttribute("memberIdx");
     int memberIdx = (sessionUser == null) ? -1 : Integer.parseInt(sessionUser.toString());
   %>
 
-  <%-- 게시글 예시 --%>
+  <script>
+    const memberIdxGlobal = <%= memberIdx %>;
+    const contextPath = "<%= request.getContextPath() %>";
+    const boardId = 123;
+
+    if (memberIdxGlobal === -1) {
+      alert("로그인 후 이용 가능한 기능입니다.");
+    }
+  </script>
+
+  <%-- 예시 게시글 1개 --%>
   <div class="post" data-board-id="123">
     <p>게시글 123</p>
     <div class="like-wrap">
       <button id="likeButton" class="likeButton" data-board-id="123" data-member-idx="<%= memberIdx %>">♡</button>
-      <div class="likeCount" id="likeCount">좋아요 수: </div>
+      <div class="likeCount" id="likeCount" data-board-id="123">좋아요 수: </div>
     </div>
   </div>
 
   <script>
-    const contextPath = "<%= request.getContextPath() %>";
-    const boardId = 123;
-    const memberIdx = <%= memberIdx %>;
+    const memberIdx = memberIdxGlobal;
 
-    $(document).ready(function () {
+    if (memberIdx === -1) {
+      $("#likeButton").prop("disabled", true);
+    }
+
+    function toggleLike() {
       if (memberIdx === -1) {
-        alert("로그인 후 이용 가능한 기능입니다.");
-        $("#likeButton").prop("disabled", true);
+        alert("로그인 후 이용해주세요.");
         return;
       }
 
-      checkInitialStatus();
-      getLikeCount();
-
-      $("#likeButton").on("click", function () {
-        $.ajax({
-          url: contextPath + "/checkLike.do",
-          type: "GET",
-          data: { boardId, memberIdx },
-          success: function (exists) {
-            if (exists === true || exists === "true") {
-              removeLike();
-            } else {
-              addLike();
-            }
-          },
-          error: function (xhr) {
-            console.error("상태 확인 실패:", xhr.responseText);
+      $.ajax({
+        url: contextPath + "/checkLike.do",
+        type: "GET",
+        data: {
+          boardId: boardId,
+          memberIdx: memberIdx
+        },
+        success: function(exists) {
+          if (exists === true || exists === "true") {
+            removeLike();
+          } else {
+            addLike();
           }
-        });
+        },
+        error: function(xhr) {
+          console.error("상태 확인 실패:", xhr.responseText);
+        }
       });
-    });
+    }
 
     function addLike() {
       $.ajax({
@@ -85,11 +94,11 @@
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ boardId, memberIdx }),
-        success: function () {
+        success: function() {
           getLikeCount();
           updateButton(true);
         },
-        error: function (xhr) {
+        error: function(xhr) {
           console.error("좋아요 등록 실패:", xhr.responseText);
         }
       });
@@ -101,11 +110,11 @@
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ boardId, memberIdx }),
-        success: function () {
+        success: function() {
           getLikeCount();
           updateButton(false);
         },
-        error: function (xhr) {
+        error: function(xhr) {
           console.error("좋아요 취소 실패:", xhr.responseText);
         }
       });
@@ -116,10 +125,10 @@
         url: contextPath + "/countLike.do",
         type: "GET",
         data: { boardId },
-        success: function (count) {
+        success: function(count) {
           $("#likeCount").text("좋아요 수: " + count);
         },
-        error: function (xhr) {
+        error: function(xhr) {
           console.error("좋아요 수 가져오기 실패:", xhr.responseText);
         }
       });
@@ -131,15 +140,26 @@
     }
 
     function checkInitialStatus() {
+      if (memberIdx === -1) return;
+
       $.ajax({
         url: contextPath + "/checkLike.do",
         type: "GET",
-        data: { boardId, memberIdx },
-        success: function (exists) {
+        data: {
+          boardId: boardId,
+          memberIdx: memberIdx
+        },
+        success: function(exists) {
           updateButton(exists === true || exists === "true");
         }
       });
     }
+
+    $(document).ready(function() {
+      getLikeCount();
+      checkInitialStatus();
+      $("#likeButton").click(toggleLike);
+    });
   </script>
 </body>
 </html>

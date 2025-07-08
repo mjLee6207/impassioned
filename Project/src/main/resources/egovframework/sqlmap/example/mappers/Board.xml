@@ -9,6 +9,8 @@
 
 	<!-- 7/8 카테고리별 닉네임이 보이는 게시글 목록 조회(민중) -->
 	<!-- 카테고리별 조회를 위해 7월 8일 오후 2시46분 코드수정함: 강승태 -->
+	<!-- 7월 8일 4시 게시판 -BOARD ID를 통한 작성순으로 하도록 수정 
+	    	ORDER BY b.BOARD_ID DESC 추가  -->	
 <select id="selectBoardList" parameterType="Criteria" resultType="BoardVO">
 	SELECT 
 		b.*, 
@@ -22,6 +24,7 @@
 	<if test="category != null and category != ''">
 		AND b.CATEGORY = #{category}
 	</if>
+	ORDER BY b.BOARD_ID DESC
 	OFFSET #{firstIndex} ROWS
 	FETCH NEXT #{pageUnit} ROWS ONLY
 </select>

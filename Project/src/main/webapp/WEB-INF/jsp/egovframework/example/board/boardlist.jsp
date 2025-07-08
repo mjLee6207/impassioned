@@ -125,10 +125,6 @@
             </c:forEach>
             </tbody>
         </table>
-        <!-- 페이지네이션 샘플태그 -->
-
-			
-
         <!-- 페이지네이션 -->
         <!-- 페이지 이동용 폼 (전용!) -->
 		<form id="searchForm" method="get" action="${pageContext.request.contextPath}/board/board.do">

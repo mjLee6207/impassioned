@@ -18,10 +18,13 @@ public interface MemberMapper {
     
     // 아이디 중복 체크    
     int countById(String id);
-    
+
 //  회원 정보 조회
     MemberVO selectMemberByIdx(Long memberIdx);   
     
 //  회원 정보 수정     
     void updateMember(MemberVO memberVO);
+
+//  정보수정할때 비밀번호 안바꿔도 그대로 적용
+    String selectPasswordByIdx(Long memberIdx);
 }

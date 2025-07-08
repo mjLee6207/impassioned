@@ -2,11 +2,13 @@ package egovframework.example.member.service.impl;
 
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
+import lombok.extern.log4j.Log4j2;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+@Log4j2
 @Service
 public class MemberServiceImpl extends EgovAbstractServiceImpl implements MemberService {
 
@@ -69,13 +71,19 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 //  회원 정보 수정   
     @Override
     public void updateMember(MemberVO memberVO) {
+
         // 비밀번호가 입력되었을 때만 암호화해서 저장
+
+        log.info("⛳ 입력된 비밀번호: " + memberVO.getPassword());
+
         if (memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()) {
+        	log.info("1");
             String encrypted = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
             memberVO.setPassword(encrypted);
         } else {
-            // 비밀번호 변경 없으면 기존 비밀번호 유지
-            String currentPassword = memberMapper.selectPasswordByIdx(memberVO.getMemberIdx());
+        	log.info("2");
+            String currentPassword = memberMapper.selectPasswordByIdx(memberVO.getMemberIdx());            
+
             memberVO.setPassword(currentPassword);
         }
 

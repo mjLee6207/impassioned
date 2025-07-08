@@ -64,7 +64,8 @@ public class MypageController {
     // 회원 정보 수정 처리 (수정완료 버튼 눌렀을 때)
     @PostMapping("/update.do")
     public String updateMemberInfo(MemberVO memberVO, HttpSession session) {
-        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser"); // 1
 
         if (loginUser == null) {
             return "redirect:/member/login.do";
@@ -84,3 +85,4 @@ public class MypageController {
         return "redirect:/mypage/mypage.do";
     }
 }
+

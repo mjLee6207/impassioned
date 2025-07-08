@@ -152,5 +152,65 @@
         }
     }
 </script>
+
+
+<!-- 스크립트 -->
+<script>
+    function moveCategory(category) {
+        window.location.href = '/board/board.do?category=' + category;
+    }
+
+    function fn_delete() {
+        if (confirm("정말 삭제하시겠습니까? 복구되지 않습니다.")) {
+            document.getElementById("deleteForm").submit();
+        }
+    }
+
+    $(document).ready(function () {
+        const $btn = $("#likeBtn");
+        const boardId = $btn.data("board-id");
+        const memberIdx = $btn.data("member-idx");
+
+        $.get("/countLike.do", { boardId }, function (count) {
+            $("#likeCountText").text(count);
+        });
+
+        if (!memberIdx) {
+            $btn.prop("disabled", true);
+            return;
+        }
+
+        $.get("/checkLike.do", { boardId, memberIdx }, function (res) {
+            if (res === true || res === "true") {
+                $btn.text("♥").addClass("liked");
+            }
+        });
+
+        $btn.on("click", function () {
+            const isLiked = $btn.text() === "♥";
+            const url = isLiked ? "/cancelLike.do" : "/addLike.do";
+
+            if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
+                alert("로그인 후 이용해주세요 😊");
+                const redirectUrl = encodeURIComponent(location.pathname + location.search);
+                location.href = "/member/login.do?redirect=" + redirectUrl;
+                return;
+            }
+ 
+            $.ajax({
+                url,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ boardId, memberIdx }),
+                success: function () {
+                    $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
+                    $.get("/countLike.do", { boardId }, function (count) {
+                        $("#likeCountText").text(count);
+                    });
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

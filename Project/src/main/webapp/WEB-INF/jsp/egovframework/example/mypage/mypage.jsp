@@ -44,73 +44,76 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
-                    <table id="myPostsTable" class="table table-hover text-start">
-                        <thead>
-                            <tr>
-                                <th>제목</th>
-                                <th>작성일</th>
-                                <!-- <th>조회수</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="post" items="${myPosts}">
-                                <tr>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${post.boardId}" class="text-decoration-none">${post.title}</a>
-                                    </td>
-                                    <td>
-                                        <fmt:formatDate value="${post.writeDate}" pattern="yyyy-MM-dd" />
-                                    </td>
-                                    <!-- 조회수 컬럼이 VO/쿼리에 있으면 아래 주석 해제
-                                    <td>${post.viewCount}</td>
-                                    -->
-                                </tr>
-                            </c:forEach>
-                            <c:if test="${empty myPosts}">
-                                <tr>
-                                    <td colspan="2" class="text-secondary">아직 작성한 게시글이 없습니다.</td>
-                                </tr>
-                            </c:if>
-                        </tbody>
-                    </table>
+                    <table id="myPostsTable" class="table table-hover">
+    <thead>
+        <tr>
+            <th class="text-center" style="width:65%;">제목</th>
+            <th class="text-center" style="width:18%;">작성일</th>
+            <th class="text-center" style="width:17%;">조회수</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="post" items="${myPosts}">
+            <tr>
+                <td class="text-start">
+                    <a href="${pageContext.request.contextPath}/board/view.do?boardId=${post.boardId}" class="post-title-link">${post.title}</a>
+                </td>
+                <td class="text-center">
+                    <fmt:formatDate value="${post.writeDate}" pattern="yyyy-MM-dd" />
+                </td>
+                <td class="text-center">
+                    ${post.viewCount}
+                </td>
+            </tr>
+        </c:forEach>
+        <c:if test="${empty myPosts}">
+            <tr>
+                <td colspan="3" class="text-secondary text-center">아직 작성한 게시글이 없습니다.</td>
+            </tr>
+        </c:if>
+    </tbody>
+</table>
                 </div>
 
                 <!-- ====== 좋아요한 글 (탭 전환시 보임) ====== -->
-                <div id="likedPostsSection" style="display: none;">
-                    <div class="search-area">
-                        <input type="text" id="searchLikedPosts" class="form-control form-control-sm search-input" placeholder="좋아요한 글 검색..." onkeyup="filterTable('likedPostsTable', this.value)">
-                        <button type="button" class="search-btn" onclick="clickSearch('likedPostsTable','searchLikedPosts')">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                    <table id="likedPostsTable" class="table table-hover text-start">
-                        <thead>
-                            <tr>
-                                <th>제목</th>
-                                <th>작성일</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="like" items="${likedPosts}">
-                                <tr>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${like.boardId}" class="text-decoration-none">${like.title}</a>
+<div id="likedPostsSection" style="display: none;">
+    <div class="search-area">
+        <input type="text" id="searchLikedPosts" class="form-control form-control-sm search-input" placeholder="좋아요한 글 검색..." onkeyup="filterTable('likedPostsTable', this.value)">
+        <button type="button" class="search-btn" onclick="clickSearch('likedPostsTable','searchLikedPosts')">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
+    <table id="likedPostsTable" class="table table-hover post-table">
+        <thead>
+            <tr>
+                <th class="text-center col-title">제목</th>
+                <th class="text-center col-author">작성자</th>
+                <th class="text-center col-date">작성일</th>
+                <th class="text-center col-views">조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="like" items="${likedPosts}">
+                <tr>
+                    <td class="text-start">
+                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${like.boardId}" class="post-title-link">${like.title}</a>
+                    </td>
+                    <td class="text-center">${like.writerName}</td> 
+                    <td class="text-center">
+                        <fmt:formatDate value="${like.writeDate}" pattern="yyyy-MM-dd" />
+                    </td>
+                    <td class="text-center">${like.viewCount}</td>
+                </tr>
+            </c:forEach>
+            <c:if test="${empty likedPosts}">
+                <tr>
+                    <td colspan="4" class="text-secondary text-center">아직 좋아요한 게시글이 없습니다.</td>
+                </tr>
+            </c:if>
+        </tbody>
+    </table>
+</div>
 
-
-                                    </td>
-                                    <td>
-                                        <fmt:formatDate value="${like.writeDate}" pattern="yyyy-MM-dd" />
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            <c:if test="${empty likedPosts}">
-                                <tr>
-                                    <td colspan="2" class="text-secondary">아직 좋아요한 게시글이 없습니다.</td>
-                                </tr>
-                            </c:if>
-                        </tbody>
-                    </table>
-                </div>
             </div> <!-- /.right-box -->
         </div> <!-- /flex:1 -->
     </div> <!-- /flex -->

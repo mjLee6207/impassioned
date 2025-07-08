@@ -59,4 +59,26 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
     public boolean isIdAvailable(String id) {
         return memberMapper.countById(id) == 0;
     }
+    
+//  회원 정보 조회
+    @Override
+    public MemberVO selectMemberByIdx(Long memberIdx) {
+        return memberMapper.selectMemberByIdx(memberIdx);
+    }
+    
+//  회원 정보 수정   
+    @Override
+    public void updateMember(MemberVO memberVO) {
+        // 비밀번호가 입력되었을 때만 암호화해서 저장
+        if (memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()) {
+            String encrypted = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
+            memberVO.setPassword(encrypted);
+        } else {
+            // 비밀번호 변경 없으면 기존 비밀번호 유지
+            String currentPassword = memberMapper.selectPasswordByIdx(memberVO.getMemberIdx());
+            memberVO.setPassword(currentPassword);
+        }
+
+        memberMapper.updateMember(memberVO);
+    }
 } 

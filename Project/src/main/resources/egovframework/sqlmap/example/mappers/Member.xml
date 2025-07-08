@@ -33,4 +33,35 @@
 	<select id="countById" parameterType="String" resultType="int">
 	  SELECT COUNT(*) FROM MEMBER WHERE ID = #{id}
 	</select>
+	
+	<!-- 회원 정보 조회 -->
+	<select id="selectMemberByIdx" parameterType="long" resultType="MemberVO">
+	    SELECT 
+	        MEMBER_IDX,
+	        ID,
+	        PASSWORD,
+	        EMAIL,
+	        ROLE,
+	        NICKNAME,
+	        JOIN_DATE,
+	        PROFILE
+	    FROM MEMBER
+	    WHERE MEMBER_IDX = #{memberIdx}
+	</select>
+	
+	<!-- 비밀번호 조회 (위에서 기존 값 유지 시 필요) -->
+	<select id="selectPasswordByIdx" parameterType="long" resultType="string">
+	    SELECT PASSWORD FROM MEMBER WHERE MEMBER_IDX = #{memberIdx}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember" parameterType="MemberVO">
+	    UPDATE MEMBER
+	    SET 
+	        EMAIL = #{email},
+	        PASSWORD = #{password},
+	        NICKNAME = #{nickname},
+	        PROFILE = #{profile}
+	    WHERE MEMBER_IDX = #{memberIdx}
+	</update>
 </mapper>

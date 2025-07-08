@@ -24,7 +24,7 @@
                 <fmt:formatDate value="${member.joinDate}" pattern="yyyy-MM-dd" />
             </div>
             <div class="card-menu">
-                <button class="card-menu-btn mypage-btn" type="button">
+                <button class="card-menu-btn edit-btn" type="button">
                     <i class="bi bi-person"></i>내 정보 수정
                 </button>
                 <button class="card-menu-btn logout-btn" type="button">
@@ -45,9 +45,9 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".mypage-btn").forEach(function(btn) {
+    document.querySelectorAll(".edit-btn").forEach(function(btn) {
       btn.addEventListener("click", function () {
-        location.href = "/mypage/mypage.do";
+        location.href = "/mypage/mycorrection.do";
       });
     });
     document.querySelectorAll(".logout-btn").forEach(function(btn) {

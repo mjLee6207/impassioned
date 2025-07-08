@@ -27,22 +27,22 @@
                 <div class="dropdown" id="dropdown-recipe">
                     <button class="dropdown-toggle" type="button">Recipe</button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/recipe.do?category=korean">한식<span class="eng"> |　Korean</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=western">양식<span class="eng"> |　Western</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=chinese">중식<span class="eng"> |　Chinese</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=japanese">일식<span class="eng"> |　Japanese</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=dessert">디저트<span class="eng"> |　Dessert</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=한식">한식<span class="eng"> |　Korean</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=양식">양식<span class="eng"> |　Western</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=중식">중식<span class="eng"> |　Chinese</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=일식">일식<span class="eng"> |　Japanese</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=디저트">디저트<span class="eng"> |　Dessert</span></a>
                     </div>
                 </div>
                 <!-- 게시판 드롭다운 -->
                 <div class="dropdown" id="dropdown-board">
                     <button class="dropdown-toggle" type="button">Board</button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/board/board.do?category=korean">한식<span class="eng"> |　Korean</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=western">양식<span class="eng"> |　Western</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=chinese">중식<span class="eng"> |　Chinese</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=japanese">일식<span class="eng"> |　Japanese</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=dessert">디저트<span class="eng"> |　Dessert</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=한식">한식<span class="eng"> |　Korean</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=양식">양식<span class="eng"> |　Western</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=중식">중식<span class="eng"> |　Chinese</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=일식">일식<span class="eng"> |　Japanese</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=디저트">디저트<span class="eng"> |　Dessert</span></a>
                     </div>
                 </div>
                 <!-- Event 드롭다운 -->

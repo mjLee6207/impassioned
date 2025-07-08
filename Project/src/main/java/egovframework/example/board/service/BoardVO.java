@@ -30,6 +30,6 @@ public class BoardVO extends Criteria {
    private Date writeDate;         // 작성일
    private int writerIdx;          // 작성자 회원 번호
    private int viewCount;          // 조회수
-   
-   private String nickname;        // 추가: 작성자 닉네임
+   private String nickname;        // 추가: 작성자 닉네임       // 
+   private String searchKeyword;   // 카테고리별 검색을 위해 7월 8일추가: 강승태
 }

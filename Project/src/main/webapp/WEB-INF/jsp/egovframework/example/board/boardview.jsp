@@ -144,44 +144,46 @@
 					</c:otherwise>
 				</c:choose>
 				<div class="comment-list">
-					<c:forEach var="review" items="${reviews}">
-						<div class="comment-item">
-							<div class="comment-row">
-								<div class="comment-content">${review.content}</div>
-								<div class="comment-meta">
-									<span class="comment-nickname">${review.nickname}</span> <span
-										class="comment-date">${review.writeDate}</span>
-								</div>
-								<!-- 7월8일 댓글 수정 삭제 버튼 추가  -->
-								<c:if
-									test="${loginUser != null && loginUser.memberIdx == review.writerIdx}">
-									<div class="comment-btn-group">
-										<form action="/board/review/edit.do" method="post"
-											style="display: inline;">
-											<input type="hidden" name="reviewId"
-												value="${review.reviewId}" /> <input type="hidden"
-												name="boardId" value="${board.boardId}" /> <input
-												type="hidden" name="content" value="${review.content}" />
-											<button type="submit" class="comment-edit-btn">수정</button>
-										</form>
-										<form action="/board/review/delete.do" method="post"
-											style="display: inline;">
-											<input type="hidden" name="reviewId"
-												value="${review.reviewId}" /> <input type="hidden"
-												name="boardId" value="${board.boardId}" />
-											<button type="submit" class="comment-delete-btn">삭제</button>
-										</form>
-									</div>
-								</c:if>
-							</div>
-						</div>
-					</c:forEach>
-					<c:if test="${fn:length(reviews) == 0}">
-						<div class="comment-empty">아직 댓글이 없습니다.</div>
-					</c:if>
+					 <c:forEach var="review" items="${reviews}">
+        <div class="comment-item">
+            <div class="comment-row">
+                <div class="comment-content" id="reviewContent${review.reviewId}">${review.content}</div>
+                <div class="comment-meta">
+                    <span class="comment-nickname">${review.nickname}</span>
+                    <span class="comment-date">${review.writeDate}</span>
+                </div>
+                
+                <!-- 본인 댓글에만 수정/삭제 버튼 노출 -->
+<c:if test="${loginUser != null && loginUser.memberIdx == review.writerIdx}">
+  <div class="comment-btn-group">
+    <!-- ✅ 1. '수정' 버튼: 폼이 아니라 자바스크립트 함수 호출 -->
+   <button type="button" class="comment-edit-btn"
+    onclick="showEditForm('${review.reviewId}')">
+  수정
+</button>
+    <!-- 삭제 폼(그대로 유지) -->
+    <form action="/board/review/delete.do" method="post" style="display:inline;">
+      <input type="hidden" name="reviewId" value="${review.reviewId}" />
+      <input type="hidden" name="boardId" value="${board.boardId}" />
+      <button type="submit" class="comment-delete-btn">삭제</button>
+    </form>
+  </div>
+  <!-- 인라인 수정폼 (초기 숨김) -->
+  <form id="editForm${review.reviewId}" action="/board/review/edit.do" method="post" style="display:none; margin-top:5px;">
+    <input type="hidden" name="reviewId" value="${review.reviewId}" />
+    <input type="hidden" name="boardId" value="${board.boardId}" />
+    <textarea name="content" id="editContent${review.reviewId}">${review.content}</textarea>
+    <button type="submit">저장</button>
+    <button type="button" onclick="hideEditForm(${review.reviewId})">취소</button>
+  </form>
+</c:if>
 				</div>
 			</div>
 			<!-- //댓글영역 -->
+			</c:forEach>
+					<c:if test="${fn:length(reviews) == 0}">
+						<div class="comment-empty">아직 댓글이 없습니다.</div>
+						</c:if>
 		</div>
 	</div>
 	<script>
@@ -258,7 +260,20 @@
 	        });
 	    });
 	});
+	/* 댓글 수정 */
+	function showEditForm(reviewId) {
+	    document.getElementById('reviewContent' + reviewId).style.display = 'none';
+	    document.getElementById('editForm' + reviewId).style.display = '';
+	    // 인풋에 값 넣기 (textarea의 value를 리뷰 본문에서 가져오기)
+	    var origin = document.getElementById('reviewContent' + reviewId).innerText;
+	    document.getElementById('editContent' + reviewId).value = origin;
+	}
 
+  function hideEditForm(reviewId) {
+    document.getElementById('reviewContent' + reviewId).style.display = '';
+    document.getElementById('editForm' + reviewId).style.display = 'none';
+  }
+  
 </script>
 
 </body>

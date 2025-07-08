@@ -41,6 +41,8 @@ body {
 .app-menu-container {
     position: relative;
     margin-left: 16px;
+    /* 7/8 hyj 햄버거 메뉴 중앙 배치 위해서 코드 추가 */
+    margin-bottom: 9px;
 }
 
 .app-menu-toggle {

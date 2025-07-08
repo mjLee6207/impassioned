@@ -51,7 +51,9 @@
 	
 	<!-- 비밀번호 조회 (위에서 기존 값 유지 시 필요) -->
 	<select id="selectPasswordByIdx" parameterType="long" resultType="string">
-	    SELECT PASSWORD FROM MEMBER WHERE MEMBER_IDX = #{memberIdx}
+	    SELECT PASSWORD 
+	    FROM MEMBER 
+	    WHERE MEMBER_IDX = #{memberIdx}
 	</select>
 	
 	<!-- 회원 정보 수정 -->
@@ -64,4 +66,5 @@
 	        PROFILE = #{profile}
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</update>
+
 </mapper>

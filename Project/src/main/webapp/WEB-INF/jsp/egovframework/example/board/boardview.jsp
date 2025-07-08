@@ -46,7 +46,7 @@
             <div class="category-tab${board.category eq 'japanese' ? ' active' : ''}" onclick="moveCategory('japanese')">일식</div>
             <div class="category-tab${board.category eq 'dessert' ? ' active' : ''}" onclick="moveCategory('dessert')">디저트</div>
         </div>
-        <!-- 상단 정보 -->
+        <!-- 상단 정보 스타일수정금지 -->
         <div style="margin-bottom:18px;">
             <span class="category-badge">
                 <c:choose>

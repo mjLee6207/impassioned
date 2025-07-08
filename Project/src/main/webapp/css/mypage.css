@@ -1,4 +1,9 @@
 /* /css/mypost.css */
+.container {					
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    /* 헤더랑 공간을없애고 헤더에 margin-bottom넣습니다. */
+}
 .right-box {
     flex: 1;
     background: #fff;

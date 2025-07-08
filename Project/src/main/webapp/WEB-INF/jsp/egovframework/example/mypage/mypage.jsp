@@ -16,7 +16,7 @@
 <jsp:include page="/common/header.jsp" />
 
 <div class="container container-box" style="margin-top:32px;">
-    <div style="display: flex; gap: 32px; align-items: flex-start;">
+    <div style="display: flex; align-items: flex-start;">
         <!-- 1. 회원정보 영역(사이드바) -->
         <div>
     <jsp:include page="/common/sidebar.jsp" />

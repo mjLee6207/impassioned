@@ -2,11 +2,13 @@ package egovframework.example.member.service.impl;
 
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
+import lombok.extern.log4j.Log4j2;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+@Log4j2
 @Service
 public class MemberServiceImpl extends EgovAbstractServiceImpl implements MemberService {
 
@@ -59,4 +61,31 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
     public boolean isIdAvailable(String id) {
         return memberMapper.countById(id) == 0;
     }
+<<<<<<< Updated upstream
+=======
+    
+//  회원 정보 조회
+    @Override
+    public MemberVO selectMemberByIdx(Long memberIdx) {
+        return memberMapper.selectMemberByIdx(memberIdx);
+    }
+    
+//  회원 정보 수정   
+    @Override
+    public void updateMember(MemberVO memberVO) {
+        log.info("⛳ 입력된 비밀번호: " + memberVO.getPassword());
+
+        if (memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()) {
+        	log.info("1");
+            String encrypted = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
+            memberVO.setPassword(encrypted);
+        } else {
+        	log.info("2");
+            String currentPassword = memberMapper.selectPasswordByIdx(memberVO.getMemberIdx());            
+            memberVO.setPassword(currentPassword);
+        }
+
+        memberMapper.updateMember(memberVO);
+    }
+>>>>>>> Stashed changes
 } 

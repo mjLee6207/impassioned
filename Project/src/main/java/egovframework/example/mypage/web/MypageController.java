@@ -51,3 +51,44 @@ public class MypageController {
    
 }
 
+<<<<<<< Updated upstream
+=======
+    // 회원 정보 수정 페이지 열기
+    @GetMapping("/mycorrection.do")
+    public String showEditForm(HttpSession session, Model model) {
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getMemberIdx() == null) {
+            return "redirect:/member/login.do";
+        }
+
+        MemberVO memberInfo = memberService.selectMemberByIdx(loginUser.getMemberIdx());
+        model.addAttribute("member", memberInfo);
+
+        return "mypage/mycorrection";
+    }
+
+    // 회원 정보 수정 처리 (수정완료 버튼 눌렀을 때)
+    @PostMapping("/update.do")
+    public String updateMemberInfo(MemberVO memberVO, HttpSession session) {
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser"); // 1
+
+        if (loginUser == null) {
+            return "redirect:/member/login.do";
+        }
+
+        // 로그인 사용자 정보 기준으로 memberIdx 고정
+        memberVO.setMemberIdx(loginUser.getMemberIdx()); // 불필요한 작업 (회원 시퀀스 번호는 고정값)
+
+        // 서비스 호출 - DB 정보 업데이트
+        memberService.updateMember(memberVO);
+
+        // 세션 갱신 (닉네임이나 프로필이 바뀌었을 경우 반영)
+        MemberVO updated = memberService.selectMemberByIdx(loginUser.getMemberIdx());
+        session.setAttribute("loginUser", updated);
+
+        // 마이페이지로 리다이렉트
+        return "redirect:/mypage/mypage.do";
+    }
+}
+>>>>>>> Stashed changes

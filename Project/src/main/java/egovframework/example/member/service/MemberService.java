@@ -19,5 +19,14 @@ public interface MemberService {
     
 //  회원 정보 수정  
     void updateMember(MemberVO memberVO);
+    
+//  아이디 찾기
+    String findIdByEmail(String email);
+    
+//  비밀번호 찾기 시 사용자 존재 여부를 확인
+    MemberVO findByIdAndEmail(String id, String email);
+    
+//  비밀번호찾기
+    int updatePassword(MemberVO member);
 
 }

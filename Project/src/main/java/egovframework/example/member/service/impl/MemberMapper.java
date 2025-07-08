@@ -1,5 +1,6 @@
 package egovframework.example.member.service.impl;
 
+import org.apache.ibatis.annotations.Param;
 import org.egovframe.rte.psl.dataaccess.mapper.Mapper;
 
 import egovframework.example.member.service.MemberVO;
@@ -27,4 +28,13 @@ public interface MemberMapper {
 
 //  정보수정할때 비밀번호 안바꿔도 그대로 적용
     String selectPasswordByIdx(Long memberIdx);
+    
+//  아이디 찾기
+    String findIdByEmail(String email);
+    
+//  비밀번호 찾기 시 사용자 존재 여부를 확인
+    MemberVO findByIdAndEmail(@Param("id") String id, @Param("email") String email);
+    
+//  비밀번호 찾기
+    int updatePassword(MemberVO member);
 }

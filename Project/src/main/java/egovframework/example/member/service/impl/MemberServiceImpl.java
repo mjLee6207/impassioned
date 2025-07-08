@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
 import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @Service
+@Log4j2
 public class MemberServiceImpl extends EgovAbstractServiceImpl implements MemberService {
-
+   
     @Autowired
     private MemberMapper memberMapper;
 

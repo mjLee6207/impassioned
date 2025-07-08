@@ -197,64 +197,64 @@
 
 	<!-- 스크립트 -->
 	<script>
-    function moveCategory(category) {
-        window.location.href = '/board/board.do?category=' + category;
-    }
+	function moveCategory(category) {
+	    window.location.href = '/board/board.do?category=' + category;
+	}
 
-    function fn_delete() {
-        if (confirm("정말 삭제하시겠습니까? 복구되지 않습니다.")) {
-            document.getElementById("deleteForm").submit();
-        }
-    }
+	function fn_delete() {
+	    if (confirm("정말 삭제하시겠습니까? 복구되지 않습니다.")) {
+	        document.getElementById("deleteForm").submit();
+	    }
+	}
 
-    $(document).ready(function () {
-        const $btn = $("#likeBtn");
-        const boardId = $btn.data("board-id");
-        const memberIdx = $btn.data("member-idx");
+	$(document).ready(function () {
+	    const $btn = $("#likeBtn");
+	    const boardId = $btn.data("board-id");
+	    const memberIdx = $btn.data("member-idx");
 
-        $.get("/countLike.do", { boardId }, function (count) {
-        	$("#likeCountText").html("좋아요 <span>" + res + "</span>개");
-        });
+	    // ✅ 좋아요 수는 로그인 여부 상관없이 항상 표시
+	    $.get("/countLike.do", { boardId }, function (count) {
+	        $("#likeCountText").html("좋아요 <span>" + count + "</span>개");
+	    });
 
-        /* 로그인 안된 경우 버튼 비활성화  */
-/*     if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
-        $btn.prop("disabled", true);
-        return;
-    } */
+	    // ✅ 로그인된 경우에만 상태 확인
+	    if (memberIdx && memberIdx !== "undefined" && memberIdx !== "null") {
+	        $.get("/checkLike.do", { boardId, memberIdx }, function (res) {
+	            if (res === true || res === "true") {
+	                $btn.text("♥").addClass("liked");
+	            }
+	        });
+	    }
 
-        /* 사용자가 이미 좋아요 눌렀는지 확인 */
-        $.get("/checkLike.do", { boardId, memberIdx }, function (res) {
-            if (res === true || res === "true") {
-                $btn.text("♥").addClass("liked");
-            }
-        });
+	    // ✅ 클릭 이벤트는 항상 등록하고, 내부에서 로그인 여부 확인
+	    $btn.on("click", function () {
+	        if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
+	            alert("로그인 후 이용해주세요 😊");
+	            const redirectUrl = encodeURIComponent(location.pathname + location.search);
+	            location.href = "/member/login.do?redirect=" + redirectUrl;
+	            return;
+	        }
 
-        $btn.on("click", function () {
-            const isLiked = $btn.text() === "♥";
-            const url = isLiked ? "/cancelLike.do" : "/addLike.do";
+	        const isLiked = $btn.text() === "♥";
+	        const url = isLiked ? "/cancelLike.do" : "/addLike.do";
 
-            if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
-                alert("로그인 후 이용해주세요 😊");
-                const redirectUrl = encodeURIComponent(location.pathname + location.search);
-                location.href = "/member/login.do?redirect=" + redirectUrl;
-                return;
-            }
+	        $.ajax({
+	            url,
+	            type: "POST",
+	            contentType: "application/json",
+	            data: JSON.stringify({ boardId, memberIdx }),
+	            success: function () {
+	                $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
 
-            $.ajax({
-                url,
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ boardId, memberIdx }),
-                success: function () {
-                    $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
+	                // ✅ 좋아요 수 새로고침
+	                $.get("/countLike.do", { boardId }, function (count) {
+	                    $("#likeCountText").html("좋아요 <span>" + count + "</span>개");
+	                });
+	            }
+	        });
+	    });
+	});
 
-                    $.get("/countLike.do", { boardId }, function (count) {
-                        $("#likeCountText").html("좋아요 " + count + "개");
-                    });
-                } // ← 이 중괄호만 위치 수정한 것
-            });
-        });
-    });
 </script>
 
 </body>

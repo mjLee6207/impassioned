@@ -67,6 +67,10 @@
 			<!-- 검색창 -->
 			<form action="${pageContext.request.contextPath}/board/board.do"
 				method="get" class="search-area">
+				
+				   <!-- ✅ 현재 게시판 카테고리 유지 -->
+				   <!-- 카테고리별검새긱능 추가 - 7월 8일 승태  -->
+    <input type="hidden" name="category" value="${param.category}" />
 				<!-- 7/7 인풋태그안에 검색창 null 제거 (민중) -->
 				<input type="text" class="search-input" id="searchKeyword"
 				       name="searchKeyword"
@@ -76,6 +80,7 @@
 					<i class="bi bi-search"></i>
 				</button>
 			</form>
+			
 			<!-- 인기게시글 영역 (여기만 c:choose로 대체) -->
 			<div class="popular-posts-section">
 				<div class="popular-posts-title">
@@ -151,7 +156,7 @@
 	</div>
 
 	<script>
-    // 엔터키로 검색
+    // 엔터키로 검색 - 초기 추가: 강승태 
     document.addEventListener("DOMContentLoaded", () => {
         const input = document.querySelector("#searchKeyword");
         input?.addEventListener("keydown", (e) => {
@@ -195,6 +200,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script> 
+<!-- 카테고리별 검색을 위해 추가: 7월 8일 강승태  -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const hiddenCategoryInput = document.querySelector("input[name='category']");
+    const currentCategory = new URLSearchParams(window.location.search).get("category");
+    if (hiddenCategoryInput && currentCategory) {
+      hiddenCategoryInput.value = currentCategory;
+    }
+  });
+</script>
 
 </body>
 </html>

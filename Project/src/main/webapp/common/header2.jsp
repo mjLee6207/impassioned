@@ -27,7 +27,7 @@
             <c:otherwise>
                 <div class="top-text-links">
                     <a href="/member/login.do">로그인</a>
-                    <a href="/member/register.do">회원가입</a>
+                    <a href="/member/login.do?mode=signup">회원가입</a>
                 </div>
             </c:otherwise>
         </c:choose>

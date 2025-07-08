@@ -221,6 +221,7 @@
                 location.href = "/member/login.do?redirect=" + redirectUrl;
                 return;
             }
+ 
 
             $.ajax({
                 url,

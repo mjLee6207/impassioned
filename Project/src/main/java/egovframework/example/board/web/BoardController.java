@@ -117,6 +117,7 @@ public class BoardController {
 
 	        try {
 	            image.transferTo(dest); // 파일 저장
+	            boardVO.setThumbnail(uploadDir + "/" + saveName); // ★ 여기서 썸네일 세팅!
 
 	            // [ERD 참고]
 	            // 1) t_file에도 저장하려면 FileVO 생성 및 fileService.insert() 등의 추가 코드 필요
@@ -256,5 +257,3 @@ public class BoardController {
 	}
 
 	}
-
-

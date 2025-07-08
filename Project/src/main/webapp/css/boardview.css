@@ -75,11 +75,13 @@
 .post-btns .btn {
     min-width: 90px;
 }
+
+/* 7월 8일 좋아요 ui수정 - 강승태 */
 .like-btn-wrap {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 30px 0 18px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;  /* 글자 기준으로 왼쪽 정렬 */
+  margin: 30px 0 18px 0;
 }
 
 /* 2025년 7월 8일 좋아요 버튼 UI수정 - 강승태 */
@@ -118,9 +120,25 @@
 }
 
 /* 마우스 오버 시 */
+.like-btn {
+  font-size: 26px;
+  color: red;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 14px; /* 👉 하트를 글자 '좋' 위로 살짝 이동 */
+  cursor: pointer;
+}
+
+.like-count-text {
+  font-size: 15px;
+  font-weight: 500;
+}
+
 .like-btn:hover {
     color: #ff5050;
 }
+
 
 /* 좋아요 수 텍스트 */
 .like-count-text {
@@ -129,6 +147,11 @@
     color: #222;
 }
 
+.like-count-text {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #333;
+}
 .comment-form {
     display: flex;
     width: 100%;

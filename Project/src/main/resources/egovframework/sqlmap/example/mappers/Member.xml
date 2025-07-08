@@ -67,4 +67,18 @@
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</update>
 
+	<!-- 아이디 찾기 -->
+	<select id="findIdByEmail" parameterType="string" resultType="string">
+	    SELECT id FROM MEMBER WHERE email = #{email}
+	</select>
+	
+	<!-- 비밀번호 찾기 시 사용자 존재 여부를 확인 -->
+	<select id="findByIdAndEmail" resultType="MemberVO">
+        SELECT * FROM MEMBER WHERE id = #{id} AND email = #{email}
+    </select>
+
+	<!-- 비밀번호 찾기 -->
+    <update id="updatePassword" parameterType="MemberVO">
+        UPDATE MEMBER SET password = #{password} WHERE id = #{id}
+    </update>
 </mapper>

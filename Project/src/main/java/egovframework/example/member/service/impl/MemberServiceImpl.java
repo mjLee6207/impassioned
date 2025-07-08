@@ -90,4 +90,20 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 
         memberMapper.updateMember(memberVO);
     }
+    
+//  아이디 찾기
+    @Override
+    public String findIdByEmail(String email) {
+        return memberMapper.findIdByEmail(email);
+    }
+
+    @Override
+    public MemberVO findByIdAndEmail(String id, String email) {
+        return memberMapper.findByIdAndEmail(id, email);
+    }
+
+    @Override
+    public int updatePassword(MemberVO member) {
+        return memberMapper.updatePassword(member);
+    }
 } 

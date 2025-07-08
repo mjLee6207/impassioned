@@ -23,6 +23,11 @@
         <input type="password" name="password" placeholder="비밀번호" required />
         <button class="submit-btn" type="submit">시작하기</button>
         <span class="toggle-link" onclick="toggleForm('signup')">회원가입</span>
+        <!-- 7/8 추가: 아이디/비밀번호 찾기 링크 -->
+		<div style="margin-top: 10px; text-align: center;">
+			<a href="${pageContext.request.contextPath}/member/findidform.do" style="margin-right: 10px;">아이디 찾기</a>
+			<a href="${pageContext.request.contextPath}/member/findpasswordform.do">비밀번호 찾기</a>
+		</div>
       </form>
 
       <!-- 회원가입 폼 -->

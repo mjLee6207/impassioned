@@ -154,6 +154,16 @@
       }
     });
   }
+  
+  window.onload = function () {
+	  const params = new URLSearchParams(window.location.search);
+	  const mode = params.get("mode"); // mode=signup이면 회원가입 먼저 보여줌
+	  if (mode === "signup") {
+	    toggleForm('signup');
+	  } else {
+	    toggleForm('login');
+	  }
+	};
 </script>
 </body>
 </html>

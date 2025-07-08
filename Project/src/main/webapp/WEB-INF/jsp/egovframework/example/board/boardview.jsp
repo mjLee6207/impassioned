@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
+<!-- 이거지우면 좋아요 안되요 저 집에갈거에여... 7월 8일 강승태 수정 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>요리 게시글 상세조회</title>
@@ -73,22 +75,28 @@
             <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
         </c:if>
 
-        <!-- ❤️ 좋아요 버튼(개수 포함) -->
-        <div class="like-btn-wrap">
-            <button type="button" class="like-btn" onclick="likePost()">
-                <i class="bi bi-heart-fill"></i>
-                <span>좋아요</span>
-                <span class="like-count">(${likeCount})</span>
-            </button>
+        <!-- ❤️ 좋아요 버튼 -->
+        <div class="like-btn-wrap" style="text-align:center; margin-top:20px;">
+            <button type="button" class="like-btn" id="likeBtn" data-board-id="${board.boardId}" data-member-idx="${loginUser.memberIdx}">♡</button>
+            <span class="like-count" id="likeCountText">0</span>
         </div>
+
+        <!-- 🔒 POST 방식 삭제를 위한 숨겨진 form -->
+        <form id="deleteForm" action="${pageContext.request.contextPath}/board/delete.do" method="post" style="display:none;">
+            <input type="hidden" name="boardId" value="${board.boardId}" />
+            <input type="hidden" name="category" value="${board.category}" />
+        </form>
+
 
         <!-- ====== 버튼 영역 (목록/수정/삭제) ====== -->
         <div class="post-btns" style="margin-top: 10px;">
             <a href="/board/board.do?category=${board.category}" class="btn btn-secondary btn-sm">목록</a>
             <c:if test="${loginUser.memberIdx eq board.writerIdx}">
                 <a href="/board/edition.do?boardId=${board.boardId}" class="btn btn-success btn-sm">수정</a>
-                <a href="/board/delete.do?boardId=${board.boardId}" class="btn btn-danger btn-sm"
-                   onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+
+<!-- 삭제버튼 중복해서 들어가있음 7월 8일 9시 53분 강승태 수정   -->
+              <a href="/board/delete.do?boardId=${board.boardId}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a> 
             </c:if>
         </div>
 
@@ -151,6 +159,66 @@
             document.getElementById("charCount").innerText = textarea.value.length;
         }
     }
+</script>
+
+<!-- 스크립트 -->
+<script>
+    function moveCategory(category) {
+        window.location.href = '/board/board.do?category=' + category;
+    }
+
+    function fn_delete() {
+        if (confirm("정말 삭제하시겠습니까? 복구되지 않습니다.")) {
+            document.getElementById("deleteForm").submit();
+        }
+    }
+
+    $(document).ready(function () {
+        const $btn = $("#likeBtn");
+        const boardId = $btn.data("board-id");
+        const memberIdx = $btn.data("member-idx");
+
+        $.get("/countLike.do", { boardId }, function (count) {
+            $("#likeCountText").text(count);
+        });
+
+        if (!memberIdx) {
+            $btn.prop("disabled", true);
+            return;
+        }
+
+        $.get("/checkLike.do", { boardId, memberIdx }, function (res) {
+            if (res === true || res === "true") {
+                $btn.text("♥").addClass("liked");
+            }
+        });
+
+        $btn.on("click", function () {
+            const isLiked = $btn.text() === "♥";
+            const url = isLiked ? "/cancelLike.do" : "/addLike.do";
+
+            if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
+                alert("로그인 후 이용해주세요 😊");
+                const redirectUrl = encodeURIComponent(location.pathname + location.search);
+                location.href = "/member/login.do?redirect=" + redirectUrl;
+                return;
+            }
+ 
+
+            $.ajax({
+                url,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ boardId, memberIdx }),
+                success: function () {
+                    $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
+                    $.get("/countLike.do", { boardId }, function (count) {
+                        $("#likeCountText").text(count);
+                    });
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 @charset "UTF-8";
 /* post.css */
 /* style.css, sidebar.css에 없는 상세뷰 전용 스타일만 작성 */
-.main-wrap{
+
 	
-}
+
 .board-wrap {
 	background: #fff;
     border-radius: 16px;
@@ -76,7 +76,11 @@
     min-width: 90px;
 }
 
-/* 7월 8일 좋아요 ui수정 - 강승태 */
+
+
+/* 2025년 7월 8일 좋아요 버튼 UI수정 - 강승태 */
+/* 좋아요 버튼 감싸는 영역 */
+
 .like-btn-wrap {
   display: flex;
   flex-direction: column;
@@ -84,14 +88,6 @@
   margin: 30px 0 18px 0;
 }
 
-/* 2025년 7월 8일 좋아요 버튼 UI수정 - 강승태 */
-/* 좋아요 버튼 감싸는 영역 */
-.like-btn-wrap {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 30px 0 18px 0;
-}
 
 /* 좋아요 버튼 전체 래퍼 */
 .like-btn-wrap {
@@ -145,6 +141,12 @@
     font-size: 14px;
     font-weight: bold;
     color: #222;
+}
+
+.like-count-text {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #333;
 }
 
 .like-count-text {

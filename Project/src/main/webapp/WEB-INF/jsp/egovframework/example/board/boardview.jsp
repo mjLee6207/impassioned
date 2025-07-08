@@ -213,7 +213,6 @@
         const memberIdx = $btn.data("member-idx");
 
         $.get("/countLike.do", { boardId }, function (count) {
-
         	$("#likeCountText").html("좋아요 <span>" + res + "</span>개");
         });
 

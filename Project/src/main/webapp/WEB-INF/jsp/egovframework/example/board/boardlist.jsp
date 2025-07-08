@@ -76,31 +76,6 @@
 					<i class="bi bi-search"></i>
 				</button>
 			</form>
-        <!-- 최신글 테이블 -->
-        <table class="post-table">
-            <thead>
-            <tr>
-                <th style="width:60%;">제목</th>
-                <th style="width:14%;">작성자</th>
-                <th style="width:13%;">작성일</th>
-                <th style="width:13%;">조회수</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="board" items="${boards}">
-                <tr>
-                    <td style="text-align:left;">
-                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}" class="post-title-link">${board.title}</a>
-                    </td>
-                    <td>${board.nickname}</td>
-                    <td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>
-                    <td>${board.viewCount}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <!-- 페이지네이션 샘플태그 -->
-
 			<!-- 인기게시글 영역 (여기만 c:choose로 대체) -->
 			<div class="popular-posts-section">
 				<div class="popular-posts-title">
@@ -127,6 +102,32 @@
 					</c:choose>
 				</div>
 			</div>
+        <!-- 최신글 테이블 -->
+        <table class="post-table">
+            <thead>
+            <tr>
+                <th style="width:60%;">제목</th>
+                <th style="width:14%;">작성자</th>
+                <th style="width:13%;">작성일</th>
+                <th style="width:13%;">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="board" items="${boards}">
+                <tr>
+                    <td style="text-align:left;">
+                        <a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}" class="post-title-link">${board.title}</a>
+                    </td>
+                    <td>${board.nickname}</td>
+                    <td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>
+                    <td>${board.viewCount}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        <!-- 페이지네이션 샘플태그 -->
+
+			
 
         <!-- 페이지네이션 -->
         <!-- 페이지 이동용 폼 (전용!) -->

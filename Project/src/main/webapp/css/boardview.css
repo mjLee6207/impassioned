@@ -110,10 +110,10 @@
     width: 100%;
     gap: 0;
 }
-
 .comment-textarea {
     flex: 1 1 auto;
     min-height: 60px;
+    height: 80px;         /* 추가: 높이 고정 */
     border: 1px solid #888;
     border-radius: 2px 0 0 2px;
     font-size: 15px;
@@ -123,23 +123,27 @@
     resize: none;
     margin-right: 0;
     width: 100%;
-    box-sizing: border-box;
+    box-sizing: border-box; /* 추가 */
 }
 
 .comment-submit-btn {
     width: 120px;
     min-width: 80px;
-    height: 60px;
-    border: none;
+    height: 80px;         /* 이미 있음 */
+    border: 1px solid #888;  /* 추가: textarea와 통일 */
+    border-left: none;        /* 겹치는 부분만 없애기 */
+    border-radius: 0 2px 2px 0;
     background: #555c68;
     color: #fff;
     font-size: 16px;
     font-weight: 600;
-    border-radius: 0 2px 2px 0;
     cursor: pointer;
     transition: background 0.15s;
-    margin-left: -1px;
+    margin-left: 0;          /* -1px 대신 0 */
+    box-sizing: border-box;  /* 추가 */
 }
+
+
 
 @media (max-width: 768px) {
     .main-wrap { flex-direction: column; gap:10px; max-width:99vw;}

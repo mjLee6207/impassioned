@@ -20,14 +20,14 @@
             <c:when test="${not empty sessionScope.loginUser}">
                 <div class="top-text-links">
                     <span>${sessionScope.loginUser.nickname}님 환영합니다!</span>
-                    <a href="/mypage/mypage.do">마이페이지</a>
-                    <a href="/member/logout.do">로그아웃</a>
+                    <a href="/mypage/mypage.do"><h7>마이페이지</h7></a>
+                    <a href="/member/logout.do"><h7>로그아웃</h7></a>
                 </div>
             </c:when>
             <c:otherwise>
                 <div class="top-text-links">
-                    <a href="/member/login.do">로그인</a>
-                    <a href="/member/login.do?mode=signup">회원가입</a>
+                    <a href="/member/login.do"><h7>로그인</h7></a>
+                    <a href="/member/login.do?mode=signup"><h7>회원가입</h7></a>
                 </div>
             </c:otherwise>
         </c:choose>

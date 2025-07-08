@@ -17,8 +17,9 @@
 
     <c:choose>
         <c:when test="${member != null}">
-            <div class="username">이름: <b>${member.nickname}</b></div>
-            <div class="useremail">이메일: ${member.email}</div>
+        <!-- 7/7 hyj 사용자 닉네임, 이름만 간결히 뜨도록 코드 수정 -->
+            <div class="username"><b>${member.nickname}</b></div>
+            <div class="useremail">${member.email}</div>
             <div class="joindate">
                 가입일:
                 <fmt:formatDate value="${member.joinDate}" pattern="yyyy-MM-dd" />

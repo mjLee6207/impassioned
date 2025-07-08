@@ -25,4 +25,9 @@ public interface BoardService {
 List<ReviewVO> selectReviewList(int boardId);
 // 댓글 등록
 int insertReview(ReviewVO reviewVO);
+// 댓글 수정
+void editReview(int reviewId, int memberIdx, String content);
+// 댓글 삭제
+void deleteReview(int reviewId, int memberIdx);
+List<BoardVO> selectBestPosts();
 }

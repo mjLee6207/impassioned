@@ -14,5 +14,10 @@ public interface MemberService {
     // 아이디 중복확인용 메서드
     boolean isIdAvailable(String id);
 
+//  회원 정보 조회
+    MemberVO selectMemberByIdx(Long memberIdx);
+    
+//  회원 정보 수정  
+    void updateMember(MemberVO memberVO);
 
 }

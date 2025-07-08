@@ -74,5 +74,24 @@ public int insertReview(ReviewVO reviewVO) {
 	// TODO Auto-generated method stub
 	return boardMapper.insertReview(reviewVO);
 }
+
+@Override
+public void editReview(int reviewId, int memberIdx, String content) {
+	// TODO Auto-generated method stub
+	 boardMapper.editReview(reviewId, memberIdx, content);
+}
+
+@Override
+public void deleteReview(int reviewId, int memberIdx) {
+	// TODO Auto-generated method stub
+	boardMapper.deleteReview(reviewId, memberIdx);
+}
+
+@Override
+public List<BoardVO> selectBestPosts() {
+	// TODO Auto-generated method stub
+	return boardMapper.selectBestPosts();
+}
+
    
 }

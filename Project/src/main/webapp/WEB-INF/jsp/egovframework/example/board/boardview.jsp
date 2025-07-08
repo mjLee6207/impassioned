@@ -129,11 +129,29 @@
             <div class="comment-list">
                 <c:forEach var="review" items="${reviews}">
                     <div class="comment-item">
+                    <div class="comment-row">
                         <div class="comment-content">${review.content}</div>
                         <div class="comment-meta">
                             <span class="comment-nickname">${review.nickname}</span>
                             <span class="comment-date">${review.writeDate}</span>
                         </div>
+                       <!-- 7월8일 댓글 수정 삭제 버튼 추가  -->
+            <c:if test="${loginUser != null && loginUser.memberIdx == review.writerIdx}">
+                <div class="comment-btn-group">
+                    <form action="/board/review/edit.do" method="post" style="display:inline;">
+                        <input type="hidden" name="reviewId" value="${review.reviewId}" />
+                        <input type="hidden" name="boardId" value="${board.boardId}" />
+                        <input type="hidden" name="content" value="${review.content}" />
+                        <button type="submit" class="comment-edit-btn">수정</button>
+                    </form>
+                    <form action="/board/review/delete.do" method="post" style="display:inline;">
+                        <input type="hidden" name="reviewId" value="${review.reviewId}" />
+                        <input type="hidden" name="boardId" value="${board.boardId}" />
+                        <button type="submit" class="comment-delete-btn">삭제</button>
+                    </form>
+                </div>
+            </c:if>
+            </div>
                     </div>
                 </c:forEach>
                 <c:if test="${fn:length(reviews) == 0}">

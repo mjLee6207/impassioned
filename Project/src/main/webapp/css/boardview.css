@@ -142,6 +142,65 @@
     margin-left: 0;          /* -1px 대신 0 */
     box-sizing: border-box;  /* 추가 */
 }
+/* 7월8일 댓글 수정 삭제 버튼 추가  */
+
+.comment-item {
+    margin-bottom: 15px;
+     display: block;
+    padding: 8px 0 12px 0;
+    border-bottom: 1px solid #e0e0e0;   /* 댓글마다 얇은 하단 줄 */
+}
+.comment-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.comment-content {
+    flex: 1 1 auto;
+    font-size: 15px;
+    /* 필요시 margin-right: 16px; */
+    word-break: break-all;
+}
+.comment-btn-group {
+    display: flex;
+    gap: 6px;
+}
+.comment-edit-btn, .comment-delete-btn {
+    padding: 2px 14px;
+    font-size: 13px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.comment-edit-btn {
+    background: #22a664;
+    color: #fff;
+}
+.comment-edit-btn:hover {
+    background: #198754;
+}
+.comment-delete-btn {
+    background: #e44747;
+    color: #fff;
+}
+.comment-delete-btn:hover {
+    background: #c82333;
+}
+.comment-meta {
+    font-size: 13px;
+    color: #555;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+.comment-list {
+    margin-top: 10px;
+}
+
+.comment-item:last-child {
+    border-bottom: none;   /* 마지막 댓글은 줄 없음 */
+}
 
 
 

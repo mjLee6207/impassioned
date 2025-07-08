@@ -30,32 +30,32 @@
             <span class="icon">🍽️</span>
             <span id="board-title-text">
                 <c:choose>
-                    <c:when test="${board.category eq 'korean'}">한식 게시판</c:when>
-                    <c:when test="${board.category eq 'western'}">양식 게시판</c:when>
-                    <c:when test="${board.category eq 'chinese'}">중식 게시판</c:when>
-                    <c:when test="${board.category eq 'japanese'}">일식 게시판</c:when>
-                    <c:when test="${board.category eq 'dessert'}">디저트 게시판</c:when>
+                    <c:when test="${board.category eq '한식'}">한식 게시판</c:when>
+                    <c:when test="${board.category eq '양식'}">양식 게시판</c:when>
+                    <c:when test="${board.category eq '중식'}">중식 게시판</c:when>
+                    <c:when test="${board.category eq '일식'}">일식 게시판</c:when>
+                    <c:when test="${board.category eq '디저트'}">디저트 게시판</c:when>
                     <c:otherwise>게시판</c:otherwise>
                 </c:choose>
             </span>
         </div>
         <!-- 카테고리 탭 -->
         <div class="category-tabs">
-            <div class="category-tab${board.category eq 'korean' ? ' active' : ''}" onclick="moveCategory('korean')">한식</div>
-            <div class="category-tab${board.category eq 'western' ? ' active' : ''}" onclick="moveCategory('western')">양식</div>
-            <div class="category-tab${board.category eq 'chinese' ? ' active' : ''}" onclick="moveCategory('chinese')">중식</div>
-            <div class="category-tab${board.category eq 'japanese' ? ' active' : ''}" onclick="moveCategory('japanese')">일식</div>
-            <div class="category-tab${board.category eq 'dessert' ? ' active' : ''}" onclick="moveCategory('dessert')">디저트</div>
+            <div class="category-tab${board.category eq '한식' ? ' active' : ''}" onclick="moveCategory('한식')">한식</div>
+            <div class="category-tab${board.category eq '양식' ? ' active' : ''}" onclick="moveCategory('양식')">양식</div>
+            <div class="category-tab${board.category eq '중식' ? ' active' : ''}" onclick="moveCategory('중식')">중식</div>
+            <div class="category-tab${board.category eq '일식' ? ' active' : ''}" onclick="moveCategory('일식')">일식</div>
+            <div class="category-tab${board.category eq '디저트' ? ' active' : ''}" onclick="moveCategory('디저트')">디저트</div>
         </div>
         <!-- 상단 정보 스타일수정금지 -->
         <div style="margin-bottom:18px;">
             <span class="category-badge">
                 <c:choose>
-                    <c:when test="${board.category eq 'korean'}">한식</c:when>
-                    <c:when test="${board.category eq 'western'}">양식</c:when>
-                    <c:when test="${board.category eq 'chinese'}">중식</c:when>
-                    <c:when test="${board.category eq 'japanese'}">일식</c:when>
-                    <c:when test="${board.category eq 'dessert'}">디저트</c:when>
+                    <c:when test="${board.category eq '한식'}">한식</c:when>
+                    <c:when test="${board.category eq '양식'}">양식</c:when>
+                    <c:when test="${board.category eq '중식'}">중식</c:when>
+                    <c:when test="${board.category eq '일식'}">일식</c:when>
+                    <c:when test="${board.category eq '디저트'}">디저트</c:when>
                 </c:choose>
             </span>
             작성자: <b>${board.nickname}</b>

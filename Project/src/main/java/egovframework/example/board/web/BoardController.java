@@ -1,9 +1,13 @@
 package egovframework.example.board.web;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
@@ -59,7 +64,8 @@ public class BoardController {
       log.info("테스트2 : " + totCnt);
 //      페이지 모든 정보: paginationInfo
       model.addAttribute("paginationInfo", paginationInfo);
-
+      List<BoardVO> bestPosts = boardService.selectBestPosts();
+      model.addAttribute("bestPosts", bestPosts);
       return "board/boardlist";
    }
  
@@ -80,7 +86,9 @@ public class BoardController {
 //	insert : 저장 버튼 클릭시
 //	7/7 삭제 후 원래 카테고리로 돌아가기,  리퀘스트팜,리턴 추가 (민중)
 	@PostMapping("/board/add.do")
-	public String insert(@ModelAttribute BoardVO boardVO, HttpSession session) throws UnsupportedEncodingException {
+	public String insert(@ModelAttribute BoardVO boardVO, 
+	@RequestParam(value = "image", required = false) MultipartFile image, 
+			HttpSession session,HttpServletRequest req) throws UnsupportedEncodingException {
 	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 	    if (loginUser == null) {
 	        return "redirect:/member/login.do"; // 비로그인 시 로그인 페이지로
@@ -93,6 +101,34 @@ public class BoardController {
 	
 	    // 서버에서 로그인된 사용자의 인덱스 강제 설정
 	    boardVO.setWriterIdx(loginUser.getMemberIdx().intValue());
+
+	    // ==========================
+	    // 1. 이미지 파일 처리 (여기서부터)
+	    // ==========================
+	    if (image != null && !image.isEmpty()) {
+	        String uploadDir = "/upload";
+	        String realPath = req.getServletContext().getRealPath(uploadDir);
+	        File uploadFolder = new File(realPath);
+	        if (!uploadFolder.exists()) uploadFolder.mkdirs();
+
+	        String uuid = UUID.randomUUID().toString();
+	        String saveName = uuid + "_" + image.getOriginalFilename();
+	        File dest = new File(uploadFolder, saveName);
+
+	        try {
+	            image.transferTo(dest); // 파일 저장
+
+	            // [ERD 참고]
+	            // 1) t_file에도 저장하려면 FileVO 생성 및 fileService.insert() 등의 추가 코드 필요
+	            //    (간단 버전은 board 테이블만 써도 됨!)
+	            // 2) 게시글에도 썸네일 경로 저장
+	            boardVO.setThumbnail(uploadDir + "/" + saveName); // **board.thumbnail 컬럼**
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            // 필요시: 오류 안내
+	        }
+	    }
 	
 	    log.info("작성자 포함 게시글: {}", boardVO);
 	    boardService.insert(boardVO);
@@ -190,6 +226,35 @@ public class BoardController {
 	       // 댓글 작성 후 다시 상세페이지로 이동
 	       return "redirect:/board/view.do?boardId=" + reviewVO.getBoardId();
 	   }
+	// 댓글 수정
+	@PostMapping("/board/review/edit.do")    // ⬅️ 여기!
+	public String editReview(
+	        @RequestParam int reviewId,
+	        @RequestParam int boardId,
+	        @RequestParam String content,
+	        HttpSession session
+	) {
+	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	    if (loginUser == null) {
+	        return "redirect:/member/login.do";
+	    }
+	    boardService.editReview(reviewId, loginUser.getMemberIdx().intValue(), content);
+	    return "redirect:/board/view.do?boardId=" + boardId;
+	}
+
+	// 댓글 삭제
+	@PostMapping("/board/review/delete.do")  // ⬅️ 여기!
+	public String deleteReview(@RequestParam int reviewId, @RequestParam int boardId, HttpSession session) {
+	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	    if (loginUser == null) {
+	        return "redirect:/member/login.do";
+	    }
+	    // 서비스에서 로그인 유저가 작성한 댓글만 삭제
+	    boardService.deleteReview(reviewId, loginUser.getMemberIdx().intValue());
+	    // 삭제 후 해당 게시글 상세로 이동
+	    return "redirect:/board/view.do?boardId=" + boardId;
+	}
+
 	}
 
 

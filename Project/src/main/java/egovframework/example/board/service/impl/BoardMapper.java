@@ -2,6 +2,7 @@ package egovframework.example.board.service.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.egovframe.rte.psl.dataaccess.mapper.Mapper;
 
 import egovframework.example.board.service.BoardVO;
@@ -28,4 +29,7 @@ public interface BoardMapper {
    
    List<ReviewVO> selectReviewList(int boardId);
    int insertReview(ReviewVO reviewVO);
+   void editReview(@Param("reviewId") int reviewId, @Param("memberIdx") int memberIdx, @Param("content") String content);
+   void deleteReview(@Param("reviewId") int reviewId, @Param("memberIdx") int memberIdx);
+   List<BoardVO> selectBestPosts();
 }

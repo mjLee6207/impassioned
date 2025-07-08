@@ -83,8 +83,8 @@
 				</div>
 				<div class="top-posts-row">
 					<c:choose>
-						<c:when test="${not empty topPosts}">
-							<c:forEach var="board" items="${topPosts}">
+						<c:when test="${not empty bestPosts}">
+							<c:forEach var="board" items="${bestPosts}">
 								<div class="top-post-card">
 									<a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}">
 										<img src="${board.thumbnail}" class="top-thumb-img" alt="썸네일" />

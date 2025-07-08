@@ -2,8 +2,11 @@
     --main-green: #1e8a57;
     --hover-green: #118e6a;
 }
-body { background: #f8f9fa; margin:0; font-family: 'Noto Sans KR', sans-serif;}
+body {
+	
+	background: #f8f9fa; margin:0; font-family: 'Noto Sans KR', sans-serif;}
 .main-navbar-bg {
+	margin-bottom:25px;
     background: #fff;
     border-bottom: 1.3px solid #e8e8e8;
     min-width: 100vw;

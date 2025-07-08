@@ -2,6 +2,7 @@
 /* 오직 게시글 작성 폼(boardwrite.jsp) 전용 스타일 */
 
 .write-box {
+	
     background: #fff;
     border-radius: 16px;
     padding: 32px 36px;

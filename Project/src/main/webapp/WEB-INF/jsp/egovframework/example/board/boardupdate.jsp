@@ -24,7 +24,8 @@
         <input type="hidden" name="boardId" value="${boardVO.boardId}" />
         <!-- 7/7일 리다이렉트용 정보들(민중) -->
 		<input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
-		<input type="hidden" name="pageIndex" value="${param.pageIndex}" />
+		<input type="hidden" name="pageIndex" 
+       value="${not empty param.pageIndex ? param.pageIndex : 1}" />
 		<input type="hidden" name="category" value="${param.category}" />
             <!-- 카테고리 선택 -->
             <label for="category" class="form-label">카테고리</label>

@@ -23,64 +23,58 @@
 		<div class="sidebar-wrap">
 			<jsp:include page="/common/sidebar.jsp" />
 		</div>
-
-		<!-- 게시글 상세 -->
-		<div class="board-wrap">
-			<!-- 타이틀 -->
-			<div class="board-title">
-				<span class="icon">🍽️</span> <span id="board-title-text"> <c:choose>
-						<c:when test="${board.category eq 'korean'}">한식 게시판</c:when>
-						<c:when test="${board.category eq 'western'}">양식 게시판</c:when>
-						<c:when test="${board.category eq 'chinese'}">중식 게시판</c:when>
-						<c:when test="${board.category eq 'japanese'}">일식 게시판</c:when>
-						<c:when test="${board.category eq 'dessert'}">디저트 게시판</c:when>
-						<c:otherwise>게시판</c:otherwise>
-					</c:choose>
-				</span>
-			</div>
-			<!-- 카테고리 탭 -->
-			<div class="category-tabs">
-				<div
-					class="category-tab${board.category eq 'korean' ? ' active' : ''}"
-					onclick="moveCategory('korean')">한식</div>
-				<div
-					class="category-tab${board.category eq 'western' ? ' active' : ''}"
-					onclick="moveCategory('western')">양식</div>
-				<div
-					class="category-tab${board.category eq 'chinese' ? ' active' : ''}"
-					onclick="moveCategory('chinese')">중식</div>
-				<div
-					class="category-tab${board.category eq 'japanese' ? ' active' : ''}"
-					onclick="moveCategory('japanese')">일식</div>
-				<div
-					class="category-tab${board.category eq 'dessert' ? ' active' : ''}"
-					onclick="moveCategory('dessert')">디저트</div>
-			</div>
-			<!-- 상단 정보 -->
-			<div style="margin-bottom: 18px;">
-				<span class="category-badge"> <c:choose>
-						<c:when test="${board.category eq 'korean'}">한식</c:when>
-						<c:when test="${board.category eq 'western'}">양식</c:when>
-						<c:when test="${board.category eq 'chinese'}">중식</c:when>
-						<c:when test="${board.category eq 'japanese'}">일식</c:when>
-						<c:when test="${board.category eq 'dessert'}">디저트</c:when>
-					</c:choose>
-				</span> 작성자: <b>${board.nickname}</b> | 작성일: ${board.writeDate} | 조회수:
-				${board.viewCount}
-			</div>
-			<!-- 상세 내용 -->
-			<div class="post-section-title">재료준비</div>
-			<div class="post-content">
-				<c:out value="${board.prepare}" escapeXml="false" />
-			</div>
-			<div class="post-section-title">조리법</div>
-			<div class="post-content">
-				<c:out value="${board.content}" escapeXml="false" />
-			</div>
-			<c:if test="${not empty board.thumbnail}">
-				<div class="post-section-title">사진</div>
-				<img src="${board.thumbnail}" alt="요리사진" class="post-img" />
-			</c:if>
+    <!-- 게시글 상세 -->
+    <div class="board-wrap">
+        <!-- 타이틀 -->
+        <div class="board-title">
+            <span class="icon">🍽️</span>
+            <span id="board-title-text">
+                <c:choose>
+                    <c:when test="${board.category eq 'korean'}">한식 게시판</c:when>
+                    <c:when test="${board.category eq 'western'}">양식 게시판</c:when>
+                    <c:when test="${board.category eq 'chinese'}">중식 게시판</c:when>
+                    <c:when test="${board.category eq 'japanese'}">일식 게시판</c:when>
+                    <c:when test="${board.category eq 'dessert'}">디저트 게시판</c:when>
+                    <c:otherwise>게시판</c:otherwise>
+                </c:choose>
+            </span>
+        </div>
+        <!-- 카테고리 탭 -->
+        <div class="category-tabs">
+            <div class="category-tab${board.category eq 'korean' ? ' active' : ''}" onclick="moveCategory('korean')">한식</div>
+            <div class="category-tab${board.category eq 'western' ? ' active' : ''}" onclick="moveCategory('western')">양식</div>
+            <div class="category-tab${board.category eq 'chinese' ? ' active' : ''}" onclick="moveCategory('chinese')">중식</div>
+            <div class="category-tab${board.category eq 'japanese' ? ' active' : ''}" onclick="moveCategory('japanese')">일식</div>
+            <div class="category-tab${board.category eq 'dessert' ? ' active' : ''}" onclick="moveCategory('dessert')">디저트</div>
+        </div>
+        <!-- 상단 정보 스타일수정금지 -->
+        <div style="margin-bottom:18px;">
+            <span class="category-badge">
+                <c:choose>
+                    <c:when test="${board.category eq 'korean'}">한식</c:when>
+                    <c:when test="${board.category eq 'western'}">양식</c:when>
+                    <c:when test="${board.category eq 'chinese'}">중식</c:when>
+                    <c:when test="${board.category eq 'japanese'}">일식</c:when>
+                    <c:when test="${board.category eq 'dessert'}">디저트</c:when>
+                </c:choose>
+            </span>
+            작성자: <b>${board.nickname}</b>
+            | 작성일: ${board.writeDate}
+            | 조회수: ${board.viewCount}
+        </div>
+        <!-- 상세 내용 -->
+        <div class="post-section-title">재료준비</div>
+        <div class="post-content">
+            <c:out value="${board.prepare}" escapeXml="false"/>
+        </div>
+        <div class="post-section-title">조리법</div>
+        <div class="post-content">
+            <c:out value="${board.content}" escapeXml="false"/>
+        </div>
+        <c:if test="${not empty board.thumbnail}">
+            <div class="post-section-title">사진</div>
+            <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
+        </c:if>
 
 <!-- 7월 8일 12시 좋아요 UI수정 - 강승태  -->
 			<!-- ❤️ 좋아요 버튼 -->

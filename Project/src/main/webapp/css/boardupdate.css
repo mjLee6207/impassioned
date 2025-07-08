@@ -1,8 +1,8 @@
 body { background: #f8f9fa; }
 .container-box {
     display: flex;
+    align-items: flex-start; 
     flex-direction: row;
-    margin-top: 32px;
     max-width: 1100px;
 }
 .write-box {

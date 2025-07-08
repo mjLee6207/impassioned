@@ -3,29 +3,6 @@
 <head>
   <title>좋아요 테스트</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    .like-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 10px;
-    }
-    .likeButton {
-      font-size: 32px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: gray;
-    }
-    .likeButton.liked {
-      color: red;
-    }
-    .likeCount {
-      margin-top: 6px;
-      font-size: 14px;
-      color: black;
-    }
-  </style>
 </head>
 <body>
   <h2>좋아요 테스트</h2>

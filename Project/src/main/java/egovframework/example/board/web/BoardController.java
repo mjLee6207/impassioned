@@ -33,7 +33,6 @@ import lombok.extern.log4j.Log4j2;
 	   @Autowired
 	   private BoardService boardService;
 	
-	
 	//	전체조회
 		@GetMapping("/board/board.do")
 		public String name(
@@ -266,4 +265,4 @@ import lombok.extern.log4j.Log4j2;
 	
 		}
 	
-	
+

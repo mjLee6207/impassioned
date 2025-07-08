@@ -125,13 +125,13 @@
     UPDATE BOARD_REVIEW
     SET CONTENT = #{content}
     WHERE REVIEW_ID = #{reviewId}
-      AND MEMBER_IDX = #{memberIdx}
+      AND WRITER_IDX = #{memberIdx}
 </update>
 	<!-- 댓글 삭제 기능  -->
 	<delete id="deleteReview">
     DELETE FROM BOARD_REVIEW
     WHERE REVIEW_ID = #{reviewId}
-      AND MEMBER_IDX = #{memberIdx}
+      AND WRITER_IDX = #{memberIdx}
 </delete>
 <!-- 인기게시글 조회  -->
 <select id="selectBestPosts" resultType="egovframework.example.board.service.BoardVO">

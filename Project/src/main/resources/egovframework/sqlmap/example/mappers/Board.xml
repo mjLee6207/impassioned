@@ -14,7 +14,9 @@
 <select id="selectBoardList" parameterType="Criteria" resultType="BoardVO">
 	SELECT 
 		b.*, 
-		m.nickname
+		m.nickname,
+		<!-- 게시판에서 좋아요 수 카운터를 위해 한줄 추가  2025년 7월 9일 오전 10시 41분: 강승태 -->
+(SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount
 	FROM BOARD b
 	JOIN MEMBER m ON b.writer_idx = m.member_idx
 	WHERE 1=1

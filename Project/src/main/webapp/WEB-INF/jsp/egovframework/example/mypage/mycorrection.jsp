@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>회원 정보 수정</title>
@@ -28,12 +29,11 @@
 
         <div class="username">${member.nickname}</div>
         <div class="useremail">${member.email}</div>
-        <div class="joindate">가입일: ${member.joinDate}</div>
-        <ul class="side-menu">
-            <li><i class="bi bi-person"></i> <span>내 정보 수정</span></li>
-            <li><i class="bi bi-box-arrow-in-right"></i> <a href="/member/logout.do"><span>로그아웃</span></a></li>
-        </ul>
-    </div>
+       <div class="joindate">
+                가입일:
+                <fmt:formatDate value="${member.joinDate}" pattern="yyyy-MM-dd" />
+            </div>
+            </div>
 
     <!-- 우측 정보 수정 영역 -->
     <div class="right-box">

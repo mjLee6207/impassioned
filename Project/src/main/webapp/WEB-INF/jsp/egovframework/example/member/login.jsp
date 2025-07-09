@@ -11,20 +11,29 @@
 <div class="wrapper">
   <div class="container">
     <div class="left-slide">
-    <img src="${pageContext.request.contextPath}/images/3조사진/마크사진.png"  alt="마크" />
+    <img src="${pageContext.request.contextPath}/images/슬라이드/깍두기.jpg"  alt="깍두기" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/부찌.jpg"  alt="부찌" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/파베초콜릿.png"  alt="파베초콜릿" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/오니기리.jpg"  alt="오니기리" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/브런치.jpg"  alt="브런치" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/부르기뇽.jpg"  alt="부르기뇽" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/미네.jpg"  alt="미네" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/위안샤오.jpg"  alt="위안샤오" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/동파육.jpg"  alt="동파육" class="slide-image"/>
+  <img src="${pageContext.request.contextPath}/images/슬라이드/마라.jpg"  alt="마라" class="slide-image"/>
     </div>
 
     <div class="right-login">
       <!-- 로그인 폼 -->
       <form class="form-box" id="loginForm" method="post" action="${pageContext.request.contextPath}/member/login.do">
       <input type="hidden" name="redirect" value="${param.redirect}" />
-        <h1>로그인</h1>
+        <h1>LOGIN</h1>
         <input type="email" name="id" placeholder="이메일" required />
         <input type="password" name="password" placeholder="비밀번호" required />
-        <button class="submit-btn" type="submit">시작하기</button>
-        <span class="toggle-link" onclick="toggleForm('signup')">회원가입</span>
+        <button class="submit-btn" type="submit"><h3>시작하기</h3></button>
+        <span class="toggle-link" onclick="toggleForm('signup')"><h3>회원가입</h3></span>
         <!-- 7/8 추가: 아이디/비밀번호 찾기 링크 -->
-		<div style="margin-top: 10px; text-align: center;">
+		<div class="find">
 			<a href="${pageContext.request.contextPath}/member/findidform.do" style="margin-right: 10px;">아이디 찾기</a>
 			<a href="${pageContext.request.contextPath}/member/findpasswordform.do">비밀번호 찾기</a>
 		</div>
@@ -32,7 +41,7 @@
 
       <!-- 회원가입 폼 -->
       <form class="form-box" id="signupForm" method="post" action="${pageContext.request.contextPath}/member/register.do" style="display: none;" onsubmit="return validateForm()">
-        <h1>회원가입</h1>
+        <h1>WELCOME!</h1>
 
         <div class="form-group">
           <input type="email" id="id" name="id" placeholder="이메일형식의 아이디" required />
@@ -60,26 +69,28 @@
         </div>
         <span id="nicknameStatus"></span>
 
-        <button class="submit-btn" type="submit">가입하기</button>
-        <span class="toggle-link" onclick="toggleForm('login')">로그인</span>
+        <button class="submit-btn" type="submit"><h4>가입하기</h4></button>
+        <span class="toggle-link" onclick="toggleForm('login')"><h4>로그인</h4></span>
       </form>
     </div>
   </div>
 </div>
 
 <script>
-  const slides = document.querySelectorAll('.slide-image');
-  let currentSlide = 0;
-  setInterval(() => {
-    slides[currentSlide].classList.remove('active');
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add('active');
-  }, 3000);
-
-  function toggleForm(formType) {
-    document.getElementById("loginForm").style.display = formType === 'login' ? 'block' : 'none';
-    document.getElementById("signupForm").style.display = formType === 'signup' ? 'block' : 'none';
-  }
+document.addEventListener('DOMContentLoaded', function () {
+	  const slides = document.querySelectorAll('.slide-image');
+	  let currentSlide = 0;
+	  
+	  // 처음 이미지 활성화
+	  slides[currentSlide].classList.add('active');
+	  
+	  // 슬라이드 자동 전환
+	  setInterval(() => {
+	    slides[currentSlide].classList.remove('active'); // 현재 활성화된 이미지 숨기기
+	    currentSlide = (currentSlide + 1) % slides.length; // 다음 이미지로 이동
+	    slides[currentSlide].classList.add('active'); // 새 이미지를 활성화
+	  }, 7000); // 7초마다 이미지 변경
+	});
 
   let emailVerified = false;
   let nicknameChecked = false;

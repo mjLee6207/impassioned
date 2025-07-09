@@ -51,6 +51,13 @@
 				<label for="instructions" class="form-label">조리법</label>
 				<textarea class="form-control" id="content" name="content" rows="6"
 				          maxlength="10000" required>${boardVO.content}</textarea>
+				          <!-- [★ 여기에 기존 이미지 썸네일 보여주기 추가 ★] -->
+<c:if test="${not empty boardVO.thumbnail}">
+    <label class="form-label">현재 등록된 사진</label>
+    <div>
+        <img src="${boardVO.thumbnail}" alt="현재 이미지" style="max-width: 300px; max-height: 200px; margin-bottom: 12px;" />
+    </div>
+</c:if>
             <!-- 사진 파일 업로드 -->
             <label for="image" class="form-label">사진 업로드</label>
             <input type="file" class="form-control" id="image" name="image" accept="image/*" />
@@ -76,6 +83,29 @@ function fn_delete() {
         $("#addForm").attr("action","<c:out value='/board/delete.do' />").submit();
     }
 }
+
+$('#image').on('change', function(event) {
+    var input = event.target;
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            // 기존 썸네일 숨기기
+            $('img[alt="현재 이미지"]').hide();
+
+            var previewImg = $('#imagePreview');
+            if (previewImg.length === 0) {
+                $('<img id="imagePreview" style="max-width: 300px; max-height: 200px; margin-bottom: 12px;" alt="미리보기"/>').insertBefore($('#image'));
+                previewImg = $('#imagePreview');
+            }
+            previewImg.attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        // 파일 선택 해제 시 기존 썸네일 보이도록 처리
+        $('img[alt="현재 이미지"]').show();
+        $('#imagePreview').remove();
+    }
+});
 </script>
 </body>
 </html>

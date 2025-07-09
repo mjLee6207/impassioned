@@ -180,6 +180,20 @@ document.addEventListener('DOMContentLoaded', function () {
 	    toggleForm('login');
 	  }
 	};
+	
+	// ✅ 이 부분 추가!
+	function toggleForm(mode) {
+	  const loginForm = document.getElementById('loginForm');
+	  const signupForm = document.getElementById('signupForm');
+
+	  if (mode === 'signup') {
+	    loginForm.style.display = 'none';
+	    signupForm.style.display = 'block';
+	  } else {
+	    loginForm.style.display = 'block';
+	    signupForm.style.display = 'none';
+	  }
+	}
 </script>
 </body>
 </html>

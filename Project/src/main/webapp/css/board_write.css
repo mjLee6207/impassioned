@@ -24,6 +24,8 @@
             box-shadow: 5px 5px 5px darkgray;
 }
 
+
+
         @media (max-width: 768px) {
             .container-box { flex-direction: column; max-width: 100%; }
             .left-box{display: none;}

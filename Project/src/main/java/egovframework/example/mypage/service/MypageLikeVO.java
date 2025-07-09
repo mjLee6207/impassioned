@@ -15,4 +15,5 @@ public class MypageLikeVO {
     private String writerName; // 작성자 이름
     private Date likeDate;     // 좋아요 누른 날짜
     private int viewCount;		// 
+    private int likeCount; // 게시판에 좋아요를 보여주기위해 추가 25년 7월 9일 : 강승태
 }

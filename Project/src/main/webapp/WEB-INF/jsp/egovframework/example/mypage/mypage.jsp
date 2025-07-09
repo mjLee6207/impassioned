@@ -45,30 +45,30 @@
                         </button>
                     </div>
                     <table id="myPostsTable" class="table table-hover">
-    <thead>
-        <tr>
-            <th class="text-center" style="width:65%;">제목</th>
-            <th class="text-center" style="width:18%;">작성일</th>
-            <th class="text-center" style="width:17%;">조회수</th>
-        </tr>
-    </thead>
+<thead>
+    <tr>
+        <th class="text-center" style="width:50%;">제목</th>
+        <th class="text-center" style="width:20%;">작성일</th>
+        <th class="text-center" style="width:20%;">조회수</th>
+        <th class="text-center" style="width:10%;">좋아요</th>        
+    </tr>
+</thead>
     <tbody>
-        <c:forEach var="post" items="${myPosts}">
-            <tr>
-                <td class="text-start">
-                    <a href="${pageContext.request.contextPath}/board/view.do?boardId=${post.boardId}" class="post-title-link">${post.title}</a>
-                </td>
-                <td class="text-center">
-                    <fmt:formatDate value="${post.writeDate}" pattern="yyyy-MM-dd" />
-                </td>
-                <td class="text-center">
-                    ${post.viewCount}
-                </td>
-            </tr>
-        </c:forEach>
+<c:forEach var="post" items="${myPosts}">
+    <tr>
+        <td class="text-start">
+            <a href="${pageContext.request.contextPath}/board/view.do?boardId=${post.boardId}" class="post-title-link">${post.title}</a>
+        </td>
+        <td class="text-center">
+            <fmt:formatDate value="${post.writeDate}" pattern="yyyy-MM-dd" />
+        </td>
+        <td class="text-center">${post.viewCount}</td>
+        <td class="text-center">${post.likeCount}</td>
+    </tr>
+</c:forEach>
         <c:if test="${empty myPosts}">
             <tr>
-                <td colspan="3" class="text-secondary text-center">아직 작성한 게시글이 없습니다.</td>
+                <td colspan="4" class="text-secondary text-center">아직 작성한 게시글이 없습니다.</td>
             </tr>
         </c:if>
     </tbody>
@@ -90,6 +90,8 @@
                 <th class="text-center col-author">작성자</th>
                 <th class="text-center col-date">작성일</th>
                 <th class="text-center col-views">조회수</th>
+                <!--25년 7월 9일 마이페이지 좋아요 수 보이게 수정: 강승태  -->
+                <th class="text-center col-likes">좋아요</th>              
             </tr>
         </thead>
         <tbody>
@@ -103,9 +105,12 @@
                         <fmt:formatDate value="${like.writeDate}" pattern="yyyy-MM-dd" />
                     </td>
                     <td class="text-center">${like.viewCount}</td>
-                </tr>
+                 <!-- 게시판에 좋아요수 표시를 위해 추가 7월 9일 :강승태 -->
+                     <td class="text-center">${like.likeCount}</td>
+                     </tr>
             </c:forEach>
             <c:if test="${empty likedPosts}">
+            
                 <tr>
                     <td colspan="4" class="text-secondary text-center">좋아요를 남긴 게시글이 없습니다</td>
                 </tr>

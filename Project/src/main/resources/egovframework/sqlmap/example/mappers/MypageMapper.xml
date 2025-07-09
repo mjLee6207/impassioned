@@ -6,26 +6,27 @@
 <mapper namespace="egovframework.example.mypage.service.impl.MypageMapper">
 
     <!-- 내가 좋아요한 글 목록 -->
-    <select id="selectLikedPosts" parameterType="java.lang.Long" resultType="egovframework.example.mypage.service.MypageLikeVO">
-        SELECT
-            b.BOARD_ID       AS boardId,
-            b.TITLE          AS title,
-            b.CATEGORY       AS category,
-            b.WRITE_DATE     AS writeDate,
-            b.THUMBNAIL      AS thumbnail,
-            b.WRITER_IDX     AS writerIdx,
-            b.VIEW_COUNT     AS viewCount,
-            m.NICKNAME       AS writerName,
-            l.LIKE_DATE      AS likeDate
-        FROM
-            BOARD_LIKE l
-            INNER JOIN BOARD b ON l.BOARD_ID = b.BOARD_ID
-            INNER JOIN MEMBER m ON b.WRITER_IDX = m.MEMBER_IDX
-        WHERE
-            l.MEMBER_IDX = #{memberIdx}
-        ORDER BY
-            l.LIKE_DATE DESC
-    </select>
+<select id="selectLikedPosts" parameterType="java.lang.Long" resultType="egovframework.example.mypage.service.MypageLikeVO">
+    SELECT
+        b.BOARD_ID       AS boardId,
+        b.TITLE          AS title,
+        b.CATEGORY       AS category,
+        b.WRITE_DATE     AS writeDate,
+        b.THUMBNAIL      AS thumbnail,
+        b.WRITER_IDX     AS writerIdx,
+        b.VIEW_COUNT     AS viewCount,
+        m.NICKNAME       AS writerName,
+        l.LIKE_DATE      AS likeDate
+        , (SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount
+    FROM
+        BOARD_LIKE l
+        INNER JOIN BOARD b ON l.BOARD_ID = b.BOARD_ID
+        INNER JOIN MEMBER m ON b.WRITER_IDX = m.MEMBER_IDX
+    WHERE
+        l.MEMBER_IDX = #{memberIdx}
+    ORDER BY
+        l.LIKE_DATE DESC
+</select>
 
     <!-- 내가 작성한 글 목록 -->
     <select id="selectMyPosts" parameterType="java.lang.Long" resultType="egovframework.example.mypage.service.MypageMyPostVO">
@@ -35,7 +36,9 @@
             b.CATEGORY     AS category,
             b.WRITE_DATE   AS writeDate,
             b.THUMBNAIL    AS thumbnail,
-            b.VIEW_COUNT   AS viewCount
+            b.VIEW_COUNT   AS viewCount,
+            (SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount
+            
         FROM
             BOARD b
         WHERE

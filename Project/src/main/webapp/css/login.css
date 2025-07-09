@@ -91,6 +91,7 @@ body, html {
   border-radius: 4px;
   margin-left: 8px; /* ✅ 핵심 */
   cursor: pointer;
+  font-weight: bold;
 }
 
 .form-box input[type=password], .form-box input[type=email], .form-box input[type=text]
@@ -153,3 +154,7 @@ input::placeholder {
   max-height: 100%;
   object-fit: contain; /* ✅ 이미지가 잘리지 않게 전체 보여줌 */
 }
+
+.find { margin-top: 20px; margin-left: 10px; text-align:center; }
+
+.find a {color:#118e6a; text-decoration: none; font-weight: bold; text-decoration: underline; }

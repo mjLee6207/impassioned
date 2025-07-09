@@ -69,8 +69,8 @@
         </div>
         <span id="nicknameStatus"></span>
 
-        <button class="submit-btn" type="submit"><h4>가입하기</h4></button>
-        <span class="toggle-link" onclick="toggleForm('login')"><h4>로그인</h4></span>
+        <button class="submit-btn" type="submit"><h3>가입하기</h3></button>
+        <span class="toggle-link" onclick="toggleForm('login')"><h3>로그인</h3></span>
       </form>
     </div>
   </div>

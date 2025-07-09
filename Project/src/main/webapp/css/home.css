@@ -15,10 +15,12 @@ body {
 
 /* 로고 */
 .logo {
-	font-size: 48px;
+	font-size: 100px;
+	font-weight: bold;
 	color: #4CAF50;
-	margin: 20px 0;
-	font-family: 'Brush Script MT', cursive;
+	text-align: center;
+	margin-top: 10px;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
 }
 
 /* 검색창 */
@@ -30,9 +32,11 @@ body {
 }
 
 .search-bar input {
-	width: 70%;
-	padding: 12px 20px;
-	font-size: 16px;
+	margin-top: 15px;
+	margin-bottom: 20px;
+	width: 80%;
+	padding: 24px 40px;
+	font-size: 18px;
 	border-radius: 50px;
 	border: 1px solid #ccc;
 	outline: none;
@@ -43,14 +47,13 @@ body {
 	box-shadow: 0 0 5px #4CAF50;
 }
 
-/* 추천 레시피 제목 */
+/* 카테고리별 추천 레시피 */
 .section-title {
 	color: #4CAF50;
-	margin-top: 40px;
-	font-size: 20px;
-	font-weight: bold;
-/* text-align: center; */
-
+	margin-top: 50px;
+	font-size: 20px !important;
+	font-weight: bold !important;
+	text-align: left !important;
 }
 
 /* 레시피 전체 정렬 */
@@ -78,8 +81,8 @@ body {
 
 /* 동그란 이미지 */
 .recipe img {
-	width: 150px;
-	height: 150px;
+	width: 180px;
+	height: 180px;
 	border-radius: 50%;
 	object-fit: cover;
 	border: 2px solid #ddd;
@@ -89,7 +92,7 @@ body {
 /* 이미지 아래 제목 */
 .recipe .title {
 	margin-top: 10px;
-	font-size: 14px;
+	font-size: 15px;
 	text-align: center;
 	max-width: 160px;
 	line-height: 1.3;

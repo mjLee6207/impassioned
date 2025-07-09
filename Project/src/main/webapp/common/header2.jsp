@@ -19,8 +19,8 @@
         <c:choose>
             <c:when test="${not empty sessionScope.loginUser}">
                 <div class="top-text-links">
-                    <span>${sessionScope.loginUser.nickname}님 환영합니다!</span>
-                    <a href="/mypage/mypage.do"><h6>MYPAGE</h6></a>
+                    <%-- <span>${sessionScope.loginUser.nickname}님 환영합니다!</span> --%>
+                    <a href="/mypage/mypage.do"><h6>MY PAGE</h6></a>
                     <a href="/member/logout.do"><h6>LOGOUT</h6></a>
                 </div>
             </c:when>

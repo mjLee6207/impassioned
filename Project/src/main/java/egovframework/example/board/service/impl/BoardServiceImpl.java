@@ -93,5 +93,9 @@ public List<BoardVO> selectBestPosts() {
 	return boardMapper.selectBestPosts();
 }
 
+@Override
+public void updateThumbnail(BoardVO boardVO) {
+    boardMapper.updateThumbnail(boardVO);
    
+}
 }

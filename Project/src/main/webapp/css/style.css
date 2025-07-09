@@ -122,6 +122,19 @@ a {text-decoration: none;color: var(--black);}
     color: #fea700;
 }
 
+/* 하단에 스크롤 없애수 있께 두줄추가 
+   2025년 07월 09일 오전 9시 30분 강승태 추가 */
+
+html, body {
+    overflow-x: hidden;
+}
+
+/* 특정 요소가 너무 커지는 것만 방지 */
+.main-wrap, .container-box, .footer {
+    max-width: 100vw;
+}
+
+
 /* 반응형 (사이드바/컨텐츠 여백 줄임, 카드 1~2단) */
 @media (max-width: 1200px) {
     .content-area, .board-wrap, .container-box { max-width: 99vw; }
@@ -142,3 +155,6 @@ a {text-decoration: none;color: var(--black);}
     .btn-row { flex-direction: column; gap: 12px; }
     .btn-row > button { width: 100%; min-width: unset; max-width: unset;}
 }
+
+
+

@@ -28,7 +28,7 @@
     position: relative;
 }
 .tab-menu .active#tab-myPosts { color: #118e6a; }
-.tab-menu .active#tab-likedPosts { color: #e9620b; }
+.tab-menu .active#tab-likedPosts { color: #e81b33; }
 .tab-menu .active:after {
     content: '';
     display: block;
@@ -46,27 +46,29 @@
     justify-content: flex-end;
     gap: 6px;
 }
-.search-input { max-width: 240px; }
+.search-input { max-width: 240px; margin-top: 18px; }
+
 .search-btn {
+    border-radius: 8px;
     border: none;
-    background: none;
-    padding: 0 6px;
-    color: #118e6a;
-    font-size: 1.15rem;
-    transition: color 0.14s;
+    background: var(--main-green);
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 7px 10px;
     cursor: pointer;
-    border-radius: 50%;
-    height: 32px;
-    width: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: background 0.12s;
 }
+
 .search-btn:hover, .search-btn:focus {
-    background: #e3f7ef;
-    color: #0c7c4a;
+    background: #1e8a57;
+    color: #fff;
     outline: none;
 }
+
+.search-btn:hover i, .search-btn:focus i {
+    color: #fff; /* 버튼에 hover될 때 아이콘 색상도 하얀색으로 변경 */
+}
+
 .table th, .table td { vertical-align: middle !important; }
 /* 컬럼별 너비 지정 */
 .post-table th.col-title { width: 65%; }

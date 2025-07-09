@@ -32,4 +32,5 @@ public class BoardVO extends Criteria {
    private int viewCount;          // 조회수
    private String nickname;        // 추가: 작성자 닉네임       // 
    private String searchKeyword;   // 카테고리별 검색을 위해 7월 8일추가: 강승태
+   private int likeCount; // 게시판쪽 게시글 좋아요수 표시를 위해 추가 7월 9일: 강승태
 }

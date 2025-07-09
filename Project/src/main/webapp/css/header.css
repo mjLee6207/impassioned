@@ -3,12 +3,13 @@
     --hover-green: #118e6a;
 }
 body {
-	
-	background: #f8f9fa; margin:0; font-family: 'Noto Sans KR', sans-serif;}
+   margin-top:20px !important;
+   background: #f8f9fa !important; margin:0; font-family: 'Noto Sans KR', sans-serif;}
 .main-navbar-bg {
-	margin-bottom:25px;
-    background: #fff;
-    border-bottom: 1.3px solid #e8e8e8;
+   
+   margin-bottom:25px;
+    background: #f8f9fa;
+
     min-width: 100vw;
 }
 .main-navbar {
@@ -106,36 +107,47 @@ body {
     margin-right: 35px;
     flex-wrap: wrap; /* 줄바꿈 허용 */
 }
-.welcome-msg { /* 환영메시지 */
+
+/* .welcome-msg { 환영메시지
     display: flex;
-    align-items: flex-end; /* 밑단 맞추기 */
-    height: 42px; /* 버튼/입력창과 같은 높이로 맞춤, 필요시 값 조정 */
+    align-items: flex-end; 밑단 맞추기
+    height: 42px; 버튼/입력창과 같은 높이로 맞춤, 필요시 값 조정
     font-size: 1.05rem;
-    margin-bottom: 0; /* 하단 여백 없앰 */
-    padding-bottom: 2px; /* 글씨 baseline 미세조정 */
-}
+    margin-bottom: 0; 하단 여백 없앰
+    padding-bottom: 2px; 글씨 baseline 미세조정
+} */
+
 .navbar-search form {
     display: flex; align-items: center; width: 270px; max-width: 60vw;
 }
-.search-input {
+.search-box {
     border-radius: 8px 0 0 8px; border: 1.2px solid #1e8a57;
     height:42px;
     padding: 7px 15px; font-size: 1.04rem;
     width: 100%; min-width: 100px; color: var(--main-green);
     outline: none; background: #fff;
 }
-.search-input:focus { border-color: var(--hover-green);}
-.search-btn {
-    border-radius: 0 8px 8px 0; border: none; background: var(--main-green); color: #fff;
-    font-size: 1.1rem; padding: 7px 16px; cursor: pointer; transition: background 0.12s;
+.search-box:focus { border-color: var(--hover-green);}
+.ssearch-btn {
+    border-radius: 0 8px 8px 0; border: 1.2px solid #1e8a57; background: #1e8a57; color: #fff;
+    /* 7/8 hyj 커서 포인터 크기 조절 위해 패딩값 조정 + 7/9 위치 조정용 마진값 추가*/
+    font-size: 1.1rem; padding: 6px 9px; cursor: pointer; transition: background 0.12s;
 }
-.search-btn:hover { background: var(--hover-green);}
+.ssearch-btn:hover, .ssearch-btn:focus {
+    background: #f8f9fa;
+    color: #1e8a57;
+    outline: none;
+}
+
+/* .ssearch-btn i:hover {color: #fff;} */
+
 .login-btn,
 .head-mypage-btn, .head-logout-btn {
-    background: #fff; color: var(--main-green); font-weight: 700; border-radius: 8px;
-    border: 1.2px solid var(--main-green); padding: 7px 22px; font-size: 1.05rem; cursor: pointer;
+    background: #f8f9fa; color: var(--main-green); font-weight: 700; border-radius: 8px;
+    border: none; padding: 7px 22px; font-size: 1.05rem; cursor: pointer;
     transition: background 0.12s, color 0.12s;
-    margin-left: 2px; margin-right: 0;
+    /* 7/8 hyj 버튼 위치 조정 */
+    margin-left: 2px; margin-right: 10px; margin-bottom: 1px; 
     width: auto; min-width: 70px;
 }
 .login-btn:hover,
@@ -149,7 +161,7 @@ body {
     .navbar-right { margin: 8px 0 0 0; gap: 8px; flex-wrap: wrap; justify-content: flex-end;}
     .main-logo { margin-left: 2vw; font-size: 1.55rem;}
     .main-logo .logo-desc { font-size: 0.88rem; }
-    .search-input, .search-btn { font-size: 0.97rem; padding: 6px 7px;}
+    .search-box, .ssearch-btn { font-size: 0.97rem; padding: 6px 7px;}
     .login-btn,
     .head-mypage-btn, .head-logout-btn { padding: 6px 10px; font-size: 0.95rem; min-width: 65px;}
     .main-menu { gap: 8px; }
@@ -162,7 +174,7 @@ body {
     .main-logo .logo-desc { font-size: 0.72rem; }
     .navbar-right { gap: 6px; margin-right: 2vw; }
     .navbar-search form { width: 90vw; min-width: 0;}
-    .search-input { font-size: 0.91rem; padding: 5px 3px;}
+    .search-box { font-size: 0.91rem; padding: 5px 3px;}
     .login-btn,
     .head-mypage-btn, .head-logout-btn { padding: 4px 5px; font-size: 0.91rem; min-width: 40px;}
 }

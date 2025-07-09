@@ -32,14 +32,14 @@
                     </div>
                     <div id="tab-likedPosts" onclick="showSection('likedPostsSection', this)">
                         <i class="bi bi-heart-fill"></i>
-                        <span>좋아요한 글 <span class="like-count">(${likedPosts.size()}개)</span></span>
+                        <span>좋아요 남긴 글 <span class="like-count">(${likedPosts.size()}개)</span></span>
                     </div>
                 </div>
 
                 <!-- ====== 내가 작성한 글 (기본 노출) ====== -->
                 <div id="myPostsSection" style="display: block;">
                     <div class="search-area">
-                        <input type="text" id="searchMyPosts" class="form-control form-control-sm search-input" placeholder="작성한 글 검색..." onkeyup="filterTable('myPostsTable', this.value)">
+                        <input type="text" id="searchMyPosts" class="form-control form-control-sm search-input" placeholder="내가 작성한 글 검색" onkeyup="filterTable('myPostsTable', this.value)">
                         <button type="button" class="search-btn" onclick="clickSearch('myPostsTable','searchMyPosts')">
                             <i class="bi bi-search"></i>
                         </button>
@@ -78,7 +78,7 @@
                 <!-- ====== 좋아요한 글 (탭 전환시 보임) ====== -->
 <div id="likedPostsSection" style="display: none;">
     <div class="search-area">
-        <input type="text" id="searchLikedPosts" class="form-control form-control-sm search-input" placeholder="좋아요한 글 검색..." onkeyup="filterTable('likedPostsTable', this.value)">
+        <input type="text" id="searchLikedPosts" class="form-control form-control-sm search-input" placeholder="좋아요 남긴 글 검색" onkeyup="filterTable('likedPostsTable', this.value)">
         <button type="button" class="search-btn" onclick="clickSearch('likedPostsTable','searchLikedPosts')">
             <i class="bi bi-search"></i>
         </button>
@@ -107,7 +107,7 @@
             </c:forEach>
             <c:if test="${empty likedPosts}">
                 <tr>
-                    <td colspan="4" class="text-secondary text-center">아직 좋아요한 게시글이 없습니다.</td>
+                    <td colspan="4" class="text-secondary text-center">좋아요를 남긴 게시글이 없습니다</td>
                 </tr>
             </c:if>
         </tbody>

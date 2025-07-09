@@ -77,28 +77,28 @@
         </div>
         <!-- 오른쪽: 검색창 + 로그인 -->
       <div class="navbar-right">
-    	<div class="navbar-search">
+       <div class="navbar-search">
         <form action="/search.do" method="get" autocomplete="off">
-            <input type="text" name="q" class="search-input" placeholder="전체 레시피/게시글 검색...">
-            <button class="search-btn" type="submit"><i class="bi bi-search"></i></button>
+            <input type="text" name="q" class="search-box" placeholder="Search">
+            <button class="ssearch-btn" type="submit"><i class="bi bi-search"></i></button>
         </form>
     </div>
 
   <c:choose>
     <%-- 로그인한 경우 --%>
     <c:when test="${not empty sessionScope.loginUser}">
-        <span class="welcome-msg">${sessionScope.loginUser.nickname}님 환영합니다.</span>
+       <%--  <span class="welcome-msg">${sessionScope.loginUser.nickname}님 환영합니다.</span> --%>
         <%-- 마이페이지 버튼 --%>
         <c:url var="mypageUrl" value="/mypage/mypage.do"/>
-        <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">마이페이지</button>
+        <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">MYPAGE</button>
         <%-- 로그아웃 버튼 --%>
         <c:url var="logoutUrl" value="/member/logout.do"/>
-        <button class="head-logout-btn" onclick="location.href='${logoutUrl}'">로그아웃</button>
+        <button class="head-logout-btn" onclick="location.href='${logoutUrl}'">LOGOUT</button>
     </c:when>
     <%-- 로그인하지 않은 경우 --%>
     <c:otherwise>
         <c:url var="loginUrl" value="/member/login.do"/>
-        <button class="login-btn" onclick="location.href='${loginUrl}'">로그인</button>
+        <button class="login-btn" onclick="location.href='${loginUrl}'">LOGIN</button>
     </c:otherwise>
 </c:choose>
 </div>

@@ -20,12 +20,10 @@
 	rel="stylesheet"
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
-<!-- 	개발자 css -->
-<link rel="stylesheet" href="/css/style.css">
 
 </head>
 <body>
-<jsp:include page="/common/header2.jsp" />
+	<jsp:include page="/common/header2.jsp" />
 
 
 	<!-- ✅ 사이트 로고 영역 -->
@@ -33,11 +31,11 @@
 
 	<!-- ✅ 검색창 -->
 	<div class="search-bar">
-		<input type="text" placeholder="레시피를 검색해보세요!">
+		<input type="text" placeholder="원하는 레시피를 검색해보세요 !">
 	</div>
 
 	<!-- ✅ 오늘의 추천 레시피 제목 -->
-	<div class="section-title">👨‍🍳 오늘의 추천 레시피</div>
+	<div class="section-title">🍽️ 오늘의 추천 레시피</div>
 
 	<!-- ✅ 추천 레시피 카드 목록 -->
 	<div class="recipes">
@@ -58,16 +56,20 @@
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
 			<p class="title">크림치즈 라즈베리 무스</p>
 		</a>
-		
+
 		<!-- 예시 레시피 카드 4 -->
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p></a>
+			<p class="title">양갈비 스테이크와 소스 6종</p></a> <a class="recipe"
+			href="https://www.naver.com" target="_blank"> <img
+			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
+			<p class="title">바질 크림소스 라자냐</p>
+		</a>
 	</div>
-	
+
 
 	<!-- ✅ 오늘의 추천 레시피 제목 -->
-	<div class="section-title">👨‍🍳 한식 레시피</div>
+	<div class="section-title">🍽️ 한식 레시피</div>
 
 	<!-- ✅ 추천 레시피 카드 목록 -->
 	<div class="recipes">
@@ -93,135 +95,111 @@
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/꼬막.jpg" alt="꼬막">
 			<p class="title">꼬막비빔밥</p>
-			
+
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/김치.jpg" alt="김치">
 			<p class="title">배추김치</p>
 		</a>
 	</div>
 
-	<div class="section-title">👨‍🍳 양식 레시피</div>
+	<div class="section-title">🍽️ 양식 레시피</div>
 
 	<div class="recipes">
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
 			<p class="title">바질 크림소스 라자냐</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
 			<p class="title">단호박 무스를 곁들인 비프웰링턴</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
 			<p class="title">크림치즈 라즈베리 무스</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">양갈비 스테이크와 소스 6종</p>
-			
+
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">양갈비 스테이크와 소스 6종</p>
 		</a>
 	</div>
 
-	<div class="section-title">👨‍🍳 중식 레시피</div>
+	<div class="section-title">🍽️ 중식 레시피</div>
 
 	<div class="recipes">
 		<!-- 예시 레시피 카드 1 -->
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
 			<p class="title">마파두부</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
 			<p class="title">동파육</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
 			<p class="title">중화새우볶음밥</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">딤섬</p>
-			
+
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">해신탕</p>
 		</a>
 	</div>
 
-	<div class="section-title">👨‍🍳 일식 레시피</div>
+	<div class="section-title">🍽️ 일식 레시피</div>
 
 	<div class="recipes">
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
 			<p class="title">히츠마부시(장어덮밥)</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
 			<p class="title">돈카츠</p>
-		</a>
-		
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
 			<p class="title">타마고야끼</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">오니기리</p>
-			
+
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">야끼소바</p>
 		</a>
 
-		</div>
-		
-		<div class="section-title">👨‍🍳 디저트 레시피</div>
+	</div>
+
+	<div class="section-title">🍽️ 디저트 레시피</div>
 
 	<div class="recipes">
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
 			<p class="title">브라우니</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
 			<p class="title">스콘</p>
-		</a>
-		
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
 			<p class="title">초코칩쿠키</p>
-		</a>
-
-		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
+		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">피칸파이</p>
-			
+
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
 			<p class="title">레몬파운드케이크</p>
 		</a>
 
-		</div>
-		<!-- 만들어놓은 꼬리말 jsp -->
-		<jsp:include page="/common/footer.jsp"></jsp:include>
-		
-		<!-- 7월 7일 2시20분 엔터키 검색 메인페이지 추가  -->
-		<script>
+	</div>
+	<!-- 만들어놓은 꼬리말 jsp -->
+	<jsp:include page="/common/footer.jsp"></jsp:include>
+
+	<!-- 7월 7일 2시20분 엔터키 검색 메인페이지 추가  -->
+	<script>
     // 엔터키로 검색
     document.addEventListener("DOMContentLoaded", () => {
         const input = document.querySelector("#searchKeyword");

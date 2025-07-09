@@ -6,6 +6,8 @@
   <meta charset="UTF-8">
   <title>비밀번호 찾기</title>
   <link rel="stylesheet" href="/css/login.css" />
+  <link rel="stylesheet" href="/css/findpasswordform.css" />
+  
 </head>
 <body>
 <div class="wrapper">
@@ -40,12 +42,12 @@
         <button class="submit-btn" type="submit">임시 비밀번호 발급</button>
 
         <!-- 하단 경로 링크 수정됨 -->
-        <div style="margin-top: 10px; text-align: center;">
+        <div class="find" style="margin-top: 10px; text-align: center;">
           <a href="${pageContext.request.contextPath}/member/findidform.do" style="margin-right: 10px;">아이디 찾기</a>
           <a href="${pageContext.request.contextPath}/member/findpasswordform.do">비밀번호 찾기</a>
         </div>
 
-        <div style="margin-top: 16px; text-align: center;">
+        <div class="find" style="margin-top: 16px; text-align: center;">
           <a href="${pageContext.request.contextPath}/member/login.do">로그인 화면으로</a>
         </div>
       </form>

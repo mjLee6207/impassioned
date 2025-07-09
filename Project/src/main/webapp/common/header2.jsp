@@ -39,7 +39,7 @@
             </button>
             <div class="app-menu-dropdown" id="appMenuDropdown">
                 <a href="/recipe.do">레시피</a>
-                <a href="/board/board.do">게시판</a>
+                <a href="/board/board.do?category=한식">게시판</a>
                 <a href="/event/recipe">이벤트</a>
             </div>
         </div>

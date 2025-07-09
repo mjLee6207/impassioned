@@ -162,12 +162,53 @@ import lombok.extern.log4j.Log4j2;
 		// 7/7일 수정 후 원래 카테고리로 돌아가기, 리퀘스트팜,리턴 추가 (민중)
 		@PostMapping("/board/edit.do")
 		public String update(@ModelAttribute BoardVO boardVO,
+				@RequestParam(value = "image", required = false) MultipartFile image,
 		                     @RequestParam(required = false) String searchKeyword,
-		                     @RequestParam(required = false, defaultValue = "1") int pageIndex) throws UnsupportedEncodingException {
-	
+		                     @RequestParam(required = false, defaultValue = "1") int pageIndex,HttpSession session)
+		                    		 throws UnsupportedEncodingException {
+			
 		    // ✅ 카테고리 누락 방지
 		    if (boardVO.getCategory() == null || boardVO.getCategory().isBlank()) {
 		        throw new IllegalArgumentException("카테고리는 필수입니다.");
+		    }
+
+		    if (image != null && !image.isEmpty()) { // ★ 새 이미지 업로드 체크 ★
+		        FileVO fileVO = new FileVO();
+		        fileVO.setFileName(image.getOriginalFilename());
+		        fileVO.setFileType(image.getContentType());
+		        fileVO.setUseType("BOARD");
+		        fileVO.setUseTargetId((long) boardVO.getBoardId());
+
+		        // ★ 로그인 유저 아이디를 uploaderId에 넣기 ★
+		        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		        if (loginUser != null) {
+		            fileVO.setUploaderId(loginUser.getMemberIdx());
+		        } else {
+		            // 로그인 안 된 경우 처리 필요하면 추가
+		            fileVO.setUploaderId(0L); // 임시값
+		        }
+
+
+		        fileVO.setFilePath("/uploads/" + image.getOriginalFilename());
+
+		        try {
+		            fileVO.setFileData(image.getBytes());
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		            throw new RuntimeException("이미지 변환 실패", e);
+		        }
+
+		        fileService.insertFile(fileVO);
+
+		        // ★ 썸네일 경로를 새로 등록된 파일 ID 기반으로 업데이트 ★
+		        boardVO.setThumbnail("/file/download.do?fileId=" + fileVO.getFileId());
+
+		    } else {
+		        // ★ 새 이미지가 없으면 기존 썸네일 유지 ★
+		        BoardVO oldBoard = boardService.selectBoard(boardVO.getBoardId());
+		        if (oldBoard != null) {
+		            boardVO.setThumbnail(oldBoard.getThumbnail());
+		        }
 		    }
 	
 		    boardService.update(boardVO);

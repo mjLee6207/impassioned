@@ -148,4 +148,10 @@
     ORDER BY NVL(L.LIKE_CNT, 0) DESC, B.BOARD_ID DESC
     FETCH FIRST 4 ROWS ONLY
 </select>
+<!-- 썸네일 경로 업데이트 -->
+<update id="updateThumbnail" parameterType="BoardVO">
+    UPDATE BOARD
+    SET THUMBNAIL = #{thumbnail}
+    WHERE BOARD_ID = #{boardId}
+</update>
 </mapper>

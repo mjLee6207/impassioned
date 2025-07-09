@@ -32,4 +32,5 @@ public interface BoardMapper {
    void editReview(@Param("reviewId") int reviewId, @Param("memberIdx") int memberIdx, @Param("content") String content);
    void deleteReview(@Param("reviewId") int reviewId, @Param("memberIdx") int memberIdx);
    List<BoardVO> selectBestPosts();
+   void updateThumbnail(BoardVO boardVO);
 }

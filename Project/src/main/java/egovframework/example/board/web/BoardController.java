@@ -1,11 +1,11 @@
 	package egovframework.example.board.web;
 	
-	import java.io.File;
+	
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +24,8 @@ import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
 import egovframework.example.board.service.ReviewVO;
 import egovframework.example.common.Criteria;
+import egovframework.example.file.service.FileService;
+import egovframework.example.file.service.FileVO;
 import egovframework.example.member.service.MemberVO;
 import lombok.extern.log4j.Log4j2;
 	
@@ -32,6 +34,8 @@ import lombok.extern.log4j.Log4j2;
 	public class BoardController {
 	   @Autowired
 	   private BoardService boardService;
+	   @Autowired
+	   private FileService fileService;
 	
 	//	전체조회
 		@GetMapping("/board/board.do")
@@ -110,36 +114,32 @@ import lombok.extern.log4j.Log4j2;
 		    // 서버에서 로그인된 사용자의 인덱스 강제 설정
 		    boardVO.setWriterIdx(loginUser.getMemberIdx().intValue());
 	
-		    // ==========================
-		    // 1. 이미지 파일 처리 (여기서부터)
-		    // ==========================
-		    if (image != null && !image.isEmpty()) {
-		        String uploadDir = "/upload";
-		        String realPath = req.getServletContext().getRealPath(uploadDir);
-		        File uploadFolder = new File(realPath);
-		        if (!uploadFolder.exists()) uploadFolder.mkdirs();
-	
-		        String uuid = UUID.randomUUID().toString();
-		        String saveName = uuid + "_" + image.getOriginalFilename();
-		        File dest = new File(uploadFolder, saveName);
-	
-		        try {
-		            image.transferTo(dest); // 파일 저장
-	
-		            // [ERD 참고]
-		            // 1) t_file에도 저장하려면 FileVO 생성 및 fileService.insert() 등의 추가 코드 필요
-		            //    (간단 버전은 board 테이블만 써도 됨!)
-		            // 2) 게시글에도 썸네일 경로 저장
-		            boardVO.setThumbnail(uploadDir + "/" + saveName); // **board.thumbnail 컬럼**
-	
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		            // 필요시: 오류 안내
-		        }
-		    }
 		
 		    log.info("작성자 포함 게시글: {}", boardVO);
 		    boardService.insert(boardVO);
+		    // ============ DB BLOB 저장 방식 =============
+		    if (image != null && !image.isEmpty()) {
+		        FileVO fileVO = new FileVO();
+		        fileVO.setFileName(image.getOriginalFilename());
+		        fileVO.setFileType(image.getContentType());
+		        fileVO.setUseType("BOARD");
+		        fileVO.setUseTargetId((long) boardVO.getBoardId());
+		        fileVO.setUploaderId((long) loginUser.getMemberIdx());
+		     // ★★★ [필수] NOT NULL 컬럼을 위해 filePath 값 임시 추가 (실제 경로를 넣어도 됩니다) ★★★
+		        fileVO.setFilePath("/uploads/" + image.getOriginalFilename()); 
+		        try {
+		            fileVO.setFileData(image.getBytes());
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		            throw new RuntimeException("이미지 변환 실패", e);
+		        }
+		        fileService.insertFile(fileVO);
+
+		        // 썸네일: t_file PK 사용시, 혹은 실제 이미지는 file_id 기반으로 다운/뷰 가능
+		        boardVO.setThumbnail("/file/download.do?fileId=" + fileVO.getFileId());
+		        boardService.updateThumbnail(boardVO); // 썸네일 경로만 따로 update
+		    }
+		    // ============ DB BLOB 저장 방식 =============
 		
 		    // 한글 카테고리 URL 인코딩 처리 (작성 후 이동용)
 		    String encodedCategory = URLEncoder.encode(boardVO.getCategory(), "UTF-8");
@@ -262,7 +262,6 @@ import lombok.extern.log4j.Log4j2;
 		    // 삭제 후 해당 게시글 상세로 이동
 		    return "redirect:/board/view.do?boardId=" + boardId;
 		}
-	
-		}
-	
 
+	
+	}

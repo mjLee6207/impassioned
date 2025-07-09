@@ -13,5 +13,9 @@
  	<bean class="org.egovframe.rte.psl.dataaccess.mapper.MapperConfigurer">
 		<property name="basePackage" value="egovframework.example.*.service.impl" />
 	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="egovframework.example.board.service.impl,egovframework.example.file.service.impl,egovframework.example.like.service.impl"/>
+</bean>
+	
     
 </beans>

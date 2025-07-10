@@ -318,6 +318,11 @@ import lombok.extern.log4j.Log4j2;
 		    // 삭제 후 해당 게시글 상세로 이동
 		    return "redirect:/board/view.do?boardId=" + boardId;
 		}
-
+		
+//		사이트가이드페이지
+	    @GetMapping("/guide.do")  
+	    public String showGuidePage() {
+	        return "support/guide";  
+	    }
 	
 	}

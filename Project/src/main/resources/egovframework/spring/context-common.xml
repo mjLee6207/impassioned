@@ -47,5 +47,8 @@
 	
 	<bean id="antPathMater" class="org.springframework.util.AntPathMatcher" />
 	<bean id="defaultTraceHandler" class="org.egovframe.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
+	
+	<!-- 7/10 properties 파일 읽기 설정(민중) -->
+	<context:property-placeholder location="classpath:application.properties"/>
 	 
 </beans>

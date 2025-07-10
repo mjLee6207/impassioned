@@ -108,8 +108,8 @@
 
         .content-area { flex: 1; background: #fff; border-radius: 20px; box-shadow: var(--shadow); min-width: 0; padding: 38px 34px 36px 34px; }
         .category-tabs { display: flex; gap: 32px; margin-bottom: 23px; border-bottom: 2.5px solid #eee; }
-        .category-tab { font-size: 1.12rem; color: #aaa; padding: 13px 7px 10px 7px; background: none; border: none; border-bottom: 2.5px solid transparent; font-weight: 600; cursor:pointer; transition:.11s; }
-        .category-tab.active { color: var(--main-green); border-bottom: 2.5px solid var(--main-green);}
+        .category-tab { line-height: 1.2; font-size: 1.12rem; color: #aaa; padding: 13px 7px 10px 7px; background: none; border: none; border-bottom: 2.5px solid transparent; font-weight: 600; cursor:pointer; transition:.11s; }
+        .category-tab.active { font-size:1.35rem !important ; font-weight: bold !important; color: var(--main-green) !important; border-bottom: 2.5px solid var(--main-green); }
         .search-area { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 28px; gap: 8px; }
         .search-input { width: 330px; border-radius: 7px; border: 1.2px solid #dde1e8; padding: 10px 14px; font-size: 1.08rem; background: #fff; }
         .search-btn { border: none; background: none; color: var(--main-green); font-size: 1.28rem; cursor: pointer; }

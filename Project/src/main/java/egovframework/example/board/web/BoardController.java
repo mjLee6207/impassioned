@@ -1,4 +1,4 @@
-	package egovframework.example.board.web;
+package egovframework.example.board.web;
 	
 	
 
@@ -77,6 +77,11 @@ import lombok.extern.log4j.Log4j2;
 	//      페이지 모든 정보: paginationInfo
 	      model.addAttribute("paginationInfo", paginationInfo);
 	      List<BoardVO> bestPosts = boardService.selectBestPosts();
+	      for (BoardVO board : bestPosts) {
+	    	    if (board.getThumbnail() == null || board.getThumbnail().isEmpty()) {
+	    	        board.setThumbnail("/img/no-image.png");
+	    	    }
+	    	}
 	      model.addAttribute("bestPosts", bestPosts);
 	      return "board/boardlist";
 	   }
@@ -187,6 +192,8 @@ import lombok.extern.log4j.Log4j2;
 		    if (boardVO.getCategory() == null || boardVO.getCategory().isBlank()) {
 		        throw new IllegalArgumentException("카테고리는 필수입니다.");
 		    }
+		    // 기존 썸네일 값 기억
+		    String prevThumbnail = boardVO.getThumbnail();
 
 		    // 1. 삭제할 파일 id가 있다면 반복해서 삭제
 		    if (deleteImageIds != null && !deleteImageIds.isEmpty()) {
@@ -201,6 +208,7 @@ import lombok.extern.log4j.Log4j2;
 
 		    // 2. 새 이미지 업로드 (있다면 반복)
 		    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		    Long firstFileId = null;
 		    if (images != null) {
 		        for (MultipartFile image : images) {
 		            String filename = image.getOriginalFilename();
@@ -218,12 +226,34 @@ import lombok.extern.log4j.Log4j2;
 		                    throw new RuntimeException("이미지 변환 실패", e);
 		                }
 		                fileService.insertFile(fileVO);
+		                if (firstFileId == null) {
+		                    firstFileId = fileVO.getFileId();
+		                }
 		            }
 		        }
 		    }
-	
+
+		    // 남아있는 파일 체크
+		    List<FileVO> remainFiles = fileService.getFilesByBoardId((long) boardVO.getBoardId());
+
+		    // 썸네일 처리! 👇
+		    if (firstFileId != null) {
+		        // 새로 올린 이미지 있으면 그걸로
+		        boardVO.setThumbnail("/file/download.do?fileId=" + firstFileId);
+		        boardService.updateThumbnail(boardVO); // DB도 업데이트
+		    } else if (!remainFiles.isEmpty()) {
+		        // 새로 올린 이미지 없고, 기존 남은 이미지 있으면 그걸로
+		        boardVO.setThumbnail("/file/download.do?fileId=" + remainFiles.get(0).getFileId());
+		        boardService.updateThumbnail(boardVO);
+		    } else {
+		        // 남은 이미지도 없고 새 업로드도 없으면, 기본 썸네일로 (혹은 null 방지)
+		        boardVO.setThumbnail("/img/no-image.png");
+		        boardService.updateThumbnail(boardVO);
+		    }
+
+		    // 게시글 내용 등 기타 정보 수정
 		    boardService.update(boardVO);
-	
+
 		    String encodedCategory = URLEncoder.encode(boardVO.getCategory(), "UTF-8");
 		    return "redirect:/board/board.do?category=" + encodedCategory
 		         + "&searchKeyword=" + searchKeyword

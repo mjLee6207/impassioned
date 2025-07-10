@@ -140,14 +140,16 @@
 </delete>
 <!-- 인기게시글 조회  -->
 <select id="selectBestPosts" resultType="egovframework.example.board.service.BoardVO">
-    SELECT B.*
+     SELECT
+        B.*,
+        NVL(L.LIKE_CNT, 0) AS LIKE_CNT
     FROM BOARD B
     LEFT JOIN (
         SELECT BOARD_ID, COUNT(*) AS LIKE_CNT
         FROM BOARD_LIKE
         GROUP BY BOARD_ID
     ) L ON B.BOARD_ID = L.BOARD_ID
-    ORDER BY NVL(L.LIKE_CNT, 0) DESC, B.BOARD_ID DESC
+    ORDER BY LIKE_CNT DESC, B.BOARD_ID DESC
     FETCH FIRST 4 ROWS ONLY
 </select>
 <!-- 썸네일 경로 업데이트 -->

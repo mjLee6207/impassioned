@@ -93,7 +93,8 @@
 							<c:forEach var="board" items="${bestPosts}">
 								<div class="top-post-card">
 									<a href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}">
-										<img src="${board.thumbnail}" class="top-thumb-img" alt="썸네일" />
+									<!-- [수정1] 인기글 썸네일 – null일 때 기본이미지 -->
+<img src="${empty board.thumbnail ? '/images/no-image.png' : board.thumbnail}" class="top-thumb-img" alt="썸네일" />
 										<div class="top-title">
 											<b>${board.title}</b>
 										</div>
@@ -161,10 +162,7 @@
             }
         });
     });
-    
 
-
-    }
 </script>
 <!--페이징처리 script  -->
 <script type="text/javascript">

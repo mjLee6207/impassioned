@@ -11,16 +11,16 @@
 <div class="wrapper">
   <div class="container">
     <div class="left-slide">
-    <img src="${pageContext.request.contextPath}/images/슬라이드/깍두기.jpg"  alt="깍두기" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/부찌.jpg"  alt="부찌" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/파베초콜릿.png"  alt="파베초콜릿" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/오니기리.jpg"  alt="오니기리" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/브런치.jpg"  alt="브런치" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/부르기뇽.jpg"  alt="부르기뇽" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/미네.jpg"  alt="미네" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/위안샤오.jpg"  alt="위안샤오" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/동파육.jpg"  alt="동파육" class="slide-image"/>
-  <img src="${pageContext.request.contextPath}/images/슬라이드/마라.jpg"  alt="마라" class="slide-image"/>
+      <img src="${pageContext.request.contextPath}/images/슬라이드/깍두기.jpg"  alt="깍두기" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/부찌.jpg"  alt="부찌" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/파베초콜릿.png"  alt="파베초콜릿" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/오니기리.jpg"  alt="오니기리" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/브런치.jpg"  alt="브런치" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/부르기뇽.jpg"  alt="부르기뇽" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/미네.jpg"  alt="미네" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/위안샤오.jpg"  alt="위안샤오" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/동파육.jpg"  alt="동파육" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/마라.jpg"  alt="마라" class="slide-image"/>
     </div>
 
     <div class="right-login">
@@ -46,6 +46,11 @@
 
       <!-- 회원가입 폼 -->
       <form class="form-box" id="signupForm" method="post" action="${pageContext.request.contextPath}/member/register.do" style="display: none;" onsubmit="return validateForm()">
+        <div class="home-icon-wrapper">
+		  <a href="${pageContext.request.contextPath}/home.do">
+		    <img class="gohome" src="${pageContext.request.contextPath}/images/home.png" alt="홈으로" />
+		  </a>
+		</div>
         <h1>WELCOME!</h1>
 
         <div class="form-group">
@@ -108,12 +113,33 @@
     if (mode === 'signup') {
       loginForm.style.display = 'none';
       signupForm.style.display = 'block';
+      resetSignupForm(); // 회원가입폼 초기화
     } else {
       loginForm.style.display = 'block';
       signupForm.style.display = 'none';
     }
   }
+  
+  // 입력 양식 초기화 함수
+  function resetSignupForm() {
+	  document.getElementById('id').value = "";
+	  document.getElementById('email').value = "";
+	  document.getElementById('emailCode').value = "";
+	  document.getElementById('password').value = "";
+	  document.getElementById('passwordConfirm').value = "";
+	  document.getElementById('nickname').value = "";
 
+	  document.getElementById('idStatus').textContent = "";
+	  document.getElementById('emailStatus').textContent = "";
+	  document.getElementById('pwStatus').textContent = "";
+	  document.getElementById('nicknameStatus').textContent = "";
+
+	  // 인증 상태 초기화
+	  emailVerified = false;
+	  nicknameChecked = false;
+	  idChecked = false;
+	}
+  
   function validateForm() {
     const pw = document.getElementById('password').value;
     const pwc = document.getElementById('passwordConfirm').value;
@@ -226,6 +252,11 @@
       status.textContent = "";
       return;
     }
+    if (pw.length < 6) {
+        status.textContent = "비밀번호는 최소 6자 이상이어야 합니다.";
+        status.style.color = "red";
+        return;
+      }
     if (pw === pwc) {
       status.textContent = "비밀번호가 일치합니다.";
       status.style.color = "green";

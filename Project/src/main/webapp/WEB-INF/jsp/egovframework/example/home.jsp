@@ -107,21 +107,21 @@
 	<div class="recipes">
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
-			<p class="title">바질 크림소스 라자냐</p>
+			src="<%=request.getContextPath()%>/images/home/카나페.jpg" alt="카나페">
+			<p class="title">훈제연어카나페</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
-			<p class="title">단호박 무스를 곁들인 비프웰링턴</p>
+			src="<%=request.getContextPath()%>/images/home/오믈렛.jpg" alt="오믈렛">
+			<p class="title">오믈렛</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
-			<p class="title">크림치즈 라즈베리 무스</p>
+			src="<%=request.getContextPath()%>/images/home/토마토.jpg" alt="토마토">
+			<p class="title">토마토파스타</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p>
+			src="<%=request.getContextPath()%>/images/home/스테이크.jpg" alt="스테이크">
+			<p class="title">스테이크</p>
 
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p>
+			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
+			<p class="title">라자냐</p>
 		</a>
 	</div>
 
@@ -130,20 +130,20 @@
 	<div class="recipes">
 		<!-- 예시 레시피 카드 1 -->
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
+			src="<%=request.getContextPath()%>/images/home/마파두부.jpg" alt="마파두부">
 			<p class="title">마파두부</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
+			src="<%=request.getContextPath()%>/images/home/동파육.jpg" alt="동파육">
 			<p class="title">동파육</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
+			src="<%=request.getContextPath()%>/images/home/중화새우볶음밥.jpg" alt="중화새우볶음밥">
 			<p class="title">중화새우볶음밥</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			src="<%=request.getContextPath()%>/images/home/딤섬.jpg" alt="딤섬">
 			<p class="title">딤섬</p>
 
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			src="<%=request.getContextPath()%>/images/home/해신탕.jpg" alt="해신탕">
 			<p class="title">해신탕</p>
 		</a>
 	</div>
@@ -153,20 +153,20 @@
 	<div class="recipes">
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
+			src="<%=request.getContextPath()%>/images/home/히츠마.jpg" alt="히츠마">
 			<p class="title">히츠마부시(장어덮밥)</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
+			src="<%=request.getContextPath()%>/images/home/돈카츠.jpg" alt="돈카츠">
 			<p class="title">돈카츠</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
+			src="<%=request.getContextPath()%>/images/home/타마고야끼.jpg" alt="타마고야끼">
 			<p class="title">타마고야끼</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			src="<%=request.getContextPath()%>/images/home/오니기리.jpg" alt="오니기리">
 			<p class="title">오니기리</p>
 
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			src="<%=request.getContextPath()%>/images/home/야끼소바.jpg" alt="야끼소바">
 			<p class="title">야끼소바</p>
 		</a>
 
@@ -177,20 +177,20 @@
 	<div class="recipes">
 
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
+			src="<%=request.getContextPath()%>/images/home/브라우니.jpg" alt="브라우니">
 			<p class="title">브라우니</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
+			src="<%=request.getContextPath()%>/images/home/스콘.jpg" alt="스콘">
 			<p class="title">스콘</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
+			src="<%=request.getContextPath()%>/images/home/초코칩쿠키.jpg" alt="초코칩쿠키">
 			<p class="title">초코칩쿠키</p>
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			src="<%=request.getContextPath()%>/images/home/피칸파이.jpg" alt="피칸파이">
 			<p class="title">피칸파이</p>
 
 		</a> <a class="recipe" href="https://www.naver.com" target="_blank"> <img
-			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
+			src="<%=request.getContextPath()%>/images/home/레몬파운드.jpg" alt="레몬파운드">
 			<p class="title">레몬파운드케이크</p>
 		</a>
 

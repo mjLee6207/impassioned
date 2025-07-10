@@ -28,9 +28,9 @@
                 <button class="card-menu-btn edit-btn" type="button">
                     <i class="bi bi-person"></i>내 정보 수정
                 </button>
-                <button class="card-menu-btn logout-btn" type="button">
+                <!-- <button class="card-menu-btn logout-btn" type="button">
                     <i class="bi bi-box-arrow-right"></i>로그아웃
-                </button>
+                </button> -->
             </div>
         </c:when>
         <c:otherwise>

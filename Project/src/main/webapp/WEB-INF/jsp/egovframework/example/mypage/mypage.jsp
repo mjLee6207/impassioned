@@ -48,9 +48,9 @@
             <table id="myPostsTable" class="table table-hover post-table">
                 <thead>
                     <tr>
-                        <th class="text-center" style="width:50%;">제목</th>
-                        <th class="text-center" style="width:20%;">작성일</th>
-                        <th class="text-center" style="width:20%;">조회수</th>
+                        <th class="text-center" style="width:55%;">제목</th>
+                        <th class="text-center" style="width:25%;">작성일</th>
+                        <th class="text-center" style="width:10%;">조회수</th>
                         <th class="text-center" style="width:10%;">좋아요</th>
                     </tr>
                 </thead>
@@ -87,11 +87,11 @@
             <table id="likedPostsTable" class="table table-hover post-table">
                 <thead>
                     <tr>
-                        <th class="text-center col-title">제목</th>
-                        <th class="text-center col-author">작성자</th>
-                        <th class="text-center col-date">작성일</th>
-                        <th class="text-center col-views">조회수</th>
-                        <th class="text-center col-likes">좋아요</th>
+                        <th class="text-center col-title" style="width:35%;">제목</th>
+                        <th class="text-center col-author"style="width:15%;">작성자</th>
+                        <th class="text-center col-date"style="width:20%;">작성일</th>
+                        <th class="text-center col-views"style="width:10%;">조회수</th>
+                        <th class="text-center col-likes"style="width:10%;">좋아요</th>
                     </tr>
                 </thead>
                 <tbody>

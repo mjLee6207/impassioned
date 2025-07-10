@@ -91,15 +91,15 @@
 .table td {
   vertical-align: middle !important;
 }
-.post-table th.col-title {
-  width: 65%;
+/* .post-table th.col-title {
+  width: 50%;
 }
 .post-table th.col-date {
   width: 18%;
 }
 .post-table th.col-views {
   width: 17%;
-}
+} */
 .post-table thead th {
   text-align: center;
 }

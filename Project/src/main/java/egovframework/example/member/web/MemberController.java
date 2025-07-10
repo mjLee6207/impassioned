@@ -24,6 +24,8 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+ 
+    
 
     // ✅ [회원가입 처리]
     @PostMapping("/member/register.do")
@@ -189,4 +191,5 @@ public class MemberController {
 
         return "member/findpasswordform";
     }
+  
 }

@@ -8,4 +8,5 @@ public interface FileService {
     List<FileVO> getFilesByBoardId(Long boardId);
     void deleteFile(Long fileId);       
     void updateFile(FileVO fileVO);  
+    FileVO getProfileFileByMemberId(Long memberId); // 👈 회원 프로필 1개만 조회
 }

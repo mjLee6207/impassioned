@@ -106,4 +106,8 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
     public int updatePassword(MemberVO member) {
         return memberMapper.updatePassword(member);
     }
+    @Override
+    public void updateProfileImage(Long memberId, String profileUrl) {
+        memberMapper.updateProfileImage(memberId, profileUrl);
+    }
 } 

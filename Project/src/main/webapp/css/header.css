@@ -129,7 +129,7 @@ body {
 }
 .search-box:focus { border-color: var(--hover-green);}
 .ssearch-btn {
-    border-radius: 0 8px 8px 0; border: 1.2px solid #1e8a57; background: #1e8a57; color: #fff;
+    border-radius: 0 8px 8px 0 !important; border: 1.2px solid #1e8a57; background: #1e8a57; color: #fff;
     /* 7/8 hyj 커서 포인터 크기 조절 위해 패딩값 조정 + 7/9 위치 조정용 마진값 추가*/
     font-size: 1.1rem; padding: 6px 9px; cursor: pointer; transition: background 0.12s;
 }

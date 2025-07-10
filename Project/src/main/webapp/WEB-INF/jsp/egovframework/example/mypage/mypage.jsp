@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/mypage.css" />
+    <link rel="stylesheet" href="/css/pagination.css">
 </head>
 <body>
 <jsp:include page="/common/header.jsp" />
@@ -29,11 +30,11 @@
         <div class="tab-menu">
             <div id="tab-myPosts" class="active" onclick="showSection('myPostsSection', this)">
                 <i class="bi bi-pencil-square"></i>
-                <span>내가 작성한 글 <span class="post-count">(${myPosts.size()}개)</span></span>
+                <span>내가 작성한 글 <span class="post-count">(${myPostsTotalCount}개)</span></span>
             </div>
             <div id="tab-likedPosts" onclick="showSection('likedPostsSection', this)">
                 <i class="bi bi-heart-fill"></i>
-                <span>좋아요 남긴 글 <span class="like-count">(${likedPosts.size()}개)</span></span>
+                <span>좋아요 남긴 글 <span class="like-count">(${likedPostsTotalCount}개)</span></span>
             </div>
         </div>
 
@@ -74,8 +75,11 @@
                     </c:if>
                 </tbody>
             </table>
+             <!-- 페이지네이션 -->
+	            <div class="flex-center">
+	        	<ul class="pagination" id="paginationMyPosts"></ul>
+	    		</div>
         </div>
-
         <!-- 좋아요한 글 -->
         <div id="likedPostsSection" style="display: none;">
             <div class="search-area">
@@ -115,39 +119,160 @@
                     </c:if>
                 </tbody>
             </table>
-        </div>
+            <!-- 페이지네이션 -->
+	            <div class="flex-center">
+	        	<ul class="pagination" id="paginationLikedPosts"></ul>
+	    		</div>
+	    		</div>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
 <script>
-    function showSection(sectionId, tabElem) {
-        document.getElementById("myPostsSection").style.display = "none";
-        document.getElementById("likedPostsSection").style.display = "none";
-        document.getElementById(sectionId).style.display = "block";
-        document.getElementById('tab-myPosts').classList.remove('active');
-        document.getElementById('tab-likedPosts').classList.remove('active');
-        if(tabElem) tabElem.classList.add('active');
-        document.getElementById("searchMyPosts").value = "";
-        document.getElementById("searchLikedPosts").value = "";
-        filterTable('myPostsTable', '');
-        filterTable('likedPostsTable', '');
+function initPagination(selector, totalPages, startPage, visiblePages, tabName, pageParamName) {
+    if ($(selector).data('twbs-pagination')) {
+        $(selector).twbsPagination('destroy');
     }
 
-    function filterTable(tableId, keyword) {
-        keyword = keyword.toLowerCase();
-        var table = document.getElementById(tableId);
-        if (!table) return;
-        var trs = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        for(var i=0; i<trs.length; i++) {
-            var rowText = trs[i].innerText.toLowerCase();
-            trs[i].style.display = (rowText.indexOf(keyword) > -1) ? "" : "none";
+    $(selector).twbsPagination({
+        totalPages: Number(totalPages) || 1,
+        startPage: Number(startPage) || 1,
+        visiblePages: Number(visiblePages) || 5,
+        initiateStartPageClick: false,
+        first: '&laquo;',
+        prev: '&lt;',
+        next: '&gt;',
+        last: '&raquo;',
+        onPageClick: function(event, page) {
+            var params = new URLSearchParams(window.location.search);
+            params.set('tab', tabName);
+            params.set(pageParamName, page);
+            window.location.search = params.toString();
+        }
+    });
+}
+
+function showSection(sectionId, tabElem) {
+    document.getElementById("myPostsSection").style.display = "none";
+    document.getElementById("likedPostsSection").style.display = "none";
+    document.getElementById(sectionId).style.display = "block";
+
+    document.getElementById('tab-myPosts').classList.remove('active');
+    document.getElementById('tab-likedPosts').classList.remove('active');
+    if (tabElem) tabElem.classList.add('active');
+
+    document.getElementById("searchMyPosts").value = "";
+    document.getElementById("searchLikedPosts").value = "";
+
+    filterTable('myPostsTable', '');
+    filterTable('likedPostsTable', '');
+
+    var params = new URLSearchParams(window.location.search);
+
+    if (sectionId === 'myPostsSection') {
+        params.set('tab', 'myboard');
+        params.set('myPostsPage', 1);
+        params.delete('likedPostsPage');
+
+        // 내가 쓴 글 페이지네이션 재초기화
+        initPagination(
+            '#paginationMyPosts',
+            parseInt('${myPostsPaginationInfo.totalPageCount}'),
+            parseInt('${myPostsPaginationInfo.currentPageNo}'),
+            parseInt('${myPostsPaginationInfo.recordCountPerPage}'),
+            'myboard',
+            'myPostsPage'
+        );
+
+        // 좋아요 페이지네이션 제거
+        if ($('#paginationLikedPosts').data('twbs-pagination')) {
+            $('#paginationLikedPosts').twbsPagination('destroy');
+        }
+    } else if (sectionId === 'likedPostsSection') {
+        params.set('tab', 'mylike');
+        params.set('likedPostsPage', 1);
+        params.delete('myPostsPage');
+
+        // 좋아요 페이지네이션 재초기화
+        initPagination(
+            '#paginationLikedPosts',
+            parseInt('${likedPostsPaginationInfo.totalPageCount}'),
+            parseInt('${likedPostsPaginationInfo.currentPageNo}'),
+            parseInt('${likedPostsPaginationInfo.recordCountPerPage}'),
+            'mylike',
+            'likedPostsPage'
+        );
+
+        // 내가 쓴 글 페이지네이션 제거
+        if ($('#paginationMyPosts').data('twbs-pagination')) {
+            $('#paginationMyPosts').twbsPagination('destroy');
         }
     }
 
-    function clickSearch(tableId, inputId) {
-        var keyword = document.getElementById(inputId).value;
-        filterTable(tableId, keyword);
+    window.history.replaceState({}, '', `${location.pathname}?${params.toString()}`);
+}
+
+// 필터 함수 (기존 유지)
+function filterTable(tableId, keyword) {
+    keyword = keyword.toLowerCase();
+    var table = document.getElementById(tableId);
+    if (!table) return;
+    var trs = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+    for(var i=0; i<trs.length; i++) {
+        var rowText = trs[i].innerText.toLowerCase();
+        trs[i].style.display = (rowText.indexOf(keyword) > -1) ? "" : "none";
     }
+}
+
+// 검색 함수 (기존 유지)
+function clickSearch(tableId, inputId) {
+    var keyword = document.getElementById(inputId).value;
+    filterTable(tableId, keyword);
+}
+
+$(function() {
+    // 페이지 로딩 시 현재 탭에 따라 페이징 초기화 및 탭 표시
+    var params = new URLSearchParams(window.location.search);
+    var tab = params.get('tab') || 'myboard';
+
+    if (tab === 'myboard') {
+        showSection('myPostsSection', document.getElementById('tab-myPosts'));
+    } else if (tab === 'mylike') {
+        showSection('likedPostsSection', document.getElementById('tab-likedPosts'));
+    }
+
+    // 초기 페이지네이션 두 개 다 설정 (destroy 호출이 있으므로 문제 없음)
+    initPagination(
+        '#paginationMyPosts',
+        parseInt('${myPostsPaginationInfo.totalPageCount}'),
+        parseInt('${myPostsPaginationInfo.currentPageNo}'),
+        parseInt('${myPostsPaginationInfo.recordCountPerPage}'),
+        'myboard',
+        'myPostsPage'
+    );
+
+    initPagination(
+        '#paginationLikedPosts',
+        parseInt('${likedPostsPaginationInfo.totalPageCount}'),
+        parseInt('${likedPostsPaginationInfo.currentPageNo}'),
+        parseInt('${likedPostsPaginationInfo.recordCountPerPage}'),
+        'mylike',
+        'likedPostsPage'
+    );
+});
+</script>
+<script>
+$(function() {
+    $('#paginationLikedPosts').twbsPagination({
+        totalPages: 3,       // 임의로 3페이지 설정
+        startPage: 1,
+        visiblePages: 5,
+        initiateStartPageClick: true,
+        onPageClick: function (event, page) {
+            console.log('Liked posts page:', page);
+        }
+    });
+});
 </script>
 </body>
 </html>

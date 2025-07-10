@@ -99,7 +99,7 @@ import lombok.extern.log4j.Log4j2;
 	//	7/7 삭제 후 원래 카테고리로 돌아가기,  리퀘스트팜,리턴 추가 (민중)
 		@PostMapping("/board/add.do")
 		public String insert(@ModelAttribute BoardVO boardVO, 
-		@RequestParam(value = "image", required = false) MultipartFile image, 
+				@RequestParam(value = "images", required = false) List<MultipartFile> images, 
 				HttpSession session,HttpServletRequest req) throws UnsupportedEncodingException {
 		    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 		    if (loginUser == null) {
@@ -118,35 +118,46 @@ import lombok.extern.log4j.Log4j2;
 		    log.info("작성자 포함 게시글: {}", boardVO);
 		    boardService.insert(boardVO);
 		    // ============ DB BLOB 저장 방식 =============
-		    if (image != null && !image.isEmpty()) {
-		        FileVO fileVO = new FileVO();
-		        fileVO.setFileName(image.getOriginalFilename());
-		        fileVO.setFileType(image.getContentType());
-		        fileVO.setUseType("BOARD");
-		        fileVO.setUseTargetId((long) boardVO.getBoardId());
-		        fileVO.setUploaderId((long) loginUser.getMemberIdx());
-		     // ★★★ [필수] NOT NULL 컬럼을 위해 filePath 값 임시 추가 (실제 경로를 넣어도 됩니다) ★★★
-		        fileVO.setFilePath("/uploads/" + image.getOriginalFilename()); 
-		        try {
-		            fileVO.setFileData(image.getBytes());
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		            throw new RuntimeException("이미지 변환 실패", e);
-		        }
-		        fileService.insertFile(fileVO);
+		 // ========== 다중 이미지 업로드 ==========
+		    Long firstFileId = null; // 반복문 바깥에서 미리 선언
 
-		        // 썸네일: t_file PK 사용시, 혹은 실제 이미지는 file_id 기반으로 다운/뷰 가능
-		        boardVO.setThumbnail("/file/download.do?fileId=" + fileVO.getFileId());
-		        boardService.updateThumbnail(boardVO); // 썸네일 경로만 따로 update
+		    if (images != null) {
+		        for (MultipartFile image : images) {
+		            String filename = image.getOriginalFilename();
+		            if (!image.isEmpty() && filename != null && !filename.trim().isEmpty()) {
+		                FileVO fileVO = new FileVO();
+		                fileVO.setFileName(filename);
+		                fileVO.setFileType(image.getContentType());
+		                fileVO.setUseType("BOARD");
+		                fileVO.setUseTargetId((long) boardVO.getBoardId());
+		                fileVO.setUploaderId((long) loginUser.getMemberIdx());
+		                fileVO.setFilePath("/uploads/" + filename);
+		                try {
+		                    fileVO.setFileData(image.getBytes());
+		                } catch (IOException e) {
+		                    throw new RuntimeException("이미지 변환 실패", e);
+		                }
+		                fileService.insertFile(fileVO);
+		                // 썸네일 지정 (첫 번째 이미지가 있으면)
+		    		    // ⭐️ 첫 번째 파일의 fileId만 저장
+		                if (firstFileId == null) {
+		                    firstFileId = fileVO.getFileId();
+		                }
+		            }
+		            
+		        }
 		    }
-		    // ============ DB BLOB 저장 방식 =============
+		    if (firstFileId != null) {
+                boardVO.setThumbnail("/file/download.do?fileId=" + firstFileId);
+                boardService.updateThumbnail(boardVO);
+            }
 		
 		    // 한글 카테고리 URL 인코딩 처리 (작성 후 이동용)
 		    String encodedCategory = URLEncoder.encode(boardVO.getCategory(), "UTF-8");
 		
 		    return "redirect:/board/board.do?category=" + encodedCategory;
-		}
-	
+		    
+	}
 	
 	//   수정페이지 열기
 	   @GetMapping("/board/edition.do")
@@ -156,15 +167,20 @@ import lombok.extern.log4j.Log4j2;
 	           throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
 	       }
 	       model.addAttribute("boardVO", boardVO);
+	       // ✅ 기존 이미지 리스트 모델에 추가!
+	       List<FileVO> fileList = fileService.getFilesByBoardId((long)boardId);
+	       model.addAttribute("fileList", fileList);
+
 	       return "board/boardupdate";
 	   }
 		// 수정: 버튼 클릭시 실행
 		// 7/7일 수정 후 원래 카테고리로 돌아가기, 리퀘스트팜,리턴 추가 (민중)
 		@PostMapping("/board/edit.do")
 		public String update(@ModelAttribute BoardVO boardVO,
-				@RequestParam(value = "image", required = false) MultipartFile image,
-		                     @RequestParam(required = false) String searchKeyword,
-		                     @RequestParam(required = false, defaultValue = "1") int pageIndex,HttpSession session)
+				 @RequestParam(value = "images", required = false) List<MultipartFile> images,  // 다중 이미지
+				 @RequestParam(value = "deleteImageIds", required = false) String deleteImageIds,
+		         @RequestParam(required = false) String searchKeyword,
+		         @RequestParam(required = false, defaultValue = "1") int pageIndex,HttpSession session)
 		                    		 throws UnsupportedEncodingException {
 			
 		    // ✅ 카테고리 누락 방지
@@ -172,42 +188,37 @@ import lombok.extern.log4j.Log4j2;
 		        throw new IllegalArgumentException("카테고리는 필수입니다.");
 		    }
 
-		    if (image != null && !image.isEmpty()) { // ★ 새 이미지 업로드 체크 ★
-		        FileVO fileVO = new FileVO();
-		        fileVO.setFileName(image.getOriginalFilename());
-		        fileVO.setFileType(image.getContentType());
-		        fileVO.setUseType("BOARD");
-		        fileVO.setUseTargetId((long) boardVO.getBoardId());
-
-		        // ★ 로그인 유저 아이디를 uploaderId에 넣기 ★
-		        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-		        if (loginUser != null) {
-		            fileVO.setUploaderId(loginUser.getMemberIdx());
-		        } else {
-		            // 로그인 안 된 경우 처리 필요하면 추가
-		            fileVO.setUploaderId(0L); // 임시값
+		    // 1. 삭제할 파일 id가 있다면 반복해서 삭제
+		    if (deleteImageIds != null && !deleteImageIds.isEmpty()) {
+		        for (String idStr : deleteImageIds.split(",")) {
+		            try {
+		                fileService.deleteFile(Long.parseLong(idStr));
+		            } catch (NumberFormatException e) {
+		                // 무시 또는 로그
+		            }
 		        }
+		    }
 
-
-		        fileVO.setFilePath("/uploads/" + image.getOriginalFilename());
-
-		        try {
-		            fileVO.setFileData(image.getBytes());
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		            throw new RuntimeException("이미지 변환 실패", e);
-		        }
-
-		        fileService.insertFile(fileVO);
-
-		        // ★ 썸네일 경로를 새로 등록된 파일 ID 기반으로 업데이트 ★
-		        boardVO.setThumbnail("/file/download.do?fileId=" + fileVO.getFileId());
-
-		    } else {
-		        // ★ 새 이미지가 없으면 기존 썸네일 유지 ★
-		        BoardVO oldBoard = boardService.selectBoard(boardVO.getBoardId());
-		        if (oldBoard != null) {
-		            boardVO.setThumbnail(oldBoard.getThumbnail());
+		    // 2. 새 이미지 업로드 (있다면 반복)
+		    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		    if (images != null) {
+		        for (MultipartFile image : images) {
+		            String filename = image.getOriginalFilename();
+		            if (!image.isEmpty() && filename != null && !filename.trim().isEmpty()) {
+		                FileVO fileVO = new FileVO();
+		                fileVO.setFileName(filename);
+		                fileVO.setFileType(image.getContentType());
+		                fileVO.setUseType("BOARD");
+		                fileVO.setUseTargetId((long) boardVO.getBoardId());
+		                fileVO.setUploaderId(loginUser.getMemberIdx());
+		                fileVO.setFilePath("/uploads/" + filename);
+		                try {
+		                    fileVO.setFileData(image.getBytes());
+		                } catch (IOException e) {
+		                    throw new RuntimeException("이미지 변환 실패", e);
+		                }
+		                fileService.insertFile(fileVO);
+		            }
 		        }
 		    }
 	
@@ -262,6 +273,10 @@ import lombok.extern.log4j.Log4j2;
 		    model.addAttribute("loginUser", loginUser);
 		    
 		    model.addAttribute("board", board);
+		    BoardVO boardVO = boardService.selectBoardDetail(boardId);
+		    List<FileVO> fileList = fileService.getFilesByBoardId((long)boardId);
+		    model.addAttribute("board", boardVO);
+		    model.addAttribute("fileList", fileList);
 		    return "board/boardview"; // 읽기 전용 JSP로 이동
 		}
 		@PostMapping("/board/review/add.do")

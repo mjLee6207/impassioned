@@ -17,6 +17,8 @@ public interface FileMapper {
     // 게시글별 첨부파일 목록 (예: BOARD_ID로)
     List<FileVO> selectFilesByBoardId(Long boardId);
 
-    // (선택) 파일 삭제
+    //  파일 삭제
     void deleteFile(Long fileId);
+    //  파일 수정
+    void updateFile(FileVO fileVO);
 }

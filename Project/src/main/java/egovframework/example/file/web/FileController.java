@@ -4,9 +4,10 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.example.file.service.FileService;
 import egovframework.example.file.service.FileVO;
@@ -47,5 +48,10 @@ public class FileController {
         // 파일 바이너리 전송
         response.getOutputStream().write(fileVO.getFileData());
         response.getOutputStream().flush();
+    }
+    @DeleteMapping("/file/delete.do")
+    public void deleteFile(@RequestParam("fileId") Long fileId, HttpServletResponse response) throws IOException {
+        fileService.deleteFile(fileId);
+        response.setStatus(HttpServletResponse.SC_OK); // 200
     }
 }

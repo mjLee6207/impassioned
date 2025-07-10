@@ -27,6 +27,12 @@
       <!-- 로그인 폼 -->
       <form class="form-box" id="loginForm" method="post" action="${pageContext.request.contextPath}/member/login.do">
         <input type="hidden" name="redirect" value="${param.redirect}" />
+        <div class="home-icon-wrapper">
+		  <a href="${pageContext.request.contextPath}/home.do">
+		    <img class="gohome" src="${pageContext.request.contextPath}/images/home.png" alt="홈으로" />
+		  </a>
+		</div>
+		
         <h1>LOGIN</h1>
         <input type="email" name="id" placeholder="이메일" required />
         <input type="password" name="password" placeholder="비밀번호" required />
@@ -76,6 +82,22 @@
 </div>
 
 <script>
+/* 로그인 이미지 슬라이드 */
+	document.addEventListener('DOMContentLoaded', function () {
+	    const slides = document.querySelectorAll('.slide-image');
+	    let currentSlide = 0;
+	    
+	    // 처음 이미지 활성화
+	    slides[currentSlide].classList.add('active');
+	    
+	    // 슬라이드 자동 전환
+	    setInterval(() => {
+	      slides[currentSlide].classList.remove('active'); // 현재 활성화된 이미지 숨기기
+	      currentSlide = (currentSlide + 1) % slides.length; // 다음 이미지로 이동
+	      slides[currentSlide].classList.add('active'); // 새 이미지를 활성화
+	    }, 5000); // 5초마다 이미지 변경
+	  });
+	  
   let emailVerified = false;
   let nicknameChecked = false;
   let idChecked = false;

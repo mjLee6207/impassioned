@@ -13,6 +13,24 @@ body, html {
 	align-items: center;
 }
 
+/* 홈 아이콘 위치 고정 */
+.home-icon-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.gohome {
+  width: 30px;
+  height: auto;
+  cursor: pointer;
+}
+
+.gohome:hover {
+  transform: scale(1.1);
+}
+
 .wrapper {
 	width: 960px;
 	height: 600px;
@@ -20,6 +38,7 @@ body, html {
 	border-radius: 12px;
 	overflow: hidden;
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	position: relative;
 }
 
 .container {

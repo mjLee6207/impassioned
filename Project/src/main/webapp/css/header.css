@@ -214,9 +214,10 @@ transform:translateY(0);
 	background: #1e8a57;
 	color: #fff;
 	/* 7/8 hyj 커서 포인터 크기 조절 위해 패딩값 조정 + 7/9 위치 조정용 마진값 추가*/
-	font-size: 1.1rem;
+	font-size: 1.1rem !important;
 	padding: 6px 9px;
 	cursor: pointer;
+	height: 42px !important;
 	transition: background 0.12s;
 }
 
@@ -224,6 +225,11 @@ transform:translateY(0);
 	background-color: #f8f9fa;
 	color: #1e8a57;
 	outline: none;
+}
+
+.ssearch-btn i.bi {
+  font-size: 1.1rem !important;
+  line-height: 1 !important;
 }
 
 /* .ssearch-btn i:hover {color: #fff;} */

@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	    slides[currentSlide].classList.remove('active'); // 현재 활성화된 이미지 숨기기
 	    currentSlide = (currentSlide + 1) % slides.length; // 다음 이미지로 이동
 	    slides[currentSlide].classList.add('active'); // 새 이미지를 활성화
-	  }, 7000); // 7초마다 이미지 변경
+	  }, 5000); // 5초마다 이미지 변경
 	});
 
   let emailVerified = false;

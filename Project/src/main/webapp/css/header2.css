@@ -46,6 +46,8 @@ body {
      margin-right: 15px;
 }
 
+.app-menu-container:hover {color: #118e6a;}
+
 .app-menu-toggle {
     background: none;
     border: none;

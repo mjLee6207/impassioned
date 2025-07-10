@@ -26,17 +26,16 @@
     <div class="right-login">
       <!-- 로그인 폼 -->
       <form class="form-box" id="loginForm" method="post" action="${pageContext.request.contextPath}/member/login.do">
-      <input type="hidden" name="redirect" value="${param.redirect}" />
+        <input type="hidden" name="redirect" value="${param.redirect}" />
         <h1>LOGIN</h1>
         <input type="email" name="id" placeholder="이메일" required />
         <input type="password" name="password" placeholder="비밀번호" required />
         <button class="submit-btn" type="submit"><h3>시작하기</h3></button>
         <span class="toggle-link" onclick="toggleForm('signup')"><h3>회원가입</h3></span>
-        <!-- 7/8 추가: 아이디/비밀번호 찾기 링크 -->
-		<div class="find">
-			<a href="${pageContext.request.contextPath}/member/findidform.do" style="margin-right: 10px;">아이디 찾기</a>
-			<a href="${pageContext.request.contextPath}/member/findpasswordform.do">비밀번호 찾기</a>
-		</div>
+        <div class="find">
+          <a href="${pageContext.request.contextPath}/member/findidform.do">아이디 찾기</a>
+          <a href="${pageContext.request.contextPath}/member/findpasswordform.do">비밀번호 찾기</a>
+        </div>
       </form>
 
       <!-- 회원가입 폼 -->
@@ -50,8 +49,8 @@
         <span id="idStatus"></span>
 
         <div class="form-group">
-         <input type="email" id="email" name="email" placeholder="이메일" required />
-         <button type="button" onclick="sendEmailCode()">인증요청</button>
+          <input type="email" id="email" name="email" placeholder="이메일" required />
+          <button type="button" onclick="sendEmailCode()">인증요청</button>
         </div>
         <div class="form-group">
           <input type="text" id="emailCode" placeholder="인증번호 입력" />
@@ -60,7 +59,7 @@
         <span id="emailStatus"></span>
 
         <input type="password" id="password" name="password" placeholder="비밀번호" required />
-        <input type="password" id="passwordConfirm" placeholder="비밀번호 확인" required />
+        <input type="password" id="passwordConfirm" placeholder="비밀번호 확인" required onkeyup="checkPasswordMatch()" />
         <span id="pwStatus"></span>
 
         <div class="form-group">
@@ -77,30 +76,30 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-	  const slides = document.querySelectorAll('.slide-image');
-	  let currentSlide = 0;
-	  
-	  // 처음 이미지 활성화
-	  slides[currentSlide].classList.add('active');
-	  
-	  // 슬라이드 자동 전환
-	  setInterval(() => {
-	    slides[currentSlide].classList.remove('active'); // 현재 활성화된 이미지 숨기기
-	    currentSlide = (currentSlide + 1) % slides.length; // 다음 이미지로 이동
-	    slides[currentSlide].classList.add('active'); // 새 이미지를 활성화
-	  }, 5000); // 5초마다 이미지 변경
-	});
-
   let emailVerified = false;
   let nicknameChecked = false;
   let idChecked = false;
 
+  function toggleForm(mode) {
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    if (mode === 'signup') {
+      loginForm.style.display = 'none';
+      signupForm.style.display = 'block';
+    } else {
+      loginForm.style.display = 'block';
+      signupForm.style.display = 'none';
+    }
+  }
+
   function validateForm() {
     const pw = document.getElementById('password').value;
     const pwc = document.getElementById('passwordConfirm').value;
+    const pwStatus = document.getElementById('pwStatus');
+
     if (pw !== pwc) {
-      document.getElementById('pwStatus').textContent = "비밀번호가 일치하지 않습니다.";
+      pwStatus.textContent = "비밀번호가 일치하지 않습니다.";
+      pwStatus.style.color = "red";
       return false;
     }
     if (!emailVerified) {
@@ -118,21 +117,17 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
-  function checkNickname() {
-    const nickname = document.getElementById('nickname').value;
-    fetch('${pageContext.request.contextPath}/member/nicknameCheck.do?nickname=' + encodeURIComponent(nickname))
-      .then(res => res.json()).then(result => {
-        if (result.available) {
-          nicknameChecked = true;
-          document.getElementById('nicknameStatus').textContent = "사용 가능한 닉네임입니다.";
-        } else {
-          document.getElementById('nicknameStatus').textContent = "이미 사용 중인 닉네임입니다.";
-        }
-      });
-  }
-
   function checkId() {
-    const id = document.getElementById('id').value;
+    const id = document.getElementById('id').value.trim();
+    if (id === "") {
+      alert("아이디(이메일)를 입력해주세요.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(id)) {
+      alert("올바른 이메일 형식이 아닙니다.");
+      return;
+    }
     fetch('${pageContext.request.contextPath}/member/idCheck.do?id=' + encodeURIComponent(id))
       .then(res => res.json()).then(result => {
         if (result.available) {
@@ -144,8 +139,34 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+  function checkNickname() {
+    const nickname = document.getElementById('nickname').value.trim();
+    if (nickname === "") {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+    fetch('${pageContext.request.contextPath}/member/nicknameCheck.do?nickname=' + encodeURIComponent(nickname))
+      .then(res => res.json()).then(result => {
+        if (result.available) {
+          nicknameChecked = true;
+          document.getElementById('nicknameStatus').textContent = "사용 가능한 닉네임입니다.";
+        } else {
+          document.getElementById('nicknameStatus').textContent = "이미 사용 중인 닉네임입니다.";
+        }
+      });
+  }
+
   function sendEmailCode() {
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
+    if (email === "") {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("올바른 이메일 형식이 아닙니다.");
+      return;
+    }
     fetch('${pageContext.request.contextPath}/member/sendEmailCode.do', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -156,7 +177,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function verifyEmailCode() {
-    const emailCode = document.getElementById('emailCode').value;
+    const emailCode = document.getElementById('emailCode').value.trim();
+    if (emailCode === "") {
+      alert("인증번호를 입력해주세요.");
+      return;
+    }
     fetch('${pageContext.request.contextPath}/member/verifyCode.do', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -170,30 +195,33 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-  
-  window.onload = function () {
-	  const params = new URLSearchParams(window.location.search);
-	  const mode = params.get("mode"); // mode=signup이면 회원가입 먼저 보여줌
-	  if (mode === "signup") {
-	    toggleForm('signup');
-	  } else {
-	    toggleForm('login');
-	  }
-	};
-	
-	// ✅ 이 부분 추가!
-	function toggleForm(mode) {
-	  const loginForm = document.getElementById('loginForm');
-	  const signupForm = document.getElementById('signupForm');
 
-	  if (mode === 'signup') {
-	    loginForm.style.display = 'none';
-	    signupForm.style.display = 'block';
-	  } else {
-	    loginForm.style.display = 'block';
-	    signupForm.style.display = 'none';
-	  }
-	}
+  function checkPasswordMatch() {
+    const pw = document.getElementById('password').value;
+    const pwc = document.getElementById('passwordConfirm').value;
+    const status = document.getElementById('pwStatus');
+    if (pw === "" || pwc === "") {
+      status.textContent = "";
+      return;
+    }
+    if (pw === pwc) {
+      status.textContent = "비밀번호가 일치합니다.";
+      status.style.color = "green";
+    } else {
+      status.textContent = "비밀번호가 일치하지 않습니다.";
+      status.style.color = "red";
+    }
+  }
+
+  window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get("mode");
+    if (mode === "signup") {
+      toggleForm('signup');
+    } else {
+      toggleForm('login');
+    }
+  };
 </script>
 </body>
 </html>

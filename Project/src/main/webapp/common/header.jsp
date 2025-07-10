@@ -79,7 +79,7 @@
       <div class="navbar-right">
        <div class="navbar-search">
         <form action="/search.do" method="get" autocomplete="off">
-            <input type="text" name="q" class="search-box" placeholder="Search">
+            <input type="text" name="q" class="ssearch-box" placeholder="Search">
             <button class="ssearch-btn" type="submit"><i class="bi bi-search"></i></button>
         </form>
     </div>

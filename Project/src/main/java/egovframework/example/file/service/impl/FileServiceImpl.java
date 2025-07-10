@@ -26,4 +26,13 @@ public class FileServiceImpl implements FileService {
     public List<FileVO> getFilesByBoardId(Long boardId) {
         return fileMapper.selectFilesByBoardId(boardId);
     }
+    @Override
+    public void deleteFile(Long fileId) {
+        fileMapper.deleteFile(fileId);
+    }
+
+    @Override
+    public void updateFile(FileVO fileVO) {
+        fileMapper.updateFile(fileVO);
+    }
 }

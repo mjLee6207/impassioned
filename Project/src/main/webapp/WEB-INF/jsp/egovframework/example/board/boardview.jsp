@@ -71,11 +71,16 @@
         <div class="post-content">
             <c:out value="${board.content}" escapeXml="false"/>
         </div>
-        <c:if test="${not empty board.thumbnail}">
-            <div class="post-section-title">사진</div>
-            <img src="${board.thumbnail}" alt="요리사진" class="post-img"/>
-        </c:if>
-
+        <c:if test="${not empty fileList}">
+    <div class="post-section-title">사진</div>
+    <div class="post-image-list">
+        <c:forEach var="file" items="${fileList}">
+            <img src="/file/download.do?fileId=${file.fileId}" 
+                 alt="요리사진" 
+                 class="post-img-multi" />
+        </c:forEach>
+    </div>
+</c:if>
 <!-- 7월 8일 12시 좋아요 UI수정 - 강승태  -->
 			<!-- ❤️ 좋아요 버튼 -->
 			<div class="like-btn-wrap">

@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://egovframework.gov/ctl/ui" prefix="ui" %>
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -134,31 +135,21 @@
             </c:forEach>
             </tbody>
         </table>
-        <!-- 페이지네이션 -->
-        <!-- 페이지 이동용 폼 (전용!) -->
-		<form id="searchForm" method="get" action="${pageContext.request.contextPath}/board/board.do">
-		    <input type="hidden" id="pageIndex" name="pageIndex" value="${paginationInfo.currentPageNo}" />
-		    <input type="hidden" name="category" value="${param.category}" />
-		    <input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
-		</form>
-
-
-		<!-- 페이지네이션 -->
-	<div class="flex-center">
-    <ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_link_page"/>
+               
+                <!-- 페이지네이션 -->
+			<div class="flex-center">
+				<ul class="pagination" id="pagination"></ul>
+			</div>
     
    
 </div>
     </div>
-</div>
 
-			<!-- 페이지네이션 -->
-			<div class="flex-center">
-				<ul class="pagination" id="pagination"></ul>
-			</div>
-		</div>
-	</div>
 
+<!-- 페이지네이션 플러그인 -->			
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/twbs-pagination@1.4.2/jquery.twbsPagination.min.js"></script>
+	
 	<script>
     // 엔터키로 검색 - 초기 추가: 강승태 
     document.addEventListener("DOMContentLoaded", () => {
@@ -172,38 +163,30 @@
     });
     
 
-    // 페이지네이션
-    function fn_link_page(pageNo){
-        var form = document.getElementById('searchForm');
-        form.pageIndex.value = pageNo;
-        form.submit();
+
     }
 </script>
+<!--페이징처리 script  -->
+<script type="text/javascript">
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // 처음으로
-    document.querySelectorAll('.flex-center .first a').forEach(function(a){
-        a.innerHTML = '<i class="bi bi-chevron-bar-left"></i>';
-        a.setAttribute('title', '처음');
-    });
-    // 이전
-    document.querySelectorAll('.flex-center .prev a').forEach(function(a){
-        a.innerHTML = '<i class="bi bi-chevron-left"></i>';
-        a.setAttribute('title', '이전');
-    });
-    // 다음
-    document.querySelectorAll('.flex-center .next a').forEach(function(a){
-        a.innerHTML = '<i class="bi bi-chevron-right"></i>';
-        a.setAttribute('title', '다음');
-    });
-    // 맨끝으로
-    document.querySelectorAll('.flex-center .last a').forEach(function(a){
-        a.innerHTML = '<i class="bi bi-chevron-bar-right"></i>';
-        a.setAttribute('title', '맨끝');
-    });
+$('#pagination').twbsPagination({
+    totalPages: "${paginationInfo.totalPageCount}",
+    startPage:parseInt("${paginationInfo.currentPageNo}"),
+    visiblePages: "${paginationInfo.recordCountPerPage}",
+    initiateStartPageClick: false,
+    first: '&laquo;',           // First → 처음
+    prev: '&lt;',           // Previous → 이전
+    next: '&gt;',           // Next → 다음
+    last: '&raquo;',             // Last → 끝
+    onPageClick: function (event, page) {
+        var params = new URLSearchParams(window.location.search);
+        params.set('pageIndex', page);
+        window.location.search = params.toString();
+    }
 });
-</script> 
+
+</script>
+
 <!-- 카테고리별 검색을 위해 추가: 7월 8일 강승태  -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -214,6 +197,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 </script>
+
+
+
 
 </body>
 </html>

@@ -1,21 +1,25 @@
-.flex-center {
+.pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
     margin-bottom: 2rem;
     gap: 0.5rem;
+    /* border, 배경 등은 X */
 }
 
-.flex-center > span,
-.flex-center > a,
-.flex-center > span > a {
+/* li에는 여백/크기만 */
+.page-item {
+    margin: 0 2px;
+}
+
+/* 모든 디자인은 a.page-link에만! */
+.page-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-width: 40px;
     height: 40px;
-    margin: 0 2px;
     padding: 0 12px;
     font-size: 1.05rem;
     color: #1e8a57;
@@ -30,19 +34,14 @@
     outline: none;
 }
 
-/* 숫자 버튼 hover */
-.flex-center > a:hover,
-.flex-center > span > a:hover {
+.page-link:hover {
     color: #fff;
     background: #1e8a57;
     border-color: #1e8a57;
-    text-decoration: none;
 }
 
-/* 현재 페이지(active) */
-.flex-center > span[style],
-.flex-center > span.current,
-.flex-center > span[aria-current="page"] {
+.page-item.active .page-link,
+.page-link.active {
     color: #fff !important;
     background: #1e8a57 !important;
     border-color: #1e8a57 !important;
@@ -51,11 +50,17 @@
     pointer-events: none;
 }
 
-/* 처음/이전/다음/끝 버튼 스타일 */
-.flex-center > span.first > a,
-.flex-center > span.prev > a,
-.flex-center > span.next > a,
-.flex-center > span.last > a {
+.page-item.disabled .page-link {
+    color: #bbb;
+    background: #f2f2f2;
+    border-color: #eee;
+    cursor: not-allowed;
+}
+
+.page-item.first .page-link,
+.page-item.prev .page-link,
+.page-item.next .page-link,
+.page-item.last .page-link {
     min-width: 40px;
     padding: 0 10px;
     font-size: 1.18rem;
@@ -66,10 +71,10 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     vertical-align: middle;
 }
-.flex-center > span.first > a:hover,
-.flex-center > span.prev > a:hover,
-.flex-center > span.next > a:hover,
-.flex-center > span.last > a:hover {
+.page-item.first .page-link:hover,
+.page-item.prev .page-link:hover,
+.page-item.next .page-link:hover,
+.page-item.last .page-link:hover {
     background: #1e8a57;
     color: #fff;
     border-color: #1e8a57;

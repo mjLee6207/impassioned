@@ -5,17 +5,19 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import egovframework.example.file.service.FileService;
 import egovframework.example.file.service.FileVO;
+import egovframework.example.common.Criteria;
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
 import egovframework.example.mypage.service.MypageLikeVO;
@@ -33,25 +35,7 @@ public class MypageController {
     @Autowired
     private FileService fileService;
 
-    // 마이페이지
-    @GetMapping("/mypage.do")
-    public String showMypage(HttpSession session, Model model) {
-        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-
-        if (loginUser == null || loginUser.getMemberIdx() == null) {
-            return "redirect:/member/login.do";
-        }
-
-        Long memberIdx = loginUser.getMemberIdx();
-
-        List<MypageMyPostVO> myPosts = mypageService.selectMyPosts(memberIdx);
-        model.addAttribute("myPosts", myPosts);
-
-        List<MypageLikeVO> likedPosts = mypageService.selectLikedPosts(memberIdx);
-        model.addAttribute("likedPosts", likedPosts);
-
-        return "mypage/mypage";
-    }
+ 
 
     // 회원 정보 수정 페이지 열기
     @GetMapping("/mycorrection.do")
@@ -117,5 +101,72 @@ public class MypageController {
         // 마이페이지로 리다이렉트
         return "redirect:/mypage/mypage.do";
     }
+//   마이페이지매핑+페이지네이션
+    @GetMapping("/mypage.do")
+    public String myPage(
+        @RequestParam(value = "tab", required = false, defaultValue = "myboard") String tab,
+        @RequestParam(value = "myPostsPage", defaultValue = "1") int myPostsPage,
+        @RequestParam(value = "likedPostsPage", defaultValue = "1") int likedPostsPage,
+        @RequestParam(value = "category", required = false) String category,
+        @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+        Model model,
+        HttpSession session) {
+
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+        if (loginUser == null || loginUser.getMemberIdx() == null) {
+            return "redirect:/member/login.do";
+        }
+        Long memberIdx = loginUser.getMemberIdx();
+
+        // ===== 내가 쓴 글 페이징 =====
+        Criteria myPostsCriteria = new Criteria();
+        myPostsCriteria.setPageIndex(myPostsPage);
+        myPostsCriteria.setPageUnit(10);
+        myPostsCriteria.setCategory(category);  // 필요시
+        myPostsCriteria.setSearchKeyword(searchKeyword);  // 필요시
+
+        PaginationInfo myPostsPaginationInfo = new PaginationInfo();
+        myPostsPaginationInfo.setCurrentPageNo(myPostsCriteria.getPageIndex());
+        myPostsPaginationInfo.setRecordCountPerPage(myPostsCriteria.getPageUnit());
+        myPostsPaginationInfo.setPageSize(10);
+        myPostsCriteria.setFirstIndex(myPostsPaginationInfo.getFirstRecordIndex());
+
+        List<?> myPosts = mypageService.selectMyBoardList(myPostsCriteria, memberIdx);
+        int myPostsTotCnt = mypageService.selectMyBoardListTotCnt(myPostsCriteria, memberIdx);
+        myPostsPaginationInfo.setTotalRecordCount(myPostsTotCnt);
+
+        model.addAttribute("myPosts", myPosts);
+        model.addAttribute("myPostsPaginationInfo", myPostsPaginationInfo);
+        model.addAttribute("myPostsTotalCount", myPostsTotCnt);
+
+        // ===== 좋아요 남긴 글 페이징 =====
+        Criteria likedPostsCriteria = new Criteria();
+        likedPostsCriteria.setPageIndex(likedPostsPage);
+        likedPostsCriteria.setPageUnit(10);
+        likedPostsCriteria.setCategory(category);  // 필요시
+        likedPostsCriteria.setSearchKeyword(searchKeyword);  // 필요시
+
+        PaginationInfo likedPostsPaginationInfo = new PaginationInfo();
+        likedPostsPaginationInfo.setCurrentPageNo(likedPostsCriteria.getPageIndex());
+        likedPostsPaginationInfo.setRecordCountPerPage(likedPostsCriteria.getPageUnit());
+        likedPostsPaginationInfo.setPageSize(10);
+        likedPostsCriteria.setFirstIndex(likedPostsPaginationInfo.getFirstRecordIndex());
+
+        List<?> likedPosts = mypageService.selectMyLikeList(likedPostsCriteria, memberIdx);
+        int likedPostsTotCnt = mypageService.selectMyLikeListTotCnt(likedPostsCriteria, memberIdx);
+        likedPostsPaginationInfo.setTotalRecordCount(likedPostsTotCnt);
+
+        model.addAttribute("likedPosts", likedPosts);
+        model.addAttribute("likedPostsPaginationInfo", likedPostsPaginationInfo);
+        model.addAttribute("likedPostsTotalCount", likedPostsTotCnt); 
+
+        // ===== 탭 정보 =====
+        model.addAttribute("tab", tab);
+
+        return "mypage/mypage";
+    }
+
+
+
 }
 

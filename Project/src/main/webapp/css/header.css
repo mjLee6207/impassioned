@@ -150,6 +150,10 @@ body {
     margin-left: 2px; margin-right: 10px; margin-bottom: 1px; 
     width: auto; min-width: 70px;
 }
+
+.head-mypage-btn{margin-right:-5px !important;}
+.head-logout-btn{margin-right:27px !important;}
+
 .login-btn:hover,
 .head-mypage-btn:hover, .head-logout-btn:hover { background: var(--main-green); color: #fff; }
 

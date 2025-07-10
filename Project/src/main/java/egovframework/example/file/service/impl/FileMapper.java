@@ -21,4 +21,6 @@ public interface FileMapper {
     void deleteFile(Long fileId);
     //  파일 수정
     void updateFile(FileVO fileVO);
+    // 👈 회원 프로필 조회용
+    FileVO selectProfileFileByMemberId(Long memberId);
 }

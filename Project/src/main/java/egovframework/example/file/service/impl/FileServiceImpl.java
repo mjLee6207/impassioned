@@ -35,4 +35,8 @@ public class FileServiceImpl implements FileService {
     public void updateFile(FileVO fileVO) {
         fileMapper.updateFile(fileVO);
     }
+    @Override
+    public FileVO getProfileFileByMemberId(Long memberId) {
+        return fileMapper.selectProfileFileByMemberId(memberId);
+    }
 }

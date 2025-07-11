@@ -2,8 +2,6 @@ package egovframework.example.like.service.impl;
 
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,14 +30,14 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public void addLike(LikeVO likevo) {
         likeMapper.insertLike(likevo);
+        likeMapper.increaseLikeCount(likevo.getBoardId());
     }
 
     @Override
     public void removeLike(LikeVO likevo) {
         likeMapper.deleteLike(likevo);
+        likeMapper.decreaseLikeCount(likevo.getBoardId());
     }
-
-
 
     @Override
     public List<?> selectLikeList(Criteria criteria) {
@@ -61,5 +59,20 @@ public class LikeServiceImpl implements LikeService {
     public boolean checkLike(LikeVO likeVO) {
         return likeMapper.checkLike(likeVO) > 0;
     }
+
+	@Override
+	public void increaseLikeCount(int boardId) {
+		likeMapper.increaseLikeCount(boardId);
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void decreaseLikeCount(int boardId) {
+		likeMapper.decreaseLikeCount(boardId);
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

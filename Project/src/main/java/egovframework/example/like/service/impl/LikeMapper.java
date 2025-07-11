@@ -21,4 +21,10 @@ public interface LikeMapper {
 
     void insertLike(LikeVO likevo);
     void deleteLike(LikeVO likevo);
+    
+ // 좋아요 수 증가
+    void increaseLikeCount(int boardId);
+
+    // 좋아요 수 감소
+    void decreaseLikeCount(int boardId);
 }

@@ -1,10 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>로그인 & 회원가입</title>
+  <title>로그인 &amp; 회원가입</title>
       <link rel="stylesheet" href="/css/login.css" />
 </head>
 <body>
@@ -36,6 +38,11 @@
         <h1>LOGIN</h1>
         <input type="email" name="id" placeholder="이메일" required />
         <input type="password" name="password" placeholder="비밀번호" required />
+		<c:if test="${not empty errorMsg}">
+		  <script>
+		    alert('${fn:escapeXml(errorMsg)}');
+		  </script>
+		</c:if>
         <button class="submit-btn" type="submit"><h3>시작하기</h3></button>
         <span class="toggle-link" onclick="toggleForm('signup')"><h3>회원가입</h3></span>
         <div class="find">

@@ -73,6 +73,11 @@ public class LikeServiceImpl implements LikeService {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	// 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능
+	@Override
+	public void deleteAllByBoardId(int boardId) {
+	    likeMapper.deleteAllByBoardId(boardId);
+	}
 
 }

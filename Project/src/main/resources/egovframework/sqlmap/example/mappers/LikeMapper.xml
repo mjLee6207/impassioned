@@ -71,4 +71,9 @@
   WHERE BOARD_ID = #{boardId}
   AND ROWNUM = 1
 </update>
+
+	<!-- 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능 -->
+	<delete id="deleteAllByBoardId" parameterType="int">
+	    DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
+	</delete>
 </mapper>

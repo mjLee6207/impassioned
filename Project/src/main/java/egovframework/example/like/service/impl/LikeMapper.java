@@ -27,4 +27,7 @@ public interface LikeMapper {
 
     // 좋아요 수 감소
     void decreaseLikeCount(int boardId);
+    
+    // 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능
+    void deleteAllByBoardId(int boardId);
 }

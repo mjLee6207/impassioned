@@ -9,12 +9,19 @@ import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
 import egovframework.example.board.service.ReviewVO;
 import egovframework.example.common.Criteria;
+import egovframework.example.file.service.FileService;
+import egovframework.example.like.service.LikeService;
 
 @Service
 public class BoardServiceImpl implements BoardService {
    @Autowired
    private BoardMapper boardMapper;
+   
+   @Autowired
+   private FileService fileService;
 
+   @Autowired
+   private LikeService likeService;
    @Override
    public List<?> selectBoardList(Criteria criteria) {
       // TODO Auto-generated method stub
@@ -48,7 +55,19 @@ public class BoardServiceImpl implements BoardService {
    @Override
    public int delete(BoardVO boardVO) {
       // TODO Auto-generated method stub
-      return boardMapper.delete(boardVO);
+       int boardId = boardVO.getBoardId();
+
+       // 1. 댓글 전체 삭제
+       boardMapper.deleteAllReviewsByBoardId(boardId);  // BoardMapper에 구현 필요
+
+       // 2. 좋아요 전체 삭제
+       likeService.deleteAllByBoardId(boardId);  // LikeServiceImpl에 구현 필요
+
+       // 3. 첨부파일 전체 삭제
+       fileService.deleteAllByTargetIdAndType(boardId, "board");  // FileServiceImpl에 구현 필요
+
+       // 4. 게시글 삭제
+       return boardMapper.delete(boardVO);
    }
 
    @Override

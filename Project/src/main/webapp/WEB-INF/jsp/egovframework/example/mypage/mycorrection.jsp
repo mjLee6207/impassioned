@@ -34,6 +34,8 @@
                 <fmt:formatDate value="${member.joinDate}" pattern="yyyy-MM-dd" />
             </div>
             </div>
+            <!-- ★ 기존 프로필 이미지 값 hidden 필드 (프로필 유지용) ★ -->
+    <input type="hidden" name="originProfileImage" value="${member.profile}" />
 
     <!-- 우측 정보 수정 영역 -->
     <div class="right-box">

@@ -45,10 +45,11 @@
 .card-menu { margin-top: 22px; margin-bottom: 7px; }
 .card-menu-btn {
     display: flex; align-items: center; gap: 12px;
-    padding: 10px 0; border: none; background: none;
+    padding: 10px 15px; border: none; background: none;
     width: 100%; font-size: 1.07rem; color: #232323; cursor: pointer;
     border-radius: 8px; transition: background .15s, color .13s;
     margin-bottom: 2px; justify-content: center;
+    font-weight: bold;
 }
 .card-menu-btn.active,
 .card-menu-btn:focus,
@@ -56,12 +57,12 @@
     background: #f8f7f3;
     color: #118e6a !important;
 }
-.logout-btn { margin-top: 5px; background: #f8f7f3; color: #1e8a57; font-weight: 500; }
+.logout-btn { margin-top: 5px; background: #f8f7f3; color: #1e8a57; font-weight: bold; }
 .logout-btn:hover, .logout-btn:focus { background: #f6f6f6; color: #118e6a !important; }
 .login-btn {
     background: #f8f7f3;
     color: #1e8a57;
-    font-weight: 500;
+   font-weight: bold;
 }
 .login-btn:hover, .login-btn:focus {
     background: #f6f6f6;

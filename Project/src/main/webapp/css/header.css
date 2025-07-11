@@ -232,7 +232,6 @@ transform:translateY(0);
   line-height: 1 !important;
 }
 
-/* .ssearch-btn i:hover {color: #fff;} */
 .login-btn, .head-mypage-btn, .head-logout-btn {
 	background: #f8f9fa;
 	color: #1e8a57;

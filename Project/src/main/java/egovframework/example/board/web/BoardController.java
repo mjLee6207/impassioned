@@ -280,7 +280,7 @@ import lombok.extern.log4j.Log4j2;
 		         + "&pageIndex=" + pageIndex;
 		}
 		
-	//	상세조회: 읽기 전용 페이지 (조회만 가능)
+//		상세조회: 읽기 전용 페이지 (조회만 가능)
 		@GetMapping("/board/view.do")
 		public String view(@RequestParam("boardId") int boardId, Model model, HttpSession session) {
 		    // 조회수 증가
@@ -288,25 +288,27 @@ import lombok.extern.log4j.Log4j2;
 		        boardService.increaseViewCount(boardId);
 		    } catch (Exception e) {
 		        log.error("조회수 증가 실패: ", e);
-		       
 		    }
+
 		    List<ReviewVO> reviews = boardService.selectReviewList(boardId);
-	        model.addAttribute("reviews", reviews);
-	
+		    model.addAttribute("reviews", reviews);
+
 		    // 닉네임 포함 상세 게시글 조회
-		    BoardVO board = boardService.selectBoardDetail(boardId); // ✅ 변경
+		    BoardVO board = boardService.selectBoardDetail(boardId);
 		    if (board == null) {
 		        throw new RuntimeException("해당 게시글을 찾을 수 없습니다.");
 		    }
+
 		    // ✅ 세션에서 로그인 정보 꺼내서 모델에 추가
 		    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 		    model.addAttribute("loginUser", loginUser);
-		    
-		    model.addAttribute("board", board);
-		    BoardVO boardVO = boardService.selectBoardDetail(boardId);
+
+
+		    // ✅ 썸네일 및 파일 처리
 		    List<FileVO> fileList = fileService.getFilesByBoardId((long)boardId);
-		    model.addAttribute("board", boardVO);
+		    model.addAttribute("board", board);
 		    model.addAttribute("fileList", fileList);
+		    
 		    return "board/boardview"; // 읽기 전용 JSP로 이동
 		}
 		@PostMapping("/board/review/add.do")

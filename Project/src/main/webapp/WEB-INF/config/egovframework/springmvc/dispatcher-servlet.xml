@@ -78,11 +78,11 @@
 
     
     <!-- 여기 -->
-   	<!-- TODO: 파일 업로드 설정 : 기본(1M) => 10M 변경  -->
+   	<!-- TODO: 파일 업로드 설정 : 기본(1M) => 50M 변경  -->
  	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="10000000" />
-		<property name="maxInMemorySize" value="10000000" />
+		<property name="maxUploadSize" value="50000000" />
+		<property name="maxInMemorySize" value="50000000" />
 	</bean> 
 	
 	<!-- 스케줄러 기능 사용 -->

@@ -13,8 +13,11 @@
 <body>
 <jsp:include page="/common/header.jsp" />
 
-<div class="container container-box">
-    <jsp:include page="/common/sidebar.jsp" />
+<div class="main-wrap">
+   <div class="sidebar-wrap">
+        <jsp:include page="/common/sidebar.jsp"/>
+    </div>
+    <div class="board-wrap">
     <div class="write-box">
         <h3 class="mb-4">🍳 요리 게시글 수정</h3>
         <form id="addForm" action="${pageContext.request.contextPath}/board/edition.do" method="post" enctype="multipart/form-data">
@@ -70,7 +73,7 @@
         </form>
     </div>
 </div>
-
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 function fn_save() {

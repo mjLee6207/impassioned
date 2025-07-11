@@ -100,6 +100,11 @@ NVL(l.LIKE_COUNT, 0) AS likeCount  <!-- 7월 11일 LIKE_COUNT 정적 컬럼으�
 		WHERE BOARD_ID = #{boardId}
 	</delete>
 	
+	<!-- 7/11 게시글 삭제를 위한 모든 댓글 삭제 -->
+	<delete id="deleteAllReviewsByBoardId" parameterType="int">
+	    DELETE FROM BOARD_REVIEW WHERE BOARD_ID = #{boardId}
+	</delete>
+	
 	<!-- 조회수 증가 -->
 	<update id="increaseViewCount" parameterType="int">
 	    UPDATE BOARD	

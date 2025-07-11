@@ -47,12 +47,19 @@
     	DELETE FROM UPLOAD_FILE WHERE FILE_ID = #{fileId}
 	</delete>
 	<!-- 해당 회원의 프로필 파일(가장 최근 1개) 조회 -->
-<select id="selectProfileFileByMemberId" parameterType="long" resultType="FileVO">
-  SELECT * FROM UPLOAD_FILE
-   WHERE USE_TYPE = 'MEMBER'
-     AND USE_TARGET_ID = #{memberId}
-   ORDER BY UPLOAD_DATE DESC
-   FETCH FIRST 1 ROW ONLY
-</select>
-
+	<select id="selectProfileFileByMemberId" parameterType="long" resultType="FileVO">
+	  SELECT * FROM UPLOAD_FILE
+	   WHERE USE_TYPE = 'MEMBER'
+	     AND USE_TARGET_ID = #{memberId}
+	   ORDER BY UPLOAD_DATE DESC
+	   FETCH FIRST 1 ROW ONLY
+	</select>
+	
+	<!-- 7/11 민중 게시글삭제를위한 달려있는 모든 파일 삭제 기능 -->
+	<delete id="deleteByTargetIdAndType" parameterType="map">
+	    DELETE FROM UPLOAD_FILE
+	    WHERE USE_TARGET_ID = #{targetId}
+	      AND USE_TYPE = #{useType}
+	</delete>
+	
 </mapper>

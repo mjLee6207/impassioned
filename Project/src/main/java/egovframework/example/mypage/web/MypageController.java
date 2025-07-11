@@ -56,7 +56,8 @@ public class MypageController {
     @PostMapping("/update.do")
     public String updateMemberInfo(MemberVO memberVO,  
     @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
-    		HttpSession session)
+    @RequestParam(value = "originProfileImage", required = false) String originProfileImage,		
+    HttpSession session)
     		throws IOException {
 
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser"); // 1
@@ -67,6 +68,8 @@ public class MypageController {
 
         // 로그인 사용자 정보 기준으로 memberIdx 고정
         memberVO.setMemberIdx(loginUser.getMemberIdx());
+        // 아무것도 변경하지 않을 경우 기존 프로필이미지 값 그대로 유지!
+        memberVO.setProfile(originProfileImage);
 
         // 서비스 호출 - DB 정보 업데이트
         memberService.updateMember(memberVO);
@@ -169,4 +172,3 @@ public class MypageController {
 
 
 }
-

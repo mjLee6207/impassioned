@@ -6,7 +6,7 @@
     background: #fff;
     border-radius: 16px;
     padding: 32px 36px;
-    box-shadow: 0 5px 8px rgba(0,0,0,0.03);
+    box-shadow: var(--shadow);
     border: 1px solid #ececec;
     width: 100%;
     /* margin: 0 auto;  삭제 - 중앙정렬 안함 */

@@ -38,7 +38,7 @@
   background: #f7fbf9;
   border-radius: 18px;
   padding: 18px 8px 22px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  box-shadow:  var(--shadow);
   transition: box-shadow 0.16s;
 }
 .top-thumb-img {

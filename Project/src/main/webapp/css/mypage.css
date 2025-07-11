@@ -18,9 +18,10 @@
   flex: 1;
   background: #fff;
   border-radius: 12px;
-  padding: 32px 36px;
-  box-shadow: 5px 5px 8px darkgray;
+  padding: 32px 36px 80px 36px !important;
+  box-shadow:  var(--shadow);
   border: 1px solid #ececec;
+  padding-bottom: 40px !important;
 }
 
 /* 이하 기존 유지 */
@@ -165,6 +166,7 @@
   border-radius: 12px;
   overflow: hidden;
   margin-top: 30px;
+  margin-bottom: 16px;
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
 }
 

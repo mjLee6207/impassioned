@@ -29,7 +29,36 @@
 .post-btns .btn { min-width: 90px; }
 .image-list { display: flex; flex-wrap: wrap; gap: 10px; }
 .post-img-multi { max-width: 260px; max-height: 180px; border-radius: 12px; box-shadow: 0 2px 8px #eee; object-fit: cover; }
-
+.board-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+.board-title-main {
+    color: #1e8a57;           /* 재료준비와 같은 초록색 */
+    font-size: 1.35rem;
+    font-weight: bold;
+    letter-spacing: -1px;
+    flex-shrink: 0;
+    margin-right: 20px;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.board-title-info {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    gap: 8px;
+    color: #555;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.board-title-info .category-badge {
+    margin-right: 8px;
+}
 /* 좋아요 버튼 전체 래퍼 */
 .like-btn-wrap {
     display: flex;

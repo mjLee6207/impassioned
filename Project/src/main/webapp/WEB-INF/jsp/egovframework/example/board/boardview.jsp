@@ -48,20 +48,23 @@
             <div class="category-tab${board.category eq '디저트' ? ' active' : ''}" onclick="moveCategory('디저트')">디저트</div>
         </div>
         <!-- 상단 정보 스타일수정금지 -->
-        <div style="margin-bottom:18px;">
-            <span class="category-badge">
-                <c:choose>
-                    <c:when test="${board.category eq '한식'}">한식</c:when>
-                    <c:when test="${board.category eq '양식'}">양식</c:when>
-                    <c:when test="${board.category eq '중식'}">중식</c:when>
-                    <c:when test="${board.category eq '일식'}">일식</c:when>
-                    <c:when test="${board.category eq '디저트'}">디저트</c:when>
-                </c:choose>
-            </span>
-            작성자: <b>${board.nickname}</b>
-            | 작성일: ${board.writeDate}
-            | 조회수: ${board.viewCount}
-        </div>
+        <div class="board-title-row">
+    <span class="board-title-main">${board.title}</span>
+    <div class="board-title-info">
+        <span class="category-badge">
+            <c:choose>
+                <c:when test="${board.category eq '한식'}">한식</c:when>
+                <c:when test="${board.category eq '양식'}">양식</c:when>
+                <c:when test="${board.category eq '중식'}">중식</c:when>
+                <c:when test="${board.category eq '일식'}">일식</c:when>
+                <c:when test="${board.category eq '디저트'}">디저트</c:when>
+            </c:choose>
+        </span>
+        작성자: <b>${board.nickname}</b>
+        | 작성일: ${board.writeDate}
+        | 조회수: ${board.viewCount}
+    </div>
+</div>
         <!-- 상세 내용 -->
         <div class="post-section-title">재료준비</div>
         <div class="post-content">

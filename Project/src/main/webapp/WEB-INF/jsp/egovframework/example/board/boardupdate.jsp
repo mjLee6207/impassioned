@@ -53,7 +53,7 @@
                     <c:forEach var="file" items="${fileList}" varStatus="status">
                         <div class="existing-image-wrapper position-relative" style="display:inline-block;">
                             <img src="/file/download.do?fileId=${file.fileId}" style="width:120px;height:90px;object-fit:cover;border-radius:10px;border:1px solid #ddd;">
-                            <button type="button" class="btn-delete-existing" data-file-id="${file.fileId}" style="position:absolute;top:3px;right:3px;background:#fff;border-radius:50%;border:1px solid #ccc;width:24px;height:24px;padding:0;">&times;</button>
+                           <button type="button" class="img-delete-btn" data-file-id="${file.fileId}">&times;</button>
                             <c:if test="${status.first}"><span class="badge bg-success" style="position:absolute;bottom:3px;left:3px;">썸네일</span></c:if>
                         </div>
                     </c:forEach>
@@ -123,7 +123,7 @@ $(function() {
             reader.onload = function(e) {
                 const wrapper = $('<div class="position-relative" style="display:inline-block;">');
                 const img = $('<img>').attr('src', e.target.result).css({width:'120px',height:'90px',objectFit:'cover',borderRadius:'10px',border:'1px solid #ddd'});
-                const btn = $('<button type="button" aria-label="삭제" style="position:absolute;top:3px;right:3px;background:#fff;border-radius:50%;border:1px solid #ccc;width:24px;height:24px;padding:0;">&times;</button>');
+                const btn = $('<button type="button" class="img-delete-btn" aria-label="삭제">&times;</button>');
                 btn.on('click', function() { removeFileAtIndex(i); });
                 wrapper.append(img).append(btn);
                 imagePreviews.append(wrapper);

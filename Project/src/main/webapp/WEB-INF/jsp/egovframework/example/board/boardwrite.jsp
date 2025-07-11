@@ -76,16 +76,24 @@ $(function() {
         selectedFiles.forEach(file => dt.items.add(file));
         $('#images')[0].files = dt.files;
     }
-
     function refreshPreviews() {
         imagePreviews.empty();
         selectedFiles.forEach((file, i) => {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const wrapper = $('<div class="position-relative" style="display:inline-block;">');
-                const img = $('<img>').attr('src', e.target.result).css({width:'120px',height:'90px',objectFit:'cover',borderRadius:'10px',border:'1px solid #ddd'});
-                const btn = $('<button type="button" aria-label="삭제" style="position:absolute;top:3px;right:3px;background:#fff;border-radius:50%;border:1px solid #ccc;width:24px;height:24px;padding:0;">&times;</button>');
-                btn.on('click', function() { removeFileAtIndex(i); });
+                const wrapper = $('<div class="position-relative" style="display:inline-block;margin-bottom:6px;">');
+                // 이미지
+                const img = $('<img>').attr('src', e.target.result)
+                    .css({width:'120px',height:'90px',objectFit:'cover',borderRadius:'10px',border:'1px solid #ddd'});
+                // x버튼
+              const btn = $('<button type="button" class="img-delete-btn" aria-label="삭제">&times;</button>');
+btn.on('click', function() { removeFileAtIndex(i); });
+wrapper.append(img).append(btn);
+                // 썸네일 라벨 (첫 번째만 표시)
+                if(i === 0) {
+                    const badge = $('<span class="thumbnail-badge">썸네일</span>');
+                    wrapper.append(badge);
+                }
                 wrapper.append(img).append(btn);
                 imagePreviews.append(wrapper);
             };

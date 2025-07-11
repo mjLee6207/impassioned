@@ -45,7 +45,7 @@
     background: #1e8a57;
     color: #fff;
     border-color: #1e8a57;
-    box-shadow: 0px 5px 15px gray !important;
+    box-shadow: 0px 2px 7px gray !important;
 }
 .btn-submit:hover {
     background: #176b42;
@@ -56,11 +56,11 @@
 .btn-cancel {
     background: #f8f9fa;
     color: #343434;
-    box-shadow: 0px 5px 15px gray !important;
+    box-shadow: 0px 2px 5px gray !important;
 }
 .btn-cancel:hover {
     background: #ececec;
-    color: #fea700;
+    color: #1e8a57 !important;
 }
 /* 이미지 미리보기 박스 */
 #imagePreviews {
@@ -78,7 +78,7 @@
     padding: 4px;
     max-width: 150px;
     max-height: 150px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background-color: #fafafa;
 }
 

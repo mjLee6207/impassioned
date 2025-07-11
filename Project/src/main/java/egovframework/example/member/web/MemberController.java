@@ -103,7 +103,7 @@ public class MemberController {
 
         session.setAttribute("emailCode", code); // 세션에 저장
         session.setAttribute("emailForCode", email);
-        return "인증번호가 전송되었습니다. (테스트 코드: " + code + ")";
+        return "인증번호가 전송되었습니다. (인증번호: " + code + ")";
     }
 
     // ✅ [이메일 인증번호 확인]

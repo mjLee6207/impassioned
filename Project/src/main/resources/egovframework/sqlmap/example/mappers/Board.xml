@@ -16,9 +16,15 @@
 		b.*, 
 		m.nickname,
 		<!-- 게시판에서 좋아요 수 카운터를 위해 한줄 추가  2025년 7월 9일 오전 10시 41분: 강승태 -->
-(SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount
+NVL(l.LIKE_COUNT, 0) AS likeCount  <!-- 7월 11일 LIKE_COUNT 정적 컬럼으로 수정: 강승태 -->
 	FROM BOARD b
 	JOIN MEMBER m ON b.writer_idx = m.member_idx
+	<!-- 7월 11일 LIKE_COUNT 정적 컬럼으로 수정: 강승태 -->
+		LEFT JOIN (
+		SELECT BOARD_ID, MAX(LIKE_COUNT) AS LIKE_COUNT
+		FROM BOARD_LIKE
+		GROUP BY BOARD_ID
+	) l ON b.BOARD_ID = l.BOARD_ID
 	WHERE 1=1
 	<if test="searchKeyword != null and searchKeyword != ''">
 		AND b.TITLE LIKE '%' || #{searchKeyword} || '%'
@@ -103,10 +109,18 @@
 
    <!-- 닉네임 포함된 상세조회: 공개용 상세보기 -->
    <select id="selectBoardDetail" parameterType="int" resultType="BoardVO">
-      SELECT B.*, M.NICKNAME
-      FROM BOARD B
-      LEFT JOIN MEMBER M ON B.WRITER_IDX = M.MEMBER_IDX
-      WHERE B.BOARD_ID = #{boardId}
+  SELECT 
+    B.*, 
+    M.NICKNAME,
+    NVL(L.LIKE_COUNT, 0) AS likeCount  <!-- ✅ 좋아요 수 추가 -->
+  FROM BOARD B
+  LEFT JOIN MEMBER M ON B.WRITER_IDX = M.MEMBER_IDX
+  LEFT JOIN (
+    SELECT BOARD_ID, MAX(LIKE_COUNT) AS LIKE_COUNT
+    FROM BOARD_LIKE
+    GROUP BY BOARD_ID
+  ) L ON B.BOARD_ID = L.BOARD_ID
+  WHERE B.BOARD_ID = #{boardId}
    </select>
    
    <!-- 댓글 리스트 조회 -->

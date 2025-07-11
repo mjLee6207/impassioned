@@ -49,9 +49,26 @@
     VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{boardId}, #{memberIdx}, CURRENT_TIMESTAMP)
 </insert>
 
+
 <!-- 8. 좋아요 삭제 -->
 <delete id="deleteLike" parameterType="egovframework.example.like.service.LikeVO">
     DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
 </delete>
 
+<!-- 좋아요 추가 시 LIKE_COUNT 증가 -->
+<update id="increaseLikeCount" parameterType="int">
+  UPDATE BOARD_LIKE
+  SET LIKE_COUNT = LIKE_COUNT + 1
+  WHERE BOARD_ID = #{boardId}
+  AND ROWNUM = 1
+</update>
+
+<!-- 25년 7월 11일 좋아요수 DB에서 보게 하기 위해 추가 : 강승태 -->
+<!-- 좋아요 삭제 시 LIKE_COUNT 감소 -->
+<update id="decreaseLikeCount" parameterType="int">
+  UPDATE BOARD_LIKE
+  SET LIKE_COUNT = LIKE_COUNT - 1
+  WHERE BOARD_ID = #{boardId}
+  AND ROWNUM = 1
+</update>
 </mapper>

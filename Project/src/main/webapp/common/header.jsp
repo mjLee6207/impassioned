@@ -2,6 +2,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<%-- 🆕 요청 URI와 쿼리스트링 가져오기 (include 안전 대응) --%>
+<c:set var="uri" value="${empty requestScope['javax.servlet.forward.request_uri'] ? pageContext.request.requestURI : requestScope['javax.servlet.forward.request_uri']}" />
+<c:set var="query" value="${empty requestScope['javax.servlet.forward.query_string'] ? pageContext.request.queryString : requestScope['javax.servlet.forward.query_string']}" />
+
+<%-- 🧯 /WEB-INF 직접 경로 방지 --%>
+<c:choose>
+    <c:when test="${not fn:contains(uri, '/WEB-INF')}">
+        <c:set var="fullUrl" value="${uri}${query != null ? '?' : ''}${query}" />
+    </c:when>
+    <c:otherwise>
+        <c:set var="fullUrl" value='/' />
+    </c:otherwise>
+</c:choose>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,8 +24,6 @@
     <link rel="stylesheet" href="/css/header.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
-
-    
 </head>
 <body>
 <div class="main-navbar-bg">
@@ -59,7 +71,6 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/guide.do">홈페이지 가이드</a>
                         <a class="dropdown-item" href="/qna/support">Q&A</a>
-
                     </div>
                 </div>
                 <!-- Michelin 드롭다운 고도화-->
@@ -75,36 +86,42 @@
                 </div> -->
             </div>
         </div>
+
         <!-- 오른쪽: 검색창 + 로그인 -->
-      <div class="navbar-right">
-       <div class="navbar-search">
-         <form action="/search.do" method="get" autocomplete="off">
-            <input type="text" name="q" class="ssearch-box" placeholder="Search">
-            <button class="ssearch-btn" type="submit"><i class="bi bi-search"></i></button>
-         </form>
-      </div>
+        <div class="navbar-right">
+            <div class="navbar-search">
+                <form action="/search.do" method="get" autocomplete="off">
+                    <input type="text" name="q" class="ssearch-box" placeholder="Search">
+                    <button class="ssearch-btn" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
 
-  <c:choose>
-    <%-- 로그인한 경우 --%>
-    <c:when test="${not empty sessionScope.loginUser}">
-       <%--  <span class="welcome-msg">${sessionScope.loginUser.nickname}님 환영합니다.</span> --%>
-        <%-- 마이페이지 버튼 --%>
-        <c:url var="mypageUrl" value="/mypage/mypage.do"/>
-        <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">MYPAGE</button>
-        <%-- 로그아웃 버튼 --%>
-        <c:url var="logoutUrl" value="/member/logout.do"/>
-        <button class="head-logout-btn" onclick="location.href='${logoutUrl}'">LOGOUT</button>
-    </c:when>
-    <%-- 로그인하지 않은 경우 --%>
-    <c:otherwise>
-        <c:url var="loginUrl" value="/member/login.do"/>
-        <button class="login-btn" onclick="location.href='${loginUrl}'">LOGIN</button>
-    </c:otherwise>
-</c:choose>
-</div>
+            <c:choose>
+                <%-- 로그인한 경우 --%>
+                <c:when test="${not empty sessionScope.loginUser}">
+                    <%--  <span class="welcome-msg">${sessionScope.loginUser.nickname}님 환영합니다.</span> --%>
+                    <%-- 마이페이지 버튼 --%>
+                    <c:url var="mypageUrl" value="/mypage/mypage.do"/>
+                    <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">MYPAGE</button>
+                    <%-- 로그아웃 버튼 (🆕 redirect 적용) --%>
+                    <c:url var="logoutUrl" value="/member/logout.do">
+                        <c:param name="redirect" value="${fullUrl}" />
+                    </c:url>
+                    <button class="head-logout-btn" onclick="location.href='${logoutUrl}'">LOGOUT</button>
+                </c:when>
 
+                <%-- 로그인하지 않은 경우 (민중 7/12 추가)--%>
+                <c:otherwise>
+                    <c:url var="loginUrl" value="/member/login.do">
+                        <c:param name="redirect" value="${fullUrl}" />
+                    </c:url>
+                    <button class="login-btn" onclick="location.href='${loginUrl}'">LOGIN</button>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </nav>
 </div>
+
 <script>
     // 드롭다운 중복 방지: 하나만 열림
     const dropdowns = document.querySelectorAll('.dropdown');
@@ -130,7 +147,7 @@
     // 바깥 클릭시 드롭다운 닫기
     document.body.addEventListener('click', function(e){
         if(!e.target.closest('.dropdown')) {
-            dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show'));
+            dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show');
         }
     });
 </script>

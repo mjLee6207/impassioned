@@ -1,5 +1,7 @@
 package egovframework.example.member.web;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -54,8 +56,8 @@ public class MemberController {
         boolean available = memberService.isIdAvailable(id);
         return Collections.singletonMap("available", available);
     }
-
-    // ✅ [로그인 처리]
+        
+//  로그인 처리(여러 개 파라미터 대응 버전)
     @PostMapping("/member/login.do")
     public String login(MemberVO memberVO,
                         HttpSession session,
@@ -63,33 +65,61 @@ public class MemberController {
                         @RequestParam(value = "redirect", required = false) String redirect) {
         try {
             MemberVO loginUser = memberService.authenticate(memberVO);
+            session.setAttribute("loginUser", loginUser); // 로그인 성공 시 세션 저장
 
-            // 🔧 로그인 정보 세션에 저장
-            session.setAttribute("loginUser", loginUser); // 사용자 전체 정보
+            // ✅ redirect가 유효하고 /WEB-INF 포함 안하면 리다이렉트
+            if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
 
-            // ✅ redirect 파라미터가 존재하면 해당 경로로 이동
-            if (redirect != null && !redirect.trim().isEmpty()) {
-                return "redirect:" + redirect;
+                int idx = redirect.indexOf("?");
+                if (idx != -1) {
+                    String path = redirect.substring(0, idx);
+                    String queryString = redirect.substring(idx + 1);
+
+                    // 개별 쿼리 파라미터 인코딩
+                    String[] params = queryString.split("&");
+                    StringBuilder encodedParams = new StringBuilder();
+                    for (int i = 0; i < params.length; i++) {
+                        String[] pair = params[i].split("=");
+                        String key = URLEncoder.encode(pair[0], StandardCharsets.UTF_8.toString());
+                        String value = pair.length > 1 ? URLEncoder.encode(pair[1], StandardCharsets.UTF_8.toString()) : "";
+                        encodedParams.append(key).append("=").append(value);
+                        if (i < params.length - 1) encodedParams.append("&");
+                    }
+
+                    String encodedRedirect = path + "?" + encodedParams.toString();
+                    return "redirect:" + encodedRedirect;
+
+                } else {
+                    return "redirect:" + redirect;
+                }
             }
 
-            return "redirect:/index.jsp"; // 기본 메인 페이지
+            // redirect가 없거나 잘못된 경우 기본 이동
+            return "redirect:/";
+
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
-            return "member/login"; // 로그인 실패 시 다시 로그인 폼
+            return "member/login";
         }
     }
-
+    
     // ✅ [로그인 폼 페이지 GET]
     @GetMapping("/member/login.do")
     public String loginPage() {
         return "member/login";
     }
 
-    // ✅ [로그아웃 처리 - GET 요청 대응]
+    // [로그아웃 처리 - 원래페이지로 이동시킴]
     @GetMapping("/member/logout.do")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session,
+                         @RequestParam(value = "redirect", required = false) String redirect) {
         session.invalidate(); // ✔ 세션 전체 삭제
-        return "redirect:/"; // 메인 페이지로 이동
+
+        if (redirect != null && !redirect.trim().isEmpty()) {
+            return "redirect:" + redirect; // 🔁 원래 페이지로 이동
+        }
+
+        return "redirect:/"; // 기본: 메인 페이지
     }
 
     // ✅ [이메일 인증번호 전송]

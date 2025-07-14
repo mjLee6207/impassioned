@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.example.like.service.impl.LikeMapper">
+
+    <!-- VO 매핑 -->
+    <resultMap id="LikeResultMap" type="egovframework.example.like.service.LikeVO">
+        <id     property="likeId"    column="LIKE_ID"/>
+        <result property="boardId"   column="BOARD_ID"/>
+        <result property="memberIdx" column="MEMBER_IDX"/>
+        <result property="likeDate"  column="LIKE_DATE"/>
+    </resultMap>
+
+    <!-- 1. 전체 리스트 (페이징용) -->
+    <select id="selectLikeList" parameterType="egovframework.example.common.Criteria" resultMap="LikeResultMap">
+        SELECT * FROM BOARD_LIKE ORDER BY LIKE_ID DESC
+    </select>
+
+    <!-- 2. 전체 개수 -->
+    <select id="selectLikeListTotCnt" parameterType="egovframework.example.common.Criteria" resultType="int">
+        SELECT COUNT(*) FROM BOARD_LIKE
+    </select>
+
+    <!-- 3. 특정 게시글의 좋아요 목록 -->
+    <select id="selectLikeListByBoardId" parameterType="int" resultMap="LikeResultMap">
+        SELECT * FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
+    </select>
+
+    <!-- 4. 좋아요 수 -->
+    <select id="countLikes" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
+    </select>
+
+  <!-- 5. 좋아요 여부 확인 -->
+<select id="existsLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
+    SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
+</select>
+
+<!-- 6. checkLike (중복용) -->
+<select id="checkLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
+    SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
+</select>
+
+<!-- 7. 좋아요 등록 -->
+<insert id="insertLike" parameterType="egovframework.example.like.service.LikeVO">
+    INSERT INTO BOARD_LIKE (LIKE_ID, BOARD_ID, MEMBER_IDX, LIKE_DATE)
+    VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{boardId}, #{memberIdx}, CURRENT_TIMESTAMP)
+</insert>
+
+
+<!-- 8. 좋아요 삭제 -->
+<delete id="deleteLike" parameterType="egovframework.example.like.service.LikeVO">
+    DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
+</delete>
+
+<!-- 좋아요 추가 시 LIKE_COUNT 증가 -->
+<update id="increaseLikeCount" parameterType="int">
+  UPDATE BOARD_LIKE
+  SET LIKE_COUNT = LIKE_COUNT + 1
+  WHERE BOARD_ID = #{boardId}
+  AND ROWNUM = 1
+</update>
+
+<!-- 25년 7월 11일 좋아요수 DB에서 보게 하기 위해 추가 : 강승태 -->
+<!-- 좋아요 삭제 시 LIKE_COUNT 감소 -->
+<update id="decreaseLikeCount" parameterType="int">
+  UPDATE BOARD_LIKE
+  SET LIKE_COUNT = LIKE_COUNT - 1
+  WHERE BOARD_ID = #{boardId}
+  AND ROWNUM = 1
+</update>
+
+	<!-- 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능 -->
+	<delete id="deleteAllByBoardId" parameterType="int">
+	    DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
+	</delete>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="egovframework.example.datako.service.impl.DataKOMapper">
+  
+    <select id="checkRecipe" 
+    			parameterType="string" 
+    			resultType="boolean">
+    	SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+    	FROM API_RECIPE_KO
+    	WHERE recipe_id = #{recipeId}
+    </select>
+    
+  	<insert id="insertDataKO" 
+  				parameterType="DataKOVO">
+	    INSERT INTO API_RECIPE_KO (
+	        RECIPE_ID, TITLE, INSTRUCTION, INGREDIENT, CATEGORY, THUMBNAIL
+	    )
+	    VALUES (
+	        #{recipeId}, #{title}, #{instruction}, #{ingredient}, #{category}, #{thumbnail}
+	    )
+	</insert>
+	
+</mapper>

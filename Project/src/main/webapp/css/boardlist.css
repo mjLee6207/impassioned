@@ -6,7 +6,7 @@
 
 .sbtn {margin-top: -37px;}
 
-.search-input {weight: 50px; height: 45px; margin-top: -45px;}
+.search-input {/* weight: 50px; */ height: 45px; margin-top: -45px;}
 
 .popular-posts-section {
   margin: 40px 0;  /* spacing above and below the section */

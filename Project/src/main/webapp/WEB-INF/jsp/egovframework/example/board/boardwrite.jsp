@@ -50,7 +50,7 @@
 					<label for="content" class="form-label">조리법</label>
 					<textarea class="form-control numbered-textarea" id="content"
 						name="content" rows="6" maxlength="10000"
-						placeholder=" Enter : 자동으로 순번 출력 ( 순번 뒤에는 꼭 마침표를 찍어주세요 ! )" required></textarea>
+						placeholder=" Enter : 자동으로 순번 출력 ( 순번 뒤에는 꼭 마침표를 찍어주세요 )" required></textarea>
 						
 					<!-- 사진 파일 업로드 -->
 					<label for="images" class="form-label">사진 업로드</label> <input

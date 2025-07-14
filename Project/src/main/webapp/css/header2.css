@@ -37,7 +37,7 @@ body {
 }
 
 .top-text-links a:hover {
-    color: #333;
+    color: #006400;
 }
 
 .app-menu-container {
@@ -56,6 +56,8 @@ body {
     cursor: pointer;
     color: #118e6a;
 }
+
+.app-menu-toggle:hover{color: #006400;} 
 
 .app-menu-dropdown {
     display: none;

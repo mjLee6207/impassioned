@@ -16,10 +16,10 @@
   	<insert id="insertDataKO" 
   				parameterType="DataKOVO">
 	    INSERT INTO API_RECIPE_KO (
-	        RECIPE_ID, TITLE, INSTRUCTION, INGREDIENT, CATEGORY, THUMBNAIL
+	        RECIPE_ID, TITLE, INSTRUCTION, INGREDIENT, CATEGORY, THUMBNAIL, IMAGES
 	    )
 	    VALUES (
-	        #{recipeId}, #{title}, #{instruction}, #{ingredient}, #{category}, #{thumbnail}
+	        #{recipeId}, #{title}, #{instruction}, #{ingredient}, #{category}, #{thumbnail}, #{images}
 	    )
 	</insert>
 	

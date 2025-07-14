@@ -26,7 +26,7 @@
 <c:set var="member" value="${sessionScope.loginUser}" />
 
 <div class="profile-card">
-    <img src="${member != null && member.profile != null ? member.profile : '/img/profile-default.png'}"
+    <img src="${member != null && member.profile != null ? member.profile : '/images/default_profile.png'}"
          class="profile-img" alt="프로필 사진">
 
     <c:choose>

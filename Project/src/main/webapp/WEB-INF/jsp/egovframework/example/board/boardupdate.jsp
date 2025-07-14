@@ -24,7 +24,6 @@
             <input type="hidden" name="boardId" value="${boardVO.boardId}" />
             <input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
             <input type="hidden" name="pageIndex" value="${not empty param.pageIndex ? param.pageIndex : 1}" />
-            <input type="hidden" name="category" value="${param.category}" />
             <input type="hidden" name="deleteImageIds" id="deleteImageIds" value=""/>
             <!-- 카테고리 -->
             <label for="category" class="form-label">카테고리</label>

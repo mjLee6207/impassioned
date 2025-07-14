@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <script>
         function goLogin() {
-            const url = location.pathname + location.search;
-            location.href = '/member/login.do?redirect=' + encodeURIComponent(url);
+            const redirect = location.pathname + location.search;  // ⚠️ 그대로 사용 (search는 이미 인코딩된 상태)
+            location.href = '/member/login.do?redirect=' + encodeURIComponent(redirect);
         }
 
         function goLogout() {
-            const url = location.pathname + location.search;
-            location.href = '/member/logout.do?redirect=' + encodeURIComponent(url);
+            const redirect = location.pathname + location.search;
+            location.href = '/member/logout.do?redirect=' + encodeURIComponent(redirect);
         }
     </script>
 </head>

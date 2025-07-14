@@ -2,6 +2,7 @@ package egovframework.example.data.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -133,19 +134,29 @@ public class DataWF implements DataManager {
         List<String> measure = new ArrayList<>();
 
         for (int i = 1; i <= 20; i++) {
-            String ing = node.path("strIngredient" + i).asText();
-            String mea = node.path("strMeasure" + i).asText();
-            if (ing != null && !ing.isBlank()) {
-                ingredient.add(ing.trim());
-                measure.add(mea != null && !mea.isBlank() ? mea.trim() : "");
+            String ing = clean(node.path("strIngredient" + i).asText());
+            String mea = clean(node.path("strMeasure" + i).asText());
+
+            if (!ing.isBlank()) {
+                ingredient.add(ing);
+                measure.add(!mea.isBlank() ? mea : "");
             }
         }
+
         data.setIngredient(ingredient);
         data.setMeasure(measure);
     }
 
+    private String clean(String s) {
+        if (s == null) return "";
+        return s.replaceAll("\\(String\\)", "")
+                .replaceAll("(?i)null", "")
+                .replaceAll("(?i)undefined", "")
+                .replaceAll("(?i)N/A", "")
+                .trim();
+    }
+
     private void translateAll(DataVO data) {
-        // ✅ 설명 길이 체크
         String instruction = data.getInstruction();
         if (instruction != null && instruction.length() > 4500) {
             log.warn("⚠ 조리 설명이 너무 깁니다 ({}자) → DeepL 오류 가능성 있음", instruction.length());
@@ -154,8 +165,13 @@ public class DataWF implements DataManager {
         data.setTitleKr(translator.translate(data.getTitle(), "KO"));
         data.setInstructionskr(translator.translate(instruction, "KO"));
 
+        // ✅ 재료명 번역
         List<String> ingredientKr = translator.translateBulk(data.getIngredient(), "KO");
-        List<String> measureKr = translator.translateBulk(data.getMeasure(), "KO");
+
+        // ✅ 계량 단위 번역 후 후처리 적용
+        List<String> measureKr = translator.translateBulk(data.getMeasure(), "KO").stream()
+            .map(this::fixUnit)
+            .collect(Collectors.toList());
 
         data.setIngredientKr(ingredientKr);
         data.setMeasureKr(measureKr);
@@ -166,7 +182,29 @@ public class DataWF implements DataManager {
         data.setMeasureKrStr(String.join(",", measureKr));
     }
 
-    // ✅ 함수 이름 변경: 실제 area 기준
+    
+ // ✅ 계량 단위 후처리 함수
+    private String fixUnit(String text) {
+        return text.replaceAll("(?i)\\b(tsp|teaspoon)\\b", "작은술")
+                   .replaceAll("(?i)\\b(tbsp|tbs|tablespoon)\\b", "큰술")
+                   .replaceAll("(?i)\\bcup\\b", "컵")
+                   .replaceAll("(?i)\\b(oz|ounce)\\b", "온스")
+                   .replaceAll("(?i)\\b(lb|pound)\\b", "파운드")
+                   .replaceAll("(?i)\\b(gram|g)\\b", "그램")
+                   .replaceAll("(?i)\\bkg\\b", "킬로그램")
+                   .replaceAll("(?i)\\bpinch\\b", "꼬집")
+                   .replaceAll("(?i)\\bdash\\b", "소량")
+                   .replaceAll("(?i)\\bclove\\b", "쪽")
+                   .replaceAll("(?i)\\bslice\\b", "조각")
+                   .replaceAll("(?i)\\bdrop\\b", "방울")
+                   .replaceAll("(?i)\\bcan\\b", "캔")
+                   .replaceAll("(?i)\\bbottle\\b", "병")
+                   .replaceAll("(?i)\\bpack\\b", "팩")
+                   .replaceAll("(?i)\\bpiece\\b", "개")
+                   .replaceAll("(?i)\\bstalk\\b", "줄기")
+                   .replaceAll("(?i)\\bto taste\\b", "기호에 따라");
+    }
+    
     private String transArea(String area) {
         switch (area) {
             case "Chinese": return "중국";
@@ -176,7 +214,7 @@ public class DataWF implements DataManager {
             case "Italian":
             case "Spanish":
             case "British":
-                return "양식";            
+                return "양식";
             case "Dessert": return "디저트";
             default: return "기타";
         }

@@ -24,6 +24,20 @@
     <link rel="stylesheet" href="/css/header.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
+    
+    <script>
+        // ✅ 로그인 시 현재 페이지 redirect 유지
+        function goLogin() {
+            const redirect = location.pathname + location.search;  // 인코딩 없이 전달
+            location.href = '/member/login.do?redirect=' + encodeURIComponent(redirect);  // JS에서 1회만 
+        }
+
+        // ✅ 로그아웃 시 현재 페이지 redirect 유지
+        function goLogout() {
+            const redirect = location.pathname + location.search;
+            location.href = '/member/logout.do?redirect=' + encodeURIComponent(redirect);
+        }
+    </script>
 </head>
 <body>
 <div class="main-navbar-bg">
@@ -31,8 +45,7 @@
         <!-- 왼쪽 로고 + 메뉴 -->
         <div class="navbar-left">
             <a href="http://localhost:8080/" class="main-logo">
-                <span>🍽️ CheForest             
-                </span>
+                <span>🍽️ CheForest</span>
             </a>
             <div class="main-menu">
                 <!-- 레시피 드롭다운 -->
@@ -46,6 +59,7 @@
                         <a class="dropdown-item" href="/recipe.do?category=디저트">디저트<span class="eng"> |　Dessert</span></a>
                     </div>
                 </div>
+
                 <!-- 게시판 드롭다운 -->
                 <div class="dropdown" id="dropdown-board">
                     <button class="dropdown-toggle" type="button">Board</button>
@@ -57,6 +71,7 @@
                         <a class="dropdown-item" href="/board/board.do?category=디저트">디저트<span class="eng"> |　Dessert</span></a>
                     </div>
                 </div>
+
                 <!-- Event 드롭다운 -->
                 <div class="dropdown" id="dropdown-event">
                     <button class="dropdown-toggle" type="button">Event</button>
@@ -65,6 +80,7 @@
                         <a class="dropdown-item" href="/event/recipe">Recipe Event</a>
                     </div>
                 </div>
+
                 <!-- Q&A 드롭다운 -->
                 <div class="dropdown" id="dropdown-qna">
                     <button class="dropdown-toggle" type="button">Support</button>
@@ -73,8 +89,9 @@
                         <a class="dropdown-item" href="/qna/support">Q&A</a>
                     </div>
                 </div>
-                <!-- Michelin 드롭다운 고도화-->
-                <!-- <div class="dropdown" id="dropdown-michelin">
+
+                <!-- Michelin 드롭다운 고도화 (보류용 주석)
+                <div class="dropdown" id="dropdown-michelin">
                     <button class="dropdown-toggle" type="button">Michelin</button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/michelin/seoul">서울</a>
@@ -83,7 +100,8 @@
                         <a class="dropdown-item" href="/michelin/daegu">대구</a>
                         <a class="dropdown-item" href="/michelin/daejeon">대전</a>
                     </div>
-                </div> -->
+                </div>
+                -->
             </div>
         </div>
 
@@ -104,18 +122,12 @@
                     <c:url var="mypageUrl" value="/mypage/mypage.do"/>
                     <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">MYPAGE</button>
                     <%-- 로그아웃 버튼 (🆕 redirect 적용) --%>
-                    <c:url var="logoutUrl" value="/member/logout.do">
-                        <c:param name="redirect" value="${fullUrl}" />
-                    </c:url>
-                    <button class="head-logout-btn" onclick="location.href='${logoutUrl}'">LOGOUT</button>
+                    <button class="head-logout-btn" type="button" onclick="goLogout()">LOGOUT</button>
                 </c:when>
 
-                <%-- 로그인하지 않은 경우 (민중 7/12 추가)--%>
+                <%-- 로그인하지 않은 경우 (민중 7/12 추가) --%>
                 <c:otherwise>
-                    <c:url var="loginUrl" value="/member/login.do">
-                        <c:param name="redirect" value="${fullUrl}" />
-                    </c:url>
-                    <button class="login-btn" onclick="location.href='${loginUrl}'">LOGIN</button>
+                    <button class="login-btn" type="button" onclick="goLogin()">LOGIN</button>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -135,7 +147,7 @@
         dropdown.addEventListener('mouseleave', function() {
             this.querySelector('.dropdown-menu').classList.remove('show');
         });
-        // 모바일(터치) 대응: 클릭시에도 하나만 열림
+        // 모바일(터치) 대응: 클릭 시에도 하나만 열림
         dropdown.querySelector('.dropdown-toggle').addEventListener('click', function(e){
             e.preventDefault();
             dropdowns.forEach(dd => {
@@ -144,7 +156,8 @@
             dropdown.querySelector('.dropdown-menu').classList.toggle('show');
         });
     });
-    // 바깥 클릭시 드롭다운 닫기
+
+    // 바깥 클릭 시 드롭다운 닫기
     document.body.addEventListener('click', function(e){
         if(!e.target.closest('.dropdown')) {
             dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show'));

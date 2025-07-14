@@ -15,6 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import egovframework.example.data.service.DataVO;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -119,5 +120,30 @@ public class Translator {
                 })
                 .collect(Collectors.toList());
         }
+    }
+    
+ // Spoonacular
+    public void translateIngredients(DataVO data) {
+        List<String> ingredients = data.getIngredient();
+        List<String> measures = data.getMeasure();
+
+        if (ingredients == null || measures == null) {
+            log.warn("⚠️ 재료 또는 계량 정보가 없습니다 (recipeId={})", data.getRecipeId());
+            return;
+        }
+
+        List<String> ingKr = translateBulk(ingredients, "KO");
+        List<String> meaKr = translateBulk(measures, "KO");
+
+        data.setIngredientKr(ingKr);
+        data.setMeasureKr(meaKr);
+
+        data.setIngredientKrStr(String.join(",", ingKr)); // ✅ 문자열로 세팅
+        data.setMeasureKrStr(String.join(",", meaKr));    // ✅ 문자열로 세팅
+
+        int totalChars = ingredients.stream().mapToInt(String::length).sum()
+                + measures.stream().mapToInt(String::length).sum();
+
+        log.info("🈺 재료/계량 번역 완료 (건수: {}, 총 글자 수: {})", ingKr.size() + meaKr.size(), totalChars);
     }
 }

@@ -112,6 +112,7 @@
 		<mvc:interceptor>
 			<!-- 로그인 필요한 경로들만 지정 -->
 			<mvc:mapping path="/board/add.do" />
+			<mvc:mapping path="/board/edition.do" />
 			<mvc:mapping path="/mypage/**" />
 			<bean class="egovframework.example.common.interceptor.LoginInterceptor" />
 		</mvc:interceptor>

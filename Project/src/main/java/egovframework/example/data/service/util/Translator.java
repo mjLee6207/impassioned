@@ -73,7 +73,7 @@ public class Translator {
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             for (String text : texts) {
-                params.add("text", text); // ✅ 다수 전송 방식
+                params.add("text", text);
             }
             params.add("target_lang", lang);
 
@@ -81,9 +81,23 @@ public class Translator {
             ResponseEntity<Map> response = restTemplate.postForEntity(apiUrl, request, Map.class);
 
             List<Map<String, String>> translations = (List<Map<String, String>>) response.getBody().get("translations");
+
             if (translations == null || translations.size() != texts.size()) {
-                log.warn("❌ 다중 번역 응답 불일치: 요청={}, 응답={}", texts.size(), translations != null ? translations.size() : 0);
-                return texts.stream().map(t -> "번역 실패: " + t).collect(Collectors.toList());
+                log.warn("⚠ 일부 누락 감지: 요청 {}, 응답 {}", texts.size(), translations != null ? translations.size() : 0);
+
+                // ✅ fallback: 하나씩 개별 번역
+                List<String> result = texts.stream()
+                    .map(t -> {
+                        try {
+                            return translate(t, lang);
+                        } catch (Exception e) {
+                            log.error("❌ 개별 줄 번역 실패: {}", t);
+                            return "번역 실패: " + t;
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+                return result;
             }
 
             return translations.stream()
@@ -91,8 +105,19 @@ public class Translator {
                     .collect(Collectors.toList());
 
         } catch (Exception e) {
-            log.error("❌ 다중 번역 오류: {}", e.getMessage(), e);
-            return texts.stream().map(t -> "번역 실패: " + t).collect(Collectors.toList());
+            log.error("❌ 전체 다중 번역 실패, 개별 시도 중: {}", e.getMessage(), e);
+
+            // ✅ fallback: 개별 번역 시도
+            return texts.stream()
+                .map(t -> {
+                    try {
+                        return translate(t, lang);
+                    } catch (Exception ex) {
+                        log.warn("❌ 줄 단위 번역 실패: {}", t);
+                        return "번역 실패: " + t;
+                    }
+                })
+                .collect(Collectors.toList());
         }
     }
 }

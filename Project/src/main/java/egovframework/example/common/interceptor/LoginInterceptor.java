@@ -6,28 +6,36 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public class LoginInterceptor implements HandlerInterceptor {
 
-	@Override
-	public boolean preHandle(HttpServletRequest request,
-	                         HttpServletResponse response,
-	                         Object handler) throws Exception {
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
 
-	    HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);
 
-	    if (session == null || session.getAttribute("loginUser") == null) {
-	        // 로그인되지 않은 사용자
+        String uri = request.getRequestURI();
+        String query = request.getQueryString();
+        String fullUrl = uri + (query != null ? "?" + query : "");
 
-	        String uri = request.getRequestURI();
-	        String query = request.getQueryString();
-	        String fullUrl = uri + (query != null ? "?" + query : "");
+        log.info("📌 요청 URI: {}", uri);
+        log.info("📌 전체 URL (with query): {}", fullUrl);
 
-	        // ✅ URL 파라미터로 redirect 넘기기 (세션 사용 안함)
-	        String loginUrl = request.getContextPath() + "/member/login.do?redirect=" + java.net.URLEncoder.encode(fullUrl, "UTF-8");
+        if (session == null || session.getAttribute("loginUser") == null) {
+            log.info("🚫 비로그인 사용자 → 로그인 페이지로 리다이렉트");
 
-	        response.sendRedirect(loginUrl);
-	        return false;
-	    }
-        return true; // 로그인 되어 있으면 통과
+            String loginUrl = request.getContextPath() + "/member/login.do?redirect=" +
+                              java.net.URLEncoder.encode(fullUrl, "UTF-8");
+
+            response.sendRedirect(loginUrl);
+            return false;
+        }
+
+        log.info("✅ 로그인 사용자 → 요청 통과");
+        return true;
     }
 }

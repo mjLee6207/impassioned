@@ -41,6 +41,7 @@
         </div>
         <!-- 카테고리 탭 -->
         <div class="category-tabs">
+            <div class="category-tab${empty board.category ? ' active' : ''}" onclick="moveCategory('')">전체</div>
             <div class="category-tab${board.category eq '한식' ? ' active' : ''}" onclick="moveCategory('한식')">한식</div>
             <div class="category-tab${board.category eq '양식' ? ' active' : ''}" onclick="moveCategory('양식')">양식</div>
             <div class="category-tab${board.category eq '중식' ? ' active' : ''}" onclick="moveCategory('중식')">중식</div>

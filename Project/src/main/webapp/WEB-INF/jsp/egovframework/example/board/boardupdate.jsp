@@ -53,7 +53,7 @@
                     <c:forEach var="file" items="${fileList}" varStatus="status">
                         <div class="existing-image-wrapper position-relative" style="display:inline-block;">
                             <img src="/file/download.do?fileId=${file.fileId}" style="width:120px;height:90px;object-fit:cover;border-radius:10px;border:1px solid #ddd;">
-                           <button type="button" class="img-delete-btn" data-file-id="${file.fileId}">&times;</button>
+                            <button type="button" class="img-delete-btn btn-delete-existing" data-file-id="${file.fileId}">&times;</button>
                             <c:if test="${status.first}"><span class="badge bg-success" style="position:absolute;bottom:3px;left:3px;">썸네일</span></c:if>
                         </div>
                     </c:forEach>
@@ -66,9 +66,9 @@
             <div id="imagePreviews" class="d-flex flex-wrap mt-2 gap-2"></div>
             <!-- 버튼 영역 -->
             <div class="btn-row">
-                <button type="submit" class="submit_btn" onclick="fn_save()">수정하기</button>
-                <button type="button" class="delete_btn" onclick="fn_delete()">삭제하기</button>
-                <button type="button" class="cancel_btn" onclick="history.back()">돌아가기</button>
+                <button type="submit" class="btn btn-submit" onclick="fn_save()">수정하기</button>
+                <button type="button" class="btn btn-delete" onclick="fn_delete()">삭제하기</button>
+                <button type="button" class="btn btn-cancel" onclick="history.back()">돌아가기</button>
             </div>
         </form>
     </div>
@@ -131,6 +131,52 @@ $(function() {
             reader.readAsDataURL(file);
         });
     }
+
+    // ✅ 조리법 textarea 번호 자동 입력 기능
+    const textarea = $('#content');
+
+    textarea.on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const val = textarea.val();
+            const selectionStart = this.selectionStart;
+            const selectionEnd = this.selectionEnd;
+
+            const before = val.substring(0, selectionStart);
+            const after = val.substring(selectionEnd);
+
+            const lines = before.split('\n');
+            const lastLine = lines[lines.length - 1];
+
+            const match = lastLine.match(/^(\d+)\.\s?/);
+            let nextNumber = 1;
+
+            if (match) {
+                nextNumber = parseInt(match[1], 10) + 1;
+            } else {
+                // 마지막 줄까지 번호가 있는 줄만 필터링해서 가장 마지막 번호 추출
+                const numberedLines = lines.filter(line => /^\d+\.\s/.test(line));
+                if (numberedLines.length > 0) {
+                    const lastNumberedLine = numberedLines[numberedLines.length - 1];
+                    const m = lastNumberedLine.match(/^(\d+)\.\s?/);
+                    if (m) {
+                        nextNumber = parseInt(m[1], 10) + 1;
+                    }
+                }
+            }
+
+            const insertText = '\n' + nextNumber + '. ';
+            textarea.val(before + insertText + after);
+            this.selectionStart = this.selectionEnd = selectionStart + insertText.length;
+        }
+    });
+
+    textarea.on('focus', function () {
+        if ($(this).val().trim() === '') {
+            $(this).val('1. ');
+        }
+    });
 });
 </script>
 </body>

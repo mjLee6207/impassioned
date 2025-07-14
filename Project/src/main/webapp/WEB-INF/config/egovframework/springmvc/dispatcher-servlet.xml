@@ -1,91 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- task 추가  -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:p="http://www.springframework.org/schema/p"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xmlns:mvc="http://www.springframework.org/schema/mvc"
-        xmlns:task="http://www.springframework.org/schema/task"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+<!-- task 추가 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
                 http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
                 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
                 ">
 
-    <!-- Controller만 스캔 -->
-    <context:component-scan base-package="egovframework">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
-    </context:component-scan>
+	<!-- Controller만 스캔 -->
+	<context:component-scan
+		base-package="egovframework">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+	</context:component-scan>
 
-   <!-- TODO: @RestController 사용시 필요 -->
-    <mvc:annotation-driven />
-    <!-- 기본 핸들러 등록 -->
+	<!-- TODO: @RestController 사용시 필요 -->
+	<mvc:annotation-driven />
+	<!-- 기본 핸들러 등록 -->
 
 
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="webBindingInitializer">
-            <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
-        </property>
-    </bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean
+				class="egovframework.example.cmmn.web.EgovBindingInitializer" />
+		</property>
+	</bean>
 
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="localeChangeInterceptor"/>
-            </list>
-        </property>
-    </bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+			</list>
+		</property>
+	</bean>
 
-    <!-- 언어설정 -->
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="language"/>
-    </bean>
+	<!-- 언어설정 -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+	<bean id="localeChangeInterceptor"
+		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="language" />
+	</bean>
 
-    <!-- ✅ 예외 처리기 수정 -->
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultErrorView" value="cmmn/egovError"/>
-        <property name="exceptionAttribute" value="exception"/> <!-- ✅ 예외 객체 전달 -->
-        <property name="exceptionMappings">
-            <props>
-                <prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop>
-                <prop key="org.springframework.transaction.TransactionException">cmmn/transactionFailure</prop>
-                <prop key="org.egovframe.rte.fdl.cmmn.exception.EgovBizException">cmmn/egovError</prop>
-                <prop key="java.lang.Exception">cmmn/egovError</prop> <!-- ✅ 모든 예외 처리 -->
-            </props>
-        </property>
-    </bean>
+	<!-- ✅ 예외 처리기 수정 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="cmmn/egovError" />
+		<property name="exceptionAttribute" value="exception" /> <!-- ✅ 예외 객체 전달 -->
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop>
+				<prop
+					key="org.springframework.transaction.TransactionException">cmmn/transactionFailure</prop>
+				<prop
+					key="org.egovframe.rte.fdl.cmmn.exception.EgovBizException">cmmn/egovError</prop>
+				<prop key="java.lang.Exception">cmmn/egovError</prop> <!-- ✅ 모든 예외 처리 -->
+			</props>
+		</property>
+	</bean>
 
-    <!-- JSP 경로 설정 -->
-    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
-          p:viewClass="org.springframework.web.servlet.view.JstlView"
-          p:prefix="/WEB-INF/jsp/egovframework/example/" p:suffix=".jsp"/>
+	<!-- JSP 경로 설정 -->
+	<bean
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+		p:order="1"
+		p:viewClass="org.springframework.web.servlet.view.JstlView"
+		p:prefix="/WEB-INF/jsp/egovframework/example/" p:suffix=".jsp" />
 
-    <!-- 페이지네이션 -->
-    <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/>
-    <bean id="paginationManager" class="org.egovframe.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
-        <property name="rendererType">
-            <map>
-                <entry key="image" value-ref="imageRenderer"/>
-            </map>
-        </property>
-    </bean>
+	<!-- 페이지네이션 -->
+	<bean id="imageRenderer"
+		class="egovframework.example.cmmn.web.EgovImgPaginationRenderer" />
+	<bean id="paginationManager"
+		class="org.egovframe.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+		<property name="rendererType">
+			<map>
+				<entry key="image" value-ref="imageRenderer" />
+			</map>
+		</property>
+	</bean>
 
-    <!-- 유효성 검증 뷰 등록 -->
-    <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
+	<!-- 유효성 검증 뷰 등록 -->
+	<mvc:view-controller path="/cmmn/validator.do"
+		view-name="cmmn/validator" />
 
-    
-    <!-- 여기 -->
-   	<!-- TODO: 파일 업로드 설정 : 기본(1M) => 50M 변경  -->
- 	<bean id="multipartResolver"
+
+	<!-- 여기 -->
+	<!-- TODO: 파일 업로드 설정 : 기본(1M) => 50M 변경 -->
+	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="50000000" />
 		<property name="maxInMemorySize" value="50000000" />
-	</bean> 
-	
+	</bean>
+
 	<!-- 스케줄러 기능 사용 -->
 	<task:scheduler id="jobScheduler" pool-size="10" />
-	<task:annotation-driven scheduler="jobScheduler" />   
+	<task:annotation-driven scheduler="jobScheduler" />
+
+<!-- 인터셉터  -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 로그인 필요한 경로들만 지정 -->
+			<mvc:mapping path="/board/write.do" />
+			<mvc:mapping path="/mypage/**" />
+			<bean class="egovframework.example.common.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors> 
 </beans>

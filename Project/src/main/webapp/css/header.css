@@ -263,8 +263,8 @@ transform:translateY(0);
 	color: #fff;
 }
 
-/* ------------ 반응형 -------------- */
-@media ( max-width : 1100px) {
+/* ------------ 반응형 겹치는현상방지 7/14 (유준) ---------- */
+@media ( max-width : 1289px) {
 	.main-navbar {
 		flex-direction: column;
 		min-width: 0;

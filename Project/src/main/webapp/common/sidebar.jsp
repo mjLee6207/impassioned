@@ -61,7 +61,7 @@
         <c:otherwise>
             <div class="username text-secondary" style="margin-bottom:16px;">로그인이 필요합니다</div>
             <div class="card-menu">
-                <button class="card-menu-btn login-btn" type="button" onclick="goLogin()">
+                <button class="card-menu-btn slogin-btn" type="button" onclick="goLogin()">
                     <i class="bi bi-box-arrow-in-right"></i>로그인
                 </button>
             </div>

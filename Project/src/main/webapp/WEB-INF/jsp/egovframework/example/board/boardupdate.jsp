@@ -66,9 +66,9 @@
             <div id="imagePreviews" class="d-flex flex-wrap mt-2 gap-2"></div>
             <!-- 버튼 영역 -->
             <div class="btn-row">
-                <button type="submit" class="btn btn-submit" onclick="fn_save()">수정하기</button>
-                <button type="button" class="btn btn-delete" onclick="fn_delete()">삭제하기</button>
-                <button type="button" class="btn btn-cancel" onclick="history.back()">돌아가기</button>
+                <button type="submit" class="submit_btn" onclick="fn_save()">수정하기</button>
+                <button type="button" class="delete_btn" onclick="fn_delete()">삭제하기</button>
+                <button type="button" class="cancel_btn" onclick="history.back()">돌아가기</button>
             </div>
         </form>
     </div>

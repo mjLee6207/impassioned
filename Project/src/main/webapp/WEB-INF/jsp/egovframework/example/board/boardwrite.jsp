@@ -59,8 +59,8 @@
 					<div id="imagePreviews" class="d-flex flex-wrap mt-2 gap-2"></div>
 					<!-- 버튼 영역 -->
 					<div class="btn-row">
-						<button type="submit" class="btn btn-submit">등록하기</button>
-						<button type="button" class="btn btn-cancel"
+						<button type="submit" class="submitbtn">등록하기</button>
+						<button type="button" class="cancelbtn"
 							onclick="history.back()">작성취소</button>
 					</div>
 				</form>

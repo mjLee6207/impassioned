@@ -29,35 +29,35 @@ body { background: #f8f9fa; }
     border: 2px solid transparent;
 }
 /* 등록 버튼 */
-.btn-submit {
+.submit_btn {
     background: #1e8a57;
     color: #fff;
     border-color: #1e8a57;
-    box-shadow: 0px 5px 15px gray !important;
+    box-shadow: 0px 2px 5px gray !important;
 }
-.btn-submit:hover {
+.submit_btn:hover {
     background: #176b42;
     color: #fff;
     border-color: #176b42;
 }
 /* 삭제 버튼 */
-.btn-delete {
+.delete_btn {
     background: #f74f1b;
     color: #fdfdfd;
-    box-shadow: 0px 5px 15px gray !important;
+    box-shadow: 0px 2px 5px gray !important;
 }
-.btn-delete:hover {
+.delete_btn:hover {
     background: #ececec;
     color: #fea700;
 }
 
 /* 취소 버튼 */
-.btn-cancel {
+.cancel_btn {
     background: #f8f9fa;
     color: #343434;
-    box-shadow: 0px 5px 15px gray !important;
+    box-shadow: 0px 5px 5px gray !important;
 }
-.btn-cancel:hover {
+.cancel_btn:hover {
     background: #ececec;
     color: #fea700;
 }

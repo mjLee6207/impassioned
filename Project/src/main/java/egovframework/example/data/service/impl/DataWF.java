@@ -2,7 +2,6 @@ package egovframework.example.data.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,32 +22,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DataWF implements DataManager {
 
-    @Autowired
-    private Translator translator;
-
-    @Autowired
-    private DataMapper dataMapper;
+    @Autowired private Translator translator;
+    @Autowired private DataMapper dataMapper;
 
     private static final List<String> AREAS = List.of("Chinese", "Japanese", "American", "French", "Italian", "Spanish");
     private static final List<String> CATEGORIES = List.of("Dessert");
-    private volatile boolean isRunning = false;  // 중지 기능 추가
+    private volatile boolean isRunning = false;
 
     @Override
     public void execute() {
-        isRunning = true; // 실행 시작 표시
+        isRunning = true;
         try {
             fetchAndSaveByArea(AREAS);
             fetchAndSaveByCategory(CATEGORIES);
         } finally {
-            isRunning = false; // 예외 발생 여부와 무관하게 반드시 false 설정
+            isRunning = false;
         }
     }
-    
-//  중지 기능 추가
+
     public void stop() {
         isRunning = false;
     }
-    
+
     private void fetchAndSaveByArea(List<String> areas) {
         for (String area : areas) {
             String listUrl = "https://www.themealdb.com/api/json/v1/1/filter.php?a=" + area;
@@ -68,6 +63,8 @@ public class DataWF implements DataManager {
             String json = new RestTemplate().getForObject(listUrl, String.class);
             JsonNode meals = new ObjectMapper().readTree(json).path("meals");
 
+            int count = 1;
+
             if (meals.isArray()) {
                 for (JsonNode meal : meals) {
                     if (!isRunning) {
@@ -76,16 +73,26 @@ public class DataWF implements DataManager {
                     }
 
                     String idMeal = meal.path("idMeal").asText();
+                    log.info("🚀 {}번째 레시피 처리 중: idMeal={}", count++, idMeal);
+
                     saveDetailRecipe(idMeal, area, category);
+
+                    try {
+                        Thread.sleep(20000); // 20초 간격
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        log.warn("⚠ 인터럽트로 중단됨");
+                        break;
+                    }
                 }
-            }            
+            }
         } catch (Exception e) {
             log.error("목록 데이터 조회 실패: {}", listUrl, e);
         }
     }
 
     private void saveDetailRecipe(String idMeal, String area, String category) {
-        try {        	
+        try {
             String url = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + idMeal;
             String json = new RestTemplate().getForObject(url, String.class);
 
@@ -95,18 +102,17 @@ public class DataWF implements DataManager {
                 return;
             }
 
-//        	중복 확인
-        	if (dataMapper.existsRecipe(data.getRecipeId()) > 0) {
-        	    log.warn("⏭ 중복 레시피 건너뜀: {}", data.getRecipeId());
-        	    return;
-        	}
-        	
+            if (dataMapper.existsRecipe(data.getRecipeId()) > 0) {
+                log.warn("⏭ 중복 레시피 건너뜀: {}", data.getRecipeId());
+                return;
+            }
+
             JsonNode node = new ObjectMapper().readTree(json).get("meals").get(0);
             parseManual(data, node);
             translateAll(data);
 
             data.setArea(area);
-            data.setCategoryKr(transCategory(data.getCategory()));
+            data.setCategoryKr(transArea(area)); // ✅ area 기준 변환
 
             dataMapper.insertRecipe(data);
             log.info("✅ 저장 성공: {} ({})", data.getTitle(), data.getCategory());
@@ -139,8 +145,14 @@ public class DataWF implements DataManager {
     }
 
     private void translateAll(DataVO data) {
+        // ✅ 설명 길이 체크
+        String instruction = data.getInstruction();
+        if (instruction != null && instruction.length() > 4500) {
+            log.warn("⚠ 조리 설명이 너무 깁니다 ({}자) → DeepL 오류 가능성 있음", instruction.length());
+        }
+
         data.setTitleKr(translator.translate(data.getTitle(), "KO"));
-        data.setInstructionskr(translator.translate(data.getInstruction(), "KO"));
+        data.setInstructionskr(translator.translate(instruction, "KO"));
 
         List<String> ingredientKr = translator.translateBulk(data.getIngredient(), "KO");
         List<String> measureKr = translator.translateBulk(data.getMeasure(), "KO");
@@ -154,11 +166,17 @@ public class DataWF implements DataManager {
         data.setMeasureKrStr(String.join(",", measureKr));
     }
 
-    private String transCategory(String area) {
+    // ✅ 함수 이름 변경: 실제 area 기준
+    private String transArea(String area) {
         switch (area) {
-            case "Chinese": return "중식";
-            case "Japanese": return "일식";
-            case "American": case "French": case "Italian": case "Spanish": return "양식";
+            case "Chinese": return "중국";
+            case "Japanese": return "일본";
+            case "American":
+            case "French":
+            case "Italian":
+            case "Spanish":
+            case "British":
+                return "양식";            
             case "Dessert": return "디저트";
             default: return "기타";
         }

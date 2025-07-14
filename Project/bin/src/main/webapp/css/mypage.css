@@ -1,0 +1,194 @@
+/* 7월 9일 강승태 마이페이지 구조 통일을 위해 수정 */
+.main-flex {
+  display: flex;
+  gap: 28px;
+  max-width: 1300px;
+  margin: 32px auto 0;
+  align-items: flex-start;
+}
+
+/* 사이드바 */
+.main-flex .sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+/* 본문 */
+.main-flex .content-area {
+  flex: 1;
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px 36px 80px 36px !important;
+  box-shadow:  var(--shadow);
+  border: 1px solid #ececec;
+  padding-bottom: 40px !important;
+}
+
+/* 이하 기존 유지 */
+.tab-menu {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 28px;
+  border-bottom: 2px solid #e9e9e9;
+}
+.tab-menu div {
+  font-size: 1.11rem;
+  font-weight: 500;
+  padding-bottom: 11px;
+  cursor: pointer;
+  transition: color 0.17s;
+  position: relative;
+}
+.tab-menu .active#tab-myPosts {
+  color: #118e6a;
+}
+.tab-menu .active#tab-likedPosts {
+  color: #e81b33;
+}
+.tab-menu .active:after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: #118e6a;
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  border-radius: 2px;
+}
+
+.search-area {
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.search-input {
+  max-width: 240px;
+  margin-top: 18px;
+}
+.search-btn {
+  border-radius: 8px;
+  border: none;
+  background: var(--main-green);
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 7px 10px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.search-btn:hover,
+.search-btn:focus {
+  background: #1e8a57;
+  color: #fff;
+  outline: none;
+}
+.search-btn:hover i,
+.search-btn:focus i {
+  color: #fff;
+}
+
+.table th,
+.table td {
+  vertical-align: middle !important;
+}
+/* .post-table th.col-title {
+  width: 50%;
+}
+.post-table th.col-date {
+  width: 18%;
+}
+.post-table th.col-views {
+  width: 17%;
+} */
+.post-table thead th {
+  text-align: center;
+}
+.post-table tbody td.text-start {
+  text-align: left;
+}
+.post-table tbody td.text-center {
+  text-align: center;
+}
+.table {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(30, 138, 87, 0.08);
+}
+.table thead th {
+  background: #f5f5f5;
+  color: #222;
+  font-weight: 600;
+  font-size: 1.04rem;
+  text-align: center;
+  border-bottom: 1.7px solid #eee;
+  padding: 17px 10px 15px 10px;
+  letter-spacing: 0;
+}
+.table tbody td {
+  font-size: 1.05rem;
+  color: #232323;
+  padding: 15px 10px;
+  border-bottom: 1px solid #f1f1f1;
+  vertical-align: middle;
+  background: #fff;
+}
+.table tbody td.text-start {
+  font-weight: 500;
+  color: #18895b;
+}
+.post-title-link {
+  color: #18895b;
+  text-decoration: none;
+  display: block;
+  max-width: 97vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.post-title-link:hover {
+  color: #0a5032;
+  text-decoration: underline;
+}
+.table-hover tbody tr:hover td {
+  background: #f6fcfa;
+}
+.table tbody tr:last-child td.text-secondary {
+  background: #f6f6f6;
+  color: #aaa;
+}
+
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 30px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .main-flex {
+    flex-direction: column;
+    padding: 0 12px;
+  }
+  .tab-menu {
+    gap: 13px;
+  }
+  .tab-menu div {
+    font-size: 1.08rem;
+    padding-bottom: 9px;
+  }
+  .table thead th,
+  .table tbody td {
+    font-size: 0.97rem;
+    padding: 10px 6px;
+  }
+  .post-title-link {
+    max-width: 88vw;
+  }
+}

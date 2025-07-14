@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.example.file.service.impl.FileMapper">
+
+    <!-- 
+        파일 정보와 파일 바이너리 데이터(BLOB)를 DB에 저장 
+        - FILE_SEQ.NEXTVAL: 파일 ID(시퀀스) 생성
+        - 업로드 일자는 SYSDATE(현재 날짜) 자동 입력
+    -->
+    <insert id="insertFile" parameterType="FileVO">
+        <!-- 파일 ID를 시퀀스에서 먼저 생성 -->
+        <selectKey keyProperty="fileId" resultType="long" order="BEFORE">
+            SELECT FILE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO UPLOAD_FILE (
+            FILE_ID, FILE_NAME, FILE_PATH, FILE_TYPE, USE_TYPE, USE_TARGET_ID,
+            USE_POSITION, UPLOAD_DATE, UPLOADER_ID, FILE_DATA
+        ) VALUES (
+            #{fileId}, #{fileName}, #{filePath}, #{fileType}, #{useType}, #{useTargetId},
+            #{usePosition}, SYSDATE, #{uploaderId}, #{fileData, jdbcType=BLOB}
+        )
+    </insert>
+
+    <!-- 
+        파일 ID로 파일 1건(메타정보+데이터) 조회 
+        - 상세보기, 다운로드 등에서 사용
+    -->
+    <select id="selectFileById" parameterType="long" resultType="FileVO">
+        SELECT * FROM UPLOAD_FILE WHERE FILE_ID = #{fileId}
+    </select>
+
+    <!-- 
+        특정 게시글(boardId)에 속한 모든 파일 조회 
+        - 상세/수정/이미지목록 출력 등에 사용
+    -->
+    <select id="selectFilesByBoardId" parameterType="long" resultType="FileVO">
+        SELECT * FROM UPLOAD_FILE WHERE USE_TYPE = 'BOARD' AND USE_TARGET_ID = #{boardId}
+    </select>
+
+    <!-- 
+        파일 ID로 파일 삭제 
+        - 게시글 이미지/첨부파일 삭제 시 사용
+    -->
+    <delete id="deleteFile" parameterType="long">
+    	DELETE FROM UPLOAD_FILE WHERE FILE_ID = #{fileId}
+	</delete>
+	<!-- 해당 회원의 프로필 파일(가장 최근 1개) 조회 -->
+	<select id="selectProfileFileByMemberId" parameterType="long" resultType="FileVO">
+	  SELECT * FROM UPLOAD_FILE
+	   WHERE USE_TYPE = 'MEMBER'
+	     AND USE_TARGET_ID = #{memberId}
+	   ORDER BY UPLOAD_DATE DESC
+	   FETCH FIRST 1 ROW ONLY
+	</select>
+	
+	<!-- 7/11 민중 게시글삭제를위한 달려있는 모든 파일 삭제 기능 -->
+	<delete id="deleteByTargetIdAndType" parameterType="map">
+	    DELETE FROM UPLOAD_FILE
+	    WHERE USE_TARGET_ID = #{targetId}
+	      AND USE_TYPE = #{useType}
+	</delete>
+	
+</mapper>

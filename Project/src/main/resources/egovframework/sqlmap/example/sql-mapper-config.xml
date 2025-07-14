@@ -26,5 +26,7 @@
 			type="egovframework.example.sample.service.SampleVO" />
 		<typeAlias alias="FileVO" 
 			type="egovframework.example.file.service.FileVO"/>
+		<typeAlias alias="DataKOVO" 
+			type="egovframework.example.datako.service.DataKOVO"/>
 	</typeAliases>
 </configuration>

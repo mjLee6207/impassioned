@@ -1,0 +1,178 @@
+/* 전체 레이아웃 */
+.main-wrap {
+ width: 100% !important;
+  max-width: 1300px !important;
+  margin: 32px auto 0 !important;
+  box-sizing: border-box;
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+/* 좌측 프로필카드 */
+.profile-card {
+    width: 260px;
+    min-width: 220px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 28px 20px 22px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #f0f0f0;
+    margin-right: 25px;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.change-photo-label {
+    display: inline-block;
+    font-size: 0.96rem;
+    color: #1e8a57;
+    cursor: pointer;
+    margin: 7px 0 18px 0;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 1.13rem;
+    margin-bottom: 2px;
+}
+
+.useremail,
+.joindate {
+    color: #888;
+    font-size: 0.97rem;
+    margin-bottom: 2px;
+}
+
+/* 우측 컨텐츠 영역 */
+.content-area {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    min-width: 0;
+    padding: 38px 34px 36px 34px;
+}
+
+.content-area form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+.form-title {
+    font-size: 1.28rem;
+    text-align: left;
+    font-weight: 600;
+    margin-bottom: 28px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 7px;
+    text-align: left;
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    
+    border-radius: 10px;
+    font-size: 1.05rem;
+    padding: 10px;
+    border: 1.2px solid #dde1e8;
+    background: #fff;
+}
+
+.btn-edit {
+    background-color: #1e8a57;
+    border-color: #1e8a57;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 12px;
+    font-size: 1.08rem;
+    padding: 12px 36px;
+    box-shadow: 0 4px 16px rgba(30, 138, 87, 0.11);
+    transition: background 0.15s, color 0.13s, box-shadow 0.13s;
+    border: 2px solid transparent;
+    margin: 18px auto 0 auto;
+    display: block;
+}
+
+.btn-edit:hover,
+.btn-edit:focus {
+    background-color: #118e6a;
+    border-color: #118e6a;
+    color: #fff;
+}
+
+#nicknameStatus {
+    margin-left: 7px;
+    font-size: 0.95rem;
+}
+
+/* 반응형 - boardlist, boardview와 동일한 스타일 보장 */
+@media (max-width: 991px) {
+    .main-wrap {
+        flex-direction: column;
+        gap: 14px;
+        max-width: 99vw;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .profile-card,
+    .content-area {
+        width: 100%;
+        max-width: 99vw;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 0 auto 12px auto;
+    }
+
+    .profile-card {
+        width: 96%;
+        max-width: 360px;
+    }
+
+    .content-area {
+        padding: 18px 2vw 15px 2vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-wrap,
+    .profile-card,
+    .content-area {
+        width: 99vw !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .profile-card {
+        display: none !important;
+    }
+
+    .content-area {
+        padding: 12px 2vw 6vw 2vw !important;
+    }
+}

@@ -20,26 +20,6 @@
 	        #{ingredientKrStr}, #{measureKrStr}
 	    )
 	</insert>
-
-    <!-- 다건 INSERT (Bulk Insert using foreach + SELECT ... FROM DUAL) 
-	<insert id="insertRecipeList" parameterType="java.util.List">
-	    INSERT ALL
-	    <foreach collection="list" item="item">
-	        INTO API_RECIPE (
-	            RECIPE_ID, TITLE, CATEGORY, INSTRUCTION, THUMBNAIL,
-	            TITLE_KR, CATEGORY_KR, INSTRUCTION_KR,
-	            INGREDIENT, MEASURE, AREA,
-	            INGREDIENT_KR, MEASURE_KR
-	        )
-	        VALUES (
-	            #{item.recipeId}, #{item.title}, #{item.category}, #{item.instruction}, #{item.thumbnail},
-	            #{item.titleKr}, #{item.categoryKr}, #{item.instructionskr},
-	            #{item.ingredientStr}, #{item.measureStr}, #{item.area},
-	            #{item.ingredientKrStr}, #{item.measureKrStr}
-	        )
-	    </foreach>
-	    SELECT * FROM DUAL
-	</insert> -->
     
     <!-- 중복 체크 -->
 	<select id="existsRecipe" resultType="int">

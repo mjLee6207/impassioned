@@ -2,11 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%-- 🆕 요청 URI와 쿼리스트링 가져오기 (include 안전 대응) --%>
+<%-- 🆕 요청 URI와 쿼리스트링 가져오기 --%>
 <c:set var="uri" value="${empty requestScope['javax.servlet.forward.request_uri'] ? pageContext.request.requestURI : requestScope['javax.servlet.forward.request_uri']}" />
 <c:set var="query" value="${empty requestScope['javax.servlet.forward.query_string'] ? pageContext.request.queryString : requestScope['javax.servlet.forward.query_string']}" />
-
-<%-- 🧯 /WEB-INF 직접 경로 방지 --%>
 <c:choose>
     <c:when test="${not fn:contains(uri, '/WEB-INF')}">
         <c:set var="fullUrl" value="${uri}${query != null ? '?' : ''}${query}" />
@@ -26,13 +24,10 @@
     <link rel="stylesheet" href="/css/style.css">
     
     <script>
-        // ✅ 로그인 시 현재 페이지 redirect 유지
         function goLogin() {
-            const redirect = location.pathname + location.search;  // 인코딩 없이 전달
-            location.href = '/member/login.do?redirect=' + encodeURIComponent(redirect);  // JS에서 1회만 
+            const redirect = location.pathname + location.search;
+            location.href = '/member/login.do?redirect=' + encodeURIComponent(redirect);
         }
-
-        // ✅ 로그아웃 시 현재 페이지 redirect 유지
         function goLogout() {
             const redirect = location.pathname + location.search;
             location.href = '/member/logout.do?redirect=' + encodeURIComponent(redirect);
@@ -48,31 +43,31 @@
                 <span>🍽️ CheForest</span>
             </a>
             <div class="main-menu">
-                <!-- 레시피 드롭다운 -->
+                <!-- Recipe 드롭다운 -->
                 <div class="dropdown" id="dropdown-recipe">
                     <button class="dropdown-toggle" type="button">Recipe</button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/recipe.do?category=한식">한식<span class="eng"> |　Korean</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=양식">양식<span class="eng"> |　Western</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=중식">중식<span class="eng"> |　Chinese</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=일식">일식<span class="eng"> |　Japanese</span></a>
-                        <a class="dropdown-item" href="/recipe.do?category=디저트">디저트<span class="eng"> |　Dessert</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=한식">한식<span class="eng"> | Korean</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=양식">양식<span class="eng"> | Western</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=중식">중식<span class="eng"> | Chinese</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=일식">일식<span class="eng"> | Japanese</span></a>
+                        <a class="dropdown-item" href="/recipe.do?category=디저트">디저트<span class="eng"> | Dessert</span></a>
                     </div>
                 </div>
 
-                <!-- 게시판 드롭다운 -->
+                <!-- ✅ Board 드롭다운 (클릭 시 전체 게시판 이동) -->
                 <div class="dropdown" id="dropdown-board">
-                    <button class="dropdown-toggle" type="button">Board</button>
+                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/board/board.do">Board</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/board/board.do?category=한식">한식<span class="eng"> |　Korean</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=양식">양식<span class="eng"> |　Western</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=중식">중식<span class="eng"> |　Chinese</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=일식">일식<span class="eng"> |　Japanese</span></a>
-                        <a class="dropdown-item" href="/board/board.do?category=디저트">디저트<span class="eng"> |　Dessert</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=한식">한식<span class="eng"> | Korean</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=양식">양식<span class="eng"> | Western</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=중식">중식<span class="eng"> | Chinese</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=일식">일식<span class="eng"> | Japanese</span></a>
+                        <a class="dropdown-item" href="/board/board.do?category=디저트">디저트<span class="eng"> | Dessert</span></a>
                     </div>
                 </div>
 
-                <!-- Event 드롭다운 -->
+                <!-- Event -->
                 <div class="dropdown" id="dropdown-event">
                     <button class="dropdown-toggle" type="button">Event</button>
                     <div class="dropdown-menu">
@@ -81,7 +76,7 @@
                     </div>
                 </div>
 
-                <!-- Q&A 드롭다운 -->
+                <!-- Support -->
                 <div class="dropdown" id="dropdown-qna">
                     <button class="dropdown-toggle" type="button">Support</button>
                     <div class="dropdown-menu">
@@ -89,23 +84,10 @@
                         <a class="dropdown-item" href="/qna/support">Q&A</a>
                     </div>
                 </div>
-
-                <!-- Michelin 드롭다운 고도화 (보류용 주석)
-                <div class="dropdown" id="dropdown-michelin">
-                    <button class="dropdown-toggle" type="button">Michelin</button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/michelin/seoul">서울</a>
-                        <a class="dropdown-item" href="/michelin/kyungi">경기</a>
-                        <a class="dropdown-item" href="/michelin/busan">부산</a>
-                        <a class="dropdown-item" href="/michelin/daegu">대구</a>
-                        <a class="dropdown-item" href="/michelin/daejeon">대전</a>
-                    </div>
-                </div>
-                -->
             </div>
         </div>
 
-        <!-- 오른쪽: 검색창 + 로그인 -->
+        <!-- 오른쪽 검색창 + 로그인/로그아웃 -->
         <div class="navbar-right">
             <div class="navbar-search">
                 <form action="/search.do" method="get" autocomplete="off">
@@ -115,17 +97,11 @@
             </div>
 
             <c:choose>
-                <%-- 로그인한 경우 --%>
                 <c:when test="${not empty sessionScope.loginUser}">
-                    <%--  <span class="welcome-msg">${sessionScope.loginUser.nickname}님 환영합니다.</span> --%>
-                    <%-- 마이페이지 버튼 --%>
                     <c:url var="mypageUrl" value="/mypage/mypage.do"/>
                     <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">MYPAGE</button>
-                    <%-- 로그아웃 버튼 (🆕 redirect 적용) --%>
                     <button class="head-logout-btn" type="button" onclick="goLogout()">LOGOUT</button>
                 </c:when>
-
-                <%-- 로그인하지 않은 경우 (민중 7/12 추가) --%>
                 <c:otherwise>
                     <button class="login-btn" type="button" onclick="goLogin()">LOGIN</button>
                 </c:otherwise>
@@ -134,32 +110,37 @@
     </nav>
 </div>
 
+<!-- ✅ 드롭다운 동작 -->
 <script>
-    // 드롭다운 중복 방지: 하나만 열림
     const dropdowns = document.querySelectorAll('.dropdown');
     dropdowns.forEach(dropdown => {
-        dropdown.addEventListener('mouseenter', function() {
+        dropdown.addEventListener('mouseenter', function () {
             dropdowns.forEach(dd => {
-                if(dd !== this) dd.querySelector('.dropdown-menu').classList.remove('show');
+                if (dd !== this) dd.querySelector('.dropdown-menu').classList.remove('show');
             });
             this.querySelector('.dropdown-menu').classList.add('show');
         });
-        dropdown.addEventListener('mouseleave', function() {
+        dropdown.addEventListener('mouseleave', function () {
             this.querySelector('.dropdown-menu').classList.remove('show');
         });
-        // 모바일(터치) 대응: 클릭 시에도 하나만 열림
-        dropdown.querySelector('.dropdown-toggle').addEventListener('click', function(e){
-            e.preventDefault();
-            dropdowns.forEach(dd => {
-                if(dd !== dropdown) dd.querySelector('.dropdown-menu').classList.remove('show');
+
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+        if (toggle.tagName === 'A') {
+            toggle.addEventListener('click', function (e) {
+                if (dropdown.id !== 'dropdown-board') {
+                    e.preventDefault(); // ❗Board 외에는 기본 링크 막고 토글만
+                }
+                dropdowns.forEach(dd => {
+                    if (dd !== dropdown) dd.querySelector('.dropdown-menu').classList.remove('show');
+                });
+                dropdown.querySelector('.dropdown-menu').classList.toggle('show');
             });
-            dropdown.querySelector('.dropdown-menu').classList.toggle('show');
-        });
+        }
     });
 
-    // 바깥 클릭 시 드롭다운 닫기
-    document.body.addEventListener('click', function(e){
-        if(!e.target.closest('.dropdown')) {
+    // 바깥 클릭 시 닫기
+    document.body.addEventListener('click', function (e) {
+        if (!e.target.closest('.dropdown')) {
             dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show'));
         }
     });

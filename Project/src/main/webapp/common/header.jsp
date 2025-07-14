@@ -147,7 +147,7 @@
     // 바깥 클릭시 드롭다운 닫기
     document.body.addEventListener('click', function(e){
         if(!e.target.closest('.dropdown')) {
-            dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show');
+            dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show'));
         }
     });
 </script>

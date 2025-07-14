@@ -35,16 +35,20 @@
 
 			<!-- 카테고리 탭 -->
 			<div class="category-tabs">
-				<a href="${pageContext.request.contextPath}/board/board.do?category=한식"
-					class="category-tab${param.category eq '한식' || empty param.category ? ' active' : ''}">한식</a>
-				<a href="${pageContext.request.contextPath}/board/board.do?category=양식"
-					class="category-tab${param.category eq '양식' ? ' active' : ''}">양식</a>
-				<a href="${pageContext.request.contextPath}/board/board.do?category=중식"
-					class="category-tab${param.category eq '중식' ? ' active' : ''}">중식</a>
-				<a href="${pageContext.request.contextPath}/board/board.do?category=일식"
-					class="category-tab${param.category eq '일식' ? ' active' : ''}">일식</a>
-				<a href="${pageContext.request.contextPath}/board/board.do?category=디저트"
-					class="category-tab${param.category eq '디저트' ? ' active' : ''}">디저트</a>
+			    <a href="${pageContext.request.contextPath}/board/board.do?category=한식"
+			       class="category-tab${(param.category eq '한식' || empty param.category) ? ' active' : ''}">한식</a>
+			
+			    <a href="${pageContext.request.contextPath}/board/board.do?category=양식"
+			       class="category-tab${(param.category eq '양식') ? ' active' : ''}">양식</a>
+			
+			    <a href="${pageContext.request.contextPath}/board/board.do?category=중식"
+			       class="category-tab${(param.category eq '중식') ? ' active' : ''}">중식</a>
+			
+			    <a href="${pageContext.request.contextPath}/board/board.do?category=일식"
+			       class="category-tab${(param.category eq '일식') ? ' active' : ''}">일식</a>
+			
+			    <a href="${pageContext.request.contextPath}/board/board.do?category=디저트"
+			       class="category-tab${(param.category eq '디저트') ? ' active' : ''}">디저트</a>
 			</div>
 
 			<!-- 글쓰기 버튼 -->
@@ -166,23 +170,21 @@
 </script>
 <!--페이징처리 script  -->
 <script type="text/javascript">
-
 $('#pagination').twbsPagination({
-    totalPages: "${paginationInfo.totalPageCount}",
-    startPage:parseInt("${paginationInfo.currentPageNo}"),
-    visiblePages: "${paginationInfo.recordCountPerPage}",
+    totalPages: ${paginationInfo.totalPageCount}, // ✔ 숫자로 전달
+    startPage: parseInt("${paginationInfo.currentPageNo}"),
+    visiblePages: ${paginationInfo.recordCountPerPage}, // ✔ 숫자로 전달
     initiateStartPageClick: false,
     first: '&laquo;',           // First → 처음
-    prev: '&lt;',           // Previous → 이전
-    next: '&gt;',           // Next → 다음
-    last: '&raquo;',             // Last → 끝
+    prev: '&lt;',              // Previous → 이전
+    next: '&gt;',              // Next → 다음
+    last: '&raquo;',           // Last → 끝
     onPageClick: function (event, page) {
         var params = new URLSearchParams(window.location.search);
         params.set('pageIndex', page);
         window.location.search = params.toString();
     }
 });
-
 </script>
 
 <!-- 카테고리별 검색을 위해 추가: 7월 8일 강승태  -->

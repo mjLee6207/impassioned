@@ -46,6 +46,7 @@ public class DataController {
         return "dsdev";
     }
     
+//  중지 기능
     @GetMapping(value = "/stop.do", produces = "text/plain; charset=UTF-8")
     @ResponseBody
     public String stopDataInsert() {

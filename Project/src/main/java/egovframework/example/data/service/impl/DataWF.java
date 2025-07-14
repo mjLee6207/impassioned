@@ -154,8 +154,8 @@ public class DataWF implements DataManager {
         data.setMeasureKrStr(String.join(",", measureKr));
     }
 
-    private String transCategory(String category) {
-        switch (category) {
+    private String transCategory(String area) {
+        switch (area) {
             case "Chinese": return "중식";
             case "Japanese": return "일식";
             case "American": case "French": case "Italian": case "Spanish": return "양식";

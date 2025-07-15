@@ -89,6 +89,8 @@
   <div class="recipe-card">
     <div class="section-title">조리법</div>
     <div class="recipe-content">
+
+    	<!-- RecipeID 671 표고버섯감자찜 임시데이터 -->
 		1. 표고버섯은 따뜻한 물에 불린다. <br>
 		2. 감자는 강판에 간다.<br>
 		3. 고수는 잘게 다진다.<br>

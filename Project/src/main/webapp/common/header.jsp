@@ -81,7 +81,7 @@
                     <button class="dropdown-toggle" type="button">Support</button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/guide.do">홈페이지 가이드</a>
-                        <a class="dropdown-item" href="/qna/support">Q&A</a>
+                        <a class="dropdown-item" href="/qna.do">Q&A</a>
                     </div>
                 </div>
             </div>

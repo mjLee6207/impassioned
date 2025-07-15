@@ -30,5 +30,6 @@ void editReview(int reviewId, int memberIdx, String content);
 // 댓글 삭제
 void deleteReview(int reviewId, int memberIdx);
 List<BoardVO> selectBestPosts();
+List<BoardVO> selectBestPostsByCategory(String category);
 void updateThumbnail(BoardVO boardVO); // 썸네일 경로만 수정
 }

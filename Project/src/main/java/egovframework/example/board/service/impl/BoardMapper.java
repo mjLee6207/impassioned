@@ -38,5 +38,8 @@ public interface BoardMapper {
    int deleteAllReviewsByBoardId(int boardId); // 모든 댓글 삭제용(게시글삭제에 필요)
 
    List<BoardVO> selectBestPosts();
+   /* 카테고리별 인기 게시글  */
+   List<BoardVO> selectBestPostsByCategory(@Param("category") String category);
+   
    void updateThumbnail(BoardVO boardVO);
 }

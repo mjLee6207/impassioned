@@ -36,7 +36,7 @@
 		</div>
 		
         <h1>LOGIN</h1>
-        <input type="email" name="id" placeholder="이메일" required />
+        <input type="text" name="id" placeholder="아이디" required />
         <input type="password" name="password" placeholder="비밀번호" required />
 		<c:if test="${not empty errorMsg}">
 		  <script>
@@ -61,8 +61,11 @@
         <h1>WELCOME!</h1>
 
         <div class="form-group">
-          <input type="email" id="id" name="id" placeholder="이메일형식의 아이디" required />
-          <button type="button" onclick="checkId()">중복확인</button>
+		  <input type="text" id="id" name="id" placeholder="아이디 (6~20자)" 
+		         required minlength="6" maxlength="20"
+		         pattern="^[a-zA-Z0-9]{6,20}$" 
+		         title="아이디는 영문 또는 숫자 6~20자로 입력하세요.">
+		  <button type="button" onclick="checkId()">중복확인</button>
         </div>
         <span id="idStatus"></span>
 
@@ -166,33 +169,43 @@
       return false;
     }
     if (!idChecked) {
-      alert("아이디(이메일) 중복 확인을 완료해주세요.");
+      alert("아이디 중복 확인을 완료해주세요.");
       return false;
     }
     return true;
   }
 
   function checkId() {
-    const id = document.getElementById('id').value.trim();
-    if (id === "") {
-      alert("아이디(이메일)를 입력해주세요.");
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(id)) {
-      alert("올바른 이메일 형식이 아닙니다.");
-      return;
-    }
-    fetch('${pageContext.request.contextPath}/member/idCheck.do?id=' + encodeURIComponent(id))
-      .then(res => res.json()).then(result => {
-        if (result.available) {
-          idChecked = true;
-          document.getElementById('idStatus').textContent = "사용 가능한 아이디입니다.";
-        } else {
-          document.getElementById('idStatus').textContent = "이미 사용 중인 아이디입니다.";
-        }
-      });
-  }
+	  const id = document.getElementById('id').value.trim();
+
+	  if (id === "") {
+	    alert("아이디를 입력해주세요.");
+	    return;
+	  }
+
+	  const idRegex = /^[a-zA-Z0-9]{6,20}$/;  // 영문/숫자 조합, 6~20자
+	  if (!idRegex.test(id)) {
+	    alert("아이디는 영문 또는 숫자 조합 6~20자로 입력해주세요.");
+	    return;
+	  }
+
+	  fetch('${pageContext.request.contextPath}/member/idCheck.do?id=' + encodeURIComponent(id))
+	    .then(res => res.json())
+	    .then(result => {
+	      if (result.available) {
+	        idChecked = true;
+	        document.getElementById('idStatus').textContent = "✅ 사용 가능한 아이디입니다.";
+	        document.getElementById('idStatus').style.color = "green";
+	      } else {
+	        idChecked = false;
+	        document.getElementById('idStatus').textContent = "❌ 이미 사용 중인 아이디입니다.";
+	        document.getElementById('idStatus').style.color = "red";
+	      }
+	    })
+	    .catch(() => {
+	      alert("서버와 통신 중 오류가 발생했습니다.");
+	    });
+	}
 
   function checkNickname() {
     const nickname = document.getElementById('nickname').value.trim();

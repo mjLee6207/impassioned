@@ -1,69 +1,193 @@
-@charset "UTF-8";
-
-/* FAQ 공통 */
-.faq-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 18px;
-  gap: 10px;
+:root {
+  --main-green: #1e8a57;
+  --hover-green: #118e6a;
+  --shadow: 0 4px 24px rgba(30,138,87,.06);
 }
-.faq-main-title { font-size: 1.68rem; color: #1e8a57; font-weight: 900; letter-spacing:-1px; margin-bottom:0; }
-.ask-btn {
-    background: #1e8a57; color: #fff !important;
-    border: none; border-radius: 10px; font-size: 1.07rem;
-    padding: 8px 23px; font-weight: 700;
-    box-shadow: 0 2px 10px rgba(30,138,87,.10);
-    transition: background .17s;
-}
-.ask-btn:hover { background: #118e6a; }
-.faq-search-area { display: flex; justify-content: flex-end; margin-bottom: 16px; gap: 8px; }
-.search-input { width: 330px; border-radius: 7px; border: 1.2px solid #dde1e8; padding: 10px 14px; font-size: 1.08rem; background: #fff; }
-.search-btn { border: none; background: none; color: #1e8a57; font-size: 1.28rem; cursor: pointer; }
-.search-btn:hover { color: #118e6a; }
-
-.faq-list-section { margin-top: 14px; }
-.faq-list { width: 100%; max-width: 880px; margin: 0 auto; }
-.faq-item { border-radius: 11px; background: #f7fbf9; box-shadow: var(--shadow); margin-bottom: 20px; }
-.faq-question {
-    width: 100%; background: none; border: none; text-align: left; padding: 22px 22px 17px 32px;
-    font-size: 1.09rem; font-weight: bold; color: #158150; cursor: pointer;
-    border-radius: 11px 11px 0 0; outline:none;
-}
-.faq-question:hover { background: #eafaf4; }
-.faq-answer {
-    display: none;
-    background: #fff;
-    border-top: 1px solid #e1f2ec;
-    color: #333;
-    font-size: 1.03rem;
-    padding: 20px 32px 17px 38px;
-    border-radius: 0 0 11px 11px;
-}
-.faq-reply { background: #f6fbf6; color: #1e8a57; font-size:0.98rem; border-radius:6px; padding:7px 13px; margin-top:14px; }
-.q-user { font-size:0.95rem; color:#888; font-weight:400;}
-/* 문의하기 폼 */
-.faq-question-form {
-  background: #f7fbf9; border-radius: 13px; box-shadow: var(--shadow);
-  padding: 23px 35px 18px 32px; margin-bottom: 26px; margin-top: 8px; max-width: 700px;
-}
-.qform-row { margin-bottom: 18px; }
-.qform-input, .qform-textarea { width: 100%; border-radius: 7px; border: 1.1px solid #dde1e8; padding: 10px 14px; font-size: 1.07rem; background: #fff; }
-.qform-textarea { min-height: 82px; }
-.qform-row.flex-between { display: flex; justify-content: space-between; align-items: center; }
-.ask-submit-btn { background: #1e8a57; color: #fff; border: none; border-radius: 9px; font-size: 1rem; padding: 8px 28px; font-weight: bold; }
-.ask-submit-btn:hover { background: #118e6a; }
-:root { --shadow: 0 4px 24px rgba(30,138,87,.06);}
 body { background: #f8f9fa; }
+
+/* ====== board-wrap(본문)에 가운데 정렬 컨테이너 ====== */
+.board-wrap {
+  flex: 1;
+  min-width: 0;
+  padding: 45px 0 36px 0;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  /* max-width/margin은 내부에서 제어 */
+}
+
+/* 1. FAQ 전체를 감싸는 공통 컨테이너 */
+.faq-list-section,
+.faq-question-form {
+  max-width: 820px;  /* 이 값만 맞추면 두 영역이 무조건 딱 맞아요 */
+  margin: 0 auto;    /* 가운데 정렬 */
+  width: 100%;
+}
+
+/* 2. 문의하기 폼(숨김 가능) */
+.faq-question-form {
+  background: #f7fbf9;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 26px 38px 18px 38px;
+  margin-bottom: 32px;
+  margin-top: 8px;
+  /* width/max-width는 위에서 통일 */
+}
+.qform-row {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.qform-input,
+.qform-textarea {
+  border: 1.2px solid #dde1e8;
+  border-radius: 7px;
+  padding: 8px 13px;
+  font-size: 1rem;
+  background: #fff;
+}
+.qform-textarea { resize: vertical; min-height: 80px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.ask-submit-btn {
+  background: var(--main-green);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 7px 24px;
+  box-shadow: 0 2px 8px rgba(30,138,87,0.08);
+  cursor: pointer;
+}
+.ask-submit-btn:hover { background: var(--hover-green); }
+
+/* 3. FAQ 헤더/버튼 */
+.faq-header-row {
+  max-width: 820px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.faq-main-title {
+  color: var(--main-green);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.ask-btn {
+  background: var(--main-green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.01rem;
+  padding: 8px 22px;
+  box-shadow: 0 2px 8px rgba(30,138,87,0.07);
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ask-btn:hover { background: var(--hover-green); color: #fff; }
+
+/* 4. 검색 영역 */
+.faq-search-area {
+  max-width: 820px;
+  margin: 0 auto 32px auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.search-input {
+  width: 340px;
+  border-radius: 7px;
+  border: 1.2px solid #dde1e8;
+  padding: 10px 14px;
+  font-size: 1.07rem;
+  background: #fff;
+}
+.search-btn {
+  border: none;
+  background: none;
+  color: var(--main-green);
+  font-size: 1.22rem;
+  cursor: pointer;
+}
+.search-btn:hover { color: var(--hover-green); }
+
+/* 5. FAQ 리스트/카드 */
+.faq-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.faq-item {
+  background: #f7fbf9;
+  border-radius: 12px;
+  box-shadow: 0 1px 9px rgba(30,138,87,0.04);
+  padding: 18px 32px 10px 32px;
+  margin-bottom: 0;
+  transition: box-shadow .15s;
+}
+.faq-item:last-child { margin-bottom: 0; }
+.faq-item:hover {
+  box-shadow: 0 4px 24px rgba(33,136,89,0.12);
+}
+.faq-question {
+  background: none;
+  border: none;
+  color: #1e8a57;
+  font-weight: bold;
+  font-size: 1.09rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  margin-bottom: 6px;
+  transition: color .15s;
+}
+.faq-question:hover { color: var(--hover-green);}
+.q-user { font-size: 0.99em; color: #88a; font-weight: 400; margin-left: 5px;}
+.faq-answer {
+  display: none;
+  margin-left: 2px;
+  margin-bottom: 7px;
+  font-size: 1.04rem;
+  color: #2a2a2a;
+  padding-bottom: 2px;
+  padding-right: 2px;
+  animation: faqdrop .27s;
+}
+.faq-reply {
+  margin-top: 12px;
+  color: #146b39;
+  font-size: 0.98rem;
+  background: #ebfaee;
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-weight: 500;
+}
+
+/* 애니메이션(옵션) */
+@keyframes faqdrop {
+  0% { opacity: 0; transform: translateY(-9px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
 
 /* 반응형 */
 @media (max-width: 900px) {
-  .faq-list { max-width: 99vw; }
-  .faq-question-form { padding: 16px 7vw 12px 7vw; }
+  .faq-header-row,
+  .faq-list-section,
+  .faq-question-form,
+  .faq-search-area { max-width: 99vw; }
 }
 @media (max-width: 650px) {
-  .faq-header-row { flex-direction: column; align-items: stretch; gap:6px;}
-  .faq-main-title { font-size: 1.17rem;}
-  .faq-list { margin: 0 3vw;}
-  .faq-question-form { margin: 12px 1vw 18px 1vw; padding: 12px 2vw 8px 3vw; }
+  .faq-item, .faq-question-form { padding: 12px 8px 8px 8px; }
+  .faq-header-row, .faq-search-area { padding-left: 6vw; padding-right: 4vw;}
 }

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class RecipeController {
 
-	@GetMapping("/recipeView.do")
+	@GetMapping("/recipeview.do")
 	public String showRecipePage() {
 		
-		return "/recipe/recipeView";
+		return "/recipe/recipeview";
 	}
 }

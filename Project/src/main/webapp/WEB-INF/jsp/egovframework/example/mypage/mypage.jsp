@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/mypage.css" />
     <link rel="stylesheet" href="/css/pagination.css">
+    
 </head>
 <body>
 <jsp:include page="/common/header.jsp" />
 
-<!-- 7월 9일 강승태 마이페이지 구조 통일을 위해 수정 -->
 <div class="main-flex">
     <!-- 사이드바 -->
     <div class="sidebar">
@@ -75,27 +75,61 @@
                     </c:if>
                 </tbody>
             </table>
-             <!-- 페이지네이션 -->
-	            <div class="flex-center">
-	        	<ul class="pagination" id="paginationMyPosts"></ul>
-	    		</div>
-        </div>
-        <!-- 좋아요한 글 -->
-        <div id="likedPostsSection" style="display: none;">
-            <div class="search-area">
-                <input type="text" id="searchLikedPosts" class="form-control form-control-sm search-input" placeholder="좋아요 남긴 글 검색" onkeyup="filterTable('likedPostsTable', this.value)">
-                <button type="button" class="search-btn" onclick="clickSearch('likedPostsTable','searchLikedPosts')">
-                    <i class="bi bi-search"></i>
-                </button>
+            <!-- 페이지네이션 -->
+            <div class="flex-center">
+                <ul class="pagination" id="paginationMyPosts"></ul>
             </div>
-            <table id="likedPostsTable" class="table table-hover post-table">
+        </div>
+        <!-- ====== 좋아요한 글(서브탭 포함) ====== -->
+        <div id="likedPostsSection" style="display: none;">
+            <!-- 좋아요 레시피/게시글 서브탭 -->
+            <div class="like-subtabs mb-3">
+                <div id="subtab-likedRecipe" class="like-subtab active" onclick="showLikeTab('likedRecipeTable', this)">
+                    <i class="bi bi-bookmark-heart"></i> 레시피
+                </div>
+                <div id="subtab-likedBoard" class="like-subtab" onclick="showLikeTab('likedBoardTable', this)">
+                    <i class="bi bi-file-earmark-text"></i> 게시글
+                </div>
+            </div>
+            <!-- 좋아요한 레시피 테이블 -->
+            <table id="likedRecipeTable" class="table table-hover post-table" style="display:table;">
                 <thead>
                     <tr>
-                        <th class="text-center col-title" style="width:35%;">제목</th>
-                        <th class="text-center col-author"style="width:15%;">작성자</th>
-                        <th class="text-center col-date"style="width:20%;">작성일</th>
-                        <th class="text-center col-views"style="width:10%;">조회수</th>
-                        <th class="text-center col-likes"style="width:10%;">좋아요</th>
+                        <th class="text-center" style="width:55%;">레시피명</th>
+                        <th class="text-center" style="width:20%;">카테고리</th>
+                        <th class="text-center" style="width:15%;">좋아요</th>
+                        <th class="text-center" style="width:10%;">상세</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="recipe" items="${likedRecipes}">
+                        <tr>
+                            <td class="text-start">
+                                <a href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}" class="post-title-link">${recipe.title}</a>
+                            </td>
+                            <td class="text-center">${recipe.category}</td>
+                            <td class="text-center">${recipe.likeCount}</td>
+                            <td class="text-center">
+                                <a href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}" class="btn btn-outline-success btn-sm">보기</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    <c:if test="${empty likedRecipes}">
+                        <tr>
+                            <td colspan="4" class="text-secondary text-center">좋아요를 남긴 레시피가 없습니다.</td>
+                        </tr>
+                    </c:if>
+                </tbody>
+            </table>
+            <!-- 좋아요한 게시글 테이블 -->
+            <table id="likedBoardTable" class="table table-hover post-table" style="display:none;">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width:35%;">제목</th>
+                        <th class="text-center" style="width:15%;">작성자</th>
+                        <th class="text-center" style="width:20%;">작성일</th>
+                        <th class="text-center" style="width:10%;">조회수</th>
+                        <th class="text-center" style="width:10%;">좋아요</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,13 +153,10 @@
                     </c:if>
                 </tbody>
             </table>
-            <!-- 페이지네이션 -->
-	            <div class="flex-center">
-	        	<ul class="pagination" id="paginationLikedPosts"></ul>
-	    		</div>
-	    		</div>
+        </div>
     </div>
 </div>
+<!-- ====== 스크립트 ====== -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
 <script>
@@ -133,7 +164,6 @@ function initPagination(selector, totalPages, startPage, visiblePages, tabName, 
     if ($(selector).data('twbs-pagination')) {
         $(selector).twbsPagination('destroy');
     }
-
     $(selector).twbsPagination({
         totalPages: Number(totalPages) || 1,
         startPage: Number(startPage) || 1,
@@ -173,8 +203,6 @@ function showSection(sectionId, tabElem) {
         params.set('tab', 'myboard');
         params.set('myPostsPage', 1);
         params.delete('likedPostsPage');
-
-        // 내가 쓴 글 페이지네이션 재초기화
         initPagination(
             '#paginationMyPosts',
             parseInt('${myPostsPaginationInfo.totalPageCount}'),
@@ -183,8 +211,6 @@ function showSection(sectionId, tabElem) {
             'myboard',
             'myPostsPage'
         );
-
-        // 좋아요 페이지네이션 제거
         if ($('#paginationLikedPosts').data('twbs-pagination')) {
             $('#paginationLikedPosts').twbsPagination('destroy');
         }
@@ -192,8 +218,6 @@ function showSection(sectionId, tabElem) {
         params.set('tab', 'mylike');
         params.set('likedPostsPage', 1);
         params.delete('myPostsPage');
-
-        // 좋아요 페이지네이션 재초기화
         initPagination(
             '#paginationLikedPosts',
             parseInt('${likedPostsPaginationInfo.totalPageCount}'),
@@ -202,17 +226,24 @@ function showSection(sectionId, tabElem) {
             'mylike',
             'likedPostsPage'
         );
-
-        // 내가 쓴 글 페이지네이션 제거
         if ($('#paginationMyPosts').data('twbs-pagination')) {
             $('#paginationMyPosts').twbsPagination('destroy');
         }
     }
-
     window.history.replaceState({}, '', `${location.pathname}?${params.toString()}`);
 }
 
-// 필터 함수 (기존 유지)
+// 좋아요 남긴 글(레시피/게시글) 서브탭 전환 함수
+function showLikeTab(tableId, tabElem) {
+    document.getElementById("likedRecipeTable").style.display = "none";
+    document.getElementById("likedBoardTable").style.display = "none";
+    document.getElementById(tableId).style.display = "table";
+    document.getElementById('subtab-likedRecipe').classList.remove('active');
+    document.getElementById('subtab-likedBoard').classList.remove('active');
+    tabElem.classList.add('active');
+}
+
+// 테이블 필터
 function filterTable(tableId, keyword) {
     keyword = keyword.toLowerCase();
     var table = document.getElementById(tableId);
@@ -223,25 +254,20 @@ function filterTable(tableId, keyword) {
         trs[i].style.display = (rowText.indexOf(keyword) > -1) ? "" : "none";
     }
 }
-
-// 검색 함수 (기존 유지)
 function clickSearch(tableId, inputId) {
     var keyword = document.getElementById(inputId).value;
     filterTable(tableId, keyword);
 }
-
 $(function() {
     // 페이지 로딩 시 현재 탭에 따라 페이징 초기화 및 탭 표시
     var params = new URLSearchParams(window.location.search);
     var tab = params.get('tab') || 'myboard';
-
     if (tab === 'myboard') {
         showSection('myPostsSection', document.getElementById('tab-myPosts'));
     } else if (tab === 'mylike') {
         showSection('likedPostsSection', document.getElementById('tab-likedPosts'));
     }
-
-    // 초기 페이지네이션 두 개 다 설정 (destroy 호출이 있으므로 문제 없음)
+    // 초기 페이지네이션
     initPagination(
         '#paginationMyPosts',
         parseInt('${myPostsPaginationInfo.totalPageCount}'),
@@ -250,7 +276,6 @@ $(function() {
         'myboard',
         'myPostsPage'
     );
-
     initPagination(
         '#paginationLikedPosts',
         parseInt('${likedPostsPaginationInfo.totalPageCount}'),
@@ -259,19 +284,6 @@ $(function() {
         'mylike',
         'likedPostsPage'
     );
-});
-</script>
-<script>
-$(function() {
-    $('#paginationLikedPosts').twbsPagination({
-        totalPages: 3,       // 임의로 3페이지 설정
-        startPage: 1,
-        visiblePages: 5,
-        initiateStartPageClick: true,
-        onPageClick: function (event, page) {
-            console.log('Liked posts page:', page);
-        }
-    });
 });
 </script>
 </body>

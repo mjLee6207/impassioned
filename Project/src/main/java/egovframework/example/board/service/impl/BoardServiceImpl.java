@@ -117,4 +117,8 @@ public void updateThumbnail(BoardVO boardVO) {
     boardMapper.updateThumbnail(boardVO);
    
 }
+@Override
+public List<BoardVO> selectBestPostsByCategory(String category) {
+    return boardMapper.selectBestPostsByCategory(category);
+}
 }

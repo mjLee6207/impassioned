@@ -23,6 +23,7 @@ public class SpoonacularService implements DataManager {
 
     @Autowired private DataMapper dataMapper;
     @Autowired private Translator translator;
+
     @Autowired private RestTemplate restTemplate;
 
     private static final String API_KEY = "298dffa65437470f9cd0bd8e8131bb0f";
@@ -44,6 +45,7 @@ public class SpoonacularService implements DataManager {
     @Override
     public void execute() {
         isRunning = true;
+
         List<DataVO> dataList = fetch();
 
         for (DataVO data : dataList) {
@@ -70,6 +72,7 @@ public class SpoonacularService implements DataManager {
                 data.setInstructionKr(instructionKr);
 
                 int charCount = (data.getTitleEn() != null ? data.getTitleEn().length() : 0)
+
                         + (cleanInstruction != null ? cleanInstruction.length() : 0);
                 totalTranslatedChars += charCount;
                 log.info("🔤 번역 글자 수: {} (누적: {})", charCount, totalTranslatedChars);
@@ -79,7 +82,6 @@ public class SpoonacularService implements DataManager {
                 log.info("✅ 저장 성공: {} ({})", data.getTitleEn(), data.getCategoryEn());
 
                 Thread.sleep(20000); // ✅ 20초 대기
-
             } catch (Exception e) {
                 log.error("❌ 저장 실패 (id={}): {}", data.getRecipeId(), e.getMessage());
             }
@@ -144,7 +146,6 @@ public class SpoonacularService implements DataManager {
                             measures.add(original);
                         }
                     }
-
                     data.setIngredientEn(ingredients);
                     data.setMeasureEn(measures);
                     data.setIngredientEnStr(String.join(",", ingredients));

@@ -15,6 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import egovframework.example.data.service.DataVO;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -120,8 +121,6 @@ public class Translator {
                 .collect(Collectors.toList());
         }
     }
-<<<<<<< Updated upstream
-=======
     
  // Spoonacular
     public void translateIngredients(DataVO data) {
@@ -147,5 +146,4 @@ public class Translator {
 
         log.info("🈺 재료/계량 번역 완료 (건수: {}, 총 글자 수: {})", ingKr.size() + meaKr.size(), totalChars);
     }
->>>>>>> Stashed changes
 }

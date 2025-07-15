@@ -38,7 +38,13 @@ public class DataWF implements DataManager {
     private static int totalTranslatedChars = 0;
     // ✅ 저장된 레시피 수 카운터
     private static int savedRecipeCount = 0;
-
+    
+    @Override
+    public List<DataVO> fetch() {
+        log.warn("⚠️ DataWF는 fetch()를 지원하지 않습니다.");
+        return List.of(); // 빈 리스트 반환
+    }
+    
     @Override
     public void execute() {
         isRunning = true;

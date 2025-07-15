@@ -77,13 +77,13 @@ body {
     display: block;
     padding: 8px 16px;
     text-decoration: none;
-    color: #333;
+    color: #118e6a;
     font-size: 14px;
     transition: background 0.2s;
 }
 
 .app-menu-dropdown a:hover {
-    background-color: #f0f0f0;
+    background-color: #f4fcf9;
 }
 
 .section-title {

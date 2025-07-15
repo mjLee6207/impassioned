@@ -48,14 +48,16 @@
 			<jsp:include page="/common/sidebar.jsp" />
 		</div>
 
-		<div class="container container-box" style="margin-top: 32px;">
-			<h2 style="margin-bottom: 24px;">📘 사이트 이용 가이드</h2>
+<div class="container container-box" style="margin-top: 32px;">
+	<div style="display: flex; flex-direction: column; align-items: left; gap: 24px;">
+		<h1 style="color: #1e8a57;">🌲CheForest Guide-line</h1>
 
-			<div class="pdf-wrapper">
-				<iframe src="/pdf/guide.pdf"></iframe>
-			</div>
+		<div class="pdf-wrapper">
+			<iframe src="/pdf/guide.pdf"></iframe>
 		</div>
 	</div>
+</div>
+
 	<script>
 	    // 탭 클릭 시 해당 카테고리 게시판 목록으로 이동
 	

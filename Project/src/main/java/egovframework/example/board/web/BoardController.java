@@ -76,13 +76,21 @@ import lombok.extern.log4j.Log4j2;
 	      log.info("테스트2 : " + totCnt);
 	//      페이지 모든 정보: paginationInfo
 	      model.addAttribute("paginationInfo", paginationInfo);
-	      List<BoardVO> bestPosts = boardService.selectBestPosts();
-	      for (BoardVO board : bestPosts) {
-	    	    if (board.getThumbnail() == null || board.getThumbnail().isEmpty()) {
-	    	        board.setThumbnail("/img/no-image.png");
-	    	    }
-	    	}
-	      model.addAttribute("bestPosts", bestPosts);
+	   // ====== 7월15일 카테고리별 인기게시글 조회를 위해 추가 및 수정(장호) ======
+	  	List<BoardVO> bestPosts;
+	  	if (category == null || category.isEmpty()) {
+	  	    // 전체 탭 - 기존 방식 (모든 카테고리 인기글)
+	  	    bestPosts = boardService.selectBestPosts();
+	  	} else {
+	  	    // 카테고리별 인기글
+	  	    bestPosts = boardService.selectBestPostsByCategory(category);
+	  	}
+	  	for (BoardVO board : bestPosts) {
+	  	    if (board.getThumbnail() == null || board.getThumbnail().isEmpty()) {
+	  	        board.setThumbnail("/img/no-image.png");
+	  	    }
+	  	}
+	  	model.addAttribute("bestPosts", bestPosts);
 	      return "board/boardlist";
 	   }
 	 

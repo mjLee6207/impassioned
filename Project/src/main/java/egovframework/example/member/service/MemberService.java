@@ -28,7 +28,9 @@ public interface MemberService {
     
 //  비밀번호찾기
     int updatePassword(MemberVO member);
- // 프로필 이미지 경로를 갱신하는 메소드
+//  프로필 이미지 경로를 갱신하는 메소드
     void updateProfileImage(Long memberId, String profileUrl);
-
+    
+//  회원 탈퇴 메소드    
+    void deleteMember(int memberIdx) throws Exception;
 }

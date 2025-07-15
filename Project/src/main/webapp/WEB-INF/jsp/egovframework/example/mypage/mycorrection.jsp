@@ -21,7 +21,7 @@
     <div class="main-wrap">
         <!-- 좌측 프로필카드 -->
         <div class="profile-card">
-            <img src="${member.profile != null ? member.profile : '/img/profile-default.png'}"
+            <img src="${member.profile != null ? member.profile : '/images/default_profile.png'}"
                  id="profilePreview" class="profile-img" alt="프로필 이미지" />
             <input type="file" id="profileImage" name="profileImage" accept="image/*" style="display:none;"
                    onchange="readURL(this)">
@@ -33,6 +33,7 @@
             <div class="joindate">
                 가입일: <fmt:formatDate value="${member.joinDate}" pattern="yyyy-MM-dd" />
             </div>
+
         </div>
 
         <!-- 우측 정보 수정 폼 -->
@@ -55,6 +56,7 @@
                 <input type="text" id="nickname" name="nickname" class="form-control" value="${member.nickname}">
                 <span id="nicknameStatus" style="font-size: 0.9em;"></span>
             </div>
+            	<button id="deleteBtn" class="btn btn-danger">회원 탈퇴</button>
             <button type="submit" class="btn btn-edit mt-3">수정 완료</button>
         </div>
     </div>
@@ -97,6 +99,22 @@ $(document).ready(function () {
                 }
             });
     });
+    
+    $("#deleteBtn").on("click", function () {
+        if (!confirm("정말 회원 탈퇴하시겠습니까?")) return;
+
+        $.post("/member/delete.do", {
+            memberIdx: ${member.memberIdx}  // 서버로 보낼 데이터
+        })
+        .done(function () {
+            alert("탈퇴 완료되었습니다.");
+            location.href = "/";  // 홈으로 이동
+        })
+        .fail(function () {
+            alert("탈퇴 중 오류가 발생했습니다.");
+        });
+    });
+    	
     $("#addForm").on("submit", function () {
         const pw = $("#password").val();
         const repw = $("#repassword").val();

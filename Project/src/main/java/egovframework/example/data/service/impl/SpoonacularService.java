@@ -26,7 +26,7 @@ public class SpoonacularService implements DataManager {
 
     @Autowired private RestTemplate restTemplate;
 
-    private static final String API_KEY = "298dffa65437470f9cd0bd8e8131bb0f";
+    private static final String API_KEY = "fc9a6456ba5f42028c520a67063853b1";
     private static final List<String> CUISINES = List.of("chinese", "japanese");
 
     private int totalTranslatedChars = 0;

@@ -88,5 +88,10 @@
 	    SET PROFILE = #{profileUrl}
 	    WHERE MEMBER_IDX = #{memberId}
 	</update>
-
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteMember" parameterType="int">
+	    DELETE FROM MEMBER
+	    WHERE MEMBER_IDX = #{memberIdx}
+	</delete>
 </mapper>

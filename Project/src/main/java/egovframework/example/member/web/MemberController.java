@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Controller
 public class MemberController {
 
@@ -180,5 +182,25 @@ public class MemberController {
         model.addAttribute("msg", "임시 비밀번호는 '" + tempPw + "' 입니다. 로그인 후 반드시 변경해주세요.");
 
         return "member/findpasswordform";
+    }
+    
+//  회원 탈퇴
+    @PostMapping("/member/delete.do")
+    public String deleteMember(@RequestParam("memberIdx") int memberIdx, HttpSession session) {
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+        Long sessionIdx = loginUser.getMemberIdx();
+
+        if (sessionIdx.longValue() != memberIdx) {
+            throw new RuntimeException("접근 권한이 없습니다.");
+        }
+
+        try {
+            memberService.deleteMember(memberIdx);
+            session.invalidate();
+            return "redirect:/";
+        } catch (Exception e) {
+            log.error("❌ 회원 탈퇴 중 오류", e);
+            return "redirect:/member/mypage.do?error=deleteFail";
+        }
     }
 }

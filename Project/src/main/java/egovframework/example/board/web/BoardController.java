@@ -364,5 +364,10 @@ import lombok.extern.log4j.Log4j2;
 	    public String showGuidePage() {
 	        return "support/guide";  
 	    }
+//		QNA페이지
+	    @GetMapping("/qna.do")  
+	    public String showQnaPage() {
+	        return "support/qna";  
+	    }
 	
 	}

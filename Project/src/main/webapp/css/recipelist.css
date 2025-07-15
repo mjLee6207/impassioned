@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/* recipelist.css: 레시피 리스트 스타일 (글꼴/카드/그리드 등) */
+
+.recipe-list-section {
+  margin: 35px 0 18px 0;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 34px;
+  max-width: 1080px;
+  margin: 0 auto 10px auto;
+}
+
+.recipe-card {
+  background: #f7fbf9;
+  border-radius: 17px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  padding: 25px 8px 20px 8px;
+  transition: box-shadow 0.13s;
+  position: relative;
+}
+
+.recipe-card:hover {
+  box-shadow: 0 2px 24px rgba(33,136,89,0.16);
+}
+
+.recipe-thumb-img {
+  width: 145px;
+  height: 145px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 14px auto;
+  box-shadow: 0 2px 8px rgba(70,70,70,0.08);
+  background: #ececec;
+  border: 2px solid #e5e5e5;
+}
+
+.recipe-title {
+  font-family: 'Noto Sans KR', 'Pretendard', 'Malgun Gothic', sans-serif;
+  font-weight: 500;
+  font-size: 1.14rem;
+  margin-top: 7px;
+  color: #222;
+  letter-spacing: -0.7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recipe-card a {
+  text-decoration: none !important;
+  color: #232323;
+  display: block;
+}
+.recipe-card a:hover .recipe-title {
+  color: #1e8a57;
+  text-decoration: underline;
+}
+
+.no-recipe-msg {
+  grid-column: 1/-1;
+  text-align: center;
+  color: #aaa;
+  font-size: 1.09rem;
+  padding: 30px 0 18px 0;
+}
+
+@media (max-width: 1200px) {
+  .recipe-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 950px) {
+  .recipe-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 650px) {
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+  .recipe-thumb-img { width: 88vw; max-width: 220px; height: 120px; }
+}
+
+/* 게시판 스타일과 일치시키기 위한 공통 요소는 boardlist.css 참고 (탭/검색 등) */
+:root {
+  --main-green: #1e8a57;
+  --hover-green: #118e6a;
+  --shadow: 0 4px 24px rgba(30,138,87,.06);
+}
+body { background: #f8f9fa; }
+.main-flex { display: flex; gap: 0px; max-width: 1300px; margin: 0 auto 0 auto; }
+.content-area { flex: 1; background: #fff; border-radius: 20px; box-shadow: var(--shadow); min-width: 0; padding: 38px 34px 36px 34px; }
+.category-tabs { display: flex; gap: 32px; margin-bottom: 23px; border-bottom: 2.5px solid #eee; }
+.category-tab { line-height: 1.2; font-size: 1.12rem; color: #aaa; padding: 13px 7px 10px 7px; background: none; border: none; border-bottom: 2.5px solid transparent; font-weight: 600; cursor:pointer; transition:.11s; }
+.category-tab.active { font-size:1.35rem !important ; font-weight: bold !important; color: var(--main-green) !important; border-bottom: 2.5px solid var(--main-green); }
+.search-area { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 28px; gap: 8px; }
+.search-input { width: 330px; border-radius: 7px; border: 1.2px solid #dde1e8; padding: 10px 14px; font-size: 1.08rem; background: #fff; }
+.search-btn { border: none; background: none; color: var(--main-green); font-size: 1.28rem; cursor: pointer; }
+.search-btn:hover { color: var(--hover-green); }

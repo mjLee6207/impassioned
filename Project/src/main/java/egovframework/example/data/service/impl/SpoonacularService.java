@@ -24,7 +24,9 @@ public class SpoonacularService implements DataManager {
     @Autowired private DataMapper dataMapper;
     @Autowired private Translator translator;
 
-    private static final String API_KEY = "e0d9170d050847558aa61826aa4eea78";
+    @Autowired private RestTemplate restTemplate;
+
+    private static final String API_KEY = "298dffa65437470f9cd0bd8e8131bb0f";
     private static final List<String> CUISINES = List.of("chinese", "japanese");
 
     private int totalTranslatedChars = 0;
@@ -43,7 +45,8 @@ public class SpoonacularService implements DataManager {
     @Override
     public void execute() {
         isRunning = true;
-        List<DataVO> dataList = fetch(); // 빠르게 가져오기
+
+        List<DataVO> dataList = fetch();
 
         for (DataVO data : dataList) {
             if (!isRunning) {
@@ -57,29 +60,28 @@ public class SpoonacularService implements DataManager {
             }
 
             try {
-                // ✅ 재료/계량 번역
-                translator.translateIngredients(data); // INGREDIENT_KR, MEASURE_KR 포함
+                // ✅ 재료/계량 번역 (한글)
+                translator.translateIngredients(data);
 
-                // ✅ 레시피 제목/내용 번역 (HTML 태그 제거 후)
-                String titleKr = translator.translate(data.getTitle(), "KO");
-
-                String cleanInstruction = stripHtml(data.getInstruction()); // HTML 태그 제거
-                String instrKr = translator.translate(cleanInstruction, "KO");
+                // ✅ 제목/설명 번역 (HTML 제거 포함)
+                String titleKr = translator.translate(data.getTitleEn(), "KO");
+                String cleanInstruction = stripHtml(data.getInstructionEn());
+                String instructionKr = translator.translate(cleanInstruction, "KO");
 
                 data.setTitleKr(titleKr);
-                data.setInstructionskr(instrKr);
+                data.setInstructionKr(instructionKr);
 
-                int charCount = (data.getTitle() != null ? data.getTitle().length() : 0)
+                int charCount = (data.getTitleEn() != null ? data.getTitleEn().length() : 0)
+
                         + (cleanInstruction != null ? cleanInstruction.length() : 0);
                 totalTranslatedChars += charCount;
                 log.info("🔤 번역 글자 수: {} (누적: {})", charCount, totalTranslatedChars);
 
+                // ✅ 저장
                 dataMapper.insertRecipe(data);
-                log.info("✅ 저장 성공: {} ({})", data.getTitle(), data.getCategory());
+                log.info("✅ 저장 성공: {} ({})", data.getTitleEn(), data.getCategoryEn());
 
-                // ✅ 번역/저장마다 20초 대기
-                Thread.sleep(20000);
-
+                Thread.sleep(20000); // ✅ 20초 대기
             } catch (Exception e) {
                 log.error("❌ 저장 실패 (id={}): {}", data.getRecipeId(), e.getMessage());
             }
@@ -95,7 +97,7 @@ public class SpoonacularService implements DataManager {
             String url = "https://api.spoonacular.com/recipes/complexSearch?number=30&cuisine=" + cuisine
                     + "&addRecipeInformation=true&apiKey=" + API_KEY;
 
-            String json = new RestTemplate().getForObject(url, String.class);
+            String json = restTemplate.getForObject(url, String.class);
             JsonNode results = new ObjectMapper().readTree(json).path("results");
 
             int count = 1;
@@ -110,30 +112,28 @@ public class SpoonacularService implements DataManager {
 
                 try {
                     String detailUrl = "https://api.spoonacular.com/recipes/" + recipeId + "/information?apiKey=" + API_KEY;
-                    String detailJson = new RestTemplate().getForObject(detailUrl, String.class);
+                    String detailJson = restTemplate.getForObject(detailUrl, String.class);
                     JsonNode detail = new ObjectMapper().readTree(detailJson);
 
                     DataVO data = new DataVO();
                     data.setRecipeId(recipeId);
-                    data.setTitle(detail.path("title").asText());
-                    data.setInstruction(detail.path("instructions").asText());
+                    data.setTitleEn(detail.path("title").asText());
+                    data.setInstructionEn(stripHtml(detail.path("instructions").asText()));
                     data.setThumbnail(detail.path("image").asText());
-                  
-                    // ✅ 카테고리/지역 설정
-                    data.setCategory("중식".equals(cuisine) ? "중식" : "일식"); // category에 중식/일식 넣기
-                    data.setCategoryKr("중식".equals(cuisine) ? "중식" : "일식"); // categoryKr에도 동일하게 넣기
-                    data.setArea(""); // 지역은 비워둠 (정책에 따라)
 
-                    // ✅ 재료/계량 추출 및 로그
+                    // ✅ 카테고리/지역
+                    String category = "chinese".equals(cuisine) ? "중식" : "일식";
+                    data.setCategoryEn(category);
+                    data.setCategoryKr(category);
+                    data.setArea("");
+
+                    // ✅ 재료/계량
                     List<String> ingredients = new ArrayList<>();
                     List<String> measures = new ArrayList<>();
 
                     JsonNode extIng = detail.path("extendedIngredients");
-
-                    if (!detail.has("extendedIngredients")) {
-                        log.warn("❌ extendedIngredients 없음: recipeId={}", recipeId);
-                    } else if (!extIng.isArray() || extIng.size() == 0) {
-                        log.warn("⚠️ 재료 배열이 비어 있음: recipeId={}", recipeId);
+                    if (!detail.has("extendedIngredients") || !extIng.isArray() || extIng.size() == 0) {
+                        log.warn("⚠️ 재료 정보 없음: recipeId={}", recipeId);
                     } else {
                         log.info("📦 재료 수: {} (recipeId={})", extIng.size(), recipeId);
                         for (JsonNode ing : extIng) {
@@ -146,11 +146,10 @@ public class SpoonacularService implements DataManager {
                             measures.add(original);
                         }
                     }
-
-                    data.setIngredient(ingredients);
-                    data.setMeasure(measures);
-                    data.setIngredientStr(String.join(",", ingredients));
-                    data.setMeasureStr(String.join(",", measures));
+                    data.setIngredientEn(ingredients);
+                    data.setMeasureEn(measures);
+                    data.setIngredientEnStr(String.join(",", ingredients));
+                    data.setMeasureEnStr(String.join(",", measures));
 
                     log.info("🚀 {}번째 레시피 준비 완료 (id={})", count++, data.getRecipeId());
                     result.add(data);
@@ -167,7 +166,6 @@ public class SpoonacularService implements DataManager {
         return result;
     }
 
-
     public void stop() {
         isRunning = false;
     }
@@ -175,15 +173,14 @@ public class SpoonacularService implements DataManager {
     public boolean isRunning() {
         return isRunning;
     }
-    
+
     private String stripHtml(String html) {
         if (html == null) return "";
-
-        return html	
-                .replaceAll("(?i)</li>|</p>|<br\\s*/?>", "\n")  // 줄바꿈 보존
-                .replaceAll("<[^>]*>", "")                      // 나머지 태그 제거
-                .replaceAll("&nbsp;", " ")                      // HTML 공백 치환
-                .replaceAll("\\n+", "\n")                       // 줄바꿈 2개 이상 → 1개
+        return html
+                .replaceAll("(?i)</li>|</p>|<br\\s*/?>", "\n")
+                .replaceAll("<[^>]*>", "")
+                .replaceAll("&nbsp;", " ")
+                .replaceAll("\\n+", "\n")
                 .trim();
     }
 }

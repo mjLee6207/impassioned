@@ -10,10 +10,11 @@ import lombok.Data;
 public class DataKOVO {
 
 	@JsonProperty("RCP_SEQ") 				private String recipeId;
-	@JsonProperty("RCP_NM") 				private String title;
-	@JsonProperty("RCP_PARTS_DTLS") private String ingredient;
+	@JsonProperty("RCP_NM") 				private String titleKr;
+	@JsonProperty("RCP_PARTS_DTLS") private String ingredientKr;
 	@JsonProperty("ATT_FILE_NO_MK") private String thumbnail;
-	private String category;
-	private String instruction;
-	private String images;
+	
+	private String categoryKr;
+	private String instructionKr;
+//	private String images;
 }

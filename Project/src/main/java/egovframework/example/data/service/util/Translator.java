@@ -124,22 +124,22 @@ public class Translator {
     
  // Spoonacular
     public void translateIngredients(DataVO data) {
-        List<String> ingredients = data.getIngredient();
-        List<String> measures = data.getMeasure();
+    	List<String> ingredients = data.getIngredientEn(); // ✅ 올바른 이름
+    	List<String> measures = data.getMeasureEn();       // ✅ 올바른 이름
 
-        if (ingredients == null || measures == null) {
-            log.warn("⚠️ 재료 또는 계량 정보가 없습니다 (recipeId={})", data.getRecipeId());
-            return;
-        }
+    	if (ingredients == null || measures == null) {
+    	    log.warn("⚠️ 재료 또는 계량 정보가 없습니다 (recipeId={})", data.getRecipeId());
+    	    return;
+    	}
 
-        List<String> ingKr = translateBulk(ingredients, "KO");
-        List<String> meaKr = translateBulk(measures, "KO");
+    	List<String> ingKr = translateBulk(ingredients, "KO");
+    	List<String> meaKr = translateBulk(measures, "KO");
 
-        data.setIngredientKr(ingKr);
-        data.setMeasureKr(meaKr);
+    	data.setIngredientKr(ingKr); // 리스트 자체 보관
+    	data.setMeasureKr(meaKr);
 
-        data.setIngredientKrStr(String.join(",", ingKr)); // ✅ 문자열로 세팅
-        data.setMeasureKrStr(String.join(",", meaKr));    // ✅ 문자열로 세팅
+    	data.setIngredientKrStr(String.join(",", ingKr)); // 문자열 변환 저장
+    	data.setMeasureKrStr(String.join(",", meaKr));
 
         int totalChars = ingredients.stream().mapToInt(String::length).sum()
                 + measures.stream().mapToInt(String::length).sum();

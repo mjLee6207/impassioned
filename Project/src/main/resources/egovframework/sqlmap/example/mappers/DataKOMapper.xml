@@ -9,18 +9,17 @@
     			parameterType="string" 
     			resultType="boolean">
     	SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
-    	FROM API_RECIPE_KO
+    	FROM API_RECIPE
     	WHERE recipe_id = #{recipeId}
     </select>
     
   	<insert id="insertDataKO" 
   				parameterType="DataKOVO">
-	    INSERT INTO API_RECIPE_KO (
-	        RECIPE_ID, TITLE, INSTRUCTION, INGREDIENT, CATEGORY, THUMBNAIL, IMAGES
-	    )
-	    VALUES (
-	        #{recipeId}, #{title}, #{instruction}, #{ingredient}, #{category}, #{thumbnail}, #{images}
-	    )
+	    INSERT INTO API_RECIPE (
+        	RECIPE_ID, TITLE_KR, INSTRUCTION_KR, INGREDIENT_KR, CATEGORY_KR, THUMBNAIL
+   		) VALUES (
+        	#{recipeId}, #{titleKr}, #{instructionKr}, #{ingredientKr}, #{categoryKr}, #{thumbnail}
+    	)
 	</insert>
 	
 </mapper>

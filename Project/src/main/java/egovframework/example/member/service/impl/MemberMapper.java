@@ -40,4 +40,6 @@ public interface MemberMapper {
 // 프로필 이미지 경로를 갱신하는 메소드
     void updateProfileImage(@Param("memberId") Long memberId, @Param("profileUrl") String profileUrl);
 
+//  회원 탈퇴 메소드
+    void deleteMember(int memberIdx);
 }

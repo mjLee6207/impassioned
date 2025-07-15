@@ -6,24 +6,24 @@
 <mapper namespace="egovframework.example.data.service.impl.DataMapper">
 
     <!-- 단건 INSERT -->
-	<insert id="insertRecipe" parameterType="egovframework.example.data.service.DataVO">
-	    INSERT INTO API_RECIPE (
-	        RECIPE_ID, TITLE, CATEGORY, INSTRUCTION, THUMBNAIL,
-	        TITLE_KR, CATEGORY_KR, INSTRUCTION_KR,
-	        INGREDIENT, MEASURE, AREA,
-	        INGREDIENT_KR, MEASURE_KR
-	    )
-	    VALUES (
-	        #{recipeId}, #{title}, #{category}, #{instruction}, #{thumbnail},
-	        #{titleKr}, #{categoryKr}, #{instructionskr},
-	        #{ingredientStr}, #{measureStr}, #{area},
-	        #{ingredientKrStr}, #{measureKrStr}
-	    )
-	</insert>
-    
+    <insert id="insertRecipe" parameterType="egovframework.example.data.service.DataVO">
+        INSERT INTO API_RECIPE (
+            RECIPE_ID, TITLE_EN, CATEGORY_EN, INSTRUCTION_EN, THUMBNAIL,
+            TITLE_KR, CATEGORY_KR, INSTRUCTION_KR,
+            INGREDIENT_EN, MEASURE_EN, AREA,
+            INGREDIENT_KR, MEASURE_KR
+        )
+        VALUES (
+            #{recipeId}, #{titleEn}, #{categoryEn}, #{instructionEn}, #{thumbnail},
+            #{titleKr}, #{categoryKr}, #{instructionKr},
+            #{ingredientEnStr}, #{measureEnStr}, #{area},
+            #{ingredientKrStr}, #{measureKrStr}
+        )
+    </insert>
+
     <!-- 중복 체크 -->
-	<select id="existsRecipe" resultType="int">
-	    SELECT COUNT(*) FROM API_RECIPE WHERE RECIPE_ID = #{recipeId}
-	</select>
+    <select id="existsRecipe" resultType="int">
+        SELECT COUNT(*) FROM API_RECIPE WHERE RECIPE_ID = #{recipeId}
+    </select>
 
 </mapper>

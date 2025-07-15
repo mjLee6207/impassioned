@@ -28,6 +28,7 @@ public class DataWF implements DataManager {
 
     @Autowired private Translator translator;
     @Autowired private DataMapper dataMapper;
+    @Autowired private RestTemplate restTemplate;
 
     private static final List<String> AREAS = List.of("Chinese", "Japanese", "American", "French", "Italian", "Spanish");
     private static final List<String> CATEGORIES = List.of("Dessert");
@@ -105,7 +106,7 @@ public class DataWF implements DataManager {
     private boolean saveDetailRecipe(String idMeal, String area, String category) {
         try {
             String url = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + idMeal;
-            String json = new RestTemplate().getForObject(url, String.class);
+            String json = restTemplate.getForObject(url, String.class); // ✅ 리팩토링
 
             DataVO data = parseAuto(json);
             if (data == null) {
@@ -119,20 +120,23 @@ public class DataWF implements DataManager {
             }
 
             JsonNode node = new ObjectMapper().readTree(json).get("meals").get(0);
-            parseManual(data, node);
-            translateAll(data);
+            parseManual(data, node);   // ✅ 영문 재료/계량 분리
+            translateAll(data);        // ✅ 번역 (재료 + 제목/설명)
 
+            // ✅ 분류 및 지역 설정
             if (area != null) {
                 data.setArea(area);
-                data.setCategoryKr(transArea(area)); // ✅ 지역 기반 번역
+                data.setCategoryEn(area);
+                data.setCategoryKr(transArea(area));
             } else if (category != null) {
-                data.setCategory(category);
-                data.setCategoryKr(transArea(category)); // ✅ 카테고리 기반 번역
+                data.setCategoryEn(category);
+                data.setCategoryKr(transArea(category));
             }
 
             dataMapper.insertRecipe(data);
             savedRecipeCount++;
-            log.info("✅ 저장 성공: {} ({}) - 누적 저장 {}건", data.getTitle(), data.getCategory(), savedRecipeCount);
+
+            log.info("✅ 저장 성공: {} ({}) - 누적 저장 {}건", data.getTitleEn(), data.getCategoryKr(), savedRecipeCount);
             return true;
 
         } catch (Exception e) {
@@ -161,9 +165,13 @@ public class DataWF implements DataManager {
             }
         }
 
-        data.setIngredient(ingredient);
-        data.setMeasure(measure);
+        data.setIngredientEn(ingredient); // ✅ 리스트 저장
+        data.setMeasureEn(measure);
+        data.setIngredientEnStr(String.join(",", ingredient)); // ✅ CSV 저장
+        data.setMeasureEnStr(String.join(",", measure));
     }
+
+
 
     private String clean(String s) {
         if (s == null) return "";
@@ -175,17 +183,18 @@ public class DataWF implements DataManager {
     }
 
     private void translateAll(DataVO data) {
-        String instruction = data.getInstruction();
+        String instruction = data.getInstructionEn();
         if (instruction != null && instruction.length() > 4500) {
-            log.warn("⚠ 조리 설명이 너무 깁니다 ({}자) → DeepL 오류 가능성 있음", instruction.length());
+            log.warn("⚠ 조리 설명이 너무 깁니다 ({}자)", instruction.length());
         }
 
-        // ✅ 제목, 조리법 번역
-        data.setTitleKr(translator.translate(data.getTitle(), "KO"));
-        data.setInstructionskr(translator.translate(instruction, "KO"));
+        // ✅ 제목, 설명 번역
+        data.setTitleKr(translator.translate(data.getTitleEn(), "KO"));
+        data.setInstructionKr(translator.translate(instruction, "KO"));
 
-        List<String> ingredients = data.getIngredient();
-        List<String> measures = data.getMeasure();
+        // ✅ 재료+계량 결합
+        List<String> ingredients = data.getIngredientEn();
+        List<String> measures = data.getMeasureEn();
         int len = Math.min(ingredients.size(), measures.size());
 
         List<String> combined = new ArrayList<>();
@@ -197,12 +206,11 @@ public class DataWF implements DataManager {
         String translatedText = translator.translate(combinedText, "KO");
         String[] translatedLines = translatedText.split("\n");
 
-        // ✅ 번역 길이 계산
-        int totalLen = (data.getTitle() != null ? data.getTitle().length() : 0)
+        int totalLen = (data.getTitleEn() != null ? data.getTitleEn().length() : 0)
                      + (instruction != null ? instruction.length() : 0)
                      + combinedText.length();
         totalTranslatedChars += totalLen;
-        log.info("🧾 이번 레시피 번역 글자 수: {}자 / 누적: {}자", totalLen, totalTranslatedChars);
+        log.info("🧾 번역 글자 수: {} / 누적: {}", totalLen, totalTranslatedChars);
 
         Set<String> knownUnits = Set.of("작은술", "큰술", "컵", "파운드", "그램", "꼬집음", "꼬집", "ml", "l", "tsp", "tbsp", "tbs", "개", "장", "방울");
 
@@ -240,18 +248,18 @@ public class DataWF implements DataManager {
             }
         }
 
+        // 추가 후처리
         measureKr = measureKr.stream()
             .map(m -> m.replaceAll("\\b꼬집음\\b", "한 꼬집"))
             .collect(Collectors.toList());
 
         data.setIngredientKr(ingredientKr);
         data.setMeasureKr(measureKr);
-
-        data.setIngredientStr(String.join(",", ingredients));
-        data.setMeasureStr(String.join(",", measures));
-        data.setIngredientKrStr(String.join(",", ingredientKr));
+        data.setIngredientKrStr(String.join(",", ingredientKr)); // ✅ 문자열 저장용
         data.setMeasureKrStr(String.join(",", measureKr));
     }
+
+
 
     private String transArea(String area) {
         switch (area) {

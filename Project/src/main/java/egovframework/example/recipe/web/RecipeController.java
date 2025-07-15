@@ -25,7 +25,7 @@ public class RecipeController {
 			@RequestParam(defaultValue = " ") String recipeId) {
 		RecipeVO recipeVO = recipeService.selectRecipe(recipeId);
 		model.addAttribute("recipeVO", recipeVO);
-
+		
 		return "/recipe/recipeview";
 	}
 }

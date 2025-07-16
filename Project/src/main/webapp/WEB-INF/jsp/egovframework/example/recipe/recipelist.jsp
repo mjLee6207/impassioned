@@ -30,15 +30,15 @@
         <div class="category-tabs">
             <a href="${pageContext.request.contextPath}/recipe/recipe.do"
                class="category-tab${empty param.categoryKr ? ' active' : ''}">전체</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=한식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=한식&pageIndex=1"
                class="category-tab${param.categoryKr eq '한식' ? ' active' : ''}">한식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=양식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=양식&pageIndex=1"
                class="category-tab${param.categoryKr eq '양식' ? ' active' : ''}">양식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=중식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=중식&pageIndex=1"
                class="category-tab${param.categoryKr eq '중식' ? ' active' : ''}">중식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=일식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=일식&pageIndex=1"
                class="category-tab${param.categoryKr eq '일식' ? ' active' : ''}">일식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=디저트"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=디저트&pageIndex=1"
                class="category-tab${param.categoryKr eq '디저트' ? ' active' : ''}">디저트</a>
         </div>
 
@@ -90,7 +90,7 @@
 $('#pagination').twbsPagination({
     totalPages: ${paginationInfo.totalPageCount},
     startPage: parseInt("${paginationInfo.currentPageNo}"),
-    visiblePages: ${paginationInfo.recordCountPerPage},
+    visiblePages: 10,
     initiateStartPageClick: false,
     first: '&laquo;',
     prev: '&lt;',

@@ -2,12 +2,14 @@ package egovframework.example.recipe.web;
 
 import java.util.List;
 
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.example.common.Criteria;
 import egovframework.example.recipe.service.RecipeService;
 import egovframework.example.recipe.service.RecipeVO;
 
@@ -18,20 +20,43 @@ public class RecipeController {
 	
 //	레시피 전체조회 & 카테고리별조회
 	@GetMapping("recipe/recipe.do")
-
 	public String showRecipeListCategory(Model model,
-			@RequestParam(defaultValue = "") String categoryKr) {
-		List<?> recipeList;
-		
-	    if (categoryKr.isEmpty()) {
-	        recipeList = recipeService.selectRecipeList();
-	    } else {
-	        recipeList = recipeService.selectRecipeListCategory(categoryKr);
-	    }
-		
-		model.addAttribute("recipeList", recipeList);
+	    @RequestParam(defaultValue = "") String categoryKr,
+	    @RequestParam(defaultValue = "1") int pageIndex) {
 
-		return "/recipe/recipelist";
+	    Criteria criteria = new Criteria();
+	    criteria.setPageIndex(pageIndex);
+	    criteria.setPageUnit(20);
+
+
+	    PaginationInfo paginationInfo = new PaginationInfo();
+	    paginationInfo.setCurrentPageNo(criteria.getPageIndex());
+	    paginationInfo.setRecordCountPerPage(criteria.getPageUnit());
+	    paginationInfo.setPageSize(10);
+
+	    criteria.setFirstIndex(paginationInfo.getFirstRecordIndex());
+
+	    List<?> recipeList;
+	    int total;
+
+	    if (categoryKr.isEmpty()) {
+	        // **전체 조회 페이징**
+	        recipeList = recipeService.selectRecipeListPaging(criteria);
+	        total = recipeService.getTotalRecipeCount();
+	    } else {
+	        // **카테고리 조회 페이징**
+	        recipeList = recipeService.selectRecipeListCategoryPaging(criteria, categoryKr);
+	        total = recipeService.getTotalRecipeCountByCategory(categoryKr);
+	    }
+
+	    paginationInfo.setTotalRecordCount(total);
+
+	    model.addAttribute("recipeList", recipeList);
+	    model.addAttribute("paginationInfo", paginationInfo);
+	    model.addAttribute("pageIndex", pageIndex);
+	    model.addAttribute("categoryKr", categoryKr);
+
+	    return "/recipe/recipelist";
 	}
 	
 //	레시피 상세조회

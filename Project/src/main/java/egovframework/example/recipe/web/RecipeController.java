@@ -26,7 +26,7 @@ public class RecipeController {
 
 	    Criteria criteria = new Criteria();
 	    criteria.setPageIndex(pageIndex);
-	    criteria.setPageUnit(20); // 원하는 페이지당 표시 개수
+	    criteria.setPageUnit(12); // 원하는 페이지당 표시 개수
 
 	    PaginationInfo paginationInfo = new PaginationInfo();
 	    paginationInfo.setCurrentPageNo(criteria.getPageIndex());

@@ -4,11 +4,19 @@
 
 <mapper namespace="egovframework.example.recipe.service.impl.RecipeMapper">
 
+<select id="selectRecipeList"
+			 resultType="egovframework.example.recipe.service.RecipeVO"
+>
+			SELECT RECIPE_ID,TITLE_KR,
+			THUMBNAIL FROM API_RECIPE
+</select>
+
 <select id="selectRecipe"
 			 parameterType="String"
 			 resultType="egovframework.example.recipe.service.RecipeVO">
 			 
-			 SELECT * FROM API_RECIPE
+			 SELECT RECIPE_ID,TITLE_KR,CATEGORY_KR,
+			 INSTRUCTION_KR,INGREDIENT_KR,THUMBNAIL FROM API_RECIPE
 			 WHERE RECIPE_ID = #{recipeId}
 </select>
 

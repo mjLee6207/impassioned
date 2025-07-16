@@ -1,5 +1,7 @@
 package egovframework.example.recipe.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +16,10 @@ public class RecipeController {
 	
 	@Autowired RecipeService recipeService;
 
-	@GetMapping("recipe/list.do")
-	public String showRecipeList() {
-		
+	@GetMapping("recipe/recipe.do")
+	public String showRecipeList(Model model) {
+		List<?> recipeList = recipeService.selectRecipeList();
+		model.addAttribute("recipeList", recipeList);
 		return "/recipe/recipelist";
 	}
 	

@@ -23,7 +23,8 @@ import egovframework.example.member.service.MemberVO;
 import egovframework.example.mypage.service.MypageLikeVO;
 import egovframework.example.mypage.service.MypageMyPostVO;
 import egovframework.example.mypage.service.MypageService;
-
+import lombok.extern.log4j.Log4j2;
+@Log4j2
 @Controller
 @RequestMapping("/mypage")
 public class MypageController {
@@ -46,7 +47,14 @@ public class MypageController {
             return "redirect:/member/login.do";
         }
 
+        // DB에서 최신 정보 조회
         MemberVO memberInfo = memberService.selectMemberByIdx(loginUser.getMemberIdx());
+        log.info("✅ 회원 정보 조회: {}", memberInfo);
+        // 임시 비밀번호 여부 판단
+        if ("Y".equals(memberInfo.getTempPasswordYn())) {
+            model.addAttribute("showTempPasswordWarning", true);
+        }
+        
         model.addAttribute("member", memberInfo);
 
         return "mypage/mycorrection";
@@ -73,7 +81,14 @@ public class MypageController {
 
         // 서비스 호출 - DB 정보 업데이트
         memberService.updateMember(memberVO);
-     // [2] 프로필 이미지 파일 업로드/삭제 처리 추가
+        
+        // ✅ 비밀번호 변경이 있었다면 임시 로그인 안내 제거
+        if (memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()) {
+            session.removeAttribute("tempPasswordLogin");
+            memberVO.setTempPasswordYn("N");
+        }
+        
+        // [2] 프로필 이미지 파일 업로드/삭제 처리 추가
         if (profileImage != null && !profileImage.isEmpty()) {
             // 기존 프로필 이미지가 있다면 삭제 (FileService 활용)
             // (FileService를 @Autowired로 선언 필요)
@@ -104,6 +119,7 @@ public class MypageController {
         // 마이페이지로 리다이렉트
         return "redirect:/mypage/mypage.do";
     }
+    
 //   마이페이지매핑+페이지네이션
     @GetMapping("/mypage.do")
     public String myPage(
@@ -163,12 +179,15 @@ public class MypageController {
         model.addAttribute("likedPostsPaginationInfo", likedPostsPaginationInfo);
         model.addAttribute("likedPostsTotalCount", likedPostsTotCnt); 
 
+        Boolean updateSuccess = (Boolean) session.getAttribute("updateSuccess");
+        if (updateSuccess != null && updateSuccess) {
+            model.addAttribute("updateSuccess", true);
+            session.removeAttribute("updateSuccess");
+        }
+        
         // ===== 탭 정보 =====
         model.addAttribute("tab", tab);
 
         return "mypage/mypage";
     }
-
-
-
 }

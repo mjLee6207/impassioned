@@ -42,4 +42,7 @@ public interface MemberMapper {
 
 //  회원 탈퇴 메소드
     void deleteMember(int memberIdx);
+    
+//  해당 회원이 임시 비밀번호 상태인지 아닌지를 확인하기 위해 DB에 저장된 값을 가져오는 용도.
+    String selectTempPasswordYnByIdx(Long memberIdx);
 }

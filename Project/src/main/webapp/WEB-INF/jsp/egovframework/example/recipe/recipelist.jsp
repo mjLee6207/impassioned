@@ -28,17 +28,17 @@
 
         <!-- 카테고리 탭 (게시판 동일) -->
         <div class="category-tabs">
-            <a href="${pageContext.request.contextPath}/recipe/recipelist.do"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do"
                class="category-tab${empty param.category ? ' active' : ''}">전체</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipelist.do?category=한식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=한식"
                class="category-tab${param.category eq '한식' ? ' active' : ''}">한식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipelist.do?category=양식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=양식"
                class="category-tab${param.category eq '양식' ? ' active' : ''}">양식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipelist.do?category=중식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=중식"
                class="category-tab${param.category eq '중식' ? ' active' : ''}">중식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipelist.do?category=일식"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=일식"
                class="category-tab${param.category eq '일식' ? ' active' : ''}">일식</a>
-            <a href="${pageContext.request.contextPath}/recipe/recipelist.do?category=디저트"
+            <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=디저트"
                class="category-tab${param.category eq '디저트' ? ' active' : ''}">디저트</a>
         </div>
 
@@ -56,39 +56,12 @@
                 </div>
             </button>
         </form>
-<table class="post-table">
-				<thead>
-					<tr>
-						<th style="width: 50%;">제목</th>
-						<th style="width: 10%;">작성자</th>
-						<th style="width: 20%;">작성일</th>
-						<th style="width: 10%;">조회수</th>
-						<!-- 게시판에 좋아요수 표시를 위해 추가 7월 9일 :강승태 -->
-						<th style="width: 10%;">좋아요</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="board" items="${boards}">
-						<tr>
-							<td style="text-align: left;"><a
-								href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}"
-								class="post-title-link">${board.title}</a></td>
-							<td>${board.nickname}</td>
-							<td><fmt:formatDate value="${board.writeDate}"
-									pattern="yyyy-MM-dd" /></td>
-							<td>${board.viewCount}</td>
-							<!-- 게시판에 좋아요수 표시를 위해 추가 7월 9일 :강승태 -->
-							<td>${board.likeCount == 0 ? '0' : board.likeCount}</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
         <!-- 레시피 리스트 영역 -->
         <div class="recipe-list-section">
             <div class="recipe-grid">
                 <c:forEach var="recipeList" items="${recipeList}">
                     <div class="recipe-card">
-                        <a href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+                        <a href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipeList.recipeId}">
                             <img src="${recipeList.thumbnail}"
                                  alt="썸네일" class="recipe-thumb-img"/>
                             <div class="recipe-title">
@@ -132,8 +105,8 @@ $('#pagination').twbsPagination({
 
 // 카테고리 select 유지 JS (boardlist.js와 동일)
 document.addEventListener("DOMContentLoaded", function () {
-    const hiddenCategoryInput = document.querySelector("input[name='category']");
-    const currentCategory = new URLSearchParams(window.location.search).get("category");
+    const hiddenCategoryInput = document.querySelector("input[name='categoryKr']");
+    const currentCategory = new URLSearchParams(window.location.search).get("categoryKr");
     if (hiddenCategoryInput && currentCategory) {
         hiddenCategoryInput.value = currentCategory;
     }

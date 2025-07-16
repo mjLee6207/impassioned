@@ -86,13 +86,13 @@
         <!-- 레시피 리스트 영역 -->
         <div class="recipe-list-section">
             <div class="recipe-grid">
-                <c:forEach var="recipe" items="${recipes}">
+                <c:forEach var="recipeList" items="${recipeList}">
                     <div class="recipe-card">
                         <a href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-                            <img src="${empty recipe.thumbnail ? '/images/no-image.png' : recipe.thumbnail}"
+                            <img src="${recipeList.thumbnail}"
                                  alt="썸네일" class="recipe-thumb-img"/>
                             <div class="recipe-title">
-                                <b>${recipe.title}</b>
+                                <b>${recipeList.titleKr}</b>
                             </div>
                         </a>
                     </div>

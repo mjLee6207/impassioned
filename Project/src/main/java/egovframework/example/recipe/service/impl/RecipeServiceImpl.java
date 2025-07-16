@@ -1,5 +1,7 @@
 package egovframework.example.recipe.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,12 @@ import egovframework.example.recipe.service.RecipeVO;
 public class RecipeServiceImpl implements RecipeService {
 
 	@Autowired RecipeMapper recipeMapper;
+
+	
+	@Override
+	public List<?> selectRecipeList() {
+		return recipeMapper.selectRecipeList();
+	}
 
 	@Override
 	public RecipeVO selectRecipe(String recipeId) {

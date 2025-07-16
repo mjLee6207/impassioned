@@ -29,17 +29,17 @@
         <!-- 카테고리 탭 (게시판 동일) -->
         <div class="category-tabs">
             <a href="${pageContext.request.contextPath}/recipe/recipe.do"
-               class="category-tab${empty param.category ? ' active' : ''}">전체</a>
+               class="category-tab${empty param.categoryKr ? ' active' : ''}">전체</a>
             <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=한식"
-               class="category-tab${param.category eq '한식' ? ' active' : ''}">한식</a>
+               class="category-tab${param.categoryKr eq '한식' ? ' active' : ''}">한식</a>
             <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=양식"
-               class="category-tab${param.category eq '양식' ? ' active' : ''}">양식</a>
+               class="category-tab${param.categoryKr eq '양식' ? ' active' : ''}">양식</a>
             <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=중식"
-               class="category-tab${param.category eq '중식' ? ' active' : ''}">중식</a>
+               class="category-tab${param.categoryKr eq '중식' ? ' active' : ''}">중식</a>
             <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=일식"
-               class="category-tab${param.category eq '일식' ? ' active' : ''}">일식</a>
+               class="category-tab${param.categoryKr eq '일식' ? ' active' : ''}">일식</a>
             <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=디저트"
-               class="category-tab${param.category eq '디저트' ? ' active' : ''}">디저트</a>
+               class="category-tab${param.categoryKr eq '디저트' ? ' active' : ''}">디저트</a>
         </div>
 
         <!-- 검색창 -->

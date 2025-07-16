@@ -21,8 +21,34 @@ public class RecipeController {
 //	레시피 전체조회 & 카테고리별조회
 	@GetMapping("recipe/recipe.do")
 	public String showRecipeListCategory(Model model,
+			@RequestParam(defaultValue = "") String categoryKr) {
+		List<?> recipeList;
 	    @RequestParam(defaultValue = "") String categoryKr,
 	    @RequestParam(defaultValue = "1") int pageIndex) {
+
+	    Criteria criteria = new Criteria();
+	    criteria.setPageIndex(pageIndex);
+	    criteria.setPageUnit(12);
+
+
+	    PaginationInfo paginationInfo = new PaginationInfo();
+	    paginationInfo.setCurrentPageNo(criteria.getPageIndex());
+	    paginationInfo.setRecordCountPerPage(criteria.getPageUnit());
+	    paginationInfo.setPageSize(10);
+
+	    criteria.setFirstIndex(paginationInfo.getFirstRecordIndex());
+
+	    List<?> recipeList;
+	    int total;
+
+	    if (categoryKr.isEmpty()) {
+	        recipeList = recipeService.selectRecipeList();
+	    } else {
+	        recipeList = recipeService.selectRecipeListCategory(categoryKr);
+	    }
+		
+		model.addAttribute("recipeList", recipeList);
+
 
 	    Criteria criteria = new Criteria();
 	    criteria.setPageIndex(pageIndex);
@@ -38,7 +64,6 @@ public class RecipeController {
 
 	    List<?> recipeList;
 	    int total;
-
 	    if (categoryKr.isEmpty()) {
 	        // **전체 조회 페이징**
 	        recipeList = recipeService.selectRecipeListPaging(criteria);

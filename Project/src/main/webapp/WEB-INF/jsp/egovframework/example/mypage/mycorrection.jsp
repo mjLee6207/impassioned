@@ -1,7 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <title>회원 정보 수정</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,9 +36,16 @@
             </div>
 
         </div>
-
         <!-- 우측 정보 수정 폼 -->
         <div class="content-area">
+            <!-- 임시 비밀번호 안내 메시지 -->
+			<c:if test="${member.tempPasswordYn eq 'Y'}">
+			    <div class="alert alert-warning" role="alert">
+			        <strong>🔐 현재 임시 비밀번호로 로그인 중입니다.</strong><br>
+			        보안을 위해 새 비밀번호로 꼭 변경해 주세요.
+			    </div>
+			</c:if>
+		    
             <div class="form-title">회원 정보 수정</div>
             <div class="form-group">
                 <label for="email" class="form-label">이메일</label>
@@ -45,22 +53,28 @@
             </div>
             <div class="form-group">
                 <label for="password" class="form-label">비밀번호</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호">
+                <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호" minlength="6">
             </div>
             <div class="form-group">
                 <label for="repassword" class="form-label">비밀번호 확인</label>
-                <input type="password" id="repassword" name="repassword" class="form-control" placeholder="비밀번호 재입력">
+                <input type="password" id="repassword" name="repassword" class="form-control" placeholder="비밀번호 재입력" minlength="6">
             </div>
             <div class="form-group">
                 <label for="nickname" class="form-label">닉네임</label>
                 <input type="text" id="nickname" name="nickname" class="form-control" value="${member.nickname}">
                 <span id="nicknameStatus" style="font-size: 0.9em;"></span>
             </div>
-            	<button id="deleteBtn" class="btn btn-danger">회원 탈퇴</button>
+            <button type="button" id="deleteBtn" class="btn btn-danger">회원 탈퇴</button>
             <button type="submit" class="btn btn-edit mt-3">수정 완료</button>
         </div>
     </div>
 </form>
+
+<c:if test="${updateSuccess}">
+<script>
+    alert("회원 정보가 성공적으로 수정되었습니다.");
+</script>
+</c:if>
 
 <!-- JS 스크립트는 동일하게 유지 -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

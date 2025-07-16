@@ -59,9 +59,16 @@ public class MemberController {
                         @RequestParam(value = "redirect", required = false) String redirect) {
         try {
             MemberVO loginUser = memberService.authenticate(memberVO);
-            session.setAttribute("loginUser", loginUser);
-
-            // ✅ redirect가 유효하고 /WEB-INF 포함 안하면 리다이렉트 (이중 인코딩 방지)
+            session.setAttribute("loginUser", loginUser);            
+            
+            // [임시 비밀번호 사용자]면 redirectConfirm으로 분기
+            if ("Y".equals(loginUser.getTempPasswordYn())) {
+                // 사용자가 원래 가려던 곳을 세션에 저장 (안전하게 홈으로 fallback)
+                session.setAttribute("redirectAfterLogin", redirect != null ? redirect : "/");
+                return "redirect:/redirect/confirm.do";
+            }
+            
+            // redirect가 유효하고 /WEB-INF 포함 안하면 리다이렉트 (이중 인코딩 방지)
             if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
                 return "redirect:" + redirect;
             }
@@ -73,13 +80,19 @@ public class MemberController {
             return "member/login";
         }
     }
-
+    
+//  임시비밀번호 경고창
+    @GetMapping("/redirect/confirm.do")
+    public String showConfirmPage() {
+        return "member/redirectConfirm";
+    }
+    
     // ✅ [로그인 폼 페이지]
     @GetMapping("/member/login.do")
     public String loginPage() {
         return "member/login";
     }
-
+    
     // ✅ [로그아웃 처리]
     @GetMapping("/member/logout.do")
     public String logout(HttpSession session,
@@ -176,9 +189,12 @@ public class MemberController {
         String tempPw = UUID.randomUUID().toString().substring(0, 8);
         String encPw = BCrypt.hashpw(tempPw, BCrypt.gensalt());
         member.setPassword(encPw);
+        member.setTempPasswordYn("Y");
+        
         memberService.updatePassword(member);
 
         session.removeAttribute("verifiedEmail");
+        
         model.addAttribute("msg", "임시 비밀번호는 '" + tempPw + "' 입니다. 로그인 후 반드시 변경해주세요.");
 
         return "member/findpasswordform";

@@ -28,4 +28,8 @@ public class MemberVO extends Criteria {
 
     // 프론트 처리용 입력값
     private String emailCode;   // 이메일 인증 코드 (입력값)
+    
+    // 임시 비밀번호 관련 필드
+    private String tempPasswordYn;   // DB 저장용(Y,N)
+    private boolean tempPassword;    // 임시 비밀번호 여부 (컨트롤러 판단용)
 } 

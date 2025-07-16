@@ -113,7 +113,7 @@ toggleBtn.onclick = function() {
   box.style.display = isHidden ? 'block' : 'none';
   toggleBtn.innerText = isHidden ? '숨기기' : '보이기';
 };
-// 초기상태: 보여진 상태라면 "숨기기"가 맞음!
+
 </script>
 </body>
 </html>

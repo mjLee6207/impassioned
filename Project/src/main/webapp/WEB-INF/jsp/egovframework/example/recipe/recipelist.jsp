@@ -56,7 +56,33 @@
                 </div>
             </button>
         </form>
-
+<table class="post-table">
+				<thead>
+					<tr>
+						<th style="width: 50%;">제목</th>
+						<th style="width: 10%;">작성자</th>
+						<th style="width: 20%;">작성일</th>
+						<th style="width: 10%;">조회수</th>
+						<!-- 게시판에 좋아요수 표시를 위해 추가 7월 9일 :강승태 -->
+						<th style="width: 10%;">좋아요</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="board" items="${boards}">
+						<tr>
+							<td style="text-align: left;"><a
+								href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}"
+								class="post-title-link">${board.title}</a></td>
+							<td>${board.nickname}</td>
+							<td><fmt:formatDate value="${board.writeDate}"
+									pattern="yyyy-MM-dd" /></td>
+							<td>${board.viewCount}</td>
+							<!-- 게시판에 좋아요수 표시를 위해 추가 7월 9일 :강승태 -->
+							<td>${board.likeCount == 0 ? '0' : board.likeCount}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
         <!-- 레시피 리스트 영역 -->
         <div class="recipe-list-section">
             <div class="recipe-grid">

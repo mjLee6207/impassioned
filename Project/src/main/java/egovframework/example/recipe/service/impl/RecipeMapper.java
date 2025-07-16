@@ -8,6 +8,7 @@ import egovframework.example.recipe.service.RecipeVO;
 
 @Mapper
 public interface RecipeMapper {
-	List<?> selectRecipeList();
+	List<?> selectRecipeListCategory(String categoryKr); //	레시피 카테고리별조회
+	List<?> selectRecipeList(); // 레시피 전체조회
 	RecipeVO selectRecipe(String recipeId); // 레시피 상세 조회
 }

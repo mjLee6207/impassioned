@@ -14,7 +14,8 @@
     ROLE,
     NICKNAME,
     JOIN_DATE AS joinDate,
-    PROFILE 
+    PROFILE, 
+    TEMP_PASSWORD_YN AS tempPasswordYn
     FROM MEMBER WHERE ID = #{id} 
   </select>
 
@@ -44,7 +45,8 @@
 	        ROLE,
 	        NICKNAME,
 	        JOIN_DATE,
-	        PROFILE
+	        PROFILE,
+	        TEMP_PASSWORD_YN
 	    FROM MEMBER
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</select>
@@ -56,6 +58,13 @@
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</select>
 	
+	<!-- 임시비밀번호 회원인지 확인 -->
+	<select id="selectTempPasswordYnByIdx" parameterType="long" resultType="string">
+	    SELECT TEMP_PASSWORD_YN
+	    FROM MEMBER
+	    WHERE MEMBER_IDX = #{memberIdx}
+	</select>
+	
 	<!-- 회원 정보 수정 -->
 	<update id="updateMember" parameterType="MemberVO">
 	    UPDATE MEMBER
@@ -63,7 +72,8 @@
 	        EMAIL = #{email},
 	        PASSWORD = #{password},
 	        NICKNAME = #{nickname},
-	        PROFILE = #{profile}
+	        PROFILE = #{profile},
+	        TEMP_PASSWORD_YN = #{tempPasswordYn}	        
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</update>
 
@@ -79,7 +89,11 @@
 
 	<!-- 비밀번호 찾기 -->
     <update id="updatePassword" parameterType="MemberVO">
-        UPDATE MEMBER SET password = #{password} WHERE id = #{id}
+        UPDATE MEMBER 
+        SET 
+        	password = #{password},
+        	TEMP_PASSWORD_YN = #{tempPasswordYn}
+        WHERE id = #{id}
     </update>
     
     <!-- 프로필 이미지 경로를 갱신하는 메소드  -->

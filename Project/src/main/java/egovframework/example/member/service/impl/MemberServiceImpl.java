@@ -72,20 +72,19 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 //  회원 정보 수정   
     @Override
     public void updateMember(MemberVO memberVO) {
-
-        // 비밀번호가 입력되었을 때만 암호화해서 저장
-
-        log.info("⛳ 입력된 비밀번호: " + memberVO.getPassword());
+        // 기존 비밀번호 및 TEMP_PASSWORD_YN 값 가져오기
+        String currentPassword = memberMapper.selectPasswordByIdx(memberVO.getMemberIdx());
+        String currentTempPasswordYn = memberMapper.selectTempPasswordYnByIdx(memberVO.getMemberIdx());
 
         if (memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()) {
-        	log.info("1");
+            // 비밀번호 변경 시: 암호화 + 임시비밀번호 해제
             String encrypted = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
             memberVO.setPassword(encrypted);
+            memberVO.setTempPasswordYn("N");
         } else {
-        	log.info("2");
-            String currentPassword = memberMapper.selectPasswordByIdx(memberVO.getMemberIdx());            
-
-            memberVO.setPassword(currentPassword);
+            // 비밀번호 미입력 시: 기존 비밀번호 및 상태 유지
+            memberVO.setPassword(currentPassword); // ✅ 재선언 안함!
+            memberVO.setTempPasswordYn(currentTempPasswordYn);
         }
 
         memberMapper.updateMember(memberVO);

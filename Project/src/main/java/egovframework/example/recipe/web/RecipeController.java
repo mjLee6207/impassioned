@@ -15,16 +15,26 @@ import egovframework.example.recipe.service.RecipeVO;
 public class RecipeController {
 	
 	@Autowired RecipeService recipeService;
-
+	
+//	레시피 전체조회 & 카테고리별조회
 	@GetMapping("recipe/recipe.do")
 
-	public String showRecipeList(Model model) {
-		List<?> recipeList = recipeService.selectRecipeList();
+	public String showRecipeListCategory(Model model,
+			@RequestParam(defaultValue = "") String categoryKr) {
+		List<?> recipeList;
+		
+	    if (categoryKr.isEmpty()) {
+	        recipeList = recipeService.selectRecipeList();
+	    } else {
+	        recipeList = recipeService.selectRecipeListCategory(categoryKr);
+	    }
+		
 		model.addAttribute("recipeList", recipeList);
 
 		return "/recipe/recipelist";
 	}
 	
+//	레시피 상세조회
 	@GetMapping("/recipe/view.do")
 	public String showRecipeView(Model model,
 			@RequestParam(defaultValue = " ") String recipeId) {

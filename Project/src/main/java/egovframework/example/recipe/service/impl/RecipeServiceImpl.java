@@ -13,6 +13,10 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Autowired RecipeMapper recipeMapper;
 
+	@Override
+	public List<?> selectRecipeListCategory(String categoryKr) {
+		return recipeMapper.selectRecipeListCategory(categoryKr);
+	}
 	
 	@Override
 	public List<?> selectRecipeList() {

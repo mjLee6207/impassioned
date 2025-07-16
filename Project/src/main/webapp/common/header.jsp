@@ -45,7 +45,9 @@
             <div class="main-menu">
                 <!-- Recipe 드롭다운 -->
                 <div class="dropdown" id="dropdown-recipe">
+
                     <a class="dropdown-toggle" href="/recipe/recipe.do">Recipe</a>
+
                     <div class="dropdown-menu">
 
                         <a class="dropdown-item" href="/recipe/recipe.do?category=한식">한식<span class="eng"> |　Korean</span></a>

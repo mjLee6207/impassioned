@@ -46,6 +46,7 @@
   </div>
   <div id="ingredients-box">
    <div class="ingredient-table-2col-wrap">
+   ${recipeVO.ingredientKr}
   <%-- <table class="ingredient-table-2col">
     <!-- 재료표 2단분리 스타일 -->
     <colgroup>
@@ -90,15 +91,6 @@
   <div class="recipe-card">
     <div class="section-title">조리법</div>
     <div class="recipe-content">
-
-    	<!-- RecipeID 671 표고버섯감자찜 임시데이터 -->
-<!-- 		1. 표고버섯은 따뜻한 물에 불린다. <br>
-		2. 감자는 강판에 간다.<br>
-		3. 고수는 잘게 다진다.<br>
-		4. 당근은 곱게 다지고, 양파와 홍고추도 다진다.<br>
-		5. 감자에 다진 당근과 양파, 홍고추를 섞는다.<br>
-		6. 불린 표고버섯은 기둥을 자르고 바닥에 녹말가루를 묻혀 ?번을 넣고 김이오른 찜통에 약 10분 정도 찐다.<br> -->
-
 		${recipeVO.instructionKr}
     </div>
   </div>

@@ -70,7 +70,7 @@
                         </a>
                     </div>
                 </c:forEach>
-                 <c:if test="${empty recipes}">
+                 <c:if test="${empty recipeList}">
                     <div class="no-recipe-msg">레시피가 없습니다.</div>
                 </c:if> 
             </div>

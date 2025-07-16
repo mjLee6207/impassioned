@@ -18,6 +18,7 @@ public class RecipeController {
 	
 //	레시피 전체조회 & 카테고리별조회
 	@GetMapping("recipe/recipe.do")
+
 	public String showRecipeListCategory(Model model,
 			@RequestParam(defaultValue = "") String categoryKr) {
 		List<?> recipeList;
@@ -29,6 +30,7 @@ public class RecipeController {
 	    }
 		
 		model.addAttribute("recipeList", recipeList);
+
 		return "/recipe/recipelist";
 	}
 	

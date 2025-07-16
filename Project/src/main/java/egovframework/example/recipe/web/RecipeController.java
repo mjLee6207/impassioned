@@ -22,7 +22,24 @@ public class RecipeController {
 	public String showRecipeListCategory(Model model,
 			@RequestParam(defaultValue = "") String categoryKr) {
 		List<?> recipeList;
-		
+	    @RequestParam(defaultValue = "") String categoryKr,
+	    @RequestParam(defaultValue = "1") int pageIndex) {
+
+	    Criteria criteria = new Criteria();
+	    criteria.setPageIndex(pageIndex);
+	    criteria.setPageUnit(12);
+
+
+	    PaginationInfo paginationInfo = new PaginationInfo();
+	    paginationInfo.setCurrentPageNo(criteria.getPageIndex());
+	    paginationInfo.setRecordCountPerPage(criteria.getPageUnit());
+	    paginationInfo.setPageSize(10);
+
+	    criteria.setFirstIndex(paginationInfo.getFirstRecordIndex());
+
+	    List<?> recipeList;
+	    int total;
+
 	    if (categoryKr.isEmpty()) {
 	        recipeList = recipeService.selectRecipeList();
 	    } else {

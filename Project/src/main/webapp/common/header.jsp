@@ -46,7 +46,7 @@
                 <!-- Recipe 드롭다운 -->
                 <div class="dropdown" id="dropdown-recipe">
 
-                    <a class="dropdown-toggle" href="/recipe/recipe.do">Recipe</a>
+                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/recipe/recipe.do">Recipe</a>
 
                     <div class="dropdown-menu">
 

@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +16,7 @@
 </head>
 <body>
 <jsp:include page="/common/header.jsp" />
-
+<c:set var="currPageIndex" value="${empty param.pageIndex ? 1 : param.pageIndex}" />
 <div class="main-wrap">
 	<!-- 사이드바 영역 -->
 		<div class="sidebar-wrap">
@@ -31,6 +32,8 @@
   <div class="recipe-img-outer">
     <img src=${recipeVO.thumbnail} alt="요리 이미지" width="400px" class="recipe-img" />
   </div>
+  <!-- 목록보기 버튼: 오른쪽 상단 고정 -->
+    <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" class="tolist-btn">목록보기</a>
   <div class="recipe-title-outer">
     <div class="recipe-cat-badge">${recipeVO.categoryKr}</div>
     <div class="recipe-title-main">${recipeVO.titleKr}</div>
@@ -47,40 +50,6 @@
   <div id="ingredients-box">
    <div class="ingredient-table-2col-wrap">
    ${recipeVO.ingredientKr}
-  <%-- <table class="ingredient-table-2col">
-    <!-- 재료표 2단분리 스타일 -->
-    <colgroup>
-      <col style="width: 25%;">
-      <col style="width: 15%;">
-      <col style="width: 25%;">
-      <col style="width: 15%;">
-    </colgroup>
-    <tbody>
-      <tr>
-        <td class="ingredient-name">밀가루</td>
-        <td class="ingredient-amount">2컵</td>
-        <td class="ingredient-name">설탕</td>
-        <td class="ingredient-amount">1/2컵</td>
-      </tr>
-      <tr>
-        <td class="ingredient-name">우유</td>
-        <td class="ingredient-amount">1/2컵</td>
-        <td class="ingredient-name">버터</td>
-        <td class="ingredient-amount">30g</td>
-      </tr>
-  
-    <c:forEach var="i" begin="0" end="${fn:length(재료)/2 - 1}">
-      <tr>
-        <td class="ingredient-name">${재료[i]}</td>
-        <td class="ingredient-amount">${계량[i]}</td>
-        <td class="ingredient-divider"></td>
-        <td class="ingredient-name">${재료[i + fn:length(재료)/2]}</td>
-        <td class="ingredient-amount">${계량[i + fn:length(재료)/2]}</td>
-      </tr>
-    </c:forEach>
-  </tbody>
-</table> --%>
-
 </div>
   </div>
 </div>

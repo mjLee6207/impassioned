@@ -17,9 +17,11 @@ public class RecipeController {
 	@Autowired RecipeService recipeService;
 
 	@GetMapping("recipe/recipe.do")
+
 	public String showRecipeList(Model model) {
 		List<?> recipeList = recipeService.selectRecipeList();
 		model.addAttribute("recipeList", recipeList);
+
 		return "/recipe/recipelist";
 	}
 	

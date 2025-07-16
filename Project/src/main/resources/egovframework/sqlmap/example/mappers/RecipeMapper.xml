@@ -20,6 +20,51 @@
 			THUMBNAIL FROM API_RECIPE
 </select>
 
+<!-- 페이징 처리된 레시피 리스트 -->
+<select id="selectRecipeListPaging"
+        resultType="egovMap"
+        parameterType="egovframework.example.common.Criteria">
+    <![CDATA[
+    SELECT * FROM (
+        SELECT ROWNUM AS rn, A.* FROM (
+            SELECT RECIPE_ID, TITLE_KR, THUMBNAIL
+            FROM API_RECIPE
+            ORDER BY RECIPE_ID DESC
+        ) A
+        WHERE ROWNUM <= #{firstIndex} + #{pageUnit}
+    )
+    WHERE rn > #{firstIndex}
+    ]]>
+</select>
+
+<!-- 전체 레시피 개수 조회 -->
+<select id="getTotalRecipeCount" resultType="int">
+    SELECT COUNT(*) FROM API_RECIPE
+</select>
+
+<!-- 카테고리별 페이징 -->
+<select id="selectRecipeListCategoryPaging"
+        resultType="egovMap"
+        parameterType="map">
+    <![CDATA[
+    SELECT * FROM (
+        SELECT ROWNUM AS rn, A.* FROM (
+            SELECT RECIPE_ID, TITLE_KR, THUMBNAIL
+            FROM API_RECIPE
+            WHERE CATEGORY_KR = #{categoryKr}
+            ORDER BY RECIPE_ID DESC
+        ) A
+        WHERE ROWNUM <= #{criteria.firstIndex} + #{criteria.pageUnit}
+    )
+    WHERE rn > #{criteria.firstIndex}
+    ]]>
+</select>
+
+<!-- 카테고리별 전체 개수 -->
+<select id="getTotalRecipeCountByCategory" resultType="int" parameterType="string">
+    SELECT COUNT(*) FROM API_RECIPE WHERE CATEGORY_KR = #{categoryKr}
+</select>
+
 <select id="selectRecipe"
 			 parameterType="String"
 			 resultType="egovframework.example.recipe.service.RecipeVO">

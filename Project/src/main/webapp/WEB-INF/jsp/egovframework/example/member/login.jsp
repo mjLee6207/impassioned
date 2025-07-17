@@ -43,8 +43,8 @@
 		    alert('${fn:escapeXml(errorMsg)}');
 		  </script>
 		</c:if>
-        <button class="submit-btn" type="submit"><h3>시작하기</h3></button>
-        <span class="toggle-link" onclick="toggleForm('signup')"><h3>회원가입</h3></span>
+        <button class="submit-btn" type="submit">시작하기</button>
+        <span class="toggle-link" onclick="toggleForm('signup')">회원가입</span>
         <div class="find">
           <a href="${pageContext.request.contextPath}/member/findidform.do">아이디 찾기</a> &nbsp;
           <a href="${pageContext.request.contextPath}/member/findpasswordform.do">비밀번호 찾기</a>

@@ -1,7 +1,7 @@
 /* style.css (공통 + 게시글 목록/작성/카테고리탭 등, sidebar/css 관련 제거됨) */
 
 /* 기본 폰트/변수 (기존) */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 :root {
     --black: black;
     --gray: gray;
@@ -10,7 +10,7 @@
     --shadow: 0 4px 24px rgba(30,138,87,.06);
 }
 * {margin: 0;padding: 0;box-sizing: border-box;}
-body {font-family: "Montserrat","Noto Sans KR", sans-serif;line-height: 1.6; background: #f8f9fa;}
+body {font-family: "Gowun Dodum","Rubik", sans-serif;line-height: 1.6; background: #f8f9fa;}
 li {list-style-type: none;}
 a {text-decoration: none;color: var(--black);}
 
@@ -82,7 +82,48 @@ a {text-decoration: none;color: var(--black);}
 .form-control, .form-control-file { margin-bottom: 18px; }
 #category.form-select { margin-bottom: 22px; }
 
-/* 버튼관련스타일 삭제 7/14 (유준) */
+.btn-row {
+    display: flex;
+    gap: 18px;
+    margin-top: 22px;
+}
+.btn-row > button {
+    flex: 1 1 0;
+    min-width: 120px;
+    max-width: 220px;
+    height: 48px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.08rem;
+    box-shadow: 0 4px 16px rgba(30,138,87,0.11);
+    transition: background 0.15s, color 0.13s, box-shadow 0.13s;
+    border: 2px solid transparent;
+}
+/* 등록 버튼 */
+.btn-submit {
+    background: #1e8a57;
+    color: #fff;
+    border-color: #1e8a57;
+    box-shadow: 0px 5px 15px gray !important;
+}
+.btn-submit:hover {
+    background: #176b42;
+    color: #fff;
+    border-color: #176b42;
+}
+/* 취소 버튼 */
+.btn-cancel {
+    background: #f8f9fa;
+    color: #343434;
+    box-shadow: 0px 5px 15px gray !important;
+}
+
+input::placeholder {
+  font-family: 'Gowun Dodum', sans-serif;
+}
+button {
+  font-family: 'Gowun Dodum', sans-serif;
+}
 /* 하단에 스크롤 없애수 있께 두줄추가 
    2025년 07월 09일 오전 9시 30분 강승태 추가 */
 

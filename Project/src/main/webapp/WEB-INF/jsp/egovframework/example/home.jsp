@@ -60,7 +60,7 @@
 		<!-- 예시 레시피 카드 4 -->
 		<a class="recipe" href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="스테이크">
-			<p class="title">양갈비 스테이크와 소스 6종</p></a> <a class="recipe"
+			<p class="title">양갈비스테이크&소스6종</p></a> <a class="recipe"
 			href="https://www.naver.com" target="_blank"> <img
 			src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
 			<p class="title">바질 크림소스 라자냐</p>

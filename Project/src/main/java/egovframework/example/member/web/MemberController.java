@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
@@ -102,8 +103,21 @@ public class MemberController {
     
     // ✅ [로그인 폼 페이지]
     @GetMapping("/member/login.do")
-    public String loginPage() {
-        return "member/login";
+    public String loginPage(@RequestParam(value = "redirect", required = false) String redirect,
+		            		HttpServletRequest request) {
+		if (redirect == null || redirect.trim().isEmpty()) {
+		redirect = "/";
+		}
+		
+		String kakaoLink = "https://kauth.kakao.com/oauth/authorize?" +
+		"client_id=d779fae0a4d9df6ea88f8bfed6e1b315" +
+		"&redirect_uri=http://localhost:8080/kakaoLogin.do" +
+		"&response_type=code" +
+		"&state=" + java.net.URLEncoder.encode(redirect, java.nio.charset.StandardCharsets.UTF_8);
+		
+		request.setAttribute("kakaoLink", kakaoLink);
+		
+		return "member/login"; // 로그인 폼 JSP
     }
     
     // ✅ [로그아웃 처리]
@@ -236,8 +250,9 @@ public class MemberController {
 //  카카오로그인
     @GetMapping("/kakaoLogin.do")
     public String kakaoLogin(@RequestParam("code") String code,
-                             @RequestParam(value = "redirect", required = false) String redirect,
-                             HttpSession session) {
+                             @RequestParam(value = "state", required = false) String redirect,
+                             HttpSession session,
+                             HttpServletRequest request) {
         try {
             // === [1] 토큰 요청 ===
             String tokenUrl = "https://kauth.kakao.com/oauth/token";
@@ -249,7 +264,7 @@ public class MemberController {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("grant_type", "authorization_code");
             params.add("client_id", "d779fae0a4d9df6ea88f8bfed6e1b315"); // REST API 키
-            params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do");
+            params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do"); // ⚠️ 쿼리스트링 제외
             params.add("code", code);
 
             HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(params, headers);
@@ -269,7 +284,6 @@ public class MemberController {
 
             log.info("✅ userJson 전체: {}", userJson.toJSONString());
 
-            // ✅ 핵심 정보 추출
             String kakaoId = String.valueOf(userJson.get("id"));
             JSONObject kakaoAccount = (JSONObject) userJson.get("kakao_account");
             JSONObject profile = (JSONObject) kakaoAccount.get("profile");
@@ -284,37 +298,26 @@ public class MemberController {
             MemberVO member = memberService.selectByKakaoId(kakaoId);
 
             if (member != null) {
-                // ✅ 기존 회원 → 로그인
                 session.setAttribute("loginUser", member);
-
-                if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
-                    return "redirect:" + redirect;
-                }
-
-                return "redirect:/";
             } else {
-            	// 신규 회원 → DB에 자동 가입 처리
-            	MemberVO kakaoMember = new MemberVO();
-            	kakaoMember.setKakaoId(kakaoId);
-            	kakaoMember.setNickname(nickname);
-            	kakaoMember.setEmail(email);
-            	kakaoMember.setProfile((String) profile.get("thumbnail_image_url")); // 있으면
-            	kakaoMember.setRole("USER");
+                MemberVO kakaoMember = new MemberVO();
+                kakaoMember.setKakaoId(kakaoId);
+                kakaoMember.setNickname(nickname);
+                kakaoMember.setEmail(email);
+                kakaoMember.setProfile((String) profile.get("thumbnail_image_url"));
+                kakaoMember.setRole("USER");
 
-            	memberService.insertKakaoMember(kakaoMember);
-
-            	// joinDate 포함된 정보로 다시 SELECT
-            	MemberVO savedMember = memberService.selectByKakaoId(kakaoId);
-
-            	// 세션 설정 후 로그인
-            	session.setAttribute("loginUser", savedMember);
-
-				if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
-				    return "redirect:" + redirect;
-				}
-				
-				return "redirect:/";	
+                memberService.insertKakaoMember(kakaoMember);
+                member = memberService.selectByKakaoId(kakaoId);
+                session.setAttribute("loginUser", member);
             }
+
+            // === [4] redirect 처리 ===
+            if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
+                return "redirect:" + redirect;
+            }
+
+            return "redirect:/";
 
         } catch (Exception e) {
             log.error("❌ 카카오 로그인 중 예외 발생", e);

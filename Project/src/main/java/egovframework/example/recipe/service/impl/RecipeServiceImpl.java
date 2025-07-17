@@ -49,6 +49,9 @@ public class RecipeServiceImpl implements RecipeService {
     public int getTotalRecipeCountByCategory(String categoryKr) {
         return recipeMapper.getTotalRecipeCountByCategory(categoryKr);
     }
-	
+    @Override
+    public List<RecipeVO> selectRandomRecipesByCategory(String categoryKr, int count) {
+        return recipeMapper.selectRandomRecipesByCategory(categoryKr, count);
+    }
 	
 }

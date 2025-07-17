@@ -32,4 +32,7 @@ public class MemberVO extends Criteria {
     // 임시 비밀번호 관련 필드
     private String tempPasswordYn;   // DB 저장용(Y,N)
     private boolean tempPassword;    // 임시 비밀번호 여부 (컨트롤러 판단용)
+    
+//  카카오 로그인
+    private String kakaoId;
 } 

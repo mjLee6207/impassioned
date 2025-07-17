@@ -1,6 +1,8 @@
 package egovframework.example.member.service.impl;
 
 
+import java.util.UUID;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,19 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
             throw processException("errors.register"); // 중복 ID
         }
 
-        // 2) 비밀번호 해싱
-        String hashedPassword = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
-        memberVO.setPassword(hashedPassword);
+        // 2) 비밀번호 처리
+        if (memberVO.getPassword() == null || memberVO.getPassword().equals("kakao_dummy")) {
+            // 👉 카카오 회원가입: 임시 패스워드 부여 + TEMP_PASSWORD_YN = Y
+            String tempPassword = UUID.randomUUID().toString().substring(0, 8);
+            String hashed = BCrypt.hashpw(tempPassword, BCrypt.gensalt());
+            memberVO.setPassword(hashed);
+            memberVO.setTempPasswordYn("Y"); // 임시 비밀번호 여부 기록
+        } else {
+            // 👉 일반 회원가입: 입력한 비밀번호 해시 처리
+            String hashed = BCrypt.hashpw(memberVO.getPassword(), BCrypt.gensalt());
+            memberVO.setPassword(hashed);
+            memberVO.setTempPasswordYn("N");
+        }
 
         // 3) DB 저장
         memberMapper.register(memberVO);
@@ -112,7 +124,25 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
     }
     
     @Override
-    public void deleteMember(int memberIdx) throws Exception {
+    public void deleteMember(Long memberIdx) throws Exception {
         memberMapper.deleteMember(memberIdx);
+    }    
+    
+    @Override
+    public MemberVO selectByKakaoId(String kakaoId) {
+        return memberMapper.selectByKakaoId(kakaoId);
+    }
+    
+    @Override
+    public void insertKakaoMember(MemberVO memberVO) {
+        memberVO.setRole("USER");
+
+        // 임시 비밀번호 생성
+        String dummyPassword = UUID.randomUUID().toString().substring(0, 8);
+        String encrypted = BCrypt.hashpw(dummyPassword, BCrypt.gensalt());
+        memberVO.setPassword(encrypted);
+        memberVO.setTempPasswordYn("N");
+
+        memberMapper.insertKakaoMember(memberVO);
     }
 } 

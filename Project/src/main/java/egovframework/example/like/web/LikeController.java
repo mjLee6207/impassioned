@@ -25,8 +25,8 @@ public class LikeController {
 
         try {
             int boardId = Integer.parseInt(map.get("boardId").toString());
-            int memberIdx = Integer.parseInt(map.get("memberIdx").toString());
-
+            Long memberIdx = Long.parseLong(map.get("memberIdx").toString());
+            
             LikeVO vo = new LikeVO();
             vo.setBoardId(boardId);
             vo.setMemberIdx(memberIdx);
@@ -53,8 +53,8 @@ public class LikeController {
 
         try {
             int boardId = Integer.parseInt(map.get("boardId").toString());
-            int memberIdx = Integer.parseInt(map.get("memberIdx").toString());
-
+            Long memberIdx = Long.parseLong(map.get("memberIdx").toString());          
+            
             LikeVO vo = new LikeVO();
             vo.setBoardId(boardId);
             vo.setMemberIdx(memberIdx);
@@ -107,7 +107,7 @@ public class LikeController {
     /** 🔍 좋아요 여부 확인 */
     @GetMapping("/checkLike.do")
     @ResponseBody
-    public boolean checkLike(@RequestParam int boardId, @RequestParam int memberIdx) {
+    public boolean checkLike(@RequestParam int boardId, @RequestParam Long memberIdx) {
         LikeVO vo = new LikeVO();
         vo.setBoardId(boardId);
         vo.setMemberIdx(memberIdx);

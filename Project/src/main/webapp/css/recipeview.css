@@ -44,27 +44,25 @@
   margin-bottom: 18px;
 }
 
-.tolist-btn {
+.tolist {
   position: absolute;
   top: 12px;
   right: 20px;
   z-index: 2;
-  background: #fff;
-  border: none;
-  color: #aaa;
-  border-radius: 10px;
-  font-weight: 600;
-  padding: 7px 23px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  font-size: 1rem ;
   cursor: pointer;
-  transition: background 0.17s, color 0.17s;
-  text-decoration: none;
+  display: flex;               
+  width: 45px;                
+  height: 45px;
 }
-.tolist-btn:hover {
-  background: #1e8a57;
-  color: #fff;
+.tolist-img {
+  width: 40px;
+  height: 40px;
+  display: block;
 }
+.tolist-img:hover {
+  transform: scale(1.17);
+}
+
 
 /* 이미지/타이틀 */
 .recipe-img {

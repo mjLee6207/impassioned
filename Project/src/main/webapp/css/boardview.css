@@ -103,7 +103,7 @@
 .comment-list { margin-top: 10px; }
 .comment-item:last-child { border-bottom: none; }
 .comment-char-count {
-    margin-top: 6px; /* 원래 값보다 조금 더! */
+    margin-top: 6px;
 }
 
 @media (max-width: 768px) {

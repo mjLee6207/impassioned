@@ -4,26 +4,23 @@
 
 <mapper namespace="egovframework.example.recipe.service.impl.RecipeMapper">
 
-<!-- 레시피 카테고리별 조회 -->
-<select id="selectRecipeListCategory"
+<!-- 상세 조회/랜덤 조회는 기존대로 유지 -->
+<select id="selectRecipe"
 			 parameterType="String"
-			 resultType="egovframework.example.recipe.service.RecipeVO"
->
-			SELECT RECIPE_ID,TITLE_KR,
-			THUMBNAIL FROM API_RECIPE
-			WHERE CATEGORY_KR = #{categoryKr}
+			 resultType="egovframework.example.recipe.service.RecipeVO">
+	SELECT RECIPE_ID,TITLE_KR,CATEGORY_KR,
+	INSTRUCTION_KR,INGREDIENT_KR,THUMBNAIL FROM API_RECIPE
+	WHERE RECIPE_ID = #{recipeId}
+</select>
+<select id="selectRandomRecipesByCategory" resultType="egovframework.example.recipe.service.RecipeVO">
+	SELECT *
+	FROM API_RECIPE
+	WHERE CATEGORY_KR = #{categoryKr}
+	ORDER BY DBMS_RANDOM.VALUE
+	FETCH FIRST #{count} ROWS ONLY
 </select>
 
-<!-- 레시피 전체 조회 -->
-<select id="selectRecipeList"
-			 parameterType="Criteria"
-			 resultType="egovMap"
->
-			SELECT RECIPE_ID,TITLE_KR,
-			THUMBNAIL FROM API_RECIPE
-</select>
-
-<!-- 페이징 처리된 레시피 리스트 -->
+<!-- 페이징+검색+카테고리 (리스트) -->
 <select id="selectRecipeListPaging"
         resultType="egovMap"
         parameterType="egovframework.example.common.Criteria">
@@ -33,11 +30,14 @@
             SELECT RECIPE_ID, TITLE_KR, THUMBNAIL
             FROM API_RECIPE
     ]]>
-            <where>
-                <if test="searchKeyword != null and searchKeyword != ''">
-                    TITLE_KR LIKE '%' || #{searchKeyword} || '%'
-                </if>
-            </where>
+    <where>
+        <if test="categoryKr != null and categoryKr != ''">
+            AND CATEGORY_KR = #{categoryKr}
+        </if>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND TITLE_KR LIKE '%' || #{searchKeyword} || '%'
+        </if>
+    </where>
     <![CDATA[
             ORDER BY RECIPE_ID DESC
         ) A
@@ -47,64 +47,20 @@
     ]]>
 </select>
 
-<!-- 전체 레시피 개수 조회 -->
-<select id="selectRecipeListCategoryPaging"
-        resultType="egovMap"
+<!-- 페이징+검색+카테고리 (총 개수) -->
+<select id="getTotalRecipeCount"
+        resultType="int"
         parameterType="egovframework.example.common.Criteria">
-    <![CDATA[
-    SELECT * FROM (
-        SELECT ROWNUM AS rn, A.* FROM (
-            SELECT RECIPE_ID, TITLE_KR, THUMBNAIL
-            FROM API_RECIPE
-    ]]>
-		<where>
-    		<if test="categoryKr != null and categoryKr != ''">
-       		 	CATEGORY_KR = #{categoryKr}
-    		</if>
-    	<if test="searchKeyword != null and searchKeyword != ''">
-        <choose>
-            <when test="categoryKr != null and categoryKr != ''">
-                AND TITLE_KR LIKE '%' || #{searchKeyword} || '%'
-            </when>
-            <otherwise>
-                TITLE_KR LIKE '%' || #{searchKeyword} || '%'
-            </otherwise>
-        </choose>
-    	</if>
-</where>
-    <![CDATA[
-            ORDER BY RECIPE_ID DESC
-        ) A
-        WHERE ROWNUM <= #{firstIndex} + #{pageUnit}
-    )
-    WHERE rn > #{firstIndex}
-    ]]>
-</select>
-
-
-<!-- 카테고리별 전체 개수 -->
-<select id="getTotalRecipeCountByCategory" resultType="int" parameterType="string">
-    SELECT COUNT(*) FROM API_RECIPE WHERE CATEGORY_KR = #{categoryKr}
-</select>
-
-<select id="selectRecipe"
-			 parameterType="String"
-			 resultType="egovframework.example.recipe.service.RecipeVO">
-			 
-			 SELECT RECIPE_ID,TITLE_KR,CATEGORY_KR,
-			 INSTRUCTION_KR,INGREDIENT_KR,THUMBNAIL FROM API_RECIPE
-			 WHERE RECIPE_ID = #{recipeId}
-</select>
-<select id="selectRandomRecipesByCategory" resultType="egovframework.example.recipe.service.RecipeVO">
-    SELECT *
+    SELECT COUNT(*)
     FROM API_RECIPE
-    WHERE CATEGORY_KR = #{categoryKr}
-    ORDER BY DBMS_RANDOM.VALUE
-    FETCH FIRST #{count} ROWS ONLY
-</select>
-
-<select id="getTotalRecipeCount" resultType="int">
-    SELECT COUNT(*) FROM API_RECIPE
+    <where>
+        <if test="categoryKr != null and categoryKr != ''">
+            AND CATEGORY_KR = #{categoryKr}
+        </if>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND TITLE_KR LIKE '%' || #{searchKeyword} || '%'
+        </if>
+    </where>
 </select>
 
 </mapper>

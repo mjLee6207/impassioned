@@ -22,4 +22,5 @@ public interface RecipeService {
     //  카테고리별 페이징
 	List<EgovMap> selectRecipeListCategoryPaging(Criteria criteria);
     int getTotalRecipeCountByCategory(String categoryKr);	
+    List<RecipeVO> selectRandomRecipesByCategory(String categoryKr, int count);
 }

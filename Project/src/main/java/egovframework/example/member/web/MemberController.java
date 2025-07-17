@@ -300,9 +300,23 @@ public class MemberController {
             if (member != null) {
                 session.setAttribute("loginUser", member);
             } else {
+            	 // ✅ 닉네임 중복 검사 + 자동 유니크 처리
+                String finalNickname = nickname;
+                int suffix = 1;
+                while (memberService.isNicknameDuplicate(finalNickname)) {
+                    finalNickname = nickname + suffix++;
+                }
+
+                // ✅ 자동 변경된 경우: 세션에 표시
+                if (!finalNickname.equals(nickname)) {
+                    session.setAttribute("nicknameAutoRenamedYn", "Y");
+                    session.setAttribute("nicknameBefore", nickname);
+                    session.setAttribute("nicknameAfter", finalNickname);
+                }
+
                 MemberVO kakaoMember = new MemberVO();
                 kakaoMember.setKakaoId(kakaoId);
-                kakaoMember.setNickname(nickname);
+                kakaoMember.setNickname(finalNickname);
                 kakaoMember.setEmail(email);
                 kakaoMember.setProfile((String) profile.get("thumbnail_image_url"));
                 kakaoMember.setRole("USER");
@@ -312,16 +326,35 @@ public class MemberController {
                 session.setAttribute("loginUser", member);
             }
 
-            // === [4] redirect 처리 ===
+            // === [4] 닉네임 자동 변경 시 경고 페이지로 리다이렉트
+            if ("Y".equals(session.getAttribute("nicknameAutoRenamedYn"))) {
+                return "redirect:/nickname-warning.do";
+            }
+
+            // === [5] 그 외 정상 리다이렉트
             if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
                 return "redirect:" + redirect;
             }
-
             return "redirect:/";
 
         } catch (Exception e) {
             log.error("❌ 카카오 로그인 중 예외 발생", e);
             throw new RuntimeException("카카오 로그인 실패", e);
         }
+    }
+    
+//  카카오 닉네임 중복시 오류창
+    @GetMapping("/nickname-warning.do")
+    public String nicknameWarningPage(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+
+        String before = (String) session.getAttribute("nicknameBefore");
+        String after = (String) session.getAttribute("nicknameAfter");
+
+        model.addAttribute("nicknameBefore", before);
+        model.addAttribute("nicknameAfter", after);
+
+        // 이후 로직 처리를 위해 리셋은 보류. 실제 확정 시 삭제해도 됨
+        return "member/nicknameWarning";
     }
 }

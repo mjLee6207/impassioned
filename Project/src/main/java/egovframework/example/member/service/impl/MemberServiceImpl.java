@@ -145,4 +145,9 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 
         memberMapper.insertKakaoMember(memberVO);
     }
+    
+    @Override
+    public boolean isNicknameDuplicate(String nickname) {
+        return memberMapper.countByNickname(nickname) > 0;
+    }
 } 

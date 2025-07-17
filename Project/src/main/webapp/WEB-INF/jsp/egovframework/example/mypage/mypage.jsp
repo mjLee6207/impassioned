@@ -98,7 +98,7 @@
                         <th class="text-center" style="width:55%;">레시피명</th>
                         <th class="text-center" style="width:20%;">카테고리</th>
                         <th class="text-center" style="width:15%;">좋아요</th>
-                        <th class="text-center" style="width:10%;">상세</th>
+                        <th class="text-center" style="width:10%;">조회수</th>
                     </tr>
                 </thead>
                 <tbody>

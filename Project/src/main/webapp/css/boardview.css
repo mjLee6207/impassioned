@@ -88,8 +88,8 @@
 }
 
 .comment-form { display: flex; width: 100%; gap: 0; }
-.comment-textarea { flex: 1 1 auto; min-height: 60px; height: 80px; border: 1px solid #888; border-radius: 2px 0 0 2px; font-size: 15px; padding: 12px 10px; outline: none; background: #fff; resize: none; margin-right: 0; width: 100%; box-sizing: border-box; }
-.comment-submit-btn { width: 120px; min-width: 80px; height: 80px; border: 1px solid #888; border-left: none; border-radius: 0 2px 2px 0; background: #555c68; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.15s; margin-left: 0; box-sizing: border-box; }
+.comment-textarea { flex: 1 1 auto; min-height: 60px; height: 80px; border: 1px solid #888; border-radius: 8px 0 0 8px; font-size: 15px; padding: 12px 10px; outline: none; background: #fff; resize: none; margin-right: 0; width: 100%; box-sizing: border-box;}
+.comment-submit-btn { width: 120px; min-width: 80px; height: 80px; border: 1px solid #888; border-left: none; border-radius: 0 8px 8px 0; background: #555c68; color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.15s; margin-left: 0; box-sizing: border-box;}
 .comment-item { margin-bottom: 15px; display: block; padding: 8px 0 12px 0; border-bottom: 1px solid #e0e0e0; }
 .comment-row { display: flex; align-items: center; justify-content: space-between; }
 .comment-content { flex: 1 1 auto; font-size: 15px; word-break: break-all; }
@@ -102,6 +102,9 @@
 .comment-meta { font-size: 13px; color: #555; margin-top: 2px; margin-left: 2px; }
 .comment-list { margin-top: 10px; }
 .comment-item:last-child { border-bottom: none; }
+.comment-char-count {
+    margin-top: 6px; /* 원래 값보다 조금 더! */
+}
 
 @media (max-width: 768px) {
     .main-wrap { flex-direction: column; gap:10px; max-width:99vw;}

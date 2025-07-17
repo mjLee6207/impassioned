@@ -16,7 +16,8 @@
     
 </head>
 <body>
-
+<c:out value="${myPostsPaginationInfo.totalRecordCount}"/>
+<c:out value="${myPostsPaginationInfo.currentPageNo}"/>
 <div class="main-flex">
     <!-- 사이드바 -->
     <div class="sidebar">
@@ -121,6 +122,10 @@
                     </c:if>
                 </tbody>
             </table>
+            <!-- 페이지네이션 -->
+            <div class="flex-center">
+                <ul class="pagination" id="paginationMylikePosts"></ul>
+            </div>
             <!-- 좋아요한 게시글 테이블 -->
             <table id="likedBoardTable" class="table table-hover post-table" style="display:none;">
                 <thead>
@@ -153,6 +158,10 @@
                     </c:if>
                 </tbody>
             </table>
+            <!-- 페이지네이션 -->
+            <div class="flex-center">
+                <ul class="pagination" id="paginationMyPosts"></ul>
+            </div>
         </div>
     </div>
 </div>
@@ -192,8 +201,10 @@ function showSection(sectionId, tabElem) {
     document.getElementById('tab-likedPosts').classList.remove('active');
     if (tabElem) tabElem.classList.add('active');
 
-    document.getElementById("searchMyPosts").value = "";
-    document.getElementById("searchLikedPosts").value = "";
+    if (document.getElementById("searchMyPosts"))
+        document.getElementById("searchMyPosts").value = "";
+    if (document.getElementById("searchLikedPosts"))
+        document.getElementById("searchLikedPosts").value = "";
 
     filterTable('myPostsTable', '');
     filterTable('likedPostsTable', '');

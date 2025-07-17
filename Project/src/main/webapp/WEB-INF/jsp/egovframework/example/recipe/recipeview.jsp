@@ -40,7 +40,6 @@
   <div class="recipe-title-outer">
     <div class="recipe-cat-badge">${recipeVO.categoryKr}</div>
     <div class="recipe-title-main">${recipeVO.titleKr}</div>
-    
   </div>
 </div>
 </div>

@@ -12,9 +12,10 @@
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/boardwrite.css">
 <link rel="stylesheet" href="/css/sidebar.css" />
+	<jsp:include page="/common/header.jsp" />
 </head>
 <body>
-	<jsp:include page="/common/header.jsp" />
+
 
 	<div class="main-wrap">
 		<div class="sidebar-wrap">

@@ -15,7 +15,7 @@
 	rel="stylesheet" />
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
+	<jsp:include page="/common/header.jsp" />
 <style>
 .pdf-wrapper {
 	width: 100%;
@@ -41,7 +41,6 @@
 
 </head>
 <body>
-	<jsp:include page="/common/header.jsp" />
 	<div class="main-wrap">
 		<!-- 사이드바 -->
 		<div class="sidebar-wrap">

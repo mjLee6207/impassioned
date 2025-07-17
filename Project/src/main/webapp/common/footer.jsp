@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="icon" type="image/png" href="/images/favicon.png">
 <meta charset="UTF-8">
 <title>Footer</title>
 <link rel="stylesheet" href="/css/footer.css">
@@ -61,8 +62,8 @@
 		</div>
 	</div>
 	<!-- 맨 위로 버튼 -->
-    <button id="scrollTopBtn" class="scroll-top-btn" title="올라가기">
-      △ 올라가기
+    <button id="scrollTopBtn" class="scroll-top-btn" title="맨 위로">
+      △ Top
     </button>
     <script>
   // 버튼 클릭 시 맨 위로 스크롤

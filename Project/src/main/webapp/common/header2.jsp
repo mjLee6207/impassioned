@@ -5,12 +5,14 @@
 <html lang="ko">
 <head>
     <title>header</title>
+      <link rel="icon" type="image/png" href="/images/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- ✅ 외부 스타일 -->
     <link rel="stylesheet" href="/css/header2.css">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 <body>
 

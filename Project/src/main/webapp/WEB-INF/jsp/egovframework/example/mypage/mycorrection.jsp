@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/mycorrection.css" />
+    <jsp:include page="/common/header.jsp" />
 </head>
 <body>
-<jsp:include page="/common/header.jsp" />
 
 
 <form id="addForm" name="addForm" method="post" enctype="multipart/form-data" action="/mypage/update.do">

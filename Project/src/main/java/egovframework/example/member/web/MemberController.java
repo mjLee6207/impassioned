@@ -6,11 +6,25 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
@@ -59,21 +73,20 @@ public class MemberController {
                         @RequestParam(value = "redirect", required = false) String redirect) {
         try {
             MemberVO loginUser = memberService.authenticate(memberVO);
-            session.setAttribute("loginUser", loginUser);            
-            
-            // [임시 비밀번호 사용자]면 redirectConfirm으로 분기
-            if ("Y".equals(loginUser.getTempPasswordYn())) {
-                // 사용자가 원래 가려던 곳을 세션에 저장 (안전하게 홈으로 fallback)
+            session.setAttribute("loginUser", loginUser);
+
+            // ✅ TEMP_PASSWORD_YN = 'Y' 이면서 일반 회원인 경우에만 분기
+            if ("Y".equals(loginUser.getTempPasswordYn()) && loginUser.getKakaoId() == null) {
                 session.setAttribute("redirectAfterLogin", redirect != null ? redirect : "/");
                 return "redirect:/redirect/confirm.do";
             }
-            
-            // redirect가 유효하고 /WEB-INF 포함 안하면 리다이렉트 (이중 인코딩 방지)
+
+            // ✅ redirect가 유효하면 이동
             if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
                 return "redirect:" + redirect;
             }
 
-            return "redirect:/"; // 기본 메인 페이지
+            return "redirect:/";
 
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
@@ -202,7 +215,7 @@ public class MemberController {
     
 //  회원 탈퇴
     @PostMapping("/member/delete.do")
-    public String deleteMember(@RequestParam("memberIdx") int memberIdx, HttpSession session) {
+    public String deleteMember(@RequestParam("memberIdx") Long memberIdx, HttpSession session) {
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         Long sessionIdx = loginUser.getMemberIdx();
 
@@ -217,6 +230,95 @@ public class MemberController {
         } catch (Exception e) {
             log.error("❌ 회원 탈퇴 중 오류", e);
             return "redirect:/member/mypage.do?error=deleteFail";
+        }
+    }
+    
+//  카카오로그인
+    @GetMapping("/kakaoLogin.do")
+    public String kakaoLogin(@RequestParam("code") String code,
+                             @RequestParam(value = "redirect", required = false) String redirect,
+                             HttpSession session) {
+        try {
+            // === [1] 토큰 요청 ===
+            String tokenUrl = "https://kauth.kakao.com/oauth/token";
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("grant_type", "authorization_code");
+            params.add("client_id", "d779fae0a4d9df6ea88f8bfed6e1b315"); // REST API 키
+            params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do");
+            params.add("code", code);
+
+            HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(params, headers);
+            ResponseEntity<String> tokenResponse = restTemplate.postForEntity(tokenUrl, tokenRequest, String.class);
+
+            JSONObject tokenJson = (JSONObject) new JSONParser().parse(tokenResponse.getBody());
+            String accessToken = (String) tokenJson.get("access_token");
+
+            // === [2] 사용자 정보 요청 ===
+            HttpHeaders infoHeaders = new HttpHeaders();
+            infoHeaders.set("Authorization", "Bearer " + accessToken);
+            HttpEntity<?> infoRequest = new HttpEntity<>(infoHeaders);
+
+            String infoUrl = "https://kapi.kakao.com/v2/user/me";
+            ResponseEntity<String> userInfoResponse = restTemplate.exchange(infoUrl, HttpMethod.GET, infoRequest, String.class);
+            JSONObject userJson = (JSONObject) new JSONParser().parse(userInfoResponse.getBody());
+
+            log.info("✅ userJson 전체: {}", userJson.toJSONString());
+
+            // ✅ 핵심 정보 추출
+            String kakaoId = String.valueOf(userJson.get("id"));
+            JSONObject kakaoAccount = (JSONObject) userJson.get("kakao_account");
+            JSONObject profile = (JSONObject) kakaoAccount.get("profile");
+
+            String email = (String) kakaoAccount.get("email");
+            String nickname = (String) profile.get("nickname");
+
+            log.info("✅ kakaoId: {}", kakaoId);
+            log.info("✅ nickname: {}", nickname);
+
+            // === [3] 기존 회원 여부 확인
+            MemberVO member = memberService.selectByKakaoId(kakaoId);
+
+            if (member != null) {
+                // ✅ 기존 회원 → 로그인
+                session.setAttribute("loginUser", member);
+
+                if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
+                    return "redirect:" + redirect;
+                }
+
+                return "redirect:/";
+            } else {
+            	// 신규 회원 → DB에 자동 가입 처리
+            	MemberVO kakaoMember = new MemberVO();
+            	kakaoMember.setKakaoId(kakaoId);
+            	kakaoMember.setNickname(nickname);
+            	kakaoMember.setEmail(email);
+            	kakaoMember.setProfile((String) profile.get("thumbnail_image_url")); // 있으면
+            	kakaoMember.setRole("USER");
+
+            	memberService.insertKakaoMember(kakaoMember);
+
+            	// joinDate 포함된 정보로 다시 SELECT
+            	MemberVO savedMember = memberService.selectByKakaoId(kakaoId);
+
+            	// 세션 설정 후 로그인
+            	session.setAttribute("loginUser", savedMember);
+
+				if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
+				    return "redirect:" + redirect;
+				}
+				
+				return "redirect:/";	
+            }
+
+        } catch (Exception e) {
+            log.error("❌ 카카오 로그인 중 예외 발생", e);
+            throw new RuntimeException("카카오 로그인 실패", e);
         }
     }
 }

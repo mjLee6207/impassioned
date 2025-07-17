@@ -1,6 +1,4 @@
-package egovframework.example.board.web;
-	
-	
+package egovframework.example.board.web;	
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -342,7 +340,7 @@ import lombok.extern.log4j.Log4j2;
 		    if (loginUser == null) {
 		        return "redirect:/member/login.do";
 		    }
-		    boardService.editReview(reviewId, loginUser.getMemberIdx().intValue(), content);
+		    boardService.editReview(reviewId, loginUser.getMemberIdx(), content);
 		    return "redirect:/board/view.do?boardId=" + boardId;
 		}
 	
@@ -354,7 +352,7 @@ import lombok.extern.log4j.Log4j2;
 		        return "redirect:/member/login.do";
 		    }
 		    // 서비스에서 로그인 유저가 작성한 댓글만 삭제
-		    boardService.deleteReview(reviewId, loginUser.getMemberIdx().intValue());
+		    boardService.deleteReview(reviewId, loginUser.getMemberIdx());
 		    // 삭제 후 해당 게시글 상세로 이동
 		    return "redirect:/board/view.do?boardId=" + boardId;
 		}

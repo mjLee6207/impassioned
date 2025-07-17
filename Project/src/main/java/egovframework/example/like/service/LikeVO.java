@@ -18,6 +18,6 @@ import lombok.ToString;
 public class LikeVO extends Criteria {
     private int likeId;      // PK (시퀀스)
     private int boardId;     // 게시글 FK
-    private int memberIdx;   // 회원 FK
+    private Long memberIdx;   // 회원 FK
     private Date likeDate;   // 등록일
 }

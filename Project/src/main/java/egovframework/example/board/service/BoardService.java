@@ -26,9 +26,9 @@ List<ReviewVO> selectReviewList(int boardId);
 // 댓글 등록
 int insertReview(ReviewVO reviewVO);
 // 댓글 수정
-void editReview(int reviewId, int memberIdx, String content);
+void editReview(int reviewId, Long memberIdx, String content);
 // 댓글 삭제
-void deleteReview(int reviewId, int memberIdx);
+void deleteReview(int reviewId, Long memberIdx);
 List<BoardVO> selectBestPosts();
 List<BoardVO> selectBestPostsByCategory(String category);
 void updateThumbnail(BoardVO boardVO); // 썸네일 경로만 수정

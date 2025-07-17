@@ -31,9 +31,9 @@ public interface BoardMapper {
    
    int insertReview(ReviewVO reviewVO);
    
-   void editReview(@Param("reviewId") int reviewId, @Param("memberIdx") int memberIdx, @Param("content") String content);
+   void editReview(@Param("reviewId") int reviewId, @Param("memberIdx") Long memberIdx, @Param("content") String content);
    
-   void deleteReview(@Param("reviewId") int reviewId, @Param("memberIdx") int memberIdx);
+   void deleteReview(@Param("reviewId") int reviewId, @Param("memberIdx") Long memberIdx);
    
    int deleteAllReviewsByBoardId(int boardId); // 모든 댓글 삭제용(게시글삭제에 필요)
 

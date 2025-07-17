@@ -67,7 +67,6 @@
 			</div>
 		</div>
 	</div>
-
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script>
 	$(function() {
@@ -165,6 +164,7 @@
 
 	});
 	</script>
-
+<!-- 꼬리말 jsp include-->
+	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>
 </html>

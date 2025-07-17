@@ -77,5 +77,7 @@ toggleBtn.onclick = function() {
 };
 
 </script>
+<!-- 꼬리말 jsp include-->
+	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>
 </html>

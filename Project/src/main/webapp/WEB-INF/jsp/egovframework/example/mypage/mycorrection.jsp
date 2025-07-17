@@ -80,6 +80,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>
+
 <script>
 function readURL(input) {
     if(input.files && input.files[0]) {
@@ -152,5 +153,7 @@ $(document).ready(function () {
     });
 });
 </script>
+<!-- 꼬리말 jsp include-->
+	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>
 </html>

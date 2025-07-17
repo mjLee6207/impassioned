@@ -95,13 +95,13 @@ public int insertReview(ReviewVO reviewVO) {
 }
 
 @Override
-public void editReview(int reviewId, int memberIdx, String content) {
+public void editReview(int reviewId, Long memberIdx, String content) {
 	// TODO Auto-generated method stub
 	 boardMapper.editReview(reviewId, memberIdx, content);
 }
 
 @Override
-public void deleteReview(int reviewId, int memberIdx) {
+public void deleteReview(int reviewId, Long memberIdx) {
 	// TODO Auto-generated method stub
 	boardMapper.deleteReview(reviewId, memberIdx);
 }

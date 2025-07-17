@@ -34,27 +34,27 @@
 			<!-- 오른쪽 작업자 이미지 -->
 			<div class="footer-workers">
 				<div class="circle">
-					<img src="${pageContext.request.contextPath}/images/3조사진/민중.png"
+					<img src="${pageContext.request.contextPath}/images/2조사진/민중.png"
 						class="circle-img" alt="민중" />
 				</div>
 				<div class="circle">
-					<img src="${pageContext.request.contextPath}/images/3조사진/승태.png"
+					<img src="${pageContext.request.contextPath}/images/2조사진/승태.png"
 						class="circle-img" alt="승태" />
 				</div>
 				<div class="circle">
-					<img src="${pageContext.request.contextPath}/images/3조사진/유준.png"
+					<img src="${pageContext.request.contextPath}/images/2조사진/유준.png"
 						class="circle-img" alt="유준" />
 				</div>
 				<div class="circle">
-					<img src="${pageContext.request.contextPath}/images/3조사진/윤주.png"
+					<img src="${pageContext.request.contextPath}/images/2조사진/윤주.png"
 						class="circle-img" alt="윤주" />
 				</div>
 				<div class="circle">
-					<img src="${pageContext.request.contextPath}/images/3조사진/장호.png"
+					<img src="${pageContext.request.contextPath}/images/2조사진/장호.png"
 						class="circle-img" alt="장호" />
 				</div>
 				<div class="circle">
-					<img src="${pageContext.request.contextPath}/images/3조사진/진수.png"
+					<img src="${pageContext.request.contextPath}/images/2조사진/진수.png"
 						class="circle-img" alt="진수" />
 				</div>
 			</div>

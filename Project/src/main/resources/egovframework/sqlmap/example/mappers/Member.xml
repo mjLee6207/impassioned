@@ -108,4 +108,36 @@
 	    DELETE FROM MEMBER
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</delete>
+	
+	<!-- 카카오 ID로 회원 조회 -->
+	<select id="selectByKakaoId" resultType="egovframework.example.member.service.MemberVO">
+	    SELECT *
+	    FROM MEMBER
+	    WHERE KAKAO_ID = #{kakaoId}
+	</select>
+	
+	<!-- 카카오 회원 등록 -->
+	<insert id="insertKakaoMember" parameterType="MemberVO">
+	  INSERT INTO MEMBER (
+	    MEMBER_IDX,
+	    KAKAO_ID,
+	    NICKNAME,
+	    EMAIL,
+	    PROFILE,
+	    PASSWORD,        
+	    TEMP_PASSWORD_YN,
+	    ROLE,
+	    JOIN_DATE
+	  ) VALUES (
+	    MEMBER_SEQ.NEXTVAL,
+	    #{kakaoId},
+	    #{nickname},
+	    #{email},
+	    #{profile},
+	    #{password},         
+	    #{tempPasswordYn},   
+	    #{role},
+	    SYSDATE
+	  )
+	</insert>
 </mapper>

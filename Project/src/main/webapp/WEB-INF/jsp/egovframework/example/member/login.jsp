@@ -50,6 +50,12 @@
           <a href="${pageContext.request.contextPath}/member/findidform.do">아이디 찾기</a> &nbsp;
           <a href="${pageContext.request.contextPath}/member/findpasswordform.do">비밀번호 찾기</a>
         </div>
+        <div style="margin-top: 10px;">
+		  <a href="https://kauth.kakao.com/oauth/authorize?client_id=d779fae0a4d9df6ea88f8bfed6e1b315&redirect_uri=http://localhost:8080/kakaoLogin.do&response_type=code">
+		    <img src="https://developers.kakao.com/assets/img/about/logos/kakaologin/kr/kakao_account_login_btn_medium_narrow.png"
+		         alt="카카오 로그인" style="width: 100%; max-width: 240px; display: block; margin: 0 auto;" />
+		  </a>
+		</div>
       </form>
 
       <!-- 회원가입 폼 -->

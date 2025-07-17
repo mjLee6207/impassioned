@@ -32,11 +32,9 @@
   <div class="recipe-img-outer">
     <img src=${recipeVO.thumbnail} alt="요리 이미지" width="400px" class="recipe-img" />
   </div>
-  <!-- 목록보기 버튼: 오른쪽 상단 고정 -->
-  <div class="tolist">
-<a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" title="목록으로">
-    <img class="tolist-img" src="/images/footer/list.png" alt="목록보기">
-    </a></div>
+  <!-- 목록보기 버튼 : 주석처리 -->
+  <%-- <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" class="tolist-btn">목록</a> --%>
+  <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" title="좋아요" class="like-btn">♡ 83</a>
   <div class="recipe-title-outer">
     <div class="recipe-cat-badge">${recipeVO.categoryKr}</div>
     <div class="recipe-title-main">${recipeVO.titleKr}</div>

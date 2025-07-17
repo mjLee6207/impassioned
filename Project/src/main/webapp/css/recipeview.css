@@ -44,23 +44,24 @@
   margin-bottom: 18px;
 }
 
-.tolist {
+.like-btn {
   position: absolute;
   top: 12px;
   right: 20px;
   z-index: 2;
+  background: #fff;
+  color: #aaa;
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 7px 23px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   cursor: pointer;
-  display: flex;               
-  width: 45px;                
-  height: 45px;
+  transition: background 0.17s, color 0.17s;
+  text-decoration: none;
 }
-.tolist-img {
-  width: 30px;
-  height: 30px;
-  display: block;
-}
-.tolist-img:hover {
-  transform: scale(1.17);
+.like-btn:hover {
+  background: #1e8a57;
+  color: #fff;
 }
 
 
@@ -177,10 +178,11 @@
 .category-tab.active { color: #118e6a; border-bottom: 2.5px solid #1e8a57; }
 
 /* 반응형 */
-@media (max-width: 768px) {
+@media (max-width: 911px) {
   .recipe-card { padding: 12px 2vw 6vw 2vw;}
   .recipe-title-main { font-size: 1.1rem; max-width: 98vw; margin-right: 0;}
   .ingredient-table { width: 98%; }
+  .recipe-top-row{flex-direction: column; gap: 10px; }
 }
 .recipe-top-row {
   display: flex;

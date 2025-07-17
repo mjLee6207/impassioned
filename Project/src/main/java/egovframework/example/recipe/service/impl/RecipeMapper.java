@@ -26,6 +26,6 @@ public interface RecipeMapper {
     //   레시피 카테고리별 페이징
     List<EgovMap> selectRecipeListCategoryPaging(Criteria criteria);
     int getTotalRecipeCountByCategory(@Param("categoryKr") String categoryKr);
-
+    List<RecipeVO> selectRandomRecipesByCategory(@Param("categoryKr") String categoryKr, @Param("count") int count);
     
 }

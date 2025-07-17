@@ -9,11 +9,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>레시피 페이지_CheForest</title>
    <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/recipeview.css" />
     <jsp:include page="/common/header.jsp" />
-<title>레시피 페이지_CheForest</title>
 </head>
 <body>
 <c:set var="currPageIndex" value="${empty param.pageIndex ? 1 : param.pageIndex}" />

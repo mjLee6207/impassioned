@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -132,6 +135,7 @@ body, html {
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	font-size: 20px;
 }
 
 .form-box span {
@@ -152,8 +156,19 @@ body, html {
 
 /* 추가css -> 회원가입 흰색네모칸 글자크기  */
 input::placeholder {
-  font-size: 0.9rem;  /* 또는 14px, 1rem 등 */
+  font-size: 15px;
   color: lightgray;        /* (선택) 색도 바꿀 수 있음 */
+  font-family: 'Gowun Dodum', sans-serif !important;
+}
+
+button, input[type="submit"] {
+  font-family: 'Gowun Dodum', sans-serif !important;
+   font-size: 20px;
+}
+
+input {
+  font-family: 'Gowun Dodum', sans-serif !important;
+   font-size: 20px;
 }
 
 

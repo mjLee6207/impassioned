@@ -128,7 +128,7 @@
         .search-input { width: 330px; border-radius: 7px; border: 1.2px solid #dde1e8; padding: 10px 14px; font-size: 1.08rem; background: #fff; }
         .search-btn { border: none; background: none; color: var(--main-green); font-size: 1.28rem; cursor: pointer; }
         .search-btn:hover { color: var(--hover-green); }
-        .section-title { font-size: 1.08rem; font-weight: 600; color: var(--main-green); margin-bottom: 18px; margin-top: 4px; letter-spacing: -.5px;}
+        .section-title { font-size: 1.08rem; font-weight: bold; color: var(--main-green); margin-bottom: 18px; margin-top: 4px; letter-spacing: -.5px;}
 
         .top-posts-row { display: flex; gap: 38px; margin-bottom: 38px; justify-content: flex-start; }
         .top-post-card { width: 182px; min-width: 120px; background: transparent; border-radius: 15px; text-align: center; box-shadow: none; padding: 0; transition: box-shadow .12s; }

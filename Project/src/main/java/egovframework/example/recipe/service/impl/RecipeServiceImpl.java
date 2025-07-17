@@ -13,45 +13,30 @@ import egovframework.example.recipe.service.RecipeVO;
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
-	@Autowired RecipeMapper recipeMapper;
+	@Autowired
+	private RecipeMapper recipeMapper;
 
-	@Override
-	public List<?> selectRecipeListCategory(Criteria criteria) {
-		return recipeMapper.selectRecipeListCategory(criteria);
-	}
-	
-	@Override
-	public List<?> selectRecipeList(Criteria criteria) {
-		return recipeMapper.selectRecipeList(criteria);
-	}
-
-	@Override
-	public RecipeVO selectRecipe(String recipeId) {
-		return recipeMapper.selectRecipe(recipeId);
-	}
-
+	//  페이징+검색+카테고리 리스트
 	@Override
 	public List<EgovMap> selectRecipeListPaging(Criteria criteria) {
-		return recipeMapper.selectRecipeListPaging(criteria);
+	    return recipeMapper.selectRecipeListPaging(criteria);
+	}
+
+	//  페이징+검색+카테고리 총 개수
+	@Override
+	public int getTotalRecipeCount(Criteria criteria) {
+	    return recipeMapper.getTotalRecipeCount(criteria);
+	}
+
+	// (필요시) 상세조회/랜덤레시피 
+	@Override
+	public RecipeVO selectRecipe(String recipeId) {
+	    return recipeMapper.selectRecipe(recipeId);
 	}
 
 	@Override
-	public int getTotalRecipeCount() {
-		return recipeMapper.getTotalRecipeCount();
+	public List<RecipeVO> selectRandomRecipesByCategory(String categoryKr, int count) {
+	    return recipeMapper.selectRandomRecipesByCategory(categoryKr, count);
 	}
-	
-	@Override
-    public List<EgovMap> selectRecipeListCategoryPaging(Criteria criteria) {
-        return recipeMapper.selectRecipeListCategoryPaging(criteria);
-    }
 
-    @Override
-    public int getTotalRecipeCountByCategory(String categoryKr) {
-        return recipeMapper.getTotalRecipeCountByCategory(categoryKr);
-    }
-    @Override
-    public List<RecipeVO> selectRandomRecipesByCategory(String categoryKr, int count) {
-        return recipeMapper.selectRandomRecipesByCategory(categoryKr, count);
-    }
-	
 }

@@ -16,13 +16,13 @@ public class RecipeServiceImpl implements RecipeService {
 	@Autowired RecipeMapper recipeMapper;
 
 	@Override
-	public List<?> selectRecipeListCategory(String categoryKr) {
-		return recipeMapper.selectRecipeListCategory(categoryKr);
+	public List<?> selectRecipeListCategory(Criteria criteria) {
+		return recipeMapper.selectRecipeListCategory(criteria);
 	}
 	
 	@Override
-	public List<?> selectRecipeList() {
-		return recipeMapper.selectRecipeList();
+	public List<?> selectRecipeList(Criteria criteria) {
+		return recipeMapper.selectRecipeList(criteria);
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 	
 	@Override
-    public List<EgovMap> selectRecipeListCategoryPaging(Criteria criteria, String categoryKr) {
-        return recipeMapper.selectRecipeListCategoryPaging(criteria, categoryKr);
+    public List<EgovMap> selectRecipeListCategoryPaging(Criteria criteria) {
+        return recipeMapper.selectRecipeListCategoryPaging(criteria);
     }
 
     @Override

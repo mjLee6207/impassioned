@@ -43,9 +43,9 @@
         </div>
 
         <!-- 검색창 -->
-        <form action="${pageContext.request.contextPath}/recipe/recipelist.do"
+        <form action="${pageContext.request.contextPath}/recipe/recipe.do"
               method="get" class="search-area">
-            <input type="hidden" name="category" value="${param.category}" />
+            <input type="hidden" name="categoryKr" value="${param.categoryKr}" />
             <input type="text" class="search-input" id="searchKeyword"
                    name="searchKeyword"
                    value="${empty param.searchKeyword ? '' : param.searchKeyword}"

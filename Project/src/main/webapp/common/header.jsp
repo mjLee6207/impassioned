@@ -131,7 +131,7 @@
         const toggle = dropdown.querySelector('.dropdown-toggle');
         if (toggle.tagName === 'A') {
             toggle.addEventListener('click', function (e) {
-                if (dropdown.id !== 'dropdown-board') {
+                if (dropdown.id !== 'dropdown-board' && dropdown.id !== 'dropdown-recipe') {
                     e.preventDefault(); // ❗Board 외에는 기본 링크 막고 토글만
                 }
                 dropdowns.forEach(dd => {

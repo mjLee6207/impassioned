@@ -5,15 +5,15 @@
     margin-top: 2rem;
     margin-bottom: 2rem;
     gap: 0.5rem;
-    /* border, 배경 등은 X */
+    
 }
 
-/* li에는 여백/크기만 */
+
 .page-item {
     margin: 0 2px;
 }
 
-/* 모든 디자인은 a.page-link에만! */
+
 .page-link {
     display: inline-flex;
     align-items: center;

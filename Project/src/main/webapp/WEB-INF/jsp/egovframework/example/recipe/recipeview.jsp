@@ -33,7 +33,10 @@
     <img src=${recipeVO.thumbnail} alt="요리 이미지" width="400px" class="recipe-img" />
   </div>
   <!-- 목록보기 버튼: 오른쪽 상단 고정 -->
-    <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" class="tolist-btn">목록보기</a>
+  <div class="tolist">
+<a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" title="목록으로">
+    <img class="tolist-img" src="/images/footer/list.png" alt="목록보기">
+    </a></div>
   <div class="recipe-title-outer">
     <div class="recipe-cat-badge">${recipeVO.categoryKr}</div>
     <div class="recipe-title-main">${recipeVO.titleKr}</div>
@@ -41,7 +44,7 @@
   </div>
 </div>
 </div>
-  <!-- 재료(토글, 2단 표) -->
+  <!-- 재료(토글) -->
 <div class="recipe-card">
   <div class="section-title" style="display:flex; align-items:center; justify-content:space-between;">
     <span>재료</span>

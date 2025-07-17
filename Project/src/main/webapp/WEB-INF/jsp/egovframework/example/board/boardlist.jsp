@@ -100,7 +100,7 @@
 			<!-- 인기게시글 영역 (여기만 c:choose로 대체) -->
 			<div class="popular-posts-section">
 				<div class="popular-posts-title">
-					<h3>‍🎉BEST POST</h3>
+					<h3>‍🎉인기 게시글</h3>
 				</div>
 				<div class="top-posts-row">
 					<c:choose>

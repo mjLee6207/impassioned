@@ -95,6 +95,13 @@
 			 INSTRUCTION_KR,INGREDIENT_KR,THUMBNAIL FROM API_RECIPE
 			 WHERE RECIPE_ID = #{recipeId}
 </select>
+<select id="selectRandomRecipesByCategory" resultType="egovframework.example.recipe.service.RecipeVO">
+    SELECT *
+    FROM API_RECIPE
+    WHERE CATEGORY_KR = #{categoryKr}
+    ORDER BY DBMS_RANDOM.VALUE
+    FETCH FIRST #{count} ROWS ONLY
+</select>
 
 <select id="getTotalRecipeCount" resultType="int">
     SELECT COUNT(*) FROM API_RECIPE

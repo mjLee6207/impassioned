@@ -6,12 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>CheForest 메인페이지</title>
-    <!-- 공통 스타일시트 연결 -->
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/footer.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 부트스트랩 css  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
         crossorigin="anonymous">
@@ -19,15 +17,12 @@
 <body>
 <jsp:include page="/common/header2.jsp" />
 
-<!-- 사이트 로고 영역 -->
 <div class="logo">CheForest</div>
-
-<!-- 검색창 -->
 <div class="search-bar">
     <input type="text" id="searchKeyword" placeholder="원하는 레시피를 검색해보세요 !" />
 </div>
 
-<!-- ========== 오늘의 추천 레시피 (직접 입력, 수정X) ========== -->
+<!-- 오늘의 추천 레시피(수정X) -->
 <div class="section-title">🍽️ 오늘의 추천 레시피</div>
 <div class="recipes">
     <a class="recipe" href="https://www.naver.com" target="_blank">
@@ -52,75 +47,103 @@
     </a>
 </div>
 
-<!-- ========== 한식 레시피 (동적) ========== -->
+<!-- 한식 슬라이드 -->
 <div class="section-title">🍽️ 한식 레시피</div>
-<div class="recipes">
-  <c:forEach var="recipe" items="${koreanRecipe}">
-    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-      <p class="title">${recipe.titleKr}</p>
-    </a>
-  </c:forEach>
+<div class="slide-recipes" data-category="korean">
+  <div class="slide-list">
+    <c:forEach var="recipe" items="${koreanRecipe}">
+      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+        <p class="title">${recipe.titleKr}</p>
+      </a>
+    </c:forEach>
+  </div>
 </div>
 
-<!-- ========== 양식 레시피 (동적) ========== -->
+<!-- 양식 슬라이드 -->
 <div class="section-title">🍽️ 양식 레시피</div>
-<div class="recipes">
-  <c:forEach var="recipe" items="${westernRecipe}">
-    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-      <p class="title">${recipe.titleKr}</p>
-    </a>
-  </c:forEach>
+<div class="slide-recipes" data-category="western">
+  <div class="slide-list">
+    <c:forEach var="recipe" items="${westernRecipe}">
+      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+        <p class="title">${recipe.titleKr}</p>
+      </a>
+    </c:forEach>
+  </div>
 </div>
 
-<!-- ========== 중식 레시피 (동적) ========== -->
+<!-- 중식 슬라이드 -->
 <div class="section-title">🍽️ 중식 레시피</div>
-<div class="recipes">
-  <c:forEach var="recipe" items="${chineseRecipe}">
-    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-      <p class="title">${recipe.titleKr}</p>
-    </a>
-  </c:forEach>
+<div class="slide-recipes" data-category="chinese">
+  <div class="slide-list">
+    <c:forEach var="recipe" items="${chineseRecipe}">
+      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+        <p class="title">${recipe.titleKr}</p>
+      </a>
+    </c:forEach>
+  </div>
 </div>
 
-<!-- ========== 일식 레시피 (동적) ========== -->
+<!-- 일식 슬라이드 -->
 <div class="section-title">🍽️ 일식 레시피</div>
-<div class="recipes">
-  <c:forEach var="recipe" items="${japaneseRecipe}">
-    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-      <p class="title">${recipe.titleKr}</p>
-    </a>
-  </c:forEach>
+<div class="slide-recipes" data-category="japanese">
+  <div class="slide-list">
+    <c:forEach var="recipe" items="${japaneseRecipe}">
+      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+        <p class="title">${recipe.titleKr}</p>
+      </a>
+    </c:forEach>
+  </div>
 </div>
 
-<!-- ========== 디저트 레시피 (동적) ========== -->
+<!-- 디저트 슬라이드 -->
 <div class="section-title">🍽️ 디저트 레시피</div>
-<div class="recipes">
-  <c:forEach var="recipe" items="${dessertRecipe}">
-    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-      <p class="title">${recipe.titleKr}</p>
-    </a>
-  </c:forEach>
+<div class="slide-recipes" data-category="dessert">
+  <div class="slide-list">
+    <c:forEach var="recipe" items="${dessertRecipe}">
+      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+        <p class="title">${recipe.titleKr}</p>
+      </a>
+    </c:forEach>
+  </div>
 </div>
 
-<!-- 꼬리말(footer) -->
 <jsp:include page="/common/footer.jsp" />
 
-<!-- 엔터키 검색 (예시) -->
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const input = document.querySelector("#searchKeyword");
-        input?.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                // 검색 기능이 있다면 이 부분에 form 제출 코드 추가
-            }
-        });
+document.addEventListener("DOMContentLoaded", function () {
+    const perPage = 5;
+    const slideWidth = 224;
+    const slideDuration = 3000;
+
+    document.querySelectorAll('.slide-recipes').forEach(function (box, idx) {
+        const track = box.querySelector('.slide-list');
+        const items = track.querySelectorAll('.recipe');
+        const total = items.length;
+        const maxPage = Math.max(1, total - perPage + 1);
+
+        track.style.width = `${total * slideWidth}px`;
+
+        let currentPage = 0;
+        function goToPage(page) {
+            const move = page * slideWidth;
+            track.style.transform = `translateX(-${move}px)`;
+            currentPage = page;
+        }
+        goToPage(0);
+
+        if (total > perPage) {
+            setInterval(function () {
+                let nextPage = (currentPage + 1) % maxPage;
+                goToPage(nextPage);
+            }, slideDuration);
+        }
     });
+});
 </script>
 </body>
 </html>

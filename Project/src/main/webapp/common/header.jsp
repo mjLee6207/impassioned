@@ -46,7 +46,7 @@
                 <!-- Recipe 드롭다운 -->
                 <div class="dropdown" id="dropdown-recipe">
 
-                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/recipe/recipe.do">Recipe</a>
+                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/recipe/recipe.do">레시피</a>
 
                     <div class="dropdown-menu">
 
@@ -61,7 +61,7 @@
 
                 <!-- ✅ Board 드롭다운 (클릭 시 전체 게시판 이동) -->
                 <div class="dropdown" id="dropdown-board">
-                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/board/board.do">Board</a>
+                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/board/board.do">게시판</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/board/board.do?category=한식">한식<span class="eng"> |　Korean</span></a>
                         <a class="dropdown-item" href="/board/board.do?category=양식">양식<span class="eng"> |　Western</span></a>
@@ -73,7 +73,7 @@
 
                 <!-- Event -->
                 <div class="dropdown" id="dropdown-event">
-                    <button class="dropdown-toggle" type="button">Event</button>
+                    <button class="dropdown-toggle" type="button">이벤트</button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/event/coupon">레시피 추천</a>
                         <a class="dropdown-item" href="/event/recipe">Recipe Event</a>
@@ -82,7 +82,7 @@
 
                 <!-- Support -->
                 <div class="dropdown" id="dropdown-qna">
-                    <button class="dropdown-toggle" type="button">Support</button>
+                    <button class="dropdown-toggle" type="button">고객지원</button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="/guide.do">홈페이지 가이드</a>
                         <a class="dropdown-item" href="/qna.do">Q&A</a>
@@ -95,7 +95,7 @@
         <div class="navbar-right">
             <div class="navbar-search">
                 <form action="/search.do" method="get" autocomplete="off">
-                    <input type="text" name="q" class="ssearch-box" placeholder="Search">
+                    <input type="text" name="q" class="ssearch-box" placeholder="검색어 입력">
                     <button class="ssearch-btn" type="submit"><i class="bi bi-search"></i></button>
                 </form>
             </div>
@@ -103,11 +103,11 @@
             <c:choose>
                 <c:when test="${not empty sessionScope.loginUser}">
                     <c:url var="mypageUrl" value="/mypage/mypage.do"/>
-                    <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">MYPAGE</button>
-                    <button class="head-logout-btn" type="button" onclick="goLogout()">LOGOUT</button>
+                    <button class="head-mypage-btn" onclick="location.href='${mypageUrl}'">마이페이지</button>
+                    <button class="head-logout-btn" type="button" onclick="goLogout()">로그아웃</button>
                 </c:when>
                 <c:otherwise>
-                    <button class="login-btn" type="button" onclick="goLogin()">LOGIN</button>
+                    <button class="login-btn" type="button" onclick="goLogin()">로그인</button>
                 </c:otherwise>
             </c:choose>
         </div>

@@ -1,7 +1,7 @@
 body {
 	font-family: 'Arial', sans-serif;
 	margin: 0;
-	background-color: #ffffff;
+	background-color: #ffffff !important;
 	text-align: center;
 }
 
@@ -36,7 +36,7 @@ body {
 	margin-bottom: 20px;
 	width: 80%;
 	padding: 24px 40px;
-	font-size: 18px;
+	font-size: 20px;
 	border-radius: 50px;
 	border: 1px solid #ccc;
 	outline: none;
@@ -50,10 +50,11 @@ body {
 /* 카테고리별 추천 레시피 */
 .section-title {
 	color: #4CAF50;
-	margin-top: 50px;
-	font-size: 20px !important;
+	padding-top: 30px;
+	font-size: 25px !important;
 	font-weight: bold !important;
-	text-align: left !important;
+	text-align: left;
+	margin-left:355px !important;
 }
 
 /* 레시피 전체 정렬 */
@@ -61,7 +62,7 @@ body {
 	display: flex;
 	justify-content: center;
 	gap: 30px;
-	margin-top: 20px;
+	margin-top: 40px;
 	flex-wrap: wrap;
 }
 
@@ -73,6 +74,7 @@ body {
 	text-decoration: none;
 	color: black;
 	transition: transform 0.2s;
+	margin-bottom:30px;
 }
 
 .recipe:hover {
@@ -92,8 +94,8 @@ body {
 /* 이미지 아래 제목 */
 .recipe .title {
 	margin-top: 10px;
-	font-size: 15px;
+	font-size: 17px;
 	text-align: center;
-	max-width: 160px;
+	max-width: 190px;
 	line-height: 1.3;
 }

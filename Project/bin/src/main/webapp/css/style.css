@@ -1,7 +1,7 @@
 /* style.css (공통 + 게시글 목록/작성/카테고리탭 등, sidebar/css 관련 제거됨) */
 
 /* 기본 폰트/변수 (기존) */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 :root {
     --black: black;
     --gray: gray;
@@ -10,7 +10,7 @@
     --shadow: 0 4px 24px rgba(30,138,87,.06);
 }
 * {margin: 0;padding: 0;box-sizing: border-box;}
-body {font-family: "Montserrat","Noto Sans KR", sans-serif;line-height: 1.6; background: #f8f9fa;}
+body {font-family: "Gowun Dodum","Rubik", sans-serif;line-height: 1.6; background: #f8f9fa;}
 li {list-style-type: none;}
 a {text-decoration: none;color: var(--black);}
 
@@ -117,11 +117,13 @@ a {text-decoration: none;color: var(--black);}
     color: #343434;
     box-shadow: 0px 5px 15px gray !important;
 }
-.btn-cancel:hover {
-    background: #ececec;
-    color: #fea700;
-}
 
+input::placeholder {
+  font-family: 'Gowun Dodum', sans-serif;
+}
+button {
+  font-family: 'Gowun Dodum', sans-serif;
+}
 /* 하단에 스크롤 없애수 있께 두줄추가 
    2025년 07월 09일 오전 9시 30분 강승태 추가 */
 

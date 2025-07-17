@@ -83,6 +83,15 @@
         </div>
         <!-- ====== 좋아요한 글(서브탭 포함) ====== -->
         <div id="likedPostsSection" style="display: none;">
+            <div class="search-area">
+    <input type="text" id="searchLikedPosts" class="form-control form-control-sm search-input" 
+           placeholder="좋아요 남긴 글 검색" 
+           onkeyup="filterTable('likedBoardTable', this.value)">
+    <button type="button" class="search-btn" onclick="clickSearch('likedBoardTable','searchLikedPosts')">
+        <i class="bi bi-search"></i>
+    </button>
+</div>
+
             <!-- 좋아요 레시피/게시글 서브탭 -->
             <div class="like-subtabs mb-3">
                 <div id="subtab-likedRecipe" class="like-subtab active" onclick="showLikeTab('likedRecipeTable', this)">

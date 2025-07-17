@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/mypage.css" />
     <link rel="stylesheet" href="/css/pagination.css">
+    <jsp:include page="/common/header.jsp" />
     
 </head>
 <body>
-<jsp:include page="/common/header.jsp" />
 
 <div class="main-flex">
     <!-- 사이드바 -->

@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>CheForest 메인페이지</title>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/footer.css">
@@ -13,9 +14,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
         crossorigin="anonymous">
+        <jsp:include page="/common/header2.jsp" />
 </head>
 <body>
-<jsp:include page="/common/header2.jsp" />
 
 <div class="logo">CheForest</div>
 <div class="search-bar">

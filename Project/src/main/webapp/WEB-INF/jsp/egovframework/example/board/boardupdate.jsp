@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/boardupdate.css">
+    <jsp:include page="/common/header.jsp" />
 </head>
 <body>
-<jsp:include page="/common/header.jsp" />
+
 
 <div class="main-wrap">
    <div class="sidebar-wrap">

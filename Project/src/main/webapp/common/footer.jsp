@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="icon" type="image/png" href="/images/favicon.png">
 <meta charset="UTF-8">
 <title>Footer</title>
 <link rel="stylesheet" href="/css/footer.css">

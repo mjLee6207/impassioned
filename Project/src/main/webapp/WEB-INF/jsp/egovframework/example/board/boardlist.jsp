@@ -18,13 +18,11 @@
 <link rel="stylesheet" href="/css/boardlist.css">
 <link rel="stylesheet" href="/css/sidebar.css" />
 <link rel="stylesheet" href="/css/pagination.css">
-
+<jsp:include page="/common/header.jsp" />
 
 </head>
 
 <body>
-
-	<jsp:include page="/common/header.jsp" />
 
 	<div class="main-flex">
 		<!-- 사이드바 영역 -->
@@ -141,19 +139,19 @@
 				<tbody>
 					<c:forEach var="board" items="${boards}">
 						<tr>
-							<td style="text-align: left;"><a
+							<td class="bold-cell" style="text-align: left;"><a
 								href="${pageContext.request.contextPath}/board/view.do?boardId=${board.boardId}"
-								class="post-title-link">${board.title}</a></td>
-							<td>${board.nickname}</td>
-							<td><fmt:formatDate value="${board.writeDate}"
-									pattern="yyyy-MM-dd" /></td>
-							<td>${board.viewCount}</td>
-							<!-- 게시판에 좋아요수 표시를 위해 추가 7월 9일 :강승태 -->
-							<td>${board.likeCount == 0 ? '0' : board.likeCount}</td>
+								class="bold-cell">${board.title}</a></td>
+							<td class="bold-cell">${board.nickname}</td>
+							<td class="bold-cell"><fmt:formatDate
+									value="${board.writeDate}" pattern="yyyy-MM-dd" /></td>
+							<td class="bold-cell">${board.viewCount}</td>
+							<td class="bold-cell">${board.likeCount == 0 ? '0' : board.likeCount}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+
 
 			<!-- 페이지네이션 -->
 			<div class="flex-center">
@@ -211,7 +209,7 @@ $('#pagination').twbsPagination({
     }
   });
 </script>
-<!-- 꼬리말 jsp include-->
+	<!-- 꼬리말 jsp include-->
 	<jsp:include page="/common/footer.jsp"></jsp:include>
-	</body>
+</body>
 </html>

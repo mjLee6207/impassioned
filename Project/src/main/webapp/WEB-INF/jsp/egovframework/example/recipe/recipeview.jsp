@@ -12,10 +12,10 @@
    <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/recipeview.css" />
+    <jsp:include page="/common/header.jsp" />
 <title>레시피 페이지_CheForest</title>
 </head>
 <body>
-<jsp:include page="/common/header.jsp" />
 <c:set var="currPageIndex" value="${empty param.pageIndex ? 1 : param.pageIndex}" />
 <div class="main-wrap">
 	<!-- 사이드바 영역 -->

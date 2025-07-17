@@ -53,7 +53,7 @@
 		  <a href="${kakaoLink}">
 		    <img src="https://developers.kakao.com/assets/img/about/logos/kakaologin/kr/kakao_account_login_btn_medium_narrow.png"
 		         alt="카카오 로그인"
-		         style="width: 100%; max-width: 240px; display: block; margin: 0 auto;" />
+		         style="width: 100%; max-width: 180px; display: block; margin: 0 auto;" />
 		  </a>
 		</div>
       </form>

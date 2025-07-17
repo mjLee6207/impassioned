@@ -135,7 +135,7 @@ body, html {
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
-	font-size: 20px;
+	font-size: 15px;
 }
 
 .form-box span {
@@ -152,6 +152,7 @@ body, html {
 	color: #2e7d32;
 	cursor: pointer;
 	display: block;
+	font-size: 15px !important;
 }
 
 /* 추가css -> 회원가입 흰색네모칸 글자크기  */
@@ -166,10 +167,10 @@ button, input[type="submit"] {
    font-size: 20px;
 }
 
-input {
+/* input {
   font-family: 'Gowun Dodum', sans-serif !important;
    font-size: 20px;
-}
+} */
 
 
 /* 추가css-> 회원가입 왼쪽배너 이미지 */

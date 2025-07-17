@@ -60,5 +60,24 @@
 			</div>
 		</div>
 	</div>
+	<!-- 맨 위로 버튼 -->
+    <button id="scrollTopBtn" class="scroll-top-btn" title="올라가기">
+      △ 올라가기
+    </button>
+    <script>
+  // 버튼 클릭 시 맨 위로 스크롤
+  document.getElementById("scrollTopBtn").onclick = function() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+  // 스크롤 내릴 때 버튼 보이게
+  window.addEventListener('scroll', function() {
+    var btn = document.getElementById("scrollTopBtn");
+    if(window.scrollY > 200){
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  });
+</script>
 </body>
 </html>

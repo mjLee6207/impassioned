@@ -169,7 +169,6 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/twbs-pagination@1.4.2/jquery.twbsPagination.min.js"></script>
-
 	<script>
     // 엔터키로 검색 - 초기 추가: 강승태 
     document.addEventListener("DOMContentLoaded", () => {
@@ -212,9 +211,7 @@ $('#pagination').twbsPagination({
     }
   });
 </script>
-
-
-
-
-</body>
+<!-- 꼬리말 jsp include-->
+	<jsp:include page="/common/footer.jsp"></jsp:include>
+	</body>
 </html>

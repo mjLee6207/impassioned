@@ -159,6 +159,7 @@
 <!-- ====== 스크립트 ====== -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+
 <script>
 function initPagination(selector, totalPages, startPage, visiblePages, tabName, pageParamName) {
     if ($(selector).data('twbs-pagination')) {
@@ -286,5 +287,7 @@ $(function() {
     );
 });
 </script>
+<!-- 꼬리말 jsp include-->
+	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>
 </html>

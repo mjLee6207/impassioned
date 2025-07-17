@@ -195,6 +195,10 @@
 						</c:if>
 		</div>
 	</div>
+	
+	
+
+	
 	<script>
     // 탭 클릭 시 해당 카테고리 게시판 목록으로 이동
 
@@ -284,6 +288,7 @@
   }
   
 </script>
-
+	<!-- 꼬리말 jsp include-->
+	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>
 </html>

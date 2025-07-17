@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
@@ -102,8 +103,21 @@ public class MemberController {
     
     // ✅ [로그인 폼 페이지]
     @GetMapping("/member/login.do")
-    public String loginPage() {
-        return "member/login";
+    public String loginPage(@RequestParam(value = "redirect", required = false) String redirect,
+		            		HttpServletRequest request) {
+		if (redirect == null || redirect.trim().isEmpty()) {
+		redirect = "/";
+		}
+		
+		String kakaoLink = "https://kauth.kakao.com/oauth/authorize?" +
+		"client_id=d779fae0a4d9df6ea88f8bfed6e1b315" +
+		"&redirect_uri=http://localhost:8080/kakaoLogin.do" +
+		"&response_type=code" +
+		"&state=" + java.net.URLEncoder.encode(redirect, java.nio.charset.StandardCharsets.UTF_8);
+		
+		request.setAttribute("kakaoLink", kakaoLink);
+		
+		return "member/login"; // 로그인 폼 JSP
     }
     
     // ✅ [로그아웃 처리]
@@ -236,8 +250,9 @@ public class MemberController {
 //  카카오로그인
     @GetMapping("/kakaoLogin.do")
     public String kakaoLogin(@RequestParam("code") String code,
-                             @RequestParam(value = "redirect", required = false) String redirect,
-                             HttpSession session) {
+                             @RequestParam(value = "state", required = false) String redirect,
+                             HttpSession session,
+                             HttpServletRequest request) {
         try {
             // === [1] 토큰 요청 ===
             String tokenUrl = "https://kauth.kakao.com/oauth/token";
@@ -249,7 +264,7 @@ public class MemberController {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("grant_type", "authorization_code");
             params.add("client_id", "d779fae0a4d9df6ea88f8bfed6e1b315"); // REST API 키
-            params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do");
+            params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do"); // ⚠️ 쿼리스트링 제외
             params.add("code", code);
 
             HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(params, headers);
@@ -269,7 +284,6 @@ public class MemberController {
 
             log.info("✅ userJson 전체: {}", userJson.toJSONString());
 
-            // ✅ 핵심 정보 추출
             String kakaoId = String.valueOf(userJson.get("id"));
             JSONObject kakaoAccount = (JSONObject) userJson.get("kakao_account");
             JSONObject profile = (JSONObject) kakaoAccount.get("profile");
@@ -284,41 +298,63 @@ public class MemberController {
             MemberVO member = memberService.selectByKakaoId(kakaoId);
 
             if (member != null) {
-                // ✅ 기존 회원 → 로그인
                 session.setAttribute("loginUser", member);
-
-                if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
-                    return "redirect:" + redirect;
+            } else {
+            	 // ✅ 닉네임 중복 검사 + 자동 유니크 처리
+                String finalNickname = nickname;
+                int suffix = 1;
+                while (memberService.isNicknameDuplicate(finalNickname)) {
+                    finalNickname = nickname + suffix++;
                 }
 
-                return "redirect:/";
-            } else {
-            	// 신규 회원 → DB에 자동 가입 처리
-            	MemberVO kakaoMember = new MemberVO();
-            	kakaoMember.setKakaoId(kakaoId);
-            	kakaoMember.setNickname(nickname);
-            	kakaoMember.setEmail(email);
-            	kakaoMember.setProfile((String) profile.get("thumbnail_image_url")); // 있으면
-            	kakaoMember.setRole("USER");
+                // ✅ 자동 변경된 경우: 세션에 표시
+                if (!finalNickname.equals(nickname)) {
+                    session.setAttribute("nicknameAutoRenamedYn", "Y");
+                    session.setAttribute("nicknameBefore", nickname);
+                    session.setAttribute("nicknameAfter", finalNickname);
+                }
 
-            	memberService.insertKakaoMember(kakaoMember);
+                MemberVO kakaoMember = new MemberVO();
+                kakaoMember.setKakaoId(kakaoId);
+                kakaoMember.setNickname(finalNickname);
+                kakaoMember.setEmail(email);
+                kakaoMember.setProfile((String) profile.get("thumbnail_image_url"));
+                kakaoMember.setRole("USER");
 
-            	// joinDate 포함된 정보로 다시 SELECT
-            	MemberVO savedMember = memberService.selectByKakaoId(kakaoId);
-
-            	// 세션 설정 후 로그인
-            	session.setAttribute("loginUser", savedMember);
-
-				if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
-				    return "redirect:" + redirect;
-				}
-				
-				return "redirect:/";	
+                memberService.insertKakaoMember(kakaoMember);
+                member = memberService.selectByKakaoId(kakaoId);
+                session.setAttribute("loginUser", member);
             }
+
+            // === [4] 닉네임 자동 변경 시 경고 페이지로 리다이렉트
+            if ("Y".equals(session.getAttribute("nicknameAutoRenamedYn"))) {
+                return "redirect:/nickname-warning.do";
+            }
+
+            // === [5] 그 외 정상 리다이렉트
+            if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
+                return "redirect:" + redirect;
+            }
+            return "redirect:/";
 
         } catch (Exception e) {
             log.error("❌ 카카오 로그인 중 예외 발생", e);
             throw new RuntimeException("카카오 로그인 실패", e);
         }
+    }
+    
+//  카카오 닉네임 중복시 오류창
+    @GetMapping("/nickname-warning.do")
+    public String nicknameWarningPage(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+
+        String before = (String) session.getAttribute("nicknameBefore");
+        String after = (String) session.getAttribute("nicknameAfter");
+
+        model.addAttribute("nicknameBefore", before);
+        model.addAttribute("nicknameAfter", after);
+
+        // 이후 로직 처리를 위해 리셋은 보류. 실제 확정 시 삭제해도 됨
+        return "member/nicknameWarning";
     }
 }

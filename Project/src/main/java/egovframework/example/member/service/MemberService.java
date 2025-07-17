@@ -40,4 +40,7 @@ public interface MemberService {
     
  // 카카오 자동가입 (신규 회원 등록용)
     void insertKakaoMember(MemberVO memberVO);
+    
+//  카카오 닉네임 중복 확인
+    boolean isNicknameDuplicate(String nickname);
 }

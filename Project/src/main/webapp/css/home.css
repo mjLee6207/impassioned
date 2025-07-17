@@ -51,7 +51,7 @@ body {
 .section-title {
 	color: #4CAF50;
 	padding-top: 30px;
-	font-size: 25px !important;
+	font-size: 30px !important;
 	font-weight: bold !important;
 	text-align: left;
 	margin-left:355px !important;
@@ -94,8 +94,9 @@ body {
 /* 이미지 아래 제목 */
 .recipe .title {
 	margin-top: 10px;
-	font-size: 17px;
+	font-size: 15px;
 	text-align: center;
 	max-width: 190px;
 	line-height: 1.3;
+	font-weight: bold;
 }

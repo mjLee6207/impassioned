@@ -19,11 +19,11 @@ public class HomeController {
 	@Autowired RecipeService recipeService;
 	@GetMapping("/home.do")
 	public String home(Model model) {
-		model.addAttribute("koreanRecipe", recipeService.selectRandomRecipesByCategory("한식", 10));
-        model.addAttribute("westernRecipe", recipeService.selectRandomRecipesByCategory("양식", 10));
-        model.addAttribute("chineseRecipe", recipeService.selectRandomRecipesByCategory("중식", 10));
-        model.addAttribute("japaneseRecipe", recipeService.selectRandomRecipesByCategory("일식", 10));
-        model.addAttribute("dessertRecipe", recipeService.selectRandomRecipesByCategory("디저트", 10));
+		model.addAttribute("koreanRecipe", recipeService.selectRandomRecipesByCategory("한식", 5));
+        model.addAttribute("westernRecipe", recipeService.selectRandomRecipesByCategory("양식", 5));
+        model.addAttribute("chineseRecipe", recipeService.selectRandomRecipesByCategory("중식", 5));
+        model.addAttribute("japaneseRecipe", recipeService.selectRandomRecipesByCategory("일식", 5));
+        model.addAttribute("dessertRecipe", recipeService.selectRandomRecipesByCategory("디저트", 5));
 
 		return "home";
 	}

@@ -47,103 +47,61 @@
     </a>
 </div>
 
-<!-- 한식 슬라이드 -->
+<!-- 한식 -->
 <div class="section-title">🍽️ 한식 레시피</div>
-<div class="slide-recipes" data-category="korean">
-  <div class="slide-list">
-    <c:forEach var="recipe" items="${koreanRecipe}">
-      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-        <p class="title">${recipe.titleKr}</p>
-      </a>
-    </c:forEach>
-  </div>
+<div class="recipes">
+  <c:forEach var="recipe" items="${koreanRecipe}">
+    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+      <p class="title">${recipe.titleKr}</p>
+    </a>
+  </c:forEach>
 </div>
 
-<!-- 양식 슬라이드 -->
+<!-- 양식 -->
 <div class="section-title">🍽️ 양식 레시피</div>
-<div class="slide-recipes" data-category="western">
-  <div class="slide-list">
-    <c:forEach var="recipe" items="${westernRecipe}">
-      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-        <p class="title">${recipe.titleKr}</p>
-      </a>
-    </c:forEach>
-  </div>
+<div class="recipes">
+  <c:forEach var="recipe" items="${westernRecipe}">
+    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+      <p class="title">${recipe.titleKr}</p>
+    </a>
+  </c:forEach>
 </div>
 
-<!-- 중식 슬라이드 -->
+<!-- 중식 -->
 <div class="section-title">🍽️ 중식 레시피</div>
-<div class="slide-recipes" data-category="chinese">
-  <div class="slide-list">
-    <c:forEach var="recipe" items="${chineseRecipe}">
-      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-        <p class="title">${recipe.titleKr}</p>
-      </a>
-    </c:forEach>
-  </div>
+<div class="recipes">
+  <c:forEach var="recipe" items="${chineseRecipe}">
+    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+      <p class="title">${recipe.titleKr}</p>
+    </a>
+  </c:forEach>
 </div>
 
-<!-- 일식 슬라이드 -->
+<!-- 일식 -->
 <div class="section-title">🍽️ 일식 레시피</div>
-<div class="slide-recipes" data-category="japanese">
-  <div class="slide-list">
-    <c:forEach var="recipe" items="${japaneseRecipe}">
-      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-        <p class="title">${recipe.titleKr}</p>
-      </a>
-    </c:forEach>
-  </div>
+<div class="recipes">
+  <c:forEach var="recipe" items="${japaneseRecipe}">
+    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+      <p class="title">${recipe.titleKr}</p>
+    </a>
+  </c:forEach>
 </div>
 
-<!-- 디저트 슬라이드 -->
+<!-- 디저트 -->
 <div class="section-title">🍽️ 디저트 레시피</div>
-<div class="slide-recipes" data-category="dessert">
-  <div class="slide-list">
-    <c:forEach var="recipe" items="${dessertRecipe}">
-      <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
-        <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
-        <p class="title">${recipe.titleKr}</p>
-      </a>
-    </c:forEach>
-  </div>
+<div class="recipes">
+  <c:forEach var="recipe" items="${dessertRecipe}">
+    <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
+      <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+      <p class="title">${recipe.titleKr}</p>
+    </a>
+  </c:forEach>
 </div>
 
 <jsp:include page="/common/footer.jsp" />
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const perPage = 5;
-    const slideWidth = 224;
-    const slideDuration = 3000;
-
-    document.querySelectorAll('.slide-recipes').forEach(function (box, idx) {
-        const track = box.querySelector('.slide-list');
-        const items = track.querySelectorAll('.recipe');
-        const total = items.length;
-        const maxPage = Math.max(1, total - perPage + 1);
-
-        track.style.width = `${total * slideWidth}px`;
-
-        let currentPage = 0;
-        function goToPage(page) {
-            const move = page * slideWidth;
-            track.style.transform = `translateX(-${move}px)`;
-            currentPage = page;
-        }
-        goToPage(0);
-
-        if (total > perPage) {
-            setInterval(function () {
-                let nextPage = (currentPage + 1) % maxPage;
-                goToPage(nextPage);
-            }, slideDuration);
-        }
-    });
-});
-</script>
 </body>
 </html>

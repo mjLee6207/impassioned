@@ -10,32 +10,54 @@ import egovframework.example.like.service.LikeVO;
 
 @Mapper
 public interface LikeMapper {
+
+    // [공통] 전체 좋아요 리스트 및 개수
     List<LikeVO> selectLikeList(Criteria criteria);
     int selectLikeListTotCnt(Criteria criteria);
 
+    // [게시판 전용] 특정 게시글의 좋아요 리스트
     List<LikeVO> selectLikeListByBoardId(@Param("boardId") int boardId);
-    
+
+    // [공통] 게시글/레시피 대상의 좋아요 리스트
     List<LikeVO> selectLikeListByTarget(LikeVO vo);
 
-
-    // 좋아요 수 조회 (게시판/레시피)
+    // [공통] 좋아요 수 조회 (BOARD_ID 또는 RECIPE_ID 기준)
     int countLikes(LikeVO vo);
 
-    // 좋아요 여부 확인
+    // [게시판 전용] 좋아요 여부 확인
     int existsLike(LikeVO vo);
+
+    // [공통] 중복 체크 용도
     int checkLike(LikeVO vo);
 
-    // 좋아요 등록/삭제
+    // [게시판 전용] 좋아요 등록/삭제
     void insertLike(LikeVO vo);
     void deleteLike(LikeVO vo);
 
-    // 좋아요 수 증가/감소
+    // [레시피 전용] 좋아요 등록/삭제
+    void insertRecipeLike(LikeVO vo);
+    void deleteRecipeLike(LikeVO vo);
+
+    // [게시판 전용] 좋아요 수 증가/감소
     void increaseLikeCount(LikeVO vo);
     void decreaseLikeCount(LikeVO vo);
-    
-    // 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능
-    // void deleteAllByBoardId(int boardId);
-    
-//  레시피게시판 좋아요 기능 추가 -> 기준을 보드에서 두개다로할수있게
+
+    // [레시피 전용] 좋아요 수 증가/감소 → API_RECIPE 테이블 조작
+    void increaseRecipeLikeCount(LikeVO vo);
+    void decreaseRecipeLikeCount(LikeVO vo);
+
+    // [공통] 게시글/레시피 삭제 시 연결된 좋아요 전체 삭제
     void deleteAllByTarget(LikeVO vo);
+
+    // [레시피 전용] 좋아요 수 조회
+    int countRecipeLikes(@Param("recipeId") String recipeId);
+
+    // [레시피 전용] 좋아요 여부 확인
+    int existsRecipeLike(LikeVO vo);
+
+    // [게시판 전용] 게시글 삭제 시 좋아요 전체 삭제
+    void deleteAllByBoardId(@Param("boardId") int boardId);
+
+    // [레시피 전용] 레시피 삭제 시 좋아요 전체 삭제
+    void deleteAllByRecipeId(@Param("recipeId") String recipeId);
 }

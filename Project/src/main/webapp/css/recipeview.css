@@ -176,72 +176,73 @@
 }
 .category-tab.active { color: #118e6a; border-bottom: 2.5px solid #1e8a57; }
 
+/* —————————————————————————————
+   레시피 카드 우측 상단: 하트 + 숫자 박스 
+————————————————————————————————— */
+.recipe-card-top {
+  position: relative;  /* like-btn-wrap의 기준 */
+}
+
+/* —————————————————————————————
+   레시피 카드 우측 상단: 하트 + 숫자 박스 
+————————————————————————————————— */
+.recipe-card-top {
+  position: relative;  /* like-btn-wrap의 기준 */
+}
+
 .like-btn-wrap {
   position: absolute;
   top: 12px;
-  right: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  z-index: 2;
+  right: 12px;               /* 카드 우측에서 살짝 안쪽으로 */
 
+  display: flex;
+  align-items: center;       /* 세로 중앙정렬 */
+  gap: 4px;                  /* 하트와 숫자 사이 간격 */
+
+  padding: 6px 10px;         /* 상하 6px, 좌우 10px */
   background: #fff;
   border-radius: 12px;
-  /* 좌우 padding을 10→16px으로 살짝 키워서 박스 넓이 증가 */
-  padding: 15px 30px 10px 15px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s;
 }
-
 .like-btn-wrap:hover {
-  /* 호버 시 연한 초록 (원하는 색상으로 조절 가능) */
   background-color: #e8f8f1;
 }
 
-.like-btn.liked {
-  color: #e74c3c !important;      /* 좋아요 상태일 때 빨강 */
-}
-
-.like-btn.liked:hover {
-  color: #c0392b !important;
-}
-
+/* —————————————————————————————
+   하트 버튼
+————————————————————————————————— */
 .like-btn {
-  /* 고정된 크기의 정사각 버튼으로 */
-  width: 40px;
-  height: 40px;
-
-  /* 버튼 내부 가로·세로 중앙 정렬 */
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: none;
-  border: none;
-  padding: 0;           /* 래퍼 padding으로 간격 처리 */
-  font-size: 1.4rem;
-  color: #888;
+  background: none !important;
+  border: none !important;
+  padding: 0;
+  font-size: 1.3rem;
+  color: #888 !important;
   cursor: pointer;
   transition: color 0.2s;
 }
 .like-btn:hover {
-  color: #1e8a57;
+  color: #1e8a57 !important;
+}
+.like-btn.liked {
+  color: #e74c3c !important;
 }
 
+/* —————————————————————————————
+   숫자 텍스트
+————————————————————————————————— */
 .like-count-text {
-  font-weight: 600;
   font-size: 1rem;
+  font-weight: 600;
   color: #333;
-}
-
-.recipe-title-info,      /* 기존에 “좋아요 n개” 남아있던 곳 */
-.recipe-title-info * {
-  display: none !important;
-}
-
-/* (선택) 숫자 앞에 “좋아요”가 들어가는 게 ::before 로 처리되어 있다면 이렇게 초기화 */
-.like-count-text::before {
-  content: "";
-}
+  line-height: 1;
+}	
 
 /* 반응형 */
 @media (max-width: 911px) {

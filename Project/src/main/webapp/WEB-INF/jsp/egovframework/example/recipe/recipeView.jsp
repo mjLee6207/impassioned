@@ -54,8 +54,6 @@
   </div>
 </div>
 
-
-
   <!-- 조리법 -->
   <div class="recipe-card">
     <div class="section-title">조리법</div>

@@ -5,75 +5,121 @@
 
 <mapper namespace="egovframework.example.like.service.impl.LikeMapper">
 
-    <!-- VO 매핑 -->
     <resultMap id="LikeResultMap" type="egovframework.example.like.service.LikeVO">
         <id     property="likeId"    column="LIKE_ID"/>
         <result property="boardId"   column="BOARD_ID"/>
+        <result property="recipeId"  column="RECIPE_ID"/>
         <result property="memberIdx" column="MEMBER_IDX"/>
         <result property="likeDate"  column="LIKE_DATE"/>
+        <result property="likeType"  column="LIKE_TYPE"/>
+        <result property="likeCount" column="LIKE_COUNT"/>
     </resultMap>
 
-    <!-- 1. 전체 리스트 (페이징용) -->
-    <select id="selectLikeList" parameterType="egovframework.example.common.Criteria" resultMap="LikeResultMap">
-        SELECT * FROM BOARD_LIKE ORDER BY LIKE_ID DESC
-    </select>
-
-    <!-- 2. 전체 개수 -->
-    <select id="selectLikeListTotCnt" parameterType="egovframework.example.common.Criteria" resultType="int">
+    <!-- 좋아요 존재 여부 -->
+    <select id="existsLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
         SELECT COUNT(*) FROM BOARD_LIKE
+        WHERE LIKE_TYPE = #{likeType}
+        <choose>
+            <when test="likeType == 'BOARD'">
+                AND BOARD_ID = #{boardId}
+            </when>
+            <when test="likeType == 'RECIPE'">
+                AND RECIPE_ID = #{recipeId}
+            </when>
+        </choose>
+        AND MEMBER_IDX = #{memberIdx}
     </select>
 
-    <!-- 3. 특정 게시글의 좋아요 목록 -->
-    <select id="selectLikeListByBoardId" parameterType="int" resultMap="LikeResultMap">
-        SELECT * FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
+    <!-- 좋아요 수 카운트 -->
+    <select id="countLikes" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
+        SELECT COUNT(*) FROM BOARD_LIKE
+        WHERE LIKE_TYPE = #{likeType}
+        <choose>
+            <when test="likeType == 'BOARD'">
+                AND BOARD_ID = #{boardId}
+            </when>
+            <when test="likeType == 'RECIPE'">
+                AND RECIPE_ID = #{recipeId}
+            </when>
+        </choose>
     </select>
 
-    <!-- 4. 좋아요 수 -->
-    <select id="countLikes" parameterType="int" resultType="int">
-        SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
-    </select>
-
-  <!-- 5. 좋아요 여부 확인 -->
-<select id="existsLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
-    SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
-</select>
-
-<!-- 6. checkLike (중복용) -->
-<select id="checkLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
-    SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
-</select>
-
-<!-- 7. 좋아요 등록 -->
+    <!-- 좋아요 등록 -->
 <insert id="insertLike" parameterType="egovframework.example.like.service.LikeVO">
-    INSERT INTO BOARD_LIKE (LIKE_ID, BOARD_ID, MEMBER_IDX, LIKE_DATE)
-    VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{boardId}, #{memberIdx}, CURRENT_TIMESTAMP)
+    <choose>
+        <when test="likeType == 'BOARD'">
+            INSERT INTO BOARD_LIKE (LIKE_ID, BOARD_ID, MEMBER_IDX, LIKE_DATE, LIKE_TYPE)
+            VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{boardId}, #{memberIdx}, CURRENT_TIMESTAMP, #{likeType})
+        </when>
+        <when test="likeType == 'RECIPE'">
+            INSERT INTO BOARD_LIKE (LIKE_ID, RECIPE_ID, MEMBER_IDX, LIKE_DATE, LIKE_TYPE)
+            VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{recipeId}, #{memberIdx}, CURRENT_TIMESTAMP, #{likeType})
+        </when>
+    </choose>
 </insert>
 
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="egovframework.example.like.service.LikeVO">
+        DELETE FROM BOARD_LIKE
+        WHERE LIKE_TYPE = #{likeType}
+        <choose>
+            <when test="likeType == 'BOARD'">
+                AND BOARD_ID = #{boardId}
+            </when>
+            <when test="likeType == 'RECIPE'">
+                AND RECIPE_ID = #{recipeId}
+            </when>
+        </choose>
+        AND MEMBER_IDX = #{memberIdx}
+    </delete>
 
-<!-- 8. 좋아요 삭제 -->
-<delete id="deleteLike" parameterType="egovframework.example.like.service.LikeVO">
-    DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
-</delete>
+    <!-- 전체 삭제 -->
+    <delete id="deleteAllByTarget" parameterType="egovframework.example.like.service.LikeVO">
+        DELETE FROM BOARD_LIKE
+        WHERE LIKE_TYPE = #{likeType}
+        <choose>
+            <when test="likeType == 'BOARD'">
+                AND BOARD_ID = #{boardId}
+            </when>
+            <when test="likeType == 'RECIPE'">
+                AND RECIPE_ID = #{recipeId}
+            </when>
+        </choose>
+    </delete>
 
-<!-- 좋아요 추가 시 LIKE_COUNT 증가 -->
-<update id="increaseLikeCount" parameterType="int">
-  UPDATE BOARD_LIKE
-  SET LIKE_COUNT = LIKE_COUNT + 1
-  WHERE BOARD_ID = #{boardId}
-  AND ROWNUM = 1
-</update>
+    <!-- 좋아요 수 증가 -->
+    <update id="increaseLikeCount" parameterType="egovframework.example.like.service.LikeVO">
+        UPDATE BOARD_LIKE
+        SET LIKE_COUNT = NVL(LIKE_COUNT, 0) + 1
+        WHERE LIKE_TYPE = #{likeType}
+        <choose>
+            <when test="likeType == 'BOARD'">
+                AND BOARD_ID = #{boardId}
+            </when>
+            <when test="likeType == 'RECIPE'">
+                AND RECIPE_ID = #{recipeId}
+            </when>
+        </choose>
+        AND MEMBER_IDX = #{memberIdx}
+    </update>
 
-<!-- 25년 7월 11일 좋아요수 DB에서 보게 하기 위해 추가 : 강승태 -->
-<!-- 좋아요 삭제 시 LIKE_COUNT 감소 -->
-<update id="decreaseLikeCount" parameterType="int">
-  UPDATE BOARD_LIKE
-  SET LIKE_COUNT = LIKE_COUNT - 1
-  WHERE BOARD_ID = #{boardId}
-  AND ROWNUM = 1
-</update>
+    <!-- 좋아요 수 감소 -->
+    <update id="decreaseLikeCount" parameterType="egovframework.example.like.service.LikeVO">
+        UPDATE BOARD_LIKE
+        SET LIKE_COUNT = CASE 
+            WHEN LIKE_COUNT > 0 THEN LIKE_COUNT - 1
+            ELSE 0
+        END
+        WHERE LIKE_TYPE = #{likeType}
+        <choose>
+            <when test="likeType == 'BOARD'">
+                AND BOARD_ID = #{boardId}
+            </when>
+            <when test="likeType == 'RECIPE'">
+                AND RECIPE_ID = #{recipeId}
+            </when>
+        </choose>
+        AND MEMBER_IDX = #{memberIdx}
+    </update>
 
-	<!-- 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능 -->
-	<delete id="deleteAllByBoardId" parameterType="int">
-	    DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
-	</delete>
 </mapper>

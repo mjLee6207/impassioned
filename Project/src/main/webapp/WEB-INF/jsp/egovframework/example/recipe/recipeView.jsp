@@ -34,7 +34,17 @@
   </div>
   <!-- 목록보기 버튼 : 주석처리 -->
   <%-- <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" class="tolist-btn">목록</a> --%>
-  <a href="${pageContext.request.contextPath}/recipe/recipe.do?categoryKr=${param.categoryKr}&pageIndex=${currPageIndex}" title="좋아요" class="like-btn">♡ 83</a>
+
+   <div class="like-btn-wrap">
+    <div class="like-btn-wrap">
+      <button type="button" class="like-btn" id="likeBtn"
+data-recipe-id="${not empty recipeVO.recipeId ? recipeVO.recipeId : ''}"
+              data-member-idx="${loginUser.memberIdx}">♡</button>
+      <div class="like-count-text" id="likeCountText">좋아요 0개</div>
+    </div>
+</div>
+
+
   <div class="recipe-title-outer">
     <div class="recipe-cat-badge">${recipeVO.categoryKr}</div>
     <div class="recipe-title-main">${recipeVO.titleKr}</div>
@@ -66,6 +76,10 @@
 </div>
 </div>
 <!-- 재료_토글 -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/like.js"></script>
+
 <script>
 const toggleBtn = document.getElementById('toggle-ingredients');
 const box = document.getElementById('ingredients-box');
@@ -75,6 +89,19 @@ toggleBtn.onclick = function() {
   box.style.display = isHidden ? 'block' : 'none';
   toggleBtn.innerText = isHidden ? '숨기기' : '보이기';
 };
+
+$(document).ready(function () {
+	  const recipeId = $("#likeBtn").data("recipe-id");
+	  const memberIdx = $("#likeBtn").data("member-idx");
+
+	  console.log("🔥 recipeId:", recipeId);  // 여기에 꼭 찍어보기
+
+	  initLikeButton({
+	    likeType: "RECIPE",
+	    recipeId: String(recipeId),     // ✅ 이 부분을 수정!
+	    memberIdx
+	  });
+	});
 
 </script>
 <!-- 꼬리말 jsp include-->

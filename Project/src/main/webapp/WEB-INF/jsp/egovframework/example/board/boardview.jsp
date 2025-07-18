@@ -197,9 +197,6 @@
 		</div>
 	</div>
 	
-	
-
-	
 	<script>
     // 탭 클릭 시 해당 카테고리 게시판 목록으로 이동
 
@@ -213,6 +210,15 @@
             document.getElementById("charCount").innerText = textarea.value.length;
         }
     }
+    
+    
+    $(document).ready(function () {
+        initLikeButton({
+          likeType: "BOARD",
+          boardId: "${board.boardId}",
+          memberIdx: "${loginUser.memberIdx}"
+        });
+      });
 </script>
 
 	<!-- 스크립트 -->
@@ -226,54 +232,7 @@
 	        document.getElementById("deleteForm").submit();
 	    }
 	}
-
-	$(document).ready(function () {
-	    const $btn = $("#likeBtn");
-	    const boardId = $btn.data("board-id");
-	    const memberIdx = $btn.data("member-idx");
-
-	    // ✅ 좋아요 수는 로그인 여부 상관없이 항상 표시
-	    $.get("/countLike.do", { boardId }, function (count) {
-	        $("#likeCountText").html("좋아요 <span>" + count + "</span>개");
-	    });
-
-	    // ✅ 로그인된 경우에만 상태 확인
-	    if (memberIdx && memberIdx !== "undefined" && memberIdx !== "null") {
-	        $.get("/checkLike.do", { boardId, memberIdx }, function (res) {
-	            if (res === true || res === "true") {
-	                $btn.text("♥").addClass("liked");
-	            }
-	        });
-	    }
-
-	    // ✅ 클릭 이벤트는 항상 등록하고, 내부에서 로그인 여부 확인
-	    $btn.on("click", function () {
-	        if (!memberIdx || memberIdx === "undefined" || memberIdx === "null") {
-	            alert("로그인 후 이용해주세요 😊");
-	            const redirectUrl = encodeURIComponent(location.pathname + location.search);
-	            location.href = "/member/login.do?redirect=" + redirectUrl;
-	            return;
-	        }
-
-	        const isLiked = $btn.text() === "♥";
-	        const url = isLiked ? "/cancelLike.do" : "/addLike.do";
-
-	        $.ajax({
-	            url,
-	            type: "POST",
-	            contentType: "application/json",
-	            data: JSON.stringify({ boardId, memberIdx }),
-	            success: function () {
-	                $btn.text(isLiked ? "♡" : "♥").toggleClass("liked");
-
-	                // ✅ 좋아요 수 새로고침
-	                $.get("/countLike.do", { boardId }, function (count) {
-	                    $("#likeCountText").html("좋아요 <span>" + count + "</span>개");
-	                });
-	            }
-	        });
-	    });
-	});
+	
 	/* 댓글 수정 */
 	function showEditForm(reviewId) {
 	    document.getElementById('reviewContent' + reviewId).style.display = 'none';
@@ -289,6 +248,7 @@
   }
   
 </script>
+   <script src="/js/like.js"></script>
 	<!-- 꼬리말 jsp include-->
 	<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>

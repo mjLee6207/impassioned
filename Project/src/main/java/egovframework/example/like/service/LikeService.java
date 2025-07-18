@@ -2,24 +2,34 @@ package egovframework.example.like.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import egovframework.example.common.Criteria;
 
 public interface LikeService {
-	List<?> selectLikeList(Criteria criteria); // 전체 조회
-	int selectLikeListTotCnt(Criteria criteria); // 총 개수 구하기
-	int countLikes(int boardId);;
-    boolean existsLike(LikeVO likevo);
+
+    // 전체 좋아요 리스트 및 개수
+    List<?> selectLikeList(Criteria criteria);
+    int selectLikeListTotCnt(Criteria criteria);
+
+    // 좋아요 수 조회 (게시글 or 레시피 구분)
+    int countLikes(LikeVO vo);
+
+    // 좋아요 여부 확인
+    boolean existsLike(LikeVO likevo);      // 게시판 전용
+    boolean existsRecipeLike(LikeVO likevo); // 레시피 좋아요 여부 확인용
+    boolean checkLike(LikeVO likeVO);       // 공통 중복 확인용
+
+    // 좋아요 등록/삭제
     void addLike(LikeVO likevo);
     void removeLike(LikeVO likevo);
-    boolean checkLike(LikeVO likeVO) ;
-    void increaseLikeCount(int boardId); // 7월 11일 좋아요 카운트 DB에볼수있게할려고 추가: 강승태
-    void decreaseLikeCount(int boardId); // 7월 11일 좋아요 카운트 DB에볼수있게할려고 추가: 강승태
-    // (선택) 리스트가 필요하면:
-    List<LikeVO> selectLikeListByBoardId(@Param("boardId") int boardId);
-    
-    // 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능
-    void deleteAllByBoardId(int boardId);
 
+    // 좋아요 수 증가/감소 (게시글 or 레시피 자동 분기)
+    void increaseLikeCount(LikeVO vo);
+    void decreaseLikeCount(LikeVO vo);
+
+    // 특정 게시글 또는 레시피의 좋아요 리스트
+    List<LikeVO> selectLikeListByTarget(LikeVO vo);
+
+    // 삭제 시 좋아요 전체 삭제
+    void deleteAllByTarget(LikeVO vo);      // 게시글 or 레시피 모두 대응
+    void deleteAllByBoardId(int boardId);   // 게시판 전용
 }

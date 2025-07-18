@@ -1,6 +1,5 @@
 package egovframework.example.like.web;
 
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,25 +19,26 @@ public class LikeController {
     /** 👍 좋아요 등록 */
     @PostMapping("/addLike.do")
     @ResponseBody
-    public int addLike(@RequestBody Map<String, Object> map) {
-        log.info("📥 addLike.do 요청: " + map);
+    public int addLike(@RequestBody LikeVO vo) {
+        log.info("📥 addLike.do 요청: {}", vo);
 
         try {
-            int boardId = Integer.parseInt(map.get("boardId").toString());
-            Long memberIdx = Long.parseLong(map.get("memberIdx").toString());
-            
-            LikeVO vo = new LikeVO();
-            vo.setBoardId(boardId);
-            vo.setMemberIdx(memberIdx);
+            boolean exists = false;
 
-            if (!likeService.existsLike(vo)) {
+            if ("BOARD".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsLike(vo);
+            } else if ("RECIPE".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsRecipeLike(vo);
+            }
+
+            if (!exists) {
                 likeService.addLike(vo);
                 log.info("✅ 좋아요 등록 완료");
             } else {
                 log.info("⚠️ 이미 좋아요 누름");
             }
 
-            return likeService.countLikes(boardId);
+            return likeService.countLikes(vo);
         } catch (Exception e) {
             log.error("💥 좋아요 등록 중 에러: " + e.getMessage(), e);
             return -1;
@@ -48,25 +48,26 @@ public class LikeController {
     /** ❌ 좋아요 취소 */
     @PostMapping("/cancelLike.do")
     @ResponseBody
-    public int removeLike(@RequestBody Map<String, Object> map) {
-        log.info("📥 cancelLike.do 요청: " + map);
+    public int removeLike(@RequestBody LikeVO vo) {
+        log.info("📥 cancelLike.do 요청: {}", vo);
 
         try {
-            int boardId = Integer.parseInt(map.get("boardId").toString());
-            Long memberIdx = Long.parseLong(map.get("memberIdx").toString());          
-            
-            LikeVO vo = new LikeVO();
-            vo.setBoardId(boardId);
-            vo.setMemberIdx(memberIdx);
+            boolean exists = false;
 
-            if (likeService.existsLike(vo)) {
+            if ("BOARD".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsLike(vo);
+            } else if ("RECIPE".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsRecipeLike(vo);
+            }
+
+            if (exists) {
                 likeService.removeLike(vo);
                 log.info("✅ 좋아요 취소 완료");
             } else {
                 log.info("⚠️ 취소 요청했지만 좋아요 안 되어 있음");
             }
 
-            return likeService.countLikes(boardId);
+            return likeService.countLikes(vo);
         } catch (Exception e) {
             log.error("💥 좋아요 취소 중 에러: " + e.getMessage(), e);
             return -1;
@@ -74,22 +75,43 @@ public class LikeController {
     }
 
     /** 📊 좋아요 수 조회 */
-    @RequestMapping(value = "/countLike.do", method = RequestMethod.GET)
+    @GetMapping("/countLike.do")
     @ResponseBody
-    public int getLikeCount(@RequestParam int boardId) {
-        log.info("📊 countLike.do 호출 - boardId: " + boardId);
+    public int getLikeCount(@RequestParam(required = false) Integer boardId,
+                            @RequestParam(required = false) String recipeId,
+                            @RequestParam String likeType) {
+        log.info("📊 countLike.do 호출: boardId={}, recipeId={}, likeType={}", boardId, recipeId, likeType);
         try {
-            return likeService.countLikes(boardId);
+            LikeVO vo = new LikeVO();
+            vo.setLikeType(likeType);
+            vo.setBoardId(boardId);
+            vo.setRecipeId(recipeId);
+            return likeService.countLikes(vo);
         } catch (Exception e) {
             log.error("💥 좋아요 수 조회 중 에러: " + e.getMessage(), e);
             return -1;
         }
     }
 
+    /** 🔍 좋아요 여부 확인 */
+    @GetMapping("/checkLike.do")
+    @ResponseBody
+    public boolean checkLike(@RequestParam Long memberIdx,
+                             @RequestParam String likeType,
+                             @RequestParam(required = false) Integer boardId,
+                             @RequestParam(required = false) String recipeId) {
+        LikeVO vo = new LikeVO();
+        vo.setMemberIdx(memberIdx);
+        vo.setLikeType(likeType);
+        vo.setBoardId(boardId);
+        vo.setRecipeId(recipeId);
+        return likeService.existsLike(vo);
+    }
+
     /** 🌐 좋아요 JSP 페이지 */
     @GetMapping("/like.do")
     public String likePage() {
-        return "like/like";  // /WEB-INF/jsp/like/like.jsp
+        return "like/like";
     }
 
     /** 🧪 에러 테스트용 뷰 */
@@ -101,16 +123,6 @@ public class LikeController {
     /** 🏠 메인 페이지 */
     @GetMapping("/index.do")
     public String index() {
-        return "sample/index"; // /WEB-INF/jsp/sample/index.jsp
-    }
-
-    /** 🔍 좋아요 여부 확인 */
-    @GetMapping("/checkLike.do")
-    @ResponseBody
-    public boolean checkLike(@RequestParam int boardId, @RequestParam Long memberIdx) {
-        LikeVO vo = new LikeVO();
-        vo.setBoardId(boardId);
-        vo.setMemberIdx(memberIdx);
-        return likeService.existsLike(vo);
+        return "sample/index";
     }
 }

@@ -9,11 +9,12 @@
     <resultMap id="LikeResultMap" type="egovframework.example.like.service.LikeVO">
         <id     property="likeId"    column="LIKE_ID"/>
         <result property="boardId"   column="BOARD_ID"/>
+        <result property="recipeId"  column="RECIPE_ID"/>
         <result property="memberIdx" column="MEMBER_IDX"/>
         <result property="likeDate"  column="LIKE_DATE"/>
     </resultMap>
 
-    <!-- 1. 전체 리스트 (페이징용) -->
+    <!-- 1. 전체 리스트 -->
     <select id="selectLikeList" parameterType="egovframework.example.common.Criteria" resultMap="LikeResultMap">
         SELECT * FROM BOARD_LIKE ORDER BY LIKE_ID DESC
     </select>
@@ -23,57 +24,88 @@
         SELECT COUNT(*) FROM BOARD_LIKE
     </select>
 
-    <!-- 3. 특정 게시글의 좋아요 목록 -->
+    <!-- 3. 게시판 좋아요 리스트 -->
     <select id="selectLikeListByBoardId" parameterType="int" resultMap="LikeResultMap">
         SELECT * FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
     </select>
 
-    <!-- 4. 좋아요 수 -->
+    <!-- 4. 게시판 좋아요 수 -->
     <select id="countLikes" parameterType="int" resultType="int">
         SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
     </select>
 
-  <!-- 5. 좋아요 여부 확인 -->
-<select id="existsLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
-    SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
-</select>
+    <!-- 5. 레시피 좋아요 수 -->
+    <select id="countRecipeLikes" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM BOARD_LIKE WHERE RECIPE_ID = #{recipeId}
+    </select>
 
-<!-- 6. checkLike (중복용) -->
-<select id="checkLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
-    SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
-</select>
+    <!-- 6. 좋아요 여부 확인 (게시판) -->
+    <select id="existsLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
+        SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
+    </select>
 
-<!-- 7. 좋아요 등록 -->
-<insert id="insertLike" parameterType="egovframework.example.like.service.LikeVO">
-    INSERT INTO BOARD_LIKE (LIKE_ID, BOARD_ID, MEMBER_IDX, LIKE_DATE)
-    VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{boardId}, #{memberIdx}, CURRENT_TIMESTAMP)
-</insert>
+    <!-- 7. 좋아요 여부 확인 (레시피) -->
+    <select id="existsRecipeLike" parameterType="egovframework.example.like.service.LikeVO" resultType="int">
+        SELECT COUNT(*) FROM BOARD_LIKE WHERE RECIPE_ID = #{recipeId} AND MEMBER_IDX = #{memberIdx}
+    </select>
 
+    <!-- 8. 게시판 좋아요 등록 -->
+	<insert id="insertLike" parameterType="egovframework.example.like.service.LikeVO">
+	    INSERT INTO BOARD_LIKE (LIKE_ID, BOARD_ID, MEMBER_IDX, LIKE_DATE, LIKE_TYPE)
+	    VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{boardId}, #{memberIdx}, CURRENT_TIMESTAMP, 'BOARD')
+	</insert>
 
-<!-- 8. 좋아요 삭제 -->
-<delete id="deleteLike" parameterType="egovframework.example.like.service.LikeVO">
-    DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
-</delete>
+    <!-- 9. 레시피 좋아요 등록 -->
+	<insert id="insertRecipeLike" parameterType="egovframework.example.like.service.LikeVO">
+	    INSERT INTO BOARD_LIKE (LIKE_ID, RECIPE_ID, MEMBER_IDX, LIKE_DATE, LIKE_TYPE)
+	    VALUES (SEQ_BOARD_LIKE.NEXTVAL, #{recipeId}, #{memberIdx}, CURRENT_TIMESTAMP, 'RECIPE')
+	</insert>
 
-<!-- 좋아요 추가 시 LIKE_COUNT 증가 -->
-<update id="increaseLikeCount" parameterType="int">
-  UPDATE BOARD_LIKE
-  SET LIKE_COUNT = LIKE_COUNT + 1
-  WHERE BOARD_ID = #{boardId}
-  AND ROWNUM = 1
-</update>
+    <!-- 10. 게시판 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="egovframework.example.like.service.LikeVO">
+        DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId} AND MEMBER_IDX = #{memberIdx}
+    </delete>
 
-<!-- 25년 7월 11일 좋아요수 DB에서 보게 하기 위해 추가 : 강승태 -->
-<!-- 좋아요 삭제 시 LIKE_COUNT 감소 -->
-<update id="decreaseLikeCount" parameterType="int">
-  UPDATE BOARD_LIKE
-  SET LIKE_COUNT = LIKE_COUNT - 1
-  WHERE BOARD_ID = #{boardId}
-  AND ROWNUM = 1
-</update>
+    <!-- 11. 레시피 좋아요 삭제 -->
+    <delete id="deleteRecipeLike" parameterType="egovframework.example.like.service.LikeVO">
+        DELETE FROM BOARD_LIKE WHERE RECIPE_ID = #{recipeId} AND MEMBER_IDX = #{memberIdx}
+    </delete>
 
-	<!-- 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능 -->
-	<delete id="deleteAllByBoardId" parameterType="int">
-	    DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
-	</delete>
+    <!-- 12. 게시글 삭제 시 연결된 좋아요 전체 삭제 -->
+    <delete id="deleteAllByBoardId" parameterType="int">
+        DELETE FROM BOARD_LIKE WHERE BOARD_ID = #{boardId}
+    </delete>
+
+    <!-- 13. 레시피 삭제 시 연결된 좋아요 전체 삭제 -->
+    <delete id="deleteAllByRecipeId" parameterType="string">
+        DELETE FROM BOARD_LIKE WHERE RECIPE_ID = #{recipeId}
+    </delete>
+
+    <!-- 14. 레시피 좋아요 수 증가 -->
+    <update id="increaseRecipeLikeCount" parameterType="egovframework.example.like.service.LikeVO">
+        UPDATE API_RECIPE
+        SET LIKE_COUNT = NVL(LIKE_COUNT, 0) + 1
+        WHERE RECIPE_ID = #{recipeId}
+    </update>
+
+    <!-- 15. 레시피 좋아요 수 감소 -->
+    <update id="decreaseRecipeLikeCount" parameterType="egovframework.example.like.service.LikeVO">
+        UPDATE API_RECIPE
+        SET LIKE_COUNT = NVL(LIKE_COUNT, 0) - 1
+        WHERE RECIPE_ID = #{recipeId}
+    </update>
+    
+	<!-- 16. 게시판 좋아요 수 증가 -->
+	<update id="increaseLikeCount" parameterType="egovframework.example.like.service.LikeVO">
+	    UPDATE BOARD
+	    SET LIKE_COUNT = NVL(LIKE_COUNT, 0) + 1
+	    WHERE BOARD_ID = #{boardId}
+	</update>
+	
+	<!-- 17. 게시판 좋아요 수 감소 -->
+	<update id="decreaseLikeCount" parameterType="egovframework.example.like.service.LikeVO">
+	    UPDATE BOARD
+	    SET LIKE_COUNT = NVL(LIKE_COUNT, 0) - 1
+	    WHERE BOARD_ID = #{boardId}
+	</update>
 </mapper>

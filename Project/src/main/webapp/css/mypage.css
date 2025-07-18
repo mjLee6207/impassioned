@@ -199,12 +199,15 @@ background: #118e6a;
 .like-subtab:not(.active):hover {
   color: #18895b;
 }
+
+/* 페이지네이션 중앙정렬 */
 .flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
+
 /* 반응형 */
 @media (max-width: 768px) {
   .main-flex {

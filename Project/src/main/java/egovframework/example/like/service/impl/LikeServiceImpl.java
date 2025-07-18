@@ -2,7 +2,8 @@ package egovframework.example.like.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,30 +15,8 @@ import egovframework.example.like.service.LikeVO;
 @Transactional
 public class LikeServiceImpl implements LikeService {
 
-    @Autowired
+    @Resource(name = "likeMapper")
     private LikeMapper likeMapper;
-
-    @Override
-    public List<LikeVO> selectLikeListByBoardId(int boardId) {
-        return likeMapper.selectLikeListByBoardId(boardId);
-    }
-
-    @Override
-    public boolean existsLike(LikeVO likevo) {
-        return likeMapper.existsLike(likevo) > 0;
-    }
-
-    @Override
-    public void addLike(LikeVO likevo) {
-        likeMapper.insertLike(likevo);
-        likeMapper.increaseLikeCount(likevo.getBoardId());
-    }
-
-    @Override
-    public void removeLike(LikeVO likevo) {
-        likeMapper.deleteLike(likevo);
-        likeMapper.decreaseLikeCount(likevo.getBoardId());
-    }
 
     @Override
     public List<?> selectLikeList(Criteria criteria) {
@@ -50,34 +29,86 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public int countLikes(int boardId) {
-        Integer count = likeMapper.countLikes(boardId);
-        return count != null ? count : 0;
+    public int countLikes(LikeVO vo) {
+        if ("RECIPE".equals(vo.getLikeType())) {
+            return likeMapper.countRecipeLikes(vo.getRecipeId());
+        } else {
+            return likeMapper.countLikes(vo);  // 기존 BOARD_ID 전용 쿼리 사용
+        }
     }
 
     @Override
-    public boolean checkLike(LikeVO likeVO) {
-        return likeMapper.checkLike(likeVO) > 0;
+    public boolean existsLike(LikeVO vo) {
+        return likeMapper.existsLike(vo) > 0;
+    }
+    
+    @Override
+    public boolean existsRecipeLike(LikeVO likevo) {
+        return likeMapper.existsRecipeLike(likevo) > 0;
+    }
+    
+    @Override
+    public boolean checkLike(LikeVO vo) {
+        return likeMapper.checkLike(vo) > 0;
     }
 
-	@Override
-	public void increaseLikeCount(int boardId) {
-		likeMapper.increaseLikeCount(boardId);
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void addLike(LikeVO vo) {
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.insertRecipeLike(vo); // ✅ RECIPE_ID 기준 INSERT
+            likeMapper.increaseRecipeLikeCount(vo); // ✅ 레시피 전용 수 증가
+        } else {
+            likeMapper.insertLike(vo);       // ✅ BOARD_ID 기준 INSERT
+            likeMapper.increaseLikeCount(vo); // ✅ 게시판 전용 수 증가
+        }
+    }
 
-	@Override
-	public void decreaseLikeCount(int boardId) {
-		likeMapper.decreaseLikeCount(boardId);
-		// TODO Auto-generated method stub
-		
-	}
-	
-	// 7/11 민중 게시글삭제를위한 달려있는 모든 좋아요 삭제 기능
-	@Override
-	public void deleteAllByBoardId(int boardId) {
-	    likeMapper.deleteAllByBoardId(boardId);
-	}
+    @Override
+    public void removeLike(LikeVO vo) {
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.deleteRecipeLike(vo);
+            likeMapper.decreaseRecipeLikeCount(vo);
+        } else {
+            likeMapper.deleteLike(vo);
+            likeMapper.decreaseLikeCount(vo);
+        }
+    }
 
+    @Override
+    public void increaseLikeCount(LikeVO vo) {
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.increaseRecipeLikeCount(vo); // ✅ 레시피용 쿼리 호출
+        } else {
+            likeMapper.increaseLikeCount(vo); // ✅ 게시판용 쿼리 호출
+        }
+    }
+
+    @Override
+    public void decreaseLikeCount(LikeVO vo) {
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.decreaseRecipeLikeCount(vo); // ✅ 레시피용 쿼리 호출
+        } else {
+            likeMapper.decreaseLikeCount(vo); // ✅ 게시판용 쿼리 호출
+        }
+    }
+
+    @Override
+    public List<LikeVO> selectLikeListByTarget(LikeVO vo) {
+        return likeMapper.selectLikeListByTarget(vo);  // ✅ 올바른 메서드 호출
+    }
+
+
+    @Override
+    public void deleteAllByTarget(LikeVO vo) {
+        likeMapper.deleteAllByTarget(vo);
+    }
+    
+    @Override
+    public void deleteAllByBoardId(int boardId) {
+        LikeVO vo = new LikeVO();
+        vo.setLikeType("BOARD");
+        vo.setBoardId(boardId);
+        likeMapper.deleteAllByTarget(vo);
+    }
+    
 }

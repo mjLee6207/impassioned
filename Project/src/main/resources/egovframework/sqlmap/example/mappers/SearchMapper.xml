@@ -7,7 +7,6 @@
 <select	id="searchAll"
         resultType="egovframework.example.search.service.SearchVO"
         parameterType="Criteria">
-        
     SELECT 'RECIPE' AS source, RECIPE_ID AS id, TITLE_KR AS title, THUMBNAIL
     FROM API_RECIPE
     <where>

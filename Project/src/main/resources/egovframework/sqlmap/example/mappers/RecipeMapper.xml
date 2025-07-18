@@ -12,6 +12,7 @@
 	INSTRUCTION_KR,INGREDIENT_KR,THUMBNAIL FROM API_RECIPE
 	WHERE RECIPE_ID = #{recipeId}
 </select>
+
 <select id="selectRandomRecipesByCategory" resultType="egovframework.example.recipe.service.RecipeVO">
 	SELECT *
 	FROM API_RECIPE
@@ -24,12 +25,8 @@
 <select id="selectRecipeListPaging"
         resultType="egovMap"
         parameterType="egovframework.example.common.Criteria">
-    <![CDATA[
-    SELECT * FROM (
-        SELECT ROWNUM AS rn, A.* FROM (
-            SELECT RECIPE_ID, TITLE_KR, THUMBNAIL
-            FROM API_RECIPE
-    ]]>
+    SELECT RECIPE_ID, TITLE_KR, THUMBNAIL
+    FROM API_RECIPE
     <where>
         <if test="categoryKr != null and categoryKr != ''">
             AND CATEGORY_KR = #{categoryKr}
@@ -38,13 +35,9 @@
             AND TITLE_KR LIKE '%' || #{searchKeyword} || '%'
         </if>
     </where>
-    <![CDATA[
-            ORDER BY RECIPE_ID DESC
-        ) A
-        WHERE ROWNUM <= #{firstIndex} + #{pageUnit}
-    )
-    WHERE rn > #{firstIndex}
-    ]]>
+    ORDER BY RECIPE_ID DESC
+    OFFSET #{firstIndex} ROWS
+    FETCH NEXT #{pageUnit} ROWS ONLY
 </select>
 
 <!-- 페이징+검색+카테고리 (총 개수) -->
@@ -63,4 +56,13 @@
     </where>
 </select>
 
+<select id="selectAllRecipeThumb" resultType="egovframework.example.recipe.service.RecipeVO">
+    SELECT RECIPE_ID, THUMBNAIL FROM API_RECIPE
+</select>
+
+<update id="updateThumbnailPath" parameterType="egovframework.example.recipe.service.RecipeVO">
+    UPDATE API_RECIPE
+    SET THUMBNAIL = #{thumbnail}
+    WHERE RECIPE_ID = #{recipeId}
+</update>
 </mapper>

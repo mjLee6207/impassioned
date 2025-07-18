@@ -7,15 +7,24 @@
 <select	id="searchAll"
         resultType="egovframework.example.search.service.SearchVO"
         parameterType="Criteria">
-	SELECT 'RECIPE' AS SOURCE, RECIPE_ID AS ID, TITLE_KR AS TITLE,THUMBNAIL
-	FROM API_RECIPE
-	WHERE TITLE_KR LIKE '%' || #{searchKeyword} || '%'
+        
+    SELECT 'RECIPE' AS source, RECIPE_ID AS id, TITLE_KR AS title, THUMBNAIL
+    FROM API_RECIPE
+    <where>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            TITLE_KR LIKE '%' || #{searchKeyword} || '%'
+        </if>
+    </where>
 
-	UNION ALL
+    UNION ALL
 
-	SELECT 'BOARD' AS SOURCE, TO_CHAR(BOARD_ID) AS ID, TITLE,THUMBNAIL
-	FROM BOARD
-	WHERE TITLE LIKE '%' || #{searchKeyword} || '%';
+    SELECT 'BOARD' AS source, TO_CHAR(BOARD_ID) AS id, TITLE, CAST(NULL AS VARCHAR2(200)) AS thumbnail
+    FROM BOARD
+    <where>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            TITLE LIKE '%' || #{searchKeyword} || '%'
+        </if>
+    </where>
 </select>
 
 </mapper>

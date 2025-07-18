@@ -16,9 +16,17 @@ public interface MypageMapper {
     List<MypageMyPostVO> selectMyBoardList(@Param("criteria") Criteria criteria, @Param("memberIdx") Long memberIdx);
     int selectMyBoardListTotCnt(@Param("criteria") Criteria criteria, @Param("memberIdx") Long memberIdx);
 
-    // 내가 좋아요한 글 (페이징/검색 포함)
-    List<MypageLikeVO> selectMyLikeList(@Param("criteria") Criteria criteria, @Param("memberIdx") Long memberIdx);
-    int selectMyLikeListTotCnt(@Param("criteria") Criteria criteria, @Param("memberIdx") Long memberIdx);
+ // 내가 좋아요한 글(레시피/게시글) - likeType 파라미터 추가!
+    List<MypageLikeVO> selectMyLikeList(
+        @Param("criteria") Criteria criteria,
+        @Param("memberIdx") Long memberIdx,
+        @Param("likeType") String likeType    
+    );
+    int selectMyLikeListTotCnt(
+        @Param("criteria") Criteria criteria,
+        @Param("memberIdx") Long memberIdx,
+        @Param("likeType") String likeType   
+    );
     
     
 }

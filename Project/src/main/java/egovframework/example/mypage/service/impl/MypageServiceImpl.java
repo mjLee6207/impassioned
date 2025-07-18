@@ -38,13 +38,13 @@ public class MypageServiceImpl implements MypageService {
     }
 
     @Override
-    public List<?> selectMyLikeList(Criteria criteria, Long memberIdx) {
-        return mypageLikeMapper.selectMyLikeList(criteria, memberIdx);
+    public List<MypageLikeVO> selectMyLikeList(Criteria criteria, Long memberIdx, String likeType) {
+        return mypageLikeMapper.selectMyLikeList(criteria, memberIdx, likeType);
     }
 
     @Override
-    public int selectMyLikeListTotCnt(Criteria criteria, Long memberIdx) {
-        return mypageLikeMapper.selectMyLikeListTotCnt(criteria, memberIdx);
+    public int selectMyLikeListTotCnt(Criteria criteria, Long memberIdx, String likeType) {
+        return mypageLikeMapper.selectMyLikeListTotCnt(criteria, memberIdx, likeType);
     }
 
 

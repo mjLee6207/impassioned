@@ -5,30 +5,7 @@
 
 <mapper namespace="egovframework.example.mypage.service.impl.MypageMapper">
 
-    <!-- 내가 좋아요한 글 목록 (비페이징) -->
-    <select id="selectLikedPosts" parameterType="java.lang.Long" resultType="egovframework.example.mypage.service.MypageLikeVO">
-        SELECT
-            b.BOARD_ID       AS boardId,
-            b.TITLE          AS title,
-            b.CATEGORY       AS category,
-            b.WRITE_DATE     AS writeDate,
-            b.THUMBNAIL      AS thumbnail,
-            b.WRITER_IDX     AS writerIdx,
-            b.VIEW_COUNT     AS viewCount,
-            m.NICKNAME       AS writerName,
-            l.LIKE_DATE      AS likeDate,
-            (SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount
-        FROM
-            BOARD_LIKE l
-            INNER JOIN BOARD b ON l.BOARD_ID = b.BOARD_ID
-            INNER JOIN MEMBER m ON b.WRITER_IDX = m.MEMBER_IDX
-        WHERE
-            l.MEMBER_IDX = #{memberIdx}
-        ORDER BY
-            l.LIKE_DATE DESC
-    </select>
-
-    <!-- 내가 작성한 글 목록 (비페이징) -->
+    <!-- 1. 내가 작성한 글 목록 (비페이징) -->
     <select id="selectMyPosts" parameterType="java.lang.Long" resultType="egovframework.example.mypage.service.MypageMyPostVO">
         SELECT
             b.BOARD_ID     AS boardId,
@@ -38,15 +15,12 @@
             b.THUMBNAIL    AS thumbnail,
             b.VIEW_COUNT   AS viewCount,
             (SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount
-        FROM
-            BOARD b
-        WHERE
-            b.WRITER_IDX = #{memberIdx}
-        ORDER BY
-            b.WRITE_DATE DESC
+        FROM BOARD b
+        WHERE b.WRITER_IDX = #{memberIdx}
+        ORDER BY b.WRITE_DATE DESC
     </select>
 
-    <!-- 내가 쓴 글(페이징/검색 포함) - Oracle 방식 -->
+    <!-- 2. 내가 쓴 글(페이징/검색) -->
     <select id="selectMyBoardList" parameterType="map" resultType="egovframework.example.mypage.service.MypageMyPostVO">
         SELECT * FROM (
             SELECT 
@@ -71,7 +45,7 @@
         WHERE rn &gt; #{criteria.firstIndex} AND rn &lt;= (#{criteria.firstIndex} + #{criteria.pageUnit})
     </select>
 
-    <!-- 내가 쓴 글 총 개수 -->
+    <!-- 3. 내가 쓴 글 총 개수 -->
     <select id="selectMyBoardListTotCnt" parameterType="map" resultType="int">
         SELECT COUNT(*)
         FROM BOARD b
@@ -84,48 +58,98 @@
         </if>
     </select>
 
-    <!-- 내가 좋아요한 글(페이징/검색 포함) - Oracle 방식 -->
+    <!-- 4. 내가 좋아요한 글(게시글/레시피, 페이징/검색 포함) -->
     <select id="selectMyLikeList" parameterType="map" resultType="egovframework.example.mypage.service.MypageLikeVO">
-        SELECT * FROM (
-            SELECT 
-                b.BOARD_ID       AS boardId,
-                b.TITLE          AS title,
-                b.CATEGORY       AS category,
-                b.WRITE_DATE     AS writeDate,
-                b.THUMBNAIL      AS thumbnail,
-                b.WRITER_IDX     AS writerIdx,
-                b.VIEW_COUNT     AS viewCount,
-                m.NICKNAME       AS writerName,
-                l.LIKE_DATE      AS likeDate,
-                (SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount,
-                ROWNUM AS rn
-            FROM BOARD_LIKE l
-                INNER JOIN BOARD b ON l.BOARD_ID = b.BOARD_ID
-                INNER JOIN MEMBER m ON b.WRITER_IDX = m.MEMBER_IDX
-            WHERE l.MEMBER_IDX = #{memberIdx}
-                <if test="criteria.searchKeyword != null and criteria.searchKeyword != ''">
-                    AND b.TITLE LIKE '%' || #{criteria.searchKeyword} || '%'
-                </if>
-                <if test="criteria.category != null and criteria.category != ''">
-                    AND b.CATEGORY = #{criteria.category}
-                </if>
-            ORDER BY l.LIKE_DATE DESC
-        )
-        WHERE rn &gt; #{criteria.firstIndex} AND rn &lt;= (#{criteria.firstIndex} + #{criteria.pageUnit})
+        <choose>
+            <!-- 게시글(BOARD) 좋아요 -->
+            <when test="likeType == 'BOARD'">
+                SELECT * FROM (
+                    SELECT 
+                        b.BOARD_ID       AS boardId,
+                        b.TITLE          AS title,
+                        b.CATEGORY       AS category,
+                        b.WRITE_DATE     AS writeDate,
+                        b.THUMBNAIL      AS thumbnail,
+                        b.VIEW_COUNT     AS viewCount,
+                        m.NICKNAME       AS writerName,
+                        l.LIKE_DATE      AS likeDate,
+                        (SELECT COUNT(*) FROM BOARD_LIKE bl WHERE bl.BOARD_ID = b.BOARD_ID) AS likeCount,
+                        ROWNUM AS rn
+                    FROM BOARD_LIKE l
+                        INNER JOIN BOARD b ON l.BOARD_ID = b.BOARD_ID
+                        INNER JOIN MEMBER m ON b.WRITER_IDX = m.MEMBER_IDX
+                    WHERE l.MEMBER_IDX = #{memberIdx}
+                      AND l.LIKE_TYPE = 'BOARD'
+                        <if test="criteria.searchKeyword != null and criteria.searchKeyword != ''">
+                            AND b.TITLE LIKE '%' || #{criteria.searchKeyword} || '%'
+                        </if>
+                        <if test="criteria.category != null and criteria.category != ''">
+                            AND b.CATEGORY = #{criteria.category}
+                        </if>
+                    ORDER BY l.LIKE_DATE DESC
+                )
+                WHERE rn &gt; #{criteria.firstIndex} AND rn &lt;= (#{criteria.firstIndex} + #{criteria.pageUnit})
+            </when>
+            <!-- 레시피(RECIPE) 좋아요 -->
+            <otherwise>
+                SELECT * FROM (
+                    SELECT 
+                        r.RECIPE_ID      AS recipeId,
+                        r.TITLE_KR       AS recipeTitle,
+                        r.CATEGORY_KR    AS recipeCategory,
+                        r.THUMBNAIL      AS recipeThumbnail,
+                        r.LIKE_COUNT     AS recipeLikeCount,
+                        l.LIKE_DATE      AS likeDate,
+                        ROWNUM AS rn
+                    FROM BOARD_LIKE l
+                        INNER JOIN API_RECIPE r ON l.RECIPE_ID = r.RECIPE_ID
+                    WHERE l.MEMBER_IDX = #{memberIdx}
+                      AND l.LIKE_TYPE = 'RECIPE'
+                        <if test="criteria.searchKeyword != null and criteria.searchKeyword != ''">
+                            AND r.TITLE_KR LIKE '%' || #{criteria.searchKeyword} || '%'
+                        </if>
+                        <if test="criteria.category != null and criteria.category != ''">
+                            AND r.CATEGORY_KR = #{criteria.category}
+                        </if>
+                    ORDER BY l.LIKE_DATE DESC
+                )
+                WHERE rn &gt; #{criteria.firstIndex} AND rn &lt;= (#{criteria.firstIndex} + #{criteria.pageUnit})
+            </otherwise>
+        </choose>
     </select>
 
-    <!-- 내가 좋아요한 글 총 개수 -->
+    <!-- 5. 내가 좋아요한 글(게시글/레시피) 총 개수 -->
     <select id="selectMyLikeListTotCnt" parameterType="map" resultType="int">
-        SELECT COUNT(*)
-        FROM BOARD_LIKE l
-            INNER JOIN BOARD b ON l.BOARD_ID = b.BOARD_ID
-        WHERE l.MEMBER_IDX = #{memberIdx}
-        <if test="criteria.searchKeyword != null and criteria.searchKeyword != ''">
-            AND b.TITLE LIKE '%' || #{criteria.searchKeyword} || '%'
-        </if>
-        <if test="criteria.category != null and criteria.category != ''">
-            AND b.CATEGORY = #{criteria.category}
-        </if>
+        <choose>
+            <!-- 게시글(BOARD) 좋아요 -->
+            <when test="likeType == 'BOARD'">
+                SELECT COUNT(*)
+                FROM BOARD_LIKE l
+                    INNER JOIN BOARD b ON l.BOARD_ID = b.BOARD_ID
+                WHERE l.MEMBER_IDX = #{memberIdx}
+                  AND l.LIKE_TYPE = 'BOARD'
+                    <if test="criteria.searchKeyword != null and criteria.searchKeyword != ''">
+                        AND b.TITLE LIKE '%' || #{criteria.searchKeyword} || '%'
+                    </if>
+                    <if test="criteria.category != null and criteria.category != ''">
+                        AND b.CATEGORY = #{criteria.category}
+                    </if>
+            </when>
+            <!-- 레시피(RECIPE) 좋아요 -->
+            <otherwise>
+                SELECT COUNT(*)
+                FROM BOARD_LIKE l
+                    INNER JOIN API_RECIPE r ON l.RECIPE_ID = r.RECIPE_ID
+                WHERE l.MEMBER_IDX = #{memberIdx}
+                  AND l.LIKE_TYPE = 'RECIPE'
+                    <if test="criteria.searchKeyword != null and criteria.searchKeyword != ''">
+                        AND r.TITLE_KR LIKE '%' || #{criteria.searchKeyword} || '%'
+                    </if>
+                    <if test="criteria.category != null and criteria.category != ''">
+                        AND r.CATEGORY_KR = #{criteria.category}
+                    </if>
+            </otherwise>
+        </choose>
     </select>
 
 </mapper>

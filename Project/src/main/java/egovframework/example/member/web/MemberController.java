@@ -328,7 +328,7 @@ public class MemberController {
 
             // === [4] 닉네임 자동 변경 시 경고 페이지로 리다이렉트
             if ("Y".equals(session.getAttribute("nicknameAutoRenamedYn"))) {
-                return "redirect:/nickname-warning.do";
+                return "redirect:/redirect/nicknameConfirm.do";
             }
 
             // === [5] 그 외 정상 리다이렉트
@@ -343,18 +343,9 @@ public class MemberController {
         }
     }
     
-//  카카오 닉네임 중복시 오류창
-    @GetMapping("/nickname-warning.do")
-    public String nicknameWarningPage(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-
-        String before = (String) session.getAttribute("nicknameBefore");
-        String after = (String) session.getAttribute("nicknameAfter");
-
-        model.addAttribute("nicknameBefore", before);
-        model.addAttribute("nicknameAfter", after);
-
-        // 이후 로직 처리를 위해 리셋은 보류. 실제 확정 시 삭제해도 됨
+//  카카오 이용자 닉네임 자동 변경 안내 confirm창
+    @GetMapping("/redirect/nicknameConfirm.do")
+    public String showNicknameConfirmPage() {
         return "member/nicknameWarning";
     }
 }

@@ -1,23 +1,36 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<!DOCTYPE html>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:if test="${not empty sessionScope.nicknameAutoRenamedYn}">
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>닉네임 자동 변경 안내</title>
+    <script>
+        window.onload = function () {
+            const before = "${sessionScope.nicknameBefore}";
+            const after = "${sessionScope.nicknameAfter}";
+
+            const result = confirm(
+                "🙂 닉네임이 자동으로 변경되었습니다.\n" +
+                "기존 닉네임: " + before + "\n" +
+                "변경된 닉네임: " + after + "\n\n" +
+                "지금 내 정보를 수정하시겠습니까?"
+            );
+
+            if (result) {
+                location.href = "${pageContext.request.contextPath}/mypage/mycorrection.do";
+            } else {
+                location.href = "${pageContext.request.contextPath}/";
+            }
+        };
+    </script>
 </head>
 <body>
- <h2>닉네임 중복으로 자동 변경되었습니다</h2>
-    <p>원래 닉네임: <strong>${nicknameBefore}</strong></p>
-    <p>변경된 닉네임: <strong>${nicknameAfter}</strong></p>
-
-    <form method="get" action="/mypage/mycorrection.do">
-        <button type="submit">닉네임 수정하러 가기</button>
-    </form>
-    
-    <form method="get" action="/">
-        <button type="submit">지금 닉네임 그대로 사용</button>
-    </form>
 </body>
 </html>
+
+<c:remove var="nicknameAutoRenamedYn" scope="session"/>
+<c:remove var="nicknameBefore" scope="session"/>
+<c:remove var="nicknameAfter" scope="session"/>
+</c:if>

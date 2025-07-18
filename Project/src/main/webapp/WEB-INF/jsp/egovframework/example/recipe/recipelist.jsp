@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/pagination.css">
     <link rel="stylesheet" href="/css/style.css">
-    <jsp:include page="/common/header.jsp" />
 </head>
 <body>
 
+<jsp:include page="/common/header.jsp" />
 
 
 <div class="main-flex">
@@ -64,7 +64,8 @@
                     <div class="recipe-card">
                         <a href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipeList.recipeId}&categoryKr=${param.categoryKr}&pageIndex=${pageIndex}">
                             <img src="${recipeList.thumbnail}"
-                                 alt="썸네일" class="recipe-thumb-img"/>
+                        	     loading="lazy"
+                                 alt="썸네일" class="recipe-thumb-img" />
                             <div class="recipe-title">
                                 <b>${recipeList.titleKr}</b>
                             </div>

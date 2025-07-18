@@ -19,7 +19,6 @@
 <link rel="stylesheet" href="/css/sidebar.css" />
 <link rel="stylesheet" href="/css/pagination.css">
 <jsp:include page="/common/header.jsp" />
-
 </head>
 
 <body>

@@ -64,8 +64,6 @@ data-recipe-id="${not empty recipeVO.recipeId ? recipeVO.recipeId : ''}"
   </div>
 </div>
 
-
-
   <!-- 조리법 -->
   <div class="recipe-card">
     <div class="section-title">조리법</div>

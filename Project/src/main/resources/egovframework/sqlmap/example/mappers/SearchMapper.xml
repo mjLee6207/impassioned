@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.example.search.service.impl.searchMapper">
+
+<select	id="searchAll"
+        resultType="egovframework.example.search.service.SearchVO"
+        parameterType="Criteria">
+	SELECT 'RECIPE' AS SOURCE, RECIPE_ID AS ID, TITLE_KR AS TITLE,THUMBNAIL
+	FROM API_RECIPE
+	WHERE TITLE_KR LIKE '%' || #{searchKeyword} || '%'
+
+	UNION ALL
+
+	SELECT 'BOARD' AS SOURCE, TO_CHAR(BOARD_ID) AS ID, TITLE,THUMBNAIL
+	FROM BOARD
+	WHERE TITLE LIKE '%' || #{searchKeyword} || '%';
+</select>
+
+</mapper>

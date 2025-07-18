@@ -1,0 +1,22 @@
+
+      .search-section {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(30,138,87,.06);
+        padding: 34px 34px 28px 34px;
+        margin-bottom: 34px;
+        max-width: 900px;
+        margin-left: auto; margin-right: auto;
+      }
+      .section-header {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 24px;
+      }
+      .section-title {
+        font-size: 1.18rem; font-weight: bold; letter-spacing: -1px;
+      }
+      .more-link {
+        color: #1e8a57; font-weight: 500; font-size: 1.03rem; text-decoration: none;
+      }
+      .more-link:hover { color: #118e6a; text-decoration: underline; }
+      /* 카드 디자인/그리드 등 recipelist.css 그대로 활용 */

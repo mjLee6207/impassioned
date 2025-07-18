@@ -22,7 +22,7 @@ public class DataKOServiceImpl implements DataKOService{
 	@Override
 	public void saveDataKO() {
 		RestTemplate restTemplate = new RestTemplate();
-	    String url = "http://openapi.foodsafetykorea.go.kr/api/43a166f2e97e40329c82/COOKRCP01/json/1/500";
+	    String url = "http://openapi.foodsafetykorea.go.kr/api/43a166f2e97e40329c82/COOKRCP01/json/50/150";
 	    
         try {
             // 자동 파싱

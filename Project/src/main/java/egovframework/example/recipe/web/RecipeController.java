@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.common.Criteria;
+import egovframework.example.recipe.service.RecipeImageService;
 import egovframework.example.recipe.service.RecipeService;
 import egovframework.example.recipe.service.RecipeVO;
 
@@ -19,6 +21,15 @@ public class RecipeController {
     
     @Autowired
     RecipeService recipeService;
+    @Autowired
+    private RecipeImageService recipeImageService;
+    
+    @GetMapping(value = "/recipe/test.do", produces = "text/plain; charset=UTF-8") 
+    @ResponseBody
+    public String runOneTimeImageDownload() {
+        recipeImageService.downloadAndCacheAllImages();
+        return "✅ 이미지 다운로드 및 DB 경로 변경 완료!";
+    }
     
     // 레시피 전체조회 & 카테고리/검색/페이징 모두 이 한 메서드
     @GetMapping("recipe/recipe.do")

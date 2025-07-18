@@ -163,20 +163,33 @@
   right: 20px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   z-index: 2;
 
   background: #fff;
   border-radius: 12px;
   /* 좌우 padding을 10→16px으로 살짝 키워서 박스 넓이 증가 */
-  padding: 6px 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 15px 30px 10px 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.like-btn-wrap:hover {
+  /* 호버 시 연한 초록 (원하는 색상으로 조절 가능) */
+  background-color: #e8f8f1;
+}
+
+.like-btn.liked {
+  color: #e74c3c !important;      /* 좋아요 상태일 때 빨강 */
+}
+
+.like-btn.liked:hover {
+  color: #c0392b !important;
 }
 
 .like-btn {
   /* 고정된 크기의 정사각 버튼으로 */
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
 
   /* 버튼 내부 가로·세로 중앙 정렬 */
   display: flex;

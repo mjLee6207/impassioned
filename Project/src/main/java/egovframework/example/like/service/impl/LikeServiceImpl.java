@@ -30,8 +30,11 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public int countLikes(LikeVO vo) {
-        Integer count = likeMapper.countLikes(vo);
-        return count != null ? count : 0;
+        if ("RECIPE".equals(vo.getLikeType())) {
+            return likeMapper.countRecipeLikes(vo.getRecipeId());
+        } else {
+            return likeMapper.countLikes(vo);  // 기존 BOARD_ID 전용 쿼리 사용
+        }
     }
 
     @Override
@@ -46,24 +49,42 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void addLike(LikeVO vo) {
-        likeMapper.insertLike(vo);
-        likeMapper.increaseLikeCount(vo);
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.insertRecipeLike(vo); // ✅ RECIPE_ID 기준 INSERT
+            likeMapper.increaseRecipeLikeCount(vo); // ✅ 레시피 전용 수 증가
+        } else {
+            likeMapper.insertLike(vo);       // ✅ BOARD_ID 기준 INSERT
+            likeMapper.increaseLikeCount(vo); // ✅ 게시판 전용 수 증가
+        }
     }
 
     @Override
     public void removeLike(LikeVO vo) {
-        likeMapper.deleteLike(vo);
-        likeMapper.decreaseLikeCount(vo);
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.deleteRecipeLike(vo);
+            likeMapper.decreaseRecipeLikeCount(vo);
+        } else {
+            likeMapper.deleteLike(vo);
+            likeMapper.decreaseLikeCount(vo);
+        }
     }
 
     @Override
     public void increaseLikeCount(LikeVO vo) {
-        likeMapper.increaseLikeCount(vo);
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.increaseRecipeLikeCount(vo); // ✅ 레시피용 쿼리 호출
+        } else {
+            likeMapper.increaseLikeCount(vo); // ✅ 게시판용 쿼리 호출
+        }
     }
 
     @Override
     public void decreaseLikeCount(LikeVO vo) {
-        likeMapper.decreaseLikeCount(vo);
+        if ("RECIPE".equals(vo.getLikeType())) {
+            likeMapper.decreaseRecipeLikeCount(vo); // ✅ 레시피용 쿼리 호출
+        } else {
+            likeMapper.decreaseLikeCount(vo); // ✅ 게시판용 쿼리 호출
+        }
     }
 
     @Override

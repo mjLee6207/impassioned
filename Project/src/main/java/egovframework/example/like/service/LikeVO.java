@@ -22,8 +22,9 @@ public class LikeVO extends Criteria {
     private Long memberIdx;   // 회원 FK
     private Date likeDate;   // 등록일
     
-    //게시판 추가 
+    // 조회전용 계산 결과용 
     private int likeCount= 1;
+    
     private String likeType ="BOARD";
     private Integer boardId;         // 게시글 FK (nullable)
     private String recipeId;

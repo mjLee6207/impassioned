@@ -24,6 +24,9 @@ public interface RecipeMapper {
     //  페이징+검색+카테고리 통합 (이거 "2개"만 남김)
     List<EgovMap> selectRecipeListPaging(Criteria criteria);   // 리스트 조회
     int getTotalRecipeCount(Criteria criteria);                // 총 개수 조회
+    
+    List<RecipeVO> selectAllRecipeThumb();
+    void updateThumbnailPath(RecipeVO recipe);
 
 	
 	

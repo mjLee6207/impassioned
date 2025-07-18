@@ -67,6 +67,7 @@
         | 조회수: ${board.viewCount}
     </div>
 </div>
+
         <!-- 상세 내용 -->
         <div class="post-section-title">재료준비</div>
         <div class="post-content">

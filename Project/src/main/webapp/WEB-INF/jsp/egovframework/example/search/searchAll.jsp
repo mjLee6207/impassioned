@@ -66,7 +66,8 @@
             <c:forEach var="board" items="${boardList}">
               <div class="recipe-card">
                 <a href="/board/view.do?boardId=${board.id}">
-                  <img src="${board.thumbnail}" alt="썸네일" class="recipe-thumb-img"/>
+               
+                  <img src="${empty board.thumbnail ? '/images/no-image.png' : board.thumbnail}" alt="썸네일" class="recipe-thumb-img"/>
                   <div class="recipe-title"><b>${board.title}</b></div>
                 </a>
               </div>

@@ -21,7 +21,6 @@
     <div class="sidebar-wrap">
       <jsp:include page="/common/sidebar.jsp" />
     </div>
-    
     <!-- 오른쪽 컨텐츠 영역 -->
     <div class="content-wrap">
       
@@ -79,6 +78,10 @@
         </div>
       </div>
       
+</div>
+</div>
+</div>
+
     </div>
   </div>
   

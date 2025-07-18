@@ -44,7 +44,26 @@
   max-width: unset;
   margin-bottom: 18px;
 }
-
+.like-btn {
+  position: absolute;
+  border:none;
+  top: 12px;
+  right: 20px;
+  z-index: 2;
+  background: #fff;
+  color: #aaa;
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 7px 23px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: background 0.17s, color 0.17s;
+  text-decoration: none;
+}
+.like-btn:hover {
+  background: #1e8a57;
+  color: #fff;
+}
 /* 이미지/타이틀 */
 .recipe-img {
   border-radius: 12px;

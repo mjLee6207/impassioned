@@ -107,27 +107,23 @@
 
 <jsp:include page="/common/footer.jsp" />
 
-<script>
-    // 엔터키로 검색 -  (유준)  
-    document.addEventListener("DOMContentLoaded", () => {
-        const input = document.querySelector("#searchKeyword");
-        input?.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                input.form?.submit();
-            }
-        });
-    });
-    // 공백 검색시 빈 값 공백 방지 (유준)
-    document.querySelector('.navbar-search form').addEventListener('submit', function(e) {
-        const value = this.keyword.value.trim();
-        if (!value) {
-          alert('검색어를 입력하세요!');
-          this.keyword.focus();
-          e.preventDefault();
-        }
-      });
-</script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("mainSearchForm");
+    const input = document.getElementById("searchKeyword");
+    
+    // 엔터키 시 submit 되도록(버튼 없어도 됨) - 기본 동작이니 생략 가능
+    
+    // submit시 공백이면 얼럿
+    form.addEventListener("submit", function(e) {
+        if (!input.value.trim()) {
+            alert("검색어를 입력하세요!");
+            input.focus();
+            e.preventDefault();
+        }
+    });
+});
+</script>
 </body>
 </html>

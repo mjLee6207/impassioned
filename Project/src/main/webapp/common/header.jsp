@@ -76,7 +76,7 @@
                 <div class="dropdown" id="dropdown-event">
                     <button class="dropdown-toggle" type="button">이벤트</button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/event/coupon">레시피 추천</a>
+                        <a class="dropdown-item" href="/event/test.do">레시피 추천</a>
                         <a class="dropdown-item" href="/event/recipe">Recipe Event</a>
                     </div>
                 </div>
@@ -112,6 +112,23 @@
                 </c:otherwise>
             </c:choose>
         </div>
+        <!-- 햄버거(앱) 메뉴 : 모바일에서만 보임 -->
+<div class="app-menu-container">
+    <button class="app-menu-toggle" onclick="toggleAppMenu()">
+        <i class="bi bi-list"></i>
+    </button>
+    <div class="app-menu-dropdown" id="appMenuDropdown">
+        <c:choose>
+            <c:when test="${not empty sessionScope.loginUser}">
+                <a href="/mypage/mypage.do">마이페이지</a>
+                <a href="javascript:void(0);" onclick="goLogout()">로그아웃</a>
+            </c:when>
+            <c:otherwise>
+                <a href="javascript:void(0);" onclick="goLogin()">로그인</a>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</div>
     </nav>
 </div>
 
@@ -158,6 +175,19 @@
           e.preventDefault();
         }
       });
+    function toggleAppMenu() {
+    	  const menu = document.getElementById('appMenuDropdown');
+    	  menu.classList.toggle('show');
+    	}
+    	// 메뉴 밖 클릭시 닫힘
+    	document.addEventListener('click', function(event) {
+    	  const menu = document.getElementById('appMenuDropdown');
+    	  const btn = document.querySelector('.app-menu-toggle');
+    	  if (!menu || !btn) return;
+    	  if (!menu.contains(event.target) && !btn.contains(event.target)) {
+    	    menu.classList.remove('show');
+    	  }
+    	});
 </script>
 </body>
 </html>

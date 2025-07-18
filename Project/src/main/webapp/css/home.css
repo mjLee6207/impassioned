@@ -30,11 +30,15 @@ body {
 	display: flex;
 	justify-content: center;
 }
-
+.search-bar form {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
 .search-bar input {
 	margin-top: 15px;
 	margin-bottom: 20px;
-	width: 80%;
+	width: 100%;
 	padding: 24px 40px;
 	font-size: 20px;
 	border-radius: 50px;

@@ -41,8 +41,14 @@ public class SearchController {
                 boardList.add(vo);
             }
         }
-
-        // JSP에서 그대로 쓸 수 있게 attribute 추가
+        // 8개까지만 잘라서 미리보기 (8개 이하면 그대로)
+        if (recipeList.size() > 8) {
+            recipeList = recipeList.subList(0, 8);
+        }
+        if (boardList.size() > 8) {
+            boardList = boardList.subList(0, 8);
+        }
+        
         model.addAttribute("recipeList", recipeList);
         model.addAttribute("boardList", boardList);
         model.addAttribute("searchKeyword", keyword);

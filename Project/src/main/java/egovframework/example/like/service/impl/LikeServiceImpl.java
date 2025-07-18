@@ -41,7 +41,12 @@ public class LikeServiceImpl implements LikeService {
     public boolean existsLike(LikeVO vo) {
         return likeMapper.existsLike(vo) > 0;
     }
-
+    
+    @Override
+    public boolean existsRecipeLike(LikeVO likevo) {
+        return likeMapper.existsRecipeLike(likevo) > 0;
+    }
+    
     @Override
     public boolean checkLike(LikeVO vo) {
         return likeMapper.checkLike(vo) > 0;

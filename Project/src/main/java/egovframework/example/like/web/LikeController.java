@@ -21,12 +21,17 @@ public class LikeController {
     @ResponseBody
     public int addLike(@RequestBody LikeVO vo) {
         log.info("📥 addLike.do 요청: {}", vo);
-        log.info("➡️ 파라미터: {}", vo);
-
 
         try {
-            // 이미 눌렀는지 검사
-            if (!likeService.existsLike(vo)) {
+            boolean exists = false;
+
+            if ("BOARD".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsLike(vo);
+            } else if ("RECIPE".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsRecipeLike(vo);
+            }
+
+            if (!exists) {
                 likeService.addLike(vo);
                 log.info("✅ 좋아요 등록 완료");
             } else {
@@ -47,7 +52,15 @@ public class LikeController {
         log.info("📥 cancelLike.do 요청: {}", vo);
 
         try {
-            if (likeService.existsLike(vo)) {
+            boolean exists = false;
+
+            if ("BOARD".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsLike(vo);
+            } else if ("RECIPE".equalsIgnoreCase(vo.getLikeType())) {
+                exists = likeService.existsRecipeLike(vo);
+            }
+
+            if (exists) {
                 likeService.removeLike(vo);
                 log.info("✅ 좋아요 취소 완료");
             } else {

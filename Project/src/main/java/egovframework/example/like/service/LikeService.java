@@ -15,6 +15,7 @@ public interface LikeService {
 
     // 좋아요 여부 확인
     boolean existsLike(LikeVO likevo);      // 게시판 전용
+    boolean existsRecipeLike(LikeVO likevo); // 레시피 좋아요 여부 확인용
     boolean checkLike(LikeVO likeVO);       // 공통 중복 확인용
 
     // 좋아요 등록/삭제

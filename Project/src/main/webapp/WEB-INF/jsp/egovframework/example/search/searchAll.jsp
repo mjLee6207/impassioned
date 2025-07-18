@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -34,9 +35,9 @@
         <div class="search-section card-style">
           <div class="section-header">
             <span class="section-title">레시피 검색결과</span>
-            <c:if test="${not empty recipeList}">
-              <a href="/recipe/searchAll.do?keyword=${param.keyword}" class="more-link">더 보기</a>
-            </c:if>
+            	<c:if test="${fn:length(recipeList) >= 8}">
+    				<a href="/recipe/recipe.do?categoryKr=${categoryKr}&searchKeyword=${searchKeyword}&pageIndex=1" class="more-link">더 보기</a>
+ 			 	</c:if>
           </div>
           <div class="recipe-grid">
             <c:forEach var="recipe" items="${recipeList}">
@@ -57,9 +58,9 @@
         <div class="search-section card-style">
           <div class="section-header">
             <span class="section-title">게시판 검색결과</span>
-            <c:if test="${not empty boardList}">
-              <a href="/board/searchAll.do?keyword=${param.keyword}" class="more-link">더 보기</a>
-            </c:if>
+           	<c:if test="${fn:length(boardList) >= 8}">
+    		<a href="/board/board.do?category=${category}&searchKeyword=${searchKeyword}&pageIndex=1" class="more-link">더 보기</a>
+  			</c:if>
           </div>
           <div class="recipe-grid">
             <c:forEach var="board" items="${boardList}">

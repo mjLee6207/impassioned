@@ -151,10 +151,10 @@
     });
     // 공백 검색시 빈 값 공백 방지
     document.querySelector('.navbar-search form').addEventListener('submit', function(e) {
-        const value = this.q.value.trim();
+        const value = this.keyword.value.trim();
         if (!value) {
           alert('검색어를 입력하세요!');
-          this.q.focus();
+          this.keyword.focus();
           e.preventDefault();
         }
       });

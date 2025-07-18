@@ -276,7 +276,7 @@ transform:translateY(0);
 		gap: 14px;
 	}
 	.navbar-right {
-		display:none;
+		/* display:none; */
 		margin: 8px 0 0 0;
 		gap: 8px;
 		flex-wrap: wrap;
@@ -303,39 +303,57 @@ transform:translateY(0);
 	}
 }
 
-@media ( max-width : 600px) {
-	.main-navbar {
-		padding: 6px 0;
-	}
-	.navbar-left {
-		gap: 7px;
-	}
-	.main-menu {
-		gap: 7px;
-	}
-	.main-logo {
-		font-size: 1.11rem;
-		min-width: 80px;
-		margin-left: 1vw;
-	}
-	.main-logo .logo-desc {
-		font-size: 0.72rem;
-	}
-	.navbar-right {
-		gap: 6px;
-		margin-right: 2vw;
-	}
-	.navbar-search form {
-		width: 90vw;
-		min-width: 0;
-	}
-	.search-box {
-		font-size: 0.91rem;
-		padding: 5px 3px;
-	}
-	.login-btn, .head-mypage-btn, .head-logout-btn {
-		padding: 4px 5px;
-		font-size: 0.91rem;
-		min-width: 40px;
-	}
+
+	 @media (max-width: 768px) {
+  .main-navbar {
+   /* 모바일에서는 상단 네비바 row로 정렬, 메뉴 중앙! */
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    min-height: 52px;
+  }
+  .navbar-left {
+    width: 100%;
+    justify-content: center !important;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .main-menu {
+    flex-direction: row !important;     /* ★ 세로 → 가로 정렬로 */
+    justify-content: center !important; /* 중앙정렬 */
+    align-items: center !important;
+    gap: 18px;                          /* 필요에 따라 더 넓히세요 */
+    width: 100%;
+  }
+  .navbar-search {
+   display: none !important;
+  }
+  .login-btn, .head-mypage-btn, .head-logout-btn {
+      padding: 4px 8px;
+    font-size: 0.95rem;
+    min-width: 34px;
+    margin: 0 0 0 3px;
+  }
+  .navbar-right {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-end;
+    position: static;
+    margin-right: 10px;
+    gap: 6px;
+  }
+  .dropdown {
+   height: auto;
+    padding: 0;
+  }
+  /* 드롭다운 메뉴 중앙 팝업 및 넓이 제한 */
+  .dropdown-menu {
+  left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    min-width: 120px;
+    max-width: 88vw;
+    top: 40px;
+    z-index: 1001;
+  }
 }

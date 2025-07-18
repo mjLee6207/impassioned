@@ -79,3 +79,26 @@
     color: #fff;
     border-color: #1e8a57;
 }
+@media (max-width: 768px) {
+  .pagination {
+    gap: 0.2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .page-link {
+    min-width: 28px;
+    height: 28px;
+    font-size: 0.96rem;
+    padding: 0 7px;
+    border-radius: 16px;
+  }
+  .page-item.first .page-link,
+  .page-item.prev .page-link,
+  .page-item.next .page-link,
+  .page-item.last .page-link {
+    min-width: 28px;
+    padding: 0 5px;
+    font-size: 1rem;
+    border-radius: 16px;
+  }
+}

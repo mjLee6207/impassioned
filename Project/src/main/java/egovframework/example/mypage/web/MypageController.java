@@ -144,7 +144,9 @@ public class MypageController {
         myPostsCriteria.setCategory(category);  // 필요시
         myPostsCriteria.setSearchKeyword(searchKeyword);  // 필요시
 
+        
         PaginationInfo myPostsPaginationInfo = new PaginationInfo();
+        PaginationInfo likedPostsPaginationInfo = new PaginationInfo();
         myPostsPaginationInfo.setCurrentPageNo(myPostsCriteria.getPageIndex());
         myPostsPaginationInfo.setRecordCountPerPage(myPostsCriteria.getPageUnit());
         myPostsPaginationInfo.setPageSize(10);
@@ -162,22 +164,26 @@ public class MypageController {
         Criteria likedPostsCriteria = new Criteria();
         likedPostsCriteria.setPageIndex(likedPostsPage);
         likedPostsCriteria.setPageUnit(10);
-        likedPostsCriteria.setCategory(category);  // 필요시
-        likedPostsCriteria.setSearchKeyword(searchKeyword);  // 필요시
-
-        PaginationInfo likedPostsPaginationInfo = new PaginationInfo();
-        likedPostsPaginationInfo.setCurrentPageNo(likedPostsCriteria.getPageIndex());
-        likedPostsPaginationInfo.setRecordCountPerPage(likedPostsCriteria.getPageUnit());
-        likedPostsPaginationInfo.setPageSize(10);
+        likedPostsCriteria.setCategory(category);
+        likedPostsCriteria.setSearchKeyword(searchKeyword);
         likedPostsCriteria.setFirstIndex(likedPostsPaginationInfo.getFirstRecordIndex());
 
-        List<?> likedPosts = mypageService.selectMyLikeList(likedPostsCriteria, memberIdx);
-        int likedPostsTotCnt = mypageService.selectMyLikeListTotCnt(likedPostsCriteria, memberIdx);
-        likedPostsPaginationInfo.setTotalRecordCount(likedPostsTotCnt);
+        // 좋아요 남긴 **레시피**
+        List<?> likedRecipes = mypageService.selectMyLikeList(likedPostsCriteria, memberIdx, "RECIPE");
+        int likedRecipesTotCnt = mypageService.selectMyLikeListTotCnt(likedPostsCriteria, memberIdx, "RECIPE");
 
-        model.addAttribute("likedPosts", likedPosts);
-        model.addAttribute("likedPostsPaginationInfo", likedPostsPaginationInfo);
-        model.addAttribute("likedPostsTotalCount", likedPostsTotCnt); 
+        // 좋아요 남긴 **게시글**
+        List<?> likedBoardPosts = mypageService.selectMyLikeList(likedPostsCriteria, memberIdx, "BOARD");
+        int likedBoardPostsTotCnt = mypageService.selectMyLikeListTotCnt(likedPostsCriteria, memberIdx, "BOARD");
+
+        // 레시피/게시글 각각 따로 내려줌 (JSP에서 사용)
+        model.addAttribute("likedRecipes", likedRecipes);
+        model.addAttribute("likedRecipesTotalCount", likedRecipesTotCnt);
+        // model.addAttribute("likedRecipesPaginationInfo", likedRecipesPaginationInfo); // 필요시
+
+        model.addAttribute("likedPosts", likedBoardPosts); // likedPosts = 게시글!
+        model.addAttribute("likedPostsTotalCount", likedBoardPostsTotCnt);
+        // model.addAttribute("likedPostsPaginationInfo", likedBoardPostsPaginationInfo); // 필요시
 
         Boolean updateSuccess = (Boolean) session.getAttribute("updateSuccess");
         if (updateSuccess != null && updateSuccess) {

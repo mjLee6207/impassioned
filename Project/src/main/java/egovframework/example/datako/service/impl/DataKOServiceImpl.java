@@ -22,7 +22,7 @@ public class DataKOServiceImpl implements DataKOService{
 	@Override
 	public void saveDataKO() {
 		RestTemplate restTemplate = new RestTemplate();
-	    String url = "http://openapi.foodsafetykorea.go.kr/api/43a166f2e97e40329c82/COOKRCP01/json/1/500";
+	    String url = "http://openapi.foodsafetykorea.go.kr/api/43a166f2e97e40329c82/COOKRCP01/json/50/150";
 	    
         try {
             // 자동 파싱
@@ -44,24 +44,17 @@ public class DataKOServiceImpl implements DataKOService{
 
                     // 수동 파싱
                     StringBuilder textBuilder = new StringBuilder();
-                    StringBuilder imageBuilder = new StringBuilder();
                     
                     for (int j = 1; j <= 20; j++) {
                         String key = String.format("MANUAL%02d", j);
-                        String imgKey = String.format("MANUAL_IMG%02d", j);
                         
                         String step = node.path(key).asText().trim();
-                        String img = node.path(imgKey).asText().trim();
                         
                         if (!step.isEmpty()) {
                         	textBuilder.append(step).append("\n");
                         }
-                        if (!img.isEmpty()) {
-                            imageBuilder.append(img).append("\n");
-                        }
                     }
                     recipe.setInstructionKr(textBuilder.toString());
-//                    recipe.setImages(imageBuilder.toString());
 
                     // 중복 체크 후 DB 적재
                     if (!mapper.checkRecipe(recipe.getRecipeId())) {

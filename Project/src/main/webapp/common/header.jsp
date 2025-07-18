@@ -95,8 +95,8 @@
         <!-- 오른쪽 검색창 + 로그인/로그아웃 -->
         <div class="navbar-right">
             <div class="navbar-search">
-                <form action="/search.do" method="get" autocomplete="off">
-                    <input type="text" name="q" class="ssearch-box" placeholder="검색어 입력">
+                <form action="/search/all.do" method="get" autocomplete="off">
+                    <input type="text" name="keyword" class="ssearch-box" placeholder="검색어 입력" value="${param.keyword}">
                     <button class="ssearch-btn" type="submit"><i class="bi bi-search"></i></button>
                 </form>
             </div>
@@ -149,6 +149,15 @@
             dropdowns.forEach(dd => dd.querySelector('.dropdown-menu').classList.remove('show'));
         }
     });
+    // 공백 검색시 빈 값 공백 방지
+    document.querySelector('.navbar-search form').addEventListener('submit', function(e) {
+        const value = this.q.value.trim();
+        if (!value) {
+          alert('검색어를 입력하세요!');
+          this.q.focus();
+          e.preventDefault();
+        }
+      });
 </script>
 </body>
 </html>

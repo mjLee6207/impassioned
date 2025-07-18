@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/recipeview.css" />
     <jsp:include page="/common/header.jsp" />
+
+
+
 </head>
 <body>
 <c:set var="currPageIndex" value="${empty param.pageIndex ? 1 : param.pageIndex}" />

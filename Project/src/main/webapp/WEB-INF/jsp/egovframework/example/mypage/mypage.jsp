@@ -19,11 +19,12 @@
 
 </head>
 <body>
-	<div class="main-flex">
-		<!-- 사이드바 -->
-		<div class="sidebar">
-			<jsp:include page="/common/sidebar.jsp" />
-		</div>
+<div class="main-flex">
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <jsp:include page="/common/sidebar.jsp" />
+    </div>
+
 
 		<!-- 오른쪽 컨텐츠 영역 -->
 		<div class="content-area">

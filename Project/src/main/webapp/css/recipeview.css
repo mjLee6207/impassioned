@@ -46,6 +46,7 @@
 
 .like-btn {
   position: absolute;
+  border:none;
   top: 12px;
   right: 20px;
   z-index: 2;

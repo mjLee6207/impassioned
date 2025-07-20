@@ -164,14 +164,8 @@ input::placeholder {
 
 button, input[type="submit"] {
   font-family: 'Gowun Dodum', sans-serif !important;
-   font-size: 20px;
+  font-size: 20px;
 }
-
-/* input {
-  font-family: 'Gowun Dodum', sans-serif !important;
-   font-size: 20px;
-} */
-
 
 /* 추가css-> 회원가입 왼쪽배너 이미지 */
 .left-slide {

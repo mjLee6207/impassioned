@@ -77,15 +77,16 @@
         <span id="idStatus"></span>
 
         <div class="form-group">
-          <input type="email" id="email" name="email" placeholder="이메일" required />
+          <input type="email" id="email" name="email" placeholder="인증 이메일" required />
           <button type="button" onclick="sendEmailCode()">인증요청</button>
         </div>
         <div class="form-group">
           <input type="text" id="emailCode" placeholder="인증번호 입력" />
-          <button type="button" onclick="verifyEmailCode()">인증확인</button>
+          <button type="button" id="verifyBtn" onclick="verifyEmailCode()">인증확인</button>
         </div>
         <span id="emailStatus"></span>
-
+		<span id="countdown"></span>
+		
         <input type="password" id="password" name="password" placeholder="비밀번호" required />
         <input type="password" id="passwordConfirm" placeholder="비밀번호 확인" required onkeyup="checkPasswordMatch()" />
         <span id="pwStatus"></span>
@@ -123,7 +124,8 @@
   let emailVerified = false;
   let nicknameChecked = false;
   let idChecked = false;
-
+  let timerInterval;   // 메일 인증 5분 타이머 중복 방지용
+	
   function toggleForm(mode) {
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
@@ -201,11 +203,11 @@
 	    .then(result => {
 	      if (result.available) {
 	        idChecked = true;
-	        document.getElementById('idStatus').textContent = "✅ 사용 가능한 아이디입니다.";
+	        document.getElementById('idStatus').textContent = "사용 가능한 아이디입니다.";
 	        document.getElementById('idStatus').style.color = "green";
 	      } else {
 	        idChecked = false;
-	        document.getElementById('idStatus').textContent = "❌ 이미 사용 중인 아이디입니다.";
+	        document.getElementById('idStatus').textContent = "이미 사용 중인 아이디입니다.";
 	        document.getElementById('idStatus').style.color = "red";
 	      }
 	    })
@@ -230,46 +232,142 @@
         }
       });
   }
+  
+  function startCountdown(duration) {
+	  let timeLeft = Number(duration.toString().trim());
+	  console.log("시작된 타이머 시간:", timeLeft, typeof timeLeft);
 
-  function sendEmailCode() {
-    const email = document.getElementById('email').value.trim();
-    if (email === "") {
-      alert("이메일을 입력해주세요.");
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert("올바른 이메일 형식이 아닙니다.");
-      return;
-    }
-    fetch('${pageContext.request.contextPath}/member/sendEmailCode.do', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email})
-    }).then(res => res.text()).then(msg => {
-      document.getElementById('emailStatus').textContent = msg;
-    });
-  }
+	  let localTimeLeft = timeLeft;
 
-  function verifyEmailCode() {
-    const emailCode = document.getElementById('emailCode').value.trim();
-    if (emailCode === "") {
-      alert("인증번호를 입력해주세요.");
-      return;
-    }
-    fetch('${pageContext.request.contextPath}/member/verifyCode.do', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({code: emailCode})
-    }).then(res => res.json()).then(result => {
-      if (result.success) {
-        emailVerified = true;
-        document.getElementById('emailStatus').textContent = "인증 완료되었습니다.";
-      } else {
-        document.getElementById('emailStatus').textContent = "인증번호가 일치하지 않습니다.";
-      }
-    });
-  }
+	  const update = () => {
+	    const countdownDisplay = document.getElementById("countdown"); 
+	    if (!countdownDisplay) {
+	      console.error("countdown 요소를 찾을 수 없습니다.");
+	      return;
+	    }
+
+	    const safeTime = Number.isFinite(localTimeLeft) ? localTimeLeft : 0;
+	    const minNum = Math.floor(safeTime / 60);
+	    const secNum = safeTime % 60;
+
+	    const minutes = String(minNum).padStart(2, '0');
+	    const seconds = String(secNum).padStart(2, '0');
+	    const text = "남은 인증 유효시간" + " " + minutes + ":" + seconds;
+
+	    console.log("minutes =", minutes, "| seconds =", seconds, "| text =", text);
+
+	    countdownDisplay.textContent = text;
+
+	    if (safeTime <= 0) {
+	      clearInterval(timerInterval);
+	      countdownDisplay.textContent = "인증 유효시간 만료됨";
+	      alert("인증 유효시간이 만료되었습니다. 다시 요청해주세요.");
+	    } else {
+	      localTimeLeft--;
+	    }
+	  };
+
+	  update();
+	  timerInterval = setInterval(update, 1000);
+	}
+
+  
+	function sendEmailCode() {
+	  const email = document.getElementById('email').value.trim();
+	  const statusEl = document.getElementById('emailStatus');
+	  const emailCodeInput = document.getElementById('emailCode'); // 입력창 잠금
+	  const verifyBtn = document.getElementById('verifyBtn'); // 입력버튼 잠금
+
+
+	  if (email === "") {
+	    alert("이메일을 입력해주세요.");
+	    return;
+	  }
+	  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	  if (!emailRegex.test(email)) {
+	    alert("올바른 이메일 형식이 아닙니다.");
+	    return;
+	  }
+
+	  fetch('${pageContext.request.contextPath}/member/sendEmailCode.do', {
+	    method: 'POST',
+	    headers: { 'Content-Type': 'application/json' },
+	    body: JSON.stringify({ email })
+	  })
+	  .then(res => res.json())
+	  .then(result => {
+	    statusEl.textContent = result.message;
+
+	    if (result.success) {
+	      startCountdown(300); // 5분 = 300초
+	      
+	      emailCodeInput.value = "";
+	      emailCodeInput.readOnly = false;
+	      emailCodeInput.style.backgroundColor = ""; // 스타일 복원
+	      emailCodeInput.style.color = ""; // 필요 시
+	      
+	      verifyBtn.disabled = false;	
+	      verifyBtn.style.backgroundColor = "";
+	      verifyBtn.style.color = "";
+	      verifyBtn.style.cursor = "pointer";
+	      
+	    } else {
+	      alert("❌ " + result.message);
+	    }
+	  })
+	  .catch(() => {
+	    alert("서버 오류가 발생했습니다.");
+	  });
+	}
+
+	function verifyEmailCode() {
+	  const emailCode = document.getElementById('emailCode').value.trim();
+	  const statusEl = document.getElementById('emailStatus');
+	  const countdownEl = document.getElementById('countdown');
+	  const emailCodeInput = document.getElementById('emailCode');
+
+	  if (emailCode === "") {
+	    alert("인증번호를 입력해주세요.");
+	    return;
+	  }
+
+	  fetch('${pageContext.request.contextPath}/member/verifyCode.do', {
+	    method: 'POST',
+	    headers: { 'Content-Type': 'application/json' },
+	    body: JSON.stringify({ code: emailCode })
+	  })
+	  .then(res => res.json())
+	  .then(result => {
+	    statusEl.textContent = result.message;
+
+	    if (result.success) {
+	      emailVerified = true;
+	      // 인증번호 입력창 잠금
+	      emailCodeInput.readOnly = true;
+	      emailCodeInput.style.backgroundColor = "#eee";
+	      emailCodeInput.style.color = "#555";
+	      
+	      const verifyBtn = document.querySelector('button[onclick="verifyEmailCode()"]');
+	      verifyBtn.disabled = true;
+	      verifyBtn.style.backgroundColor = "#aaa";
+	      verifyBtn.style.cursor = "not-allowed";
+
+	      // 타이머 종료
+	      if (timerInterval) {
+	        clearInterval(timerInterval);
+	      }
+
+	      // 남은 시간 숨김
+	      if (countdownEl) {
+	        countdownEl.textContent = "";
+	        countdownEl.style.display = "none";
+	      }
+	    }
+	  })
+	  .catch(() => {
+	    alert("서버 오류가 발생했습니다.");
+	  });
+	}
 
   function checkPasswordMatch() {
     const pw = document.getElementById('password').value;
@@ -302,7 +400,6 @@
       toggleForm('login');
     }
   };
-
 </script>
 </body>
 </html>

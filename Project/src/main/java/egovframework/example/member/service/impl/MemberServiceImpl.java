@@ -75,6 +75,12 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
         return memberMapper.countById(id) == 0;
     }
     
+//  인증 이메일 중복 검사
+    @Override
+    public boolean isEmailRegistered(String email) {
+        return memberMapper.countByEmail(email) > 0;
+    }
+    
 //  회원 정보 조회
     @Override
     public MemberVO selectMemberByIdx(Long memberIdx) {

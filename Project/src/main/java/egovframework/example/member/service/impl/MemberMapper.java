@@ -19,7 +19,10 @@ public interface MemberMapper {
     
     // 아이디 중복 체크    
     int countById(String id);
-
+    
+//  인증 이메일 중복 체크
+    int countByEmail(String email);
+    
 //  회원 정보 조회
     MemberVO selectMemberByIdx(Long memberIdx);   
     

@@ -13,6 +13,9 @@ public interface MemberService {
     
     // 아이디 중복확인용 메서드
     boolean isIdAvailable(String id);
+    
+//  인증 이메일 중복확인용 메서드
+	boolean isEmailRegistered(String email);
 
 //  회원 정보 조회
     MemberVO selectMemberByIdx(Long memberIdx);

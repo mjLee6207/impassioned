@@ -18,7 +18,9 @@
 </head>
 <body>
 
-<div class="logo">CheForest</div>
+<div class="logo">
+	<img src="<%=request.getContextPath()%>/images/home/main.png" alt="메인로고">
+</div><!-- 로고 들어가야되는 위치 -->
 <div class="search-bar">
     <form id="mainSearchForm" action="/search/all.do" method="get" autocomplete="off">
   <input type="text" id="searchKeyword" name="keyword" placeholder="원하는 레시피를 검색해보세요 !" />

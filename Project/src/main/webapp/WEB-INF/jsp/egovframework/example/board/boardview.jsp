@@ -165,7 +165,7 @@
                 </div>
                 
                 <!-- 본인 댓글에만 수정/삭제 버튼 노출 -->
-<c:if test="${loginUser != null && loginUser.memberIdx == review.writerIdx}">
+	<c:if test="${loginUser != null && loginUser.memberIdx == review.writerIdx}">
   <div class="comment-btn-group">
     <!-- ✅ 1. '수정' 버튼: 폼이 아니라 자바스크립트 함수 호출 -->
    <button type="button" class="comment-edit-btn"
@@ -196,6 +196,8 @@
 						<div class="comment-empty">아직 댓글이 없습니다.</div>
 						</c:if>
 		</div>
+	</div>
+	</div>
 	</div>
 	
 	<script>

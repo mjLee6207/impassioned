@@ -27,8 +27,8 @@ public interface RecipeMapper {
     
     List<RecipeVO> selectAllRecipeThumb();
     void updateThumbnailPath(RecipeVO recipe);
-
-	
+    //	7월21일 메인페이지 인기 레시피 조회를 위해 추가
+    List<RecipeVO> selectBestRecipes();
 	
 	
 	

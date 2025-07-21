@@ -14,6 +14,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
         crossorigin="anonymous">
+    <!-- slick slider css/js -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
         <jsp:include page="/common/header2.jsp" />
 </head>
 <body>
@@ -29,27 +33,14 @@
 
 <!-- 오늘의 추천 레시피(수정X) -->
 <div class="section-title">🍽️ 오늘의 추천 레시피</div>
-<div class="recipes">
-    <a class="recipe" href="https://www.naver.com" target="_blank">
-        <img src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
-        <p class="title">바질 크림소스 라자냐</p>
-    </a>
-    <a class="recipe" href="https://www.naver.com" target="_blank">
-        <img src="<%=request.getContextPath()%>/images/home/비프웰링턴.jpg" alt="비프웰링턴">
-        <p class="title">비프웰링턴과 단호박무스</p>
-    </a>
-    <a class="recipe" href="https://www.naver.com" target="_blank">
-        <img src="<%=request.getContextPath()%>/images/home/무스.jpg" alt="무스">
-        <p class="title">크림치즈 라즈베리 무스</p>
-    </a>
-    <a class="recipe" href="https://www.naver.com" target="_blank">
-        <img src="<%=request.getContextPath()%>/images/home/양갈비.jpg" alt="양갈비">
-        <p class="title">양갈비스테이크&소스6종</p>
-    </a>
-    <a class="recipe" href="https://www.naver.com" target="_blank">
-        <img src="<%=request.getContextPath()%>/images/home/라자냐.jpg" alt="라자냐">
-        <p class="title">바질 크림소스 라자냐</p>
-    </a>
+<div class="recipes slider">
+    <c:forEach var="recipe" items="${bestRecipes}">
+        <a class="recipe" href="/recipe/detail.do?recipeId=${recipe.recipeId}">
+            <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
+            <p class="title">${recipe.titleKr}</p>
+            <p class="like">❤ ${recipe.likeCount}</p>
+        </a>
+    </c:forEach>
 </div>
 
 <!-- 한식 -->
@@ -126,6 +117,31 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+$(document).ready(function(){
+	  $('.recipes.slider').slick({
+	    slidesToShow: 5,
+	    slidesToScroll: 1,
+	    arrows: false,
+	    dots: false,
+	    autoplay: true,
+	    autoplaySpeed: 2500,
+	    infinite: true,
+	    responsive: [
+	      {
+	        breakpoint: 1024,
+	        settings: { slidesToShow: 3 }
+	      },
+	      {
+	        breakpoint: 768,
+	        settings: { slidesToShow: 2 }
+	      },
+	      {
+	        breakpoint: 480,
+	        settings: { slidesToShow: 1 }
+	      }
+	    ]
+	  });
+	});
 </script>
 </body>
 </html>

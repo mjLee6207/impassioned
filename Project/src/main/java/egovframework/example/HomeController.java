@@ -24,7 +24,7 @@ public class HomeController {
         model.addAttribute("chineseRecipe", recipeService.selectRandomRecipesByCategory("중식", 5));
         model.addAttribute("japaneseRecipe", recipeService.selectRandomRecipesByCategory("일식", 5));
         model.addAttribute("dessertRecipe", recipeService.selectRandomRecipesByCategory("디저트", 5));
-
+        model.addAttribute("bestRecipes", recipeService.selectBestRecipes());
 		return "home";
 	}
 }

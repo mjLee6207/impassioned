@@ -65,4 +65,18 @@
     SET THUMBNAIL = #{thumbnail}
     WHERE RECIPE_ID = #{recipeId}
 </update>
+<!-- 좋아요 많은 순 인기 레시피 TOP 10 -->
+<select id="selectBestRecipes" resultType="egovframework.example.recipe.service.RecipeVO">
+    SELECT
+        RECIPE_ID,
+        TITLE_KR,
+        CATEGORY_KR,
+        INSTRUCTION_KR,
+        INGREDIENT_KR,
+        THUMBNAIL,
+        LIKE_COUNT
+    FROM API_RECIPE
+    ORDER BY LIKE_COUNT DESC, RECIPE_ID DESC
+    FETCH FIRST 10 ROWS ONLY
+</select>
 </mapper>

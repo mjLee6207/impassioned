@@ -122,8 +122,8 @@
 						<tr>
 							<th class="text-center" style="width: 55%;">레시피명</th>
 							<th class="text-center" style="width: 20%;">카테고리</th>
-							<th class="text-center" style="width: 15%;">좋아요</th>
-							<th class="text-center" style="width: 10%;">조회수</th>
+							<th class="text-center" style="width: 15%;">조회수</th>
+							<th class="text-center" style="width: 10%;">좋아요</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -133,8 +133,8 @@
 									href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}"
 									class="post-title-link">${recipe.recipeTitle}</a></td>
 								<td class="text-center">${recipe.recipeCategory}</td>
-								<td class="text-center">${recipe.recipeLikeCount}</td>
 								<td class="text-center">${recipe.viewCount}</td>
+								<td class="text-center">${recipe.recipeLikeCount}</td>
 							</tr>
 						</c:forEach>
 						<c:if test="${empty likedRecipes}">

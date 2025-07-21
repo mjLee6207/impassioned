@@ -35,7 +35,7 @@
 <div class="section-title">🍽️ 인기 레시피</div>
 <div class="recipes slider">
     <c:forEach var="recipe" items="${bestRecipes}">
-        <a class="recipe" href="/recipe/detail.do?recipeId=${recipe.recipeId}">
+        <a class="recipe" href="/recipe/view.do?recipeId=${recipe.recipeId}">
             <img src="${recipe.thumbnail}" alt="${recipe.titleKr}">
             <p class="title">${recipe.titleKr}</p>
             <p class="like">❤ ${recipe.likeCount}</p>

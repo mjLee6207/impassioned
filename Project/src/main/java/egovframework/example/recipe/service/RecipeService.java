@@ -17,4 +17,6 @@ public interface RecipeService {
     // (필요하면 상세, 랜덤 등 기존 방식은 그대로!)
     RecipeVO selectRecipe(String recipeId);  // 상세조회
     List<RecipeVO> selectRandomRecipesByCategory(String categoryKr, int count);  // 랜덤레시피
+    //	7월21일 메인페이지 인기 레시피 조회를 위해 추가
+    List<RecipeVO> selectBestRecipes();
 }

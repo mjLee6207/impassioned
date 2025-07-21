@@ -38,5 +38,9 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<RecipeVO> selectRandomRecipesByCategory(String categoryKr, int count) {
 	    return recipeMapper.selectRandomRecipesByCategory(categoryKr, count);
 	}
+	@Override
+	public List<RecipeVO> selectBestRecipes() {
+	    return recipeMapper.selectBestRecipes();
+	}
 
 }

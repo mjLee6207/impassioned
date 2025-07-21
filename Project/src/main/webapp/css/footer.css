@@ -116,3 +116,9 @@
     color: #fff;
     border-color: #1e8a57;
   }
+  
+  @media (max-width: 924px){
+  .footer-workers{
+  display:none;
+  }
+  }

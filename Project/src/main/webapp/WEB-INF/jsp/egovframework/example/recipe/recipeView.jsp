@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/sidebar.css" />
   <link rel="stylesheet" href="/css/recipeview.css" />
+  <link rel="stylesheet" href="/css/like-override.css" />  <!-- 이게 최종 적용됩니다 -->
+  
   <jsp:include page="/common/header.jsp" />
 </head>
 <body>

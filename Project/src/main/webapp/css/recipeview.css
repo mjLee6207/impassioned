@@ -180,69 +180,60 @@
    레시피 카드 우측 상단: 하트 + 숫자 박스 
 ————————————————————————————————— */
 .recipe-card-top {
-  position: relative;  /* like-btn-wrap의 기준 */
+  position: relative !important;
 }
 
-/* —————————————————————————————
-   레시피 카드 우측 상단: 하트 + 숫자 박스 
-————————————————————————————————— */
-.recipe-card-top {
-  position: relative;  /* like-btn-wrap의 기준 */
+/* 2) 하트+숫자 래퍼 초기화 & 재정의 */
+.recipe-card-top .like-btn-wrap {
+  all: unset !important;                /* 모든 기존 스타일 제거 */
+  position: absolute !important;
+  top: 12px !important;
+  right: 20px !important;
+  z-index: 999 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+
+  padding: 6px 14px !important;         /* 상하 6px, 좌우 14px */
+  background: #fff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  transition: background-color 0.2s !important;
+}
+.recipe-card-top .like-btn-wrap:hover {
+  background-color: #e8f8f1 !important;
 }
 
-.like-btn-wrap {
-  position: absolute;
-  top: 12px;
-  right: 12px;               /* 카드 우측에서 살짝 안쪽으로 */
-
-  display: flex;
-  align-items: center;       /* 세로 중앙정렬 */
-  gap: 4px;                  /* 하트와 숫자 사이 간격 */
-
-  padding: 6px 10px;         /* 상하 6px, 좌우 10px */
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.2s;
-}
-.like-btn-wrap:hover {
-  background-color: #e8f8f1;
-}
-
-/* —————————————————————————————
-   하트 버튼
-————————————————————————————————— */
-.like-btn {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: none !important;
-  border: none !important;
-  padding: 0;
-  font-size: 1.3rem;
+/* 3) 하트 버튼 초기화 & 재정의 */
+.recipe-card-top .like-btn-wrap .like-btn {
+  all: unset !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 40px !important;
+  font-size: 1.3rem !important;
   color: #888 !important;
-  cursor: pointer;
-  transition: color 0.2s;
+  cursor: pointer !important;
+  transition: color 0.2s !important;
 }
-.like-btn:hover {
+.recipe-card-top .like-btn-wrap .like-btn:hover {
   color: #1e8a57 !important;
 }
-.like-btn.liked {
+.recipe-card-top .like-btn-wrap .like-btn.liked {
   color: #e74c3c !important;
 }
 
-/* —————————————————————————————
-   숫자 텍스트
-————————————————————————————————— */
-.like-count-text {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  line-height: 1;
-}	
+/* 4) 숫자 텍스트 초기화 & 재정의 */
+.recipe-card-top .like-btn-wrap .like-count-text {
+  all: unset !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+  color: #333 !important;
+  margin: 0 0 0 2px !important;  /* 숫자만 살짝 딴 공간 확보 */
+}
 
 /* 반응형 */
 @media (max-width: 911px) {

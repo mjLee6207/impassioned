@@ -41,7 +41,7 @@
         <!-- 왼쪽 로고 + 메뉴 -->
         <div class="navbar-left">
             <a href="http://localhost:8080/" class="main-logo">
-                <span>🍽️ CheForest</span>
+                <span>🍽️ CheForest</span> <!-- 로고 들어가야되는 위치 -->
             </a>
             <div class="main-menu">
                 <!-- Recipe 드롭다운 -->

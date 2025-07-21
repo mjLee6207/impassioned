@@ -1,7 +1,10 @@
 package egovframework.example.member.web;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
+import egovframework.example.member.service.impl.EmailService;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -37,6 +41,9 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private EmailService emailService;
 
     // ✅ [회원가입 처리]
     @PostMapping("/member/register.do")
@@ -133,31 +140,72 @@ public class MemberController {
 
     // ✅ [이메일 인증번호 전송]
     @ResponseBody
-    @PostMapping(value = "/member/sendEmailCode.do", produces = "text/plain;charset=UTF-8")
-    public String sendEmailCode(@RequestBody Map<String, String> data, HttpSession session) {
+    @PostMapping(value = "/member/sendEmailCode.do", produces = "application/json;charset=UTF-8")
+    public Map<String, Object> sendEmailCode(@RequestBody Map<String, String> data, HttpSession session) {
         String email = data.get("email");
-        String code = String.valueOf((int) (Math.random() * 900000 + 100000));
+        
+        Map<String, Object> result = new HashMap<>();
 
+        // 이미 가입된 이메일은 인증 불가
+        if (memberService.isEmailRegistered(email)) {
+            result.put("success", false);
+            result.put("message", "이미 가입된 이메일입니다. 다른 이메일을 입력해주세요.");
+            return result;
+        }
+        
+        String code = String.format("%06d", new Random().nextInt(1000000));
         session.setAttribute("emailCode", code);
         session.setAttribute("emailForCode", email);
+        session.setAttribute("emailCodeExpiry", LocalDateTime.now().plusMinutes(5)); // 만료시간 저장
 
-        return "인증번호가 전송되었습니다. (인증번호: " + code + ")";
+        try {
+            emailService.sendCode(email, code);
+            result.put("success", true);
+            result.put("message", "인증번호가 이메일로 전송되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("success", false);
+            result.put("message", "이메일 전송에 실패했습니다. 관리자에게 문의하세요.");
+        }
+        return result;
     }
 
-    // ✅ [이메일 인증번호 확인]
+    // [이메일 인증번호 확인]
     @ResponseBody
     @PostMapping("/member/verifyCode.do")
-    public Map<String, Boolean> verifyCode(@RequestBody Map<String, String> data, HttpSession session) {
+    public Map<String, Object> verifyCode(@RequestBody Map<String, String> data, HttpSession session) {
         String inputCode = data.get("code");
         String sessionCode = (String) session.getAttribute("emailCode");
         String email = (String) session.getAttribute("emailForCode");
+        LocalDateTime expiry = (LocalDateTime) session.getAttribute("emailCodeExpiry");
 
+        Map<String, Object> result = new HashMap<>();
+
+        // 만료 시간 확인
+        if (expiry == null || LocalDateTime.now().isAfter(expiry)) {
+            result.put("success", false);
+            result.put("message", "인증 시간이 만료되었습니다. 다시 요청해주세요.");
+            return result;
+        }
+
+        // 인증번호 비교
         boolean success = inputCode != null && inputCode.equals(sessionCode);
         if (success && email != null) {
+            result.put("success", true);
+            result.put("message", "인증이 완료되었습니다.");
             session.setAttribute("verifiedEmail", email);
+
+            // 세션 정리
+            session.removeAttribute("emailCode");
+            session.removeAttribute("emailForCode");
+            session.removeAttribute("emailCodeExpiry");
+        } else {
+            result.put("success", false);
+            result.put("message", "인증번호가 일치하지 않습니다.");
         }
-        return Collections.singletonMap("success", success);
+        return result;
     }
+
 
     // ✅ [아이디 찾기 폼]
     @GetMapping("/member/findidform.do")
@@ -173,6 +221,7 @@ public class MemberController {
         String verifiedEmail = (String) session.getAttribute("verifiedEmail");
         if (verifiedEmail == null || !verifiedEmail.equals(email)) {
             model.addAttribute("msg", "이메일 인증이 완료되지 않았습니다.");
+            model.addAttribute("email", email);  // 입력 폼 유지를 위함
             return "member/findidform";
         }
 

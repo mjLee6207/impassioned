@@ -106,8 +106,8 @@
 	<!-- 스케줄러 기능 사용 -->
 	<task:scheduler id="jobScheduler" pool-size="10" />
 	<task:annotation-driven scheduler="jobScheduler" />
-
-<!-- 인터셉터  -->
+	
+	<!-- 인터셉터  -->
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<!-- 로그인 필요한 경로들만 지정 -->

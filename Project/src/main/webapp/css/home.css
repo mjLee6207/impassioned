@@ -15,12 +15,14 @@ body {
 
 /* 로고 */
 .logo {
-   font-size: 100px;
-   font-weight: bold;
-   color: #1e8a57;
-   text-align: center;
-   margin-top: 10px;
-   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  text-align: center;
+}
+
+.logo img {
+  width: 750px;
+  height: auto;
+  /* margin-top: 10px; */
+  margin-bottom: 20px;
 }
 
 /* 검색창 */
@@ -53,12 +55,12 @@ body {
 
 /* 카테고리별 추천 레시피 */
 .section-title {
-   color: #4CAF50;
+   color: #2E7832 !important;
    padding-top: 30px;
    font-size: 30px !important;
    font-weight: bold !important;
    text-align: left;
-   margin-left:355px !important;
+   margin-left: 430px !important;
 }
 
 /* 레시피 전체 정렬 */
@@ -83,6 +85,7 @@ body {
 
 .recipe:hover {
    transform: scale(1.05);
+   color:#2E7832;
 }
 
 /* 동그란 이미지 */

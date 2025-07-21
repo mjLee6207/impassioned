@@ -21,7 +21,7 @@
         <jsp:include page="/common/header2.jsp" />
 </head>
 <body>
-
+<br><br><br><br><br><br><br>
 <div class="logo">
 	<img src="<%=request.getContextPath()%>/images/home/main.png" alt="메인로고">
 </div><!-- 로고 들어가야되는 위치 -->
@@ -30,9 +30,11 @@
   <input type="text" id="searchKeyword" name="keyword" placeholder="원하는 레시피를 검색해보세요 !" />
 </form>
 </div>
-
+<br><br><br><br><br><br><br>
+<br><br><br><br>
+<hr>
 <!-- 오늘의 추천 레시피(수정X) -->
-<div class="section-title">🍽️ 인기 레시피</div>
+<div class="section-title">인기 레시피</div>
 <div class="recipes slider">
     <c:forEach var="recipe" items="${bestRecipes}">
         <a class="recipe" href="/recipe/view.do?recipeId=${recipe.recipeId}">
@@ -44,7 +46,7 @@
 </div>
 
 <!-- 한식 -->
-<div class="section-title">🍽️ 한식 레시피</div>
+<div class="section-title">한식 레시피</div>
 <div class="recipes">
   <c:forEach var="recipe" items="${koreanRecipe}">
     <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
@@ -55,7 +57,7 @@
 </div>
 
 <!-- 양식 -->
-<div class="section-title">🍽️ 양식 레시피</div>
+<div class="section-title">양식 레시피</div>
 <div class="recipes">
   <c:forEach var="recipe" items="${westernRecipe}">
     <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
@@ -66,7 +68,7 @@
 </div>
 
 <!-- 중식 -->
-<div class="section-title">🍽️ 중식 레시피</div>
+<div class="section-title">중식 레시피</div>
 <div class="recipes">
   <c:forEach var="recipe" items="${chineseRecipe}">
     <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
@@ -77,7 +79,7 @@
 </div>
 
 <!-- 일식 -->
-<div class="section-title">🍽️ 일식 레시피</div>
+<div class="section-title">일식 레시피</div>
 <div class="recipes">
   <c:forEach var="recipe" items="${japaneseRecipe}">
     <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">
@@ -88,7 +90,7 @@
 </div>
 
 <!-- 디저트 -->
-<div class="section-title">🍽️ 디저트 레시피</div>
+<div class="section-title">디저트 레시피</div>
 <div class="recipes">
   <c:forEach var="recipe" items="${dessertRecipe}">
     <a class="recipe" href="${pageContext.request.contextPath}/recipe/view.do?recipeId=${recipe.recipeId}">

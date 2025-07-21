@@ -32,7 +32,7 @@
 </div>
 
 <!-- 오늘의 추천 레시피(수정X) -->
-<div class="section-title">🍽️ 오늘의 추천 레시피</div>
+<div class="section-title">🍽️ 인기 레시피</div>
 <div class="recipes slider">
     <c:forEach var="recipe" items="${bestRecipes}">
         <a class="recipe" href="/recipe/detail.do?recipeId=${recipe.recipeId}">

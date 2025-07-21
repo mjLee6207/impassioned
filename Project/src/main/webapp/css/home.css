@@ -121,14 +121,11 @@ body {
 /* 제목 */
 .recipes.slider .title {
     margin-top: 10px;
-    font-size: 17px;
-    font-weight: bold;
-    text-align: center;
-    max-width: 160px;
-    line-height: 1.35;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+   font-size: 18px;
+   text-align: center;
+   max-width: 190px;
+   line-height: 1.3;
+   font-weight: bold;
 }
 
 /* 좋아요 표시 */
@@ -161,7 +158,7 @@ body {
 .recipes.slider {
     display: block !important;
     gap: 0 !important;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 40px auto 0 auto;
     padding: 0;
 }
@@ -174,6 +171,13 @@ body {
 .recipes.slider img {
    width: 180px;
    height: 180px;
+}
+.recipes.slider .slick-slide {
+    margin: 0 15px !important;   /* 한식 gap: 30px 완전 일치 */
+}
+.recipes.slider .slick-list {
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
 /* 슬라이더 버튼 숨김 (혹시라도 나타날 경우 대비) */

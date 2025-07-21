@@ -156,6 +156,10 @@ body {
 	color: var(--hover-green);
 }
 
+/* 로고 */
+.logoi { text-align: left; }
+.logoi img {  width: 200px; height: auto; margin-bottom: 10px; margin-left: 10px; }
+
 @keyframes fadeIn { 0% {
 	opacity: 0;
 	transform: translateY(-11px);

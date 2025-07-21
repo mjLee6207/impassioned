@@ -13,16 +13,14 @@
 <div class="wrapper">
   <div class="container">
     <div class="left-slide">
-      <img src="${pageContext.request.contextPath}/images/슬라이드/깍두기.jpg"  alt="깍두기" class="slide-image"/>
-	  <img src="${pageContext.request.contextPath}/images/슬라이드/부찌.jpg"  alt="부찌" class="slide-image"/>
-	  <img src="${pageContext.request.contextPath}/images/슬라이드/파베초콜릿.png"  alt="파베초콜릿" class="slide-image"/>
-	  <img src="${pageContext.request.contextPath}/images/슬라이드/오니기리.jpg"  alt="오니기리" class="slide-image"/>
+      <img src="${pageContext.request.contextPath}/images/슬라이드/라비올리.jpg"  alt="라비올리" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/삼겹살.jpg"  alt="삼겹살" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/수프.jpg"  alt="수프" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/토마토.jpg"  alt="토마토" class="slide-image"/>
 	  <img src="${pageContext.request.contextPath}/images/슬라이드/브런치.jpg"  alt="브런치" class="slide-image"/>
 	  <img src="${pageContext.request.contextPath}/images/슬라이드/부르기뇽.jpg"  alt="부르기뇽" class="slide-image"/>
-	  <img src="${pageContext.request.contextPath}/images/슬라이드/미네.jpg"  alt="미네" class="slide-image"/>
-	  <img src="${pageContext.request.contextPath}/images/슬라이드/위안샤오.jpg"  alt="위안샤오" class="slide-image"/>
-	  <img src="${pageContext.request.contextPath}/images/슬라이드/동파육.jpg"  alt="동파육" class="slide-image"/>
-	  <img src="${pageContext.request.contextPath}/images/슬라이드/마라.jpg"  alt="마라" class="slide-image"/>
+	  <img src="${pageContext.request.contextPath}/images/슬라이드/부찌.jpg"  alt="부찌" class="slide-image"/>
+
     </div>
 
     <div class="right-login">

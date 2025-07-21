@@ -80,11 +80,7 @@
       
 </div>
 </div>
-</div>
 
-    </div>
-  </div>
-  
   <!-- 재료_토글 -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/js/like.js"></script>

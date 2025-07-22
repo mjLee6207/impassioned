@@ -9,7 +9,7 @@
 			 parameterType="String"
 			 resultType="egovframework.example.recipe.service.RecipeVO">
 	SELECT RECIPE_ID,TITLE_KR,CATEGORY_KR,
-	INSTRUCTION_KR,INGREDIENT_KR,THUMBNAIL FROM API_RECIPE
+	INSTRUCTION_KR,INGREDIENT_KR,MEASURE_KR,THUMBNAIL FROM API_RECIPE
 	WHERE RECIPE_ID = #{recipeId}
 </select>
 
@@ -73,6 +73,7 @@
         CATEGORY_KR,
         INSTRUCTION_KR,
         INGREDIENT_KR,
+        MEASURE_KR,
         THUMBNAIL,
         LIKE_COUNT
     FROM API_RECIPE

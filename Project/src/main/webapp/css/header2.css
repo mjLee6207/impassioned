@@ -9,6 +9,7 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
+/* 상단 바 전체 */
 .top-nav-wrapper {
     width: 100%;
     display: flex;
@@ -17,8 +18,10 @@ body {
     padding: 12px 20px;
     background-color: #ffffff;
     box-sizing: border-box;
+    flex-wrap: nowrap;              /* ✅ 항상 한 줄 */
 }
 
+/* 로그인 / 회원가입 */
 .top-text-links {
     display: flex;
     gap: 16px;
@@ -26,12 +29,13 @@ body {
     align-items: center;
     margin-top: 10px;
     margin-right: 15px;
+    white-space: nowrap;           /* ✅ 줄바꿈 방지 */
+    flex-wrap: nowrap;
 }
 
 .top-text-links a {
     text-decoration: none;
-    color: #696969;
-   /*  padding: 4px 6px; */
+    color: #006400;
     transition: color 0.2s ease-in-out;
     font-weight: 600;
 }
@@ -40,26 +44,33 @@ body {
     color: #2E7832;
 }
 
+/* 햄버거 메뉴 */
 .app-menu-container {
-	color: #696969;
+    color: #006400;
     position: relative;
     margin-top: 10px;
     margin-left: 10px;
-     margin-right: 15px;
+    margin-right: 15px;
+    white-space: nowrap;
 }
 
-.app-menu-container:hover {color: #333;}
+.app-menu-container:hover {
+    color: #333;
+}
 
 .app-menu-toggle {
     background: none;
     border: none;
     font-size: 25px;
     cursor: pointer;
-    color: black;
+    color: #006400;
 }
 
-.app-menu-toggle:hover{color: #006400;} 
+.app-menu-toggle:hover {
+    color: #2E7832;
+}
 
+/* 드롭다운 메뉴 */
 .app-menu-dropdown {
     display: none;
     position: absolute;
@@ -82,28 +93,82 @@ body {
     font-size: 17px;
     font-weight: 500;
     transition: background 0.2s;
-     text-align: center;
+    text-align: center;
 }
 
 .app-menu-dropdown a:hover {
     background-color: #f5f5f5;
 }
 
+/* 레시피 섹션 제목 */
 .section-title {
     display: block;
     width: 100%;
-    clear: both; /* 플로팅 요소 정리 */
-    margin-left: 25vw; /* 카드 정렬선에 맞추는 부분 */
+    clear: both;
+    margin-left: 25vw;
     margin-top: 40px;
     font-weight: bold;
     font-size: 1.2rem;
     color: var(--main-green);
 }
 
-/* 반응형 */
+/* ✅ 반응형 */
 @media (max-width: 1100px) {
     .top-nav-wrapper {
-        flex-direction: column;
-        align-items: flex-end;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .top-text-links {
+        font-size: 14px;
+        gap: 10px;
+        margin-top: 0;
+        margin-right: 10px;
+    }
+
+    .app-menu-container {
+        margin-top: 0;
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    /* ✅ 로고 이미지 반응형 */
+    .logo {
+        padding-top: 60px;
+    }
+
+    .logo img {
+        width: 80%;
+        max-width: 350px;
+        height: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .top-text-links {
+        font-size: 12px;
+        gap: 6px;
+    }
+
+    .app-menu-toggle {
+        font-size: 22px;
+    }
+
+    .app-menu-dropdown a {
+        font-size: 15px;
+        padding: 6px 12px;
+    }
+
+    /* ✅ 모바일용 로고 크기 조절 */
+    .logo {
+        padding-top: 40px;
+    }
+
+    .logo img {
+        width: 70%;
+        max-width: 240px;
+        height: auto;
     }
 }

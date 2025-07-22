@@ -52,6 +52,7 @@
 	<!-- 오늘의 추천 레시피(수정X) -->
 	<section id="recipe-section">
 		<div class="recipe-block">
+		<div class="recipe-block popular-recipe-section">
 			<div class="block-inner">
 				<div class="section-title">
 					<img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;인기
@@ -67,6 +68,7 @@
 						</a>
 					</c:forEach>
 				</div>
+			</div>
 			</div>
 		</div>
 		<!-- 한식 -->

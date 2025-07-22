@@ -69,6 +69,12 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
         return memberMapper.countByNickname(nickname) == 0;
     }
     
+    // 현재 로그인한 사용자 정보를 세션에서 가져오기
+    @Override
+    public boolean isNicknameAvailable(String nickname, Long currentMemberIdx) {
+        return memberMapper.countNicknameExcludingSelf(nickname, currentMemberIdx) == 0;
+    }
+    
     // 아이디 중복 검사
     @Override
     public boolean isIdAvailable(String id) {

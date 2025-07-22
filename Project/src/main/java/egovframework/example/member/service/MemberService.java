@@ -14,6 +14,9 @@ public interface MemberService {
     // 아이디 중복확인용 메서드
     boolean isIdAvailable(String id);
     
+    // 현재 로그인한 사용자 정보를 세션에서 가져오기
+    boolean isNicknameAvailable(String nickname, Long currentMemberIdx);
+    
 //  인증 이메일 중복확인용 메서드
 	boolean isEmailRegistered(String email);
 

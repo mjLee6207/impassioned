@@ -108,4 +108,13 @@
 	    SET LIKE_COUNT = NVL(LIKE_COUNT, 0) - 1
 	    WHERE BOARD_ID = #{boardId}
 	</update>
+	
+	<!-- 18. 게시판/레시피 공통 좋아요 전체 삭제 -->
+	<delete id="deleteAllByTarget" parameterType="egovframework.example.like.service.LikeVO">
+	    DELETE FROM BOARD_LIKE
+	    WHERE 
+	        (BOARD_ID = #{boardId} AND #{boardId} IS NOT NULL)
+	        OR 
+	        (RECIPE_ID = #{recipeId} AND #{recipeId} IS NOT NULL)
+	</delete>
 </mapper>

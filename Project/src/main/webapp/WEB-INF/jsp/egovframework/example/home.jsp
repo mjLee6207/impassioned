@@ -30,6 +30,7 @@
 			alt="메인로고">
 	</div>
 	<!-- 로고 들어가야되는 위치 -->
+	<!-- 메뉴바 추가 -->
 	<div class="search-bar">
 		<form id="mainSearchForm" action="/search/all.do" method="get"
 			autocomplete="off">
@@ -37,6 +38,12 @@
 				placeholder="원하는 레시피를 검색해보세요 !" />
 		</form>
 	</div>
+	 <!-- 메뉴바 추가 -->
+	 <div class="home-shortcut-bar">
+		<a href="/recipe/recipe.do">레시피</a> <span>|</span> <a
+			href="/board/board.do">게시판</a> <span>|</span> <a
+			href="/event/test.do">이벤트</a>
+	</div>  
 	<div class="scroll-down-wrapper">
 		<button class="scroll-down-btn" onclick="scrollToRecipes()">▼</button>
 	</div>
@@ -46,7 +53,10 @@
 	<section id="recipe-section">
 		<div class="recipe-block">
 			<div class="block-inner">
-				<div class="section-title"><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;인기 레시피</div>
+				<div class="section-title">
+					<img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;인기
+					레시피
+				</div>
 				<div class="recipes slider">
 					<c:forEach var="recipe" items="${bestRecipes}">
 						<a class="recipe"
@@ -62,10 +72,13 @@
 		<!-- 한식 -->
 		<div class="recipe-block">
 			<div class="block-inner">
-			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;한식 레시피</span>
-			    <a href="/recipe/recipe.do?categoryKr=한식&pageIndex=1" class="more-link">+</a>
-			</div>
+				<div
+					class="section-title d-flex justify-content-between align-items-center">
+					<span><img src="/images/favicon.png" class="section-icon"
+						alt="메인로고">&nbsp;한식 레시피</span> <a
+						href="/recipe/recipe.do?categoryKr=한식&pageIndex=1"
+						class="more-link">+</a>
+				</div>
 				<div class="recipes">
 					<c:forEach var="recipe" items="${koreanRecipe}">
 						<a class="recipe"
@@ -81,10 +94,13 @@
 		<!-- 양식 -->
 		<div class="recipe-block">
 			<div class="block-inner">
-			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;양식 레시피</span>
-			    <a href="/recipe/recipe.do?categoryKr=양식&pageIndex=1" class="more-link">+</a>
-			</div>
+				<div
+					class="section-title d-flex justify-content-between align-items-center">
+					<span><img src="/images/favicon.png" class="section-icon"
+						alt="메인로고">&nbsp;양식 레시피</span> <a
+						href="/recipe/recipe.do?categoryKr=양식&pageIndex=1"
+						class="more-link">+</a>
+				</div>
 				<div class="recipes">
 					<c:forEach var="recipe" items="${westernRecipe}">
 						<a class="recipe"
@@ -99,10 +115,13 @@
 		<!-- 중식 -->
 		<div class="recipe-block">
 			<div class="block-inner">
-			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;중식 레시피</span>
-			    <a href="/recipe/recipe.do?categoryKr=중식&pageIndex=1" class="more-link">+</a>
-			</div>
+				<div
+					class="section-title d-flex justify-content-between align-items-center">
+					<span><img src="/images/favicon.png" class="section-icon"
+						alt="메인로고">&nbsp;중식 레시피</span> <a
+						href="/recipe/recipe.do?categoryKr=중식&pageIndex=1"
+						class="more-link">+</a>
+				</div>
 				<div class="recipes">
 					<c:forEach var="recipe" items="${chineseRecipe}">
 						<a class="recipe"
@@ -117,10 +136,13 @@
 		<!-- 일식 -->
 		<div class="recipe-block">
 			<div class="block-inner">
-			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;일식 레시피</span>
-			    <a href="/recipe/recipe.do?categoryKr=일식&pageIndex=1" class="more-link">+</a>
-			</div>
+				<div
+					class="section-title d-flex justify-content-between align-items-center">
+					<span><img src="/images/favicon.png" class="section-icon"
+						alt="메인로고">&nbsp;일식 레시피</span> <a
+						href="/recipe/recipe.do?categoryKr=일식&pageIndex=1"
+						class="more-link">+</a>
+				</div>
 				<div class="recipes">
 					<c:forEach var="recipe" items="${japaneseRecipe}">
 						<a class="recipe"
@@ -135,10 +157,13 @@
 		<!-- 디저트 -->
 		<div class="recipe-block">
 			<div class="block-inner">
-			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;디저트 레시피</span>
-			    <a href="/recipe/recipe.do?categoryKr=디저트&pageIndex=1" class="more-link">+</a>
-			</div>
+				<div
+					class="section-title d-flex justify-content-between align-items-center">
+					<span><img src="/images/favicon.png" class="section-icon"
+						alt="메인로고">&nbsp;디저트 레시피</span> <a
+						href="/recipe/recipe.do?categoryKr=디저트&pageIndex=1"
+						class="more-link">+</a>
+				</div>
 				<div class="recipes">
 					<c:forEach var="recipe" items="${dessertRecipe}">
 						<a class="recipe"

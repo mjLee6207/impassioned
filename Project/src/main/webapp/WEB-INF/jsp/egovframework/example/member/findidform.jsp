@@ -98,6 +98,9 @@
   	function sendEmailCode() {
   	  const email = document.getElementById('email').value.trim();
   	  const statusEl = document.getElementById('emailStatus');
+	  const emailInput = document.getElementById('email');          
+	  const emailCodeInput = document.getElementById('emailCode');           
+	  const verifyBtn = document.querySelector('button[onclick="verifyEmailCode()"]');
 
   	  if (email === "") {
   	    alert("이메일을 입력해주세요.");
@@ -112,14 +115,35 @@
   	  fetch('${pageContext.request.contextPath}/member/sendEmailCode.do', {
   	    method: 'POST',
   	    headers: { 'Content-Type': 'application/json' },
-  	    body: JSON.stringify({ email })
+	  	body: JSON.stringify({
+	  	  email: email,
+	  	  mode: "findId"
+	  	})
   	  })
   	  .then(res => res.json())
   	  .then(result => {
   	    statusEl.textContent = result.message;
 
   	    if (result.success) {
+  	   	  alert("인증번호가 이메일로 전송되었습니다.");
   	      startCountdown(300); // 5분 = 300초
+  	      
+  	      // 인증 상태 초기화
+  	      emailVerified = false;
+
+  	      // 입력창/버튼 다시 활성화 (닫혔던 경우 대비)
+  	      emailInput.readOnly = false;
+  	      emailInput.style.backgroundColor = "";
+  	      emailInput.style.color = "";
+
+  	      emailCodeInput.value = "";
+  	      emailCodeInput.readOnly = false;
+  	      emailCodeInput.style.backgroundColor = "";
+  	      emailCodeInput.style.color = "";
+
+  	      verifyBtn.disabled = false;
+  	      verifyBtn.style.backgroundColor = "";
+  	      verifyBtn.style.cursor = "pointer";
   	    } else {
   	      alert("❌ " + result.message);
   	    }
@@ -133,6 +157,9 @@
   	  const emailCode = document.getElementById('emailCode').value.trim();
   	  const statusEl = document.getElementById('emailStatus');
   	  const countdownEl = document.getElementById('countdown');
+	  const emailInput = document.getElementById('email');          
+	  const emailCodeInput = document.getElementById('emailCode');           
+	  const verifyBtn = document.querySelector('button[onclick="verifyEmailCode()"]');
 
   	  if (emailCode === "") {
   	    alert("인증번호를 입력해주세요.");
@@ -150,6 +177,19 @@
 
   	    if (result.success) {
   	      emailVerified = true;
+  	      
+	      // 입력창 및 버튼 잠금 처리
+	      emailInput.readOnly = true;
+	      emailInput.style.backgroundColor = "#eee";
+	      emailInput.style.color = "#555";
+
+	      emailCodeInput.readOnly = true;
+	      emailCodeInput.style.backgroundColor = "#eee";
+	      emailCodeInput.style.color = "#555";
+
+	      verifyBtn.disabled = true;
+	      verifyBtn.style.backgroundColor = "#aaa";
+	      verifyBtn.style.cursor = "not-allowed";
 
   	      // 타이머 종료
   	      if (timerInterval) {

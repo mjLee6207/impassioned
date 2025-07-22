@@ -121,14 +121,23 @@ function readURL(input) {
 <script>
 let nicknameChecked = true;
 const isKakaoUser = ${member.kakaoId != null ? 'true' : 'false'};
+const originalNickname = "${member.nickname}";
 $(document).ready(function () {
     $("#nickname").on("blur", function () {
         const nickname = $(this).val().trim();
+
         if (nickname === "") {
             $("#nicknameStatus").text("닉네임을 입력하세요.").css("color", "red");
             nicknameChecked = false;
             return;
         }
+
+        if (nickname === originalNickname) {
+            $("#nicknameStatus").text(""); // 기존 닉네임이면 메시지 제거
+            nicknameChecked = true;
+            return;
+        }
+
         fetch("/member/nicknameCheck.do?nickname=" + encodeURIComponent(nickname))
             .then(res => res.json())
             .then(result => {
@@ -187,6 +196,6 @@ $(document).ready(function () {
 });
 </script>
 <!-- 꼬리말 jsp include-->
-	<jsp:include page="/common/footer.jsp"></jsp:include>
+<jsp:include page="/common/footer.jsp"></jsp:include>
 </body>
 </html>

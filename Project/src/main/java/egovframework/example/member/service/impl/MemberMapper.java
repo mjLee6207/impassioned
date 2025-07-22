@@ -17,6 +17,9 @@ public interface MemberMapper {
     // 닉네임 중복 체크
     int countByNickname(String nickname);
     
+    // 현재 로그인한 사용자 정보를 세션에서 가져오기
+    int countNicknameExcludingSelf(@Param("nickname") String nickname, @Param("currentMemberIdx") Long currentMemberIdx);
+    
     // 아이디 중복 체크    
     int countById(String id);
     

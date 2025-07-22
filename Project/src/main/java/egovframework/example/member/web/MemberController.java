@@ -60,8 +60,11 @@ public class MemberController {
     // ✅ [닉네임 중복 검사 - AJAX]
     @ResponseBody
     @GetMapping("/member/nicknameCheck.do")
-    public Map<String, Boolean> nicknameCheck(@RequestParam("nickname") String nickname) {
-        boolean available = memberService.isNicknameAvailable(nickname);
+    public Map<String, Boolean> nicknameCheck(@RequestParam("nickname") String nickname, HttpSession session) {
+        MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+        Long currentIdx = loginMember != null ? loginMember.getMemberIdx() : null;
+
+        boolean available = memberService.isNicknameAvailable(nickname, currentIdx);
         return Collections.singletonMap("available", available);
     }
 

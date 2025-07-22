@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.example.board.service.BoardService;
 import egovframework.example.board.service.BoardVO;
@@ -284,6 +285,21 @@ import lombok.extern.log4j.Log4j2;
 		    return "redirect:/board/board.do?category=" + encodedCategory
 		         + "&searchKeyword=" + searchKeyword
 		         + "&pageIndex=" + pageIndex;
+		}
+		
+		// 관리자 삭제
+		@PostMapping("/board/adminDelete.do")
+		public String adminDeleteBoard(@RequestParam("boardId") int boardId, HttpSession session, RedirectAttributes rttr) throws Exception {
+		    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+		    if (loginUser == null || !"ADMIN".equals(loginUser.getRole())) {
+		        rttr.addFlashAttribute("message", "권한이 없습니다.");
+		        return "redirect:/board/board.do";
+		    }
+
+		    boardService.adminDeleteBoard(boardId);
+		    rttr.addFlashAttribute("message", "게시글이 삭제되었습니다.");
+		    return "redirect:/board/board.do";
 		}
 		
 //		상세조회: 읽기 전용 페이지 (조회만 가능)

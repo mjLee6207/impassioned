@@ -91,7 +91,7 @@
       M.NICKNAME,
       NVL(B.LIKE_COUNT, 0) AS likeCount
     FROM BOARD B
-    LEFT JOIN MEMBER M ON B.WRITER_IDX = M.MEMBER_IDX
+    JOIN MEMBER M ON B.WRITER_IDX = M.MEMBER_IDX
     WHERE B.BOARD_ID = #{boardId}
   </select>
 
@@ -157,5 +157,9 @@
   <update id="updateThumbnail" parameterType="BoardVO">
     UPDATE BOARD SET THUMBNAIL = #{thumbnail} WHERE BOARD_ID = #{boardId}
   </update>
-
+  
+	<!-- 관리자용 강제 게시글 삭제 -->
+	<delete id="adminDeleteBoard" parameterType="int">
+	  DELETE FROM BOARD WHERE BOARD_ID = #{boardId}
+	</delete>
 </mapper>

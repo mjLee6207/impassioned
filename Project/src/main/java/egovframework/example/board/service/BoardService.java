@@ -19,6 +19,8 @@ public interface BoardService {
 
    int delete(BoardVO boardVO); // delete 메소드
    
+   void adminDeleteBoard(int boardId) throws Exception;  // 관리자 삭제
+   
    void increaseViewCount(int boardId) throws Exception; // 조회수 증가
    
 // 댓글 리스트

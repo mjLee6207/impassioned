@@ -69,7 +69,12 @@ public class BoardServiceImpl implements BoardService {
        // 4. 게시글 삭제
        return boardMapper.delete(boardVO);
    }
-
+   
+   @Override
+   public void adminDeleteBoard(int boardId) throws Exception {
+       boardMapper.adminDeleteBoard(boardId);
+   }
+   
    @Override
    public void increaseViewCount(int boardId) throws Exception {
       // TODO Auto-generated method stub

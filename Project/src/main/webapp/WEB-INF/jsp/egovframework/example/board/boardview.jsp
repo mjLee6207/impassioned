@@ -110,17 +110,28 @@
             <a href="/board/board.do?category=${board.category}" class="btn btn-secondary btn-sm">목록</a>
             <c:if test="${loginUser.memberIdx eq board.writerIdx}">
              <a href="/board/edition.do?boardId=${board.boardId}" class="btn btn-success btn-sm">수정</a>
-
-<!-- 삭제버튼 중복해서 들어가있음 7월 8일 9시 53분 강승태 수정   -->
-  <form action="${pageContext.request.contextPath}/board/delete.do" method="post" style="display:inline;">
-    <input type="hidden" name="boardId" value="${board.boardId}" />
-    <input type="hidden" name="category" value="${board.category}" />
-    <input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
-    <input type="hidden" name="pageIndex" value="${not empty param.pageIndex ? param.pageIndex : 1}" />
-    <button type="submit" class="btn btn-danger btn-sm"
-        onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-</form> 
-            </c:if>
+				<!-- 삭제버튼 중복해서 들어가있음 7월 8일 9시 53분 강승태 수정   -->
+				  <form action="${pageContext.request.contextPath}/board/delete.do" method="post" style="display:inline;">
+				    <input type="hidden" name="boardId" value="${board.boardId}" />
+				    <input type="hidden" name="category" value="${board.category}" />
+				    <input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
+				    <input type="hidden" name="pageIndex" value="${not empty param.pageIndex ? param.pageIndex : 1}" />
+				    <button type="submit" class="btn btn-danger btn-sm"
+				        onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+				</form> 
+            </c:if>            
+            <c:if test="${loginUser != null && fn:toUpperCase(loginUser.role) eq 'ADMIN'}">
+			  <form action="${pageContext.request.contextPath}/board/adminDelete.do" method="post" style="display:inline;">
+			    <input type="hidden" name="boardId" value="${board.boardId}" />
+			    <input type="hidden" name="category" value="${board.category}" />
+			    <input type="hidden" name="searchKeyword" value="${param.searchKeyword}" />
+			    <input type="hidden" name="pageIndex" value="${not empty param.pageIndex ? param.pageIndex : 1}" />
+			    <button type="submit" class="btn btn-danger btn-sm"
+			        onclick="return confirm('⚠️ 정말 이 게시글을 관리자 권한으로 삭제하시겠습니까?');">
+			      관리자 강제 삭제
+			    </button>
+			  </form>
+			</c:if>
         </div>
 
 

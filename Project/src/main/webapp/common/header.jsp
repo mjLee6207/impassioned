@@ -119,7 +119,7 @@
 				<div class="navbar-search">
 					<form action="/search/all.do" method="get" autocomplete="off">
 						<input type="text" name="keyword" class="ssearch-box"
-							placeholder="검색어 입력" value="${param.keyword}">
+							placeholder="통합 검색" value="${param.keyword}">
 						<button class="ssearch-btn" type="submit">
 							<i class="bi bi-search"></i>
 						</button>

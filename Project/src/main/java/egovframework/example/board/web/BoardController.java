@@ -131,27 +131,27 @@ import lombok.extern.log4j.Log4j2;
 		    boardService.insert(boardVO);
 		    // ============ DB BLOB 저장 방식 =============
 		 // ========== 다중 이미지 업로드 ==========
-		    Long firstFileId = null; // 반복문 바깥에서 미리 선언
+		    Long firstFileId = null; // 썸네일로 쓸 첫 번째 파일ID를 미리 선언
 
-		    if (images != null) {
+		    if (images != null) { // 이미지가 하나라도 있을 때만
 		        for (MultipartFile image : images) {
 		            String filename = image.getOriginalFilename();
 		            if (!image.isEmpty() && filename != null && !filename.trim().isEmpty()) {
-		                FileVO fileVO = new FileVO();
-		                fileVO.setFileName(filename);
-		                fileVO.setFileType(image.getContentType());
-		                fileVO.setUseType("BOARD");
-		                fileVO.setUseTargetId((long) boardVO.getBoardId());
-		                fileVO.setUploaderId((long) loginUser.getMemberIdx());
-		                fileVO.setFilePath("/uploads/" + filename);
+		            	// 업로드할 파일 정보를 FileVO에 저장
+		            	FileVO fileVO = new FileVO();
+		                fileVO.setFileName(filename); // 원본 파일명
+		                fileVO.setFileType(image.getContentType()); // 파일 MIME 타입
+		                fileVO.setUseType("BOARD"); // 게시판 용도
+		                fileVO.setUseTargetId((long) boardVO.getBoardId());// 게시글 PK
+		                fileVO.setUploaderId((long) loginUser.getMemberIdx());// 업로더(회원PK)
+		                fileVO.setFilePath("/uploads/" + filename); // 가상 경로(DB용)
 		                try {
 		                    fileVO.setFileData(image.getBytes());
 		                } catch (IOException e) {
 		                    throw new RuntimeException("이미지 변환 실패", e);
 		                }
-		                fileService.insertFile(fileVO);
-		                // 썸네일 지정 (첫 번째 이미지가 있으면)
-		    		    // ⭐️ 첫 번째 파일의 fileId만 저장
+		                fileService.insertFile(fileVO); // 실제 파일 DB 저장
+		             // 썸네일용 첫 번째 이미지 fileId 저장
 		                if (firstFileId == null) {
 		                    firstFileId = fileVO.getFileId();
 		                }
@@ -159,6 +159,7 @@ import lombok.extern.log4j.Log4j2;
 		            
 		        }
 		    }
+		 // 첫 번째 파일이 있으면, 해당 파일로 썸네일 경로 지정
 		    if (firstFileId != null) {
                 boardVO.setThumbnail("/file/download.do?fileId=" + firstFileId);
                 boardService.updateThumbnail(boardVO);
@@ -206,7 +207,7 @@ import lombok.extern.log4j.Log4j2;
 		    if (deleteImageIds != null && !deleteImageIds.isEmpty()) {
 		        for (String idStr : deleteImageIds.split(",")) {
 		            try {
-		                fileService.deleteFile(Long.parseLong(idStr));
+		                fileService.deleteFile(Long.parseLong(idStr)); // 파일 PK로 삭제
 		            } catch (NumberFormatException e) {
 		                // 무시 또는 로그
 		            }
@@ -245,15 +246,15 @@ import lombok.extern.log4j.Log4j2;
 
 		    // 썸네일 처리! 👇
 		    if (firstFileId != null) {
-		        // 새로 올린 이미지 있으면 그걸로
+		    	// 새로 올린 이미지 있으면 그걸로 썸네일 지정
 		        boardVO.setThumbnail("/file/download.do?fileId=" + firstFileId);
 		        boardService.updateThumbnail(boardVO); // DB도 업데이트
 		    } else if (!remainFiles.isEmpty()) {
-		        // 새로 올린 이미지 없고, 기존 남은 이미지 있으면 그걸로
+		    	 // 새로 올린 이미지 없고, 기존 남은 이미지 있으면 첫 번째 파일로 썸네일 지정
 		        boardVO.setThumbnail("/file/download.do?fileId=" + remainFiles.get(0).getFileId());
 		        boardService.updateThumbnail(boardVO);
 		    } else {
-		        // 남은 이미지도 없고 새 업로드도 없으면, 기본 썸네일로 (혹은 null 방지)
+		    	 // 이미지가 하나도 없으면 기본 썸네일 경로로 지정
 		        boardVO.setThumbnail("/img/no-image.png");
 		        boardService.updateThumbnail(boardVO);
 		    }
@@ -311,7 +312,7 @@ import lombok.extern.log4j.Log4j2;
 		    } catch (Exception e) {
 		        log.error("조회수 증가 실패: ", e);
 		    }
-
+		 // 댓글(리뷰) 리스트 조회 후 모델에 추가
 		    List<ReviewVO> reviews = boardService.selectReviewList(boardId);
 		    model.addAttribute("reviews", reviews);
 
@@ -333,14 +334,15 @@ import lombok.extern.log4j.Log4j2;
 		    
 		    return "board/boardview"; // 읽기 전용 JSP로 이동
 		}
+		// 댓글 작성
 		@PostMapping("/board/review/add.do")
 		   public String addReview(@ModelAttribute ReviewVO reviewVO, HttpSession session) {
 		       MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 		       if (loginUser == null) {
 		           return "redirect:/member/login.do";
 		       }
-		       reviewVO.setWriterIdx(loginUser.getMemberIdx().intValue());
-		       boardService.insertReview(reviewVO);
+		       reviewVO.setWriterIdx(loginUser.getMemberIdx().intValue()); // 로그인 유저 정보로 작성자 설정
+		       boardService.insertReview(reviewVO); // 댓글 저장
 		       // 댓글 작성 후 다시 상세페이지로 이동
 		       return "redirect:/board/view.do?boardId=" + reviewVO.getBoardId();
 		   }
@@ -356,6 +358,7 @@ import lombok.extern.log4j.Log4j2;
 		    if (loginUser == null) {
 		        return "redirect:/member/login.do";
 		    }
+		 // 댓글 ID, 로그인 유저, 수정 내용 전달 → 서비스에서 본인 댓글만 수정 가능하게 처리
 		    boardService.editReview(reviewId, loginUser.getMemberIdx(), content);
 		    return "redirect:/board/view.do?boardId=" + boardId;
 		}
@@ -367,7 +370,7 @@ import lombok.extern.log4j.Log4j2;
 		    if (loginUser == null) {
 		        return "redirect:/member/login.do";
 		    }
-		    // 서비스에서 로그인 유저가 작성한 댓글만 삭제
+		    // 본인 댓글만 삭제 가능
 		    boardService.deleteReview(reviewId, loginUser.getMemberIdx());
 		    // 삭제 후 해당 게시글 상세로 이동
 		    return "redirect:/board/view.do?boardId=" + boardId;

@@ -45,9 +45,8 @@
 		<nav class="main-navbar">
 			<!-- 왼쪽 로고 + 메뉴 -->
 			<div class="navbar-left">
-				<a href="http://localhost:8080/" class="main-logo"> 
-				    <!-- 로고 이미지 -->
-					<div class="logoi"> 
+				<a href="http://localhost:8080/" class="main-logo"> <!-- 로고 이미지 -->
+					<div class="logoi">
 						<img src="<%=request.getContextPath()%>/images/home/header.png"
 							alt="메인로고">
 					</div>
@@ -63,15 +62,15 @@
 
 							<a class="dropdown-item"
 								href="/recipe/recipe.do?categoryKr=한식&pageIndex=1">한식<span
-								class="eng"> | Korean</span></a> <a class="dropdown-item"
+								class="eng"> |　Korean</span></a> <a class="dropdown-item"
 								href="/recipe/recipe.do?categoryKr=양식&pageIndex=1">양식<span
-								class="eng"> | Western</span></a> <a class="dropdown-item"
+								class="eng"> |　Western</span></a> <a class="dropdown-item"
 								href="/recipe/recipe.do?categoryKr=중식&pageIndex=1">중식<span
-								class="eng"> | Chinese</span></a> <a class="dropdown-item"
+								class="eng"> |　Chinese</span></a> <a class="dropdown-item"
 								href="/recipe/recipe.do?categoryKr=일식&pageIndex=1">일식<span
-								class="eng"> | Japanese</span></a> <a class="dropdown-item"
+								class="eng"> |　Japanese</span></a> <a class="dropdown-item"
 								href="/recipe/recipe.do?categoryKr=디저트&pageIndex=1">디저트<span
-								class="eng"> | Dessert</span></a>
+								class="eng"> |　Dessert</span></a>
 
 						</div>
 					</div>
@@ -81,16 +80,12 @@
 						<a class="dropdown-toggle"
 							href="${pageContext.request.contextPath}/board/board.do">게시판</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="/board/board.do?category=한식">한식<span
-								class="eng"> | Korean</span></a> <a class="dropdown-item"
-								href="/board/board.do?category=양식">양식<span class="eng">
-									| Western</span></a> <a class="dropdown-item"
-								href="/board/board.do?category=중식">중식<span class="eng">
-									| Chinese</span></a> <a class="dropdown-item"
-								href="/board/board.do?category=일식">일식<span class="eng">
-									| Japanese</span></a> <a class="dropdown-item"
-								href="/board/board.do?category=디저트">디저트<span class="eng">
-									| Dessert</span></a>
+							<a class="dropdown-item" 
+								href="/board/board.do?category=한식">한식<span class="eng"> |　Korean</span></a> <a class="dropdown-item"
+								href="/board/board.do?category=양식">양식<span class="eng"> |　Western</span></a><a class="dropdown-item"
+								href="/board/board.do?category=중식">중식<span class="eng"> |　Chinese</span></a><a class="dropdown-item"
+								href="/board/board.do?category=일식">일식<span class="eng"> |　Japanese</span></a><a class="dropdown-item"
+								href="/board/board.do?category=디저트">디저트<span class="eng"> |　Dessert</span></a>
 						</div>
 					</div>
 
@@ -98,7 +93,8 @@
 					<div class="dropdown" id="dropdown-event">
 						<button class="dropdown-toggle" type="button">이벤트</button>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="/event/test.do">레시피 추천</a> <!-- <a
+							<a class="dropdown-item" href="/event/test.do">레시피 추천</a>
+							<!-- <a
 								class="dropdown-item" href="/event/recipe">Recipe Event</a> -->
 						</div>
 					</div>

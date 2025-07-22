@@ -25,7 +25,7 @@ public interface BoardMapper {
 
    public int delete(BoardVO boardVO); // delete 메소드
    
-   void adminDeleteBoard(int boardId); // delete 메소드
+   void adminDeleteBoard(int boardId); // 관리자 delete 메소드
    
    public int increaseViewCount(int boardId); // 조회수 증가
    

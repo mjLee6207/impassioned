@@ -72,7 +72,17 @@ public class BoardServiceImpl implements BoardService {
    
    @Override
    public void adminDeleteBoard(int boardId) throws Exception {
-       boardMapper.adminDeleteBoard(boardId);
+       // 1. 댓글 전체 삭제
+       boardMapper.deleteAllReviewsByBoardId(boardId);  // BoardMapper에 구현 필요
+
+       // 2. 좋아요 전체 삭제
+       likeService.deleteAllByBoardId(boardId);  // LikeServiceImpl에 구현 필요
+
+       // 3. 첨부파일 전체 삭제
+       fileService.deleteAllByTargetIdAndType(boardId, "board");  // FileServiceImpl에 구현 필요
+
+       // 4. 게시글 삭제
+       boardMapper.adminDeleteBoard(boardId); 
    }
    
    @Override

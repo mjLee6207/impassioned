@@ -34,5 +34,5 @@ public class MemberVO extends Criteria {
     private boolean tempPassword;    // 임시 비밀번호 여부 (컨트롤러 판단용)
     
 //  카카오 로그인
-    private String kakaoId;
+    private Long kakaoId;
 } 

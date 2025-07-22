@@ -135,7 +135,7 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
     }    
     
     @Override
-    public MemberVO selectByKakaoId(String kakaoId) {
+    public MemberVO selectByKakaoId(Long kakaoId) {
         return memberMapper.selectByKakaoId(kakaoId);
     }
     

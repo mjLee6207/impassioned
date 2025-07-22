@@ -47,18 +47,44 @@
 			</c:if>
 		    
             <div class="form-title">회원 정보 수정</div>
-            <div class="form-group">
-                <label for="email" class="form-label">이메일</label>
-                <input type="email" id="email" name="email" class="form-control" value="${member.email}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="password" class="form-label">비밀번호</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호" minlength="6">
-            </div>
-            <div class="form-group">
-                <label for="repassword" class="form-label">비밀번호 확인</label>
-                <input type="password" id="repassword" name="repassword" class="form-control" placeholder="비밀번호 재입력" minlength="6">
-            </div>
+            <c:choose>
+			  <c:when test="${member.kakaoId != null}">
+			    <div class="form-group">
+			      <label for="email" class="form-label">이메일</label>
+					  <input type="email" id="email" class="form-control"
+					         placeholder="카카오 로그인 회원은 이메일을 변경할 수 없습니다."
+					         readonly style="background-color: #f9f9f9; color: #777;" />
+			    </div>
+			  </c:when>
+			  <c:otherwise>
+	            <div class="form-group">
+	                <label for="email" class="form-label">이메일</label>
+	                <input type="email" id="email" name="email" class="form-control" value="${member.email}" readonly>
+	            </div>
+			  </c:otherwise>
+			</c:choose>
+            
+			<c:choose>
+			  <c:when test="${member.kakaoId != null}">
+			    <div class="form-group">
+			      <label class="form-label">비밀번호</label>
+					  <input type="password" id="password" class="form-control"
+					         placeholder="카카오 로그인 회원은 비밀번호를 변경할 수 없습니다."
+					         readonly style="background-color: #f9f9f9; color: #777;" />
+			    </div>
+			  </c:when>
+			  <c:otherwise>
+			    <div class="form-group">
+			        <label for="password" class="form-label">비밀번호</label>
+			        <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호" minlength="6">
+			    </div>
+			    <div class="form-group">
+			        <label for="repassword" class="form-label">비밀번호 확인</label>
+			        <input type="password" id="repassword" name="repassword" class="form-control" placeholder="비밀번호 재입력" minlength="6">
+			    </div>
+			  </c:otherwise>
+			</c:choose>
+			
             <div class="form-group">
                 <label for="nickname" class="form-label">닉네임</label>
                 <input type="text" id="nickname" name="nickname" class="form-control" value="${member.nickname}">
@@ -94,6 +120,7 @@ function readURL(input) {
 </script>
 <script>
 let nicknameChecked = true;
+const isKakaoUser = ${member.kakaoId != null ? 'true' : 'false'};
 $(document).ready(function () {
     $("#nickname").on("blur", function () {
         const nickname = $(this).val().trim();
@@ -131,24 +158,30 @@ $(document).ready(function () {
     });
     	
     $("#addForm").on("submit", function () {
-        const pw = $("#password").val();
-        const repw = $("#repassword").val();
-        if (pw !== "" || repw !== "") {
+        const pwEl = $("#password");
+        const repwEl = $("#repassword");
+
+        const pw = pwEl.val();
+        const repw = repwEl.val();
+
+        if (!isKakaoUser && (pw !== "" || repw !== "")) {
             if (pw.length < 6) {
                 alert("비밀번호는 최소 6자 이상이어야 합니다.");
-                $("#password").focus();
+                pwEl.focus();
                 return false;
             }
             if (pw !== repw) {
                 alert("비밀번호가 일치하지 않습니다.");
-                $("#repassword").focus();
+                repwEl.focus();
                 return false;
             }
         }
+
         if (!nicknameChecked) {
             alert("닉네임 중복 확인을 해주세요.");
             return false;
         }
+
         return confirm("정말 수정하시겠습니까?");
     });
 });

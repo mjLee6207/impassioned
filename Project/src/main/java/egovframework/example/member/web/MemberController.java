@@ -333,7 +333,7 @@ public class MemberController {
 
             log.info("✅ userJson 전체: {}", userJson.toJSONString());
 
-            String kakaoId = String.valueOf(userJson.get("id"));
+            Long kakaoId = ((Number) userJson.get("id")).longValue();
             JSONObject kakaoAccount = (JSONObject) userJson.get("kakao_account");
             JSONObject profile = (JSONObject) kakaoAccount.get("profile");
 

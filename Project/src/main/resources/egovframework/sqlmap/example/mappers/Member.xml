@@ -51,7 +51,8 @@
 	        NICKNAME,
 	        JOIN_DATE,
 	        PROFILE,
-	        TEMP_PASSWORD_YN
+	        TEMP_PASSWORD_YN,
+	        KAKAO_ID
 	    FROM MEMBER
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</select>

@@ -50,7 +50,7 @@ public interface MemberMapper {
     String selectTempPasswordYnByIdx(Long memberIdx);
     
     // 카카오 ID로 회원 조회
-    MemberVO selectByKakaoId(String kakaoId);
+    MemberVO selectByKakaoId(Long kakaoId);
 
 //  카카오 회원 자동 등록
     void insertKakaoMember(MemberVO memberVO);

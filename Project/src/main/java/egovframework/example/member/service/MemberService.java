@@ -39,7 +39,7 @@ public interface MemberService {
     void deleteMember(Long memberIdx) throws Exception;
     
 //  카카오 ID로 회원 조회 (카카오 로그인용)
-    MemberVO selectByKakaoId(String kakaoId);
+    MemberVO selectByKakaoId(Long kakaoId);
     
  // 카카오 자동가입 (신규 회원 등록용)
     void insertKakaoMember(MemberVO memberVO);

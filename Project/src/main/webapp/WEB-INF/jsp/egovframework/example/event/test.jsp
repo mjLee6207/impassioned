@@ -1,29 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <meta charset="UTF-8">
     <title>레시피 성향 테스트</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/test.css">
-    
 </head>
 <body>
 <div id="page">
+
     <!-- 시작 화면 -->
     <div id="s-screen">
         <img src="/images/event/beginner.png" alt="요리곰돌이" class="start-img">
         <h1>나랑 어울리는 요리는?</h1>
         <button type="button" class="my-btn" onclick="start()">테스트 시작</button>
-    </div>     
+    </div>
 
     <!-- 질문 화면 -->
     <div id="q-screen" style="display: none;">
-     <div id="progress-bar-wrap">
-        <!-- 프로그레스 바 자리 (JS/추후 CSS로 실제 바 채움) -->
-        <div id="progress-bar-bg">
-            <div id="progress-bar-fill" style="width: 0%"></div>
+        <div id="progress-bar-wrap">
+            <div id="progress-text">0 / 4</div>
+            <div id="progress-bar-bg">
+                <div id="progress-bar-fill" style="width: 0%"></div>
+            </div>
         </div>
-    </div>
+
         <h2 id="q-no"></h2>
         <h2 id="q-text"></h2>
         <div id="a-buttons"></div>
@@ -33,12 +35,12 @@
     <div id="r-screen" style="display: none;">
         <h1>나랑 어울리는 요리는</h1>
         <h3 id="r-text"></h3>
-        <div class="result-btns">  
-  <button type="button" class="my-btn" onclick="location.reload()">다시하기</button>
-  <a id="r-link" class="my-btn" href="#">레시피 보러가기</a>
-</div>
-
+        <div class="result-btns">
+            <button type="button" class="my-btn" onclick="location.reload()">다시하기</button>
+            <a id="r-link" class="my-btn" href="#">레시피 보러가기</a>
+        </div>
     </div>
+
 </div>
 
 <script>
@@ -78,13 +80,7 @@ const questions = [
 ];
 
 let currentQuestion = 0;
-let score = {
-    한식: 0,
-    양식: 0,
-    중식: 0,
-    일식: 0
-};
-
+let score = { 한식: 0, 양식: 0, 중식: 0, 일식: 0 };
 const ctx = "<%= request.getContextPath() %>";
 
 const typeToDbCategory = {
@@ -98,11 +94,11 @@ function start() {
     document.getElementById("s-screen").style.display = "none";
     document.getElementById("q-screen").style.display = "block";
     currentQuestion = 0;
-    score = { 한식:0, 양식:0, 중식:0, 일식:0 };
+    score = { 한식: 0, 양식: 0, 중식: 0, 일식: 0 };
+    updateProgressBar();
     showQuestion();
 }
 
-// 질문 표시 (이미지 네모, 버튼 아래)
 function showQuestion() {
     const q = questions[currentQuestion];
     document.getElementById("q-no").innerText = q.qno;
@@ -125,20 +121,19 @@ function showQuestion() {
         wrapper.style.gap = "17px";
         wrapper.style.marginBottom = "4px";
 
-        // 이미지
         const img = document.createElement("img");
         img.src = answer.img;
         img.alt = answer.text;
         img.className = "select-img";
         wrapper.appendChild(img);
 
-        // 버튼
         const btn = document.createElement("button");
         btn.className = "my-btn";
         btn.innerText = answer.text;
         btn.onclick = () => {
             score[answer.type]++;
             currentQuestion++;
+            updateProgressBar();
             if (currentQuestion < questions.length) {
                 showQuestion();
             } else {
@@ -146,12 +141,25 @@ function showQuestion() {
             }
         };
         wrapper.appendChild(btn);
-
         answersDiv.appendChild(wrapper);
     });
 }
 
+function updateProgressBar() {
+    const percentage = (currentQuestion / questions.length) * 100;
+    const bar = document.getElementById("progress-bar-fill");
+    bar.style.width = percentage + "%";
+    bar.style.borderRadius = (currentQuestion === questions.length) ? "8px" : "8px 0 0 8px";
+
+    document.getElementById("progress-text").textContent =
+        currentQuestion + " / " + questions.length;
+}
+
 function showResult() {
+    const bar = document.getElementById("progress-bar-fill");
+    bar.style.width = "100%";
+    bar.style.borderRadius = "8px";
+
     document.getElementById("q-screen").style.display = "none";
     document.getElementById("r-screen").style.display = "block";
 
@@ -160,10 +168,9 @@ function showResult() {
     const bestCategory = bestTypes[0];
 
     document.getElementById("r-text").textContent = bestCategory + "!";
-
     const categoryParam = typeToDbCategory[bestCategory] || "";
-    const url = ctx + "/recipe/recipe.do?categoryKr=" + encodeURIComponent(categoryParam);
-    document.getElementById("r-link").href = url;
+    document.getElementById("r-link").href =
+        ctx + "/recipe/recipe.do?categoryKr=" + encodeURIComponent(categoryParam);
 }
 </script>
 </body>

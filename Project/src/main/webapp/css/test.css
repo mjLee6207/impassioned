@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-/* 메인 컬러/폰트/그림자 */
 :root {
   --main-green: #1e8a57;
   --hover-green: #118e6a;
@@ -36,27 +35,6 @@ body {
   text-align: center;
 }
 
-#s-screen h1, #r-screen h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--main-green);
-  margin-bottom: 32px;
-}
-
-#q-screen h2#q-no {
-  font-size: 1.08rem;
-  color: var(--main-green);
-  margin-bottom: 3px;
-  font-weight: bold;
-  letter-spacing: -0.5px;
-}
-#q-screen h2#q-text {
-  font-size: 1.22rem;
-  font-weight: bold;
-  color: #242a25;
-  margin-bottom: 24px;
-  letter-spacing: -1px;
-}
 .start-img {
   width: 252px;
   height: 252px;
@@ -64,14 +42,36 @@ body {
   display: block;
   margin: 0 auto 18px auto;
 }
-/* 프로그레스바 스타일 */
+
+#q-screen h2#q-no {
+  font-size: 1.3rem;
+  color: var(--main-green);
+  margin-bottom: 6px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+#q-screen h2#q-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #242a25;
+  margin-bottom: 32px;
+  letter-spacing: -1px;
+}
+
+/* progress bar */
 #progress-bar-wrap {
   width: 100%;
   margin-bottom: 28px;
-  height: 22px;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+}
+#progress-text {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 6px;
 }
 #progress-bar-bg {
   width: 80%;
@@ -89,8 +89,6 @@ body {
   transition: width 0.38s cubic-bezier(0.4,0.2,0.2,1.1);
 }
 
-
-/* 답변 영역(선택지 배치) */
 #a-buttons {
   display: flex;
   flex-direction: row;
@@ -99,10 +97,8 @@ body {
   align-items: flex-end;
   margin-top: 18px;
 }
-
-/* 이미지+버튼 한 셀 */
 .select-img {
- width: 252px;
+  width: 252px;
   height: 252px;
   object-fit: contain;
   border-radius: 18px;
@@ -110,7 +106,6 @@ body {
   margin-bottom: 10px;
   display: block;
 }
-
 .my-btn {
   padding: 15px 0;
   width: 100%;
@@ -131,10 +126,9 @@ body {
   color: #fff;
   transform: scale(1.04) rotate(-1.2deg);
 }
-
 .result-btns {
   display: flex;
-  flex-direction: row;    /* or column */
+  flex-direction: row;
   gap: 16px;
   justify-content: center;
   margin-top: 18px;
@@ -145,8 +139,6 @@ body {
   min-width: 120px;
   padding: 15px 0;
 }
-/* (옵션) 레시피 보러가기 파란 버튼 등은 필요시 별도 스타일 붙일 수 있음 */
-
 #r-screen h3 {
   font-size: 2.3rem;
   color: var(--main-green);
@@ -154,43 +146,3 @@ body {
   font-weight: bold;
   letter-spacing: -2px;
 }
-@media (max-width: 600px) {
-  #s-screen, #q-screen, #r-screen { width: 98vw; padding: 7vw 2vw;}
-  .select-img { width: 68vw; height: 96px;}
-  #a-buttons { gap: 20px; flex-direction: column; }
-}
-@media (max-width: 540px) {
-  #s-screen, #q-screen, #r-screen {
-    padding: 8vw 2vw 8vw 2vw;
-    width: 98vw;
-  }
-  #a-buttons {
-     display: flex;
-  flex-direction: row;
-  gap: 48px;
-  justify-content: center;
-  align-items: flex-end;
-  margin-top: 22px;
-  }
-  .select-img {
-    width: 70vw;
-    height: 90px;
-  }
-  #r-screen h3 { font-size: 1.35rem; }
-  #s-screen h1, #r-screen h1 { font-size: 1.27rem; }
-}
-#q-screen h2#q-no {
-  font-size: 1.3rem;         /* 기존보다 키워줌 */
-  color: var(--main-green);
-  margin-bottom: 6px;
-  font-weight: bold;
-  letter-spacing: -0.5px;
-}
-#q-screen h2#q-text {
-  font-size: 2rem;           /* 훨씬 크게! */
-  font-weight: bold;
-  color: #242a25;
-  margin-bottom: 32px;
-  letter-spacing: -1px;
-}
-input::placeholder, button { font-family: 'Gowun Dodum', sans-serif; }

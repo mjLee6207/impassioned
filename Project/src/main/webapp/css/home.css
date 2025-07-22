@@ -20,7 +20,7 @@ body {
 }
 
 .logo img {
-  width: 750px;
+  width: 720px;
   height: auto;
   /* margin-top: 10px; */
   margin-bottom: 20px;
@@ -240,6 +240,7 @@ body {
 /* 아래로 호버 */
 .scroll-down-wrapper {
   text-align: center;
+  margin-top: 250px;
 }
 
 .scroll-down-btn {
@@ -298,4 +299,8 @@ body {
     .slick-arrow { width: 26px; height: 26px; }
     .slick-prev { left: -20px; }
     .slick-next { right: -20px; }
+    /* 인기 레시피 섹션 통째로 숨기기 (모바일용) */
+     .popular-recipe-section {
+    display: none;
+  }
 }

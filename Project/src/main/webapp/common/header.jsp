@@ -98,8 +98,8 @@
 					<div class="dropdown" id="dropdown-event">
 						<button class="dropdown-toggle" type="button">이벤트</button>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="/event/test.do">레시피 추천</a> <a
-								class="dropdown-item" href="/event/recipe">Recipe Event</a>
+							<a class="dropdown-item" href="/event/test.do">레시피 추천</a> <!-- <a
+								class="dropdown-item" href="/event/recipe">Recipe Event</a> -->
 						</div>
 					</div>
 

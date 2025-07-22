@@ -46,7 +46,7 @@
 	<section id="recipe-section">
 		<div class="recipe-block">
 			<div class="block-inner">
-				<div class="section-title">인기 레시피</div>
+				<div class="section-title"><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;인기 레시피</div>
 				<div class="recipes slider">
 					<c:forEach var="recipe" items="${bestRecipes}">
 						<a class="recipe"
@@ -63,7 +63,7 @@
 		<div class="recipe-block">
 			<div class="block-inner">
 			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span>한식 레시피</span>
+			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;한식 레시피</span>
 			    <a href="/recipe/recipe.do?categoryKr=한식&pageIndex=1" class="more-link">+</a>
 			</div>
 				<div class="recipes">
@@ -82,7 +82,7 @@
 		<div class="recipe-block">
 			<div class="block-inner">
 			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span>양식 레시피</span>
+			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;양식 레시피</span>
 			    <a href="/recipe/recipe.do?categoryKr=양식&pageIndex=1" class="more-link">+</a>
 			</div>
 				<div class="recipes">
@@ -100,7 +100,7 @@
 		<div class="recipe-block">
 			<div class="block-inner">
 			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span>중식 레시피</span>
+			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;중식 레시피</span>
 			    <a href="/recipe/recipe.do?categoryKr=중식&pageIndex=1" class="more-link">+</a>
 			</div>
 				<div class="recipes">
@@ -118,7 +118,7 @@
 		<div class="recipe-block">
 			<div class="block-inner">
 			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span>일식 레시피</span>
+			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;일식 레시피</span>
 			    <a href="/recipe/recipe.do?categoryKr=일식&pageIndex=1" class="more-link">+</a>
 			</div>
 				<div class="recipes">
@@ -136,7 +136,7 @@
 		<div class="recipe-block">
 			<div class="block-inner">
 			<div class="section-title d-flex justify-content-between align-items-center">
-			    <span>디저트 레시피</span>
+			    <span><img src="/images/favicon.png" class="section-icon" alt="메인로고">&nbsp;디저트 레시피</span>
 			    <a href="/recipe/recipe.do?categoryKr=디저트&pageIndex=1" class="more-link">+</a>
 			</div>
 				<div class="recipes">

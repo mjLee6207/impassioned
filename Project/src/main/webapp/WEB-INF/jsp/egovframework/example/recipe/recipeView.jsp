@@ -67,7 +67,11 @@
         </div>
         <div id="ingredients-box">
           <div class="ingredient-table-2col-wrap">
-            ${recipeVO.ingredientKr}
+			  <ul style="list-style:none; padding-left:0;">
+			    <c:forEach var="item" items="${recipeVO.ingredientDisplayList}">
+			      <li>${item}</li>
+			    </c:forEach>
+			  </ul>
           </div>
         </div>
       </div>

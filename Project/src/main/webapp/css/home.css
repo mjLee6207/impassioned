@@ -60,7 +60,7 @@ body {
   font-size: 20px;
   font-weight: 600;
   margin-top: -170px; 
-  margin-bottom: 170px;
+  margin-bottom: 150px;
   color: #2E7832;
 }
 
@@ -81,7 +81,11 @@ body {
     padding-left: 20px; 
       box-sizing: border-box;
 }
-
+.hr1 {
+	margin-top: 300px;
+	color: #ffffff;
+	margin-bottom: 50px;
+}
 /* 카테고리별 추천 레시피 */
 .section-title {
    color: #2E7832 !important;

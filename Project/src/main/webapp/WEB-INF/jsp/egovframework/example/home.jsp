@@ -48,7 +48,7 @@
 		<button class="scroll-down-btn" onclick="scrollToRecipes()">▼</button>
 	</div>
 
-	<hr>
+	<hr class="hr1">
 	<!-- 오늘의 추천 레시피(수정X) -->
 	<section id="recipe-section">
 		<div class="recipe-block">

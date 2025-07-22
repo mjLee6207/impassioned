@@ -143,16 +143,34 @@ public class MemberController {
     @PostMapping(value = "/member/sendEmailCode.do", produces = "application/json;charset=UTF-8")
     public Map<String, Object> sendEmailCode(@RequestBody Map<String, String> data, HttpSession session) {
         String email = data.get("email");
-        
-        Map<String, Object> result = new HashMap<>();
+        String mode = data.get("mode");
 
-        // 이미 가입된 이메일은 인증 불가
-        if (memberService.isEmailRegistered(email)) {
+        Map<String, Object> result = new HashMap<>();
+        
+        log.info("이메일 인증 요청됨 | 이메일: {} | 모드: {}", email, mode);
+
+        boolean isRegistered = memberService.isEmailRegistered(email);
+
+        // 모드별 분기 처리
+        if ("signup".equals(mode)) {
+            if (isRegistered) {
+                result.put("success", false);
+                result.put("message", "이미 가입된 이메일입니다. 다른 이메일을 입력해주세요.");
+                return result;
+            }
+        } else if ("findId".equals(mode) || "findPw".equals(mode)) {
+            if (!isRegistered) {
+                result.put("success", false);
+                result.put("message", "가입되지 않은 이메일입니다.");
+                return result;
+            }
+        } else {
             result.put("success", false);
-            result.put("message", "이미 가입된 이메일입니다. 다른 이메일을 입력해주세요.");
+            result.put("message", "요청 형식이 올바르지 않습니다.");
             return result;
         }
-        
+
+        // 인증코드 생성 및 세션 저장
         String code = String.format("%06d", new Random().nextInt(1000000));
         session.setAttribute("emailCode", code);
         session.setAttribute("emailForCode", email);
@@ -162,11 +180,13 @@ public class MemberController {
             emailService.sendCode(email, code);
             result.put("success", true);
             result.put("message", "인증번호가 이메일로 전송되었습니다.");
+            log.info("이메일 발송 성공: {}", email);
         } catch (Exception e) {
-            e.printStackTrace();
+        	log.info("❌ 이메일 인증번호 전송 중 예외 발생: {}", e.getMessage());
             result.put("success", false);
             result.put("message", "이메일 전송에 실패했습니다. 관리자에게 문의하세요.");
         }
+
         return result;
     }
 

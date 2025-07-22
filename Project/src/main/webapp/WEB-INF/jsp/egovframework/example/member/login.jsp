@@ -290,13 +290,17 @@
 	  fetch('${pageContext.request.contextPath}/member/sendEmailCode.do', {
 	    method: 'POST',
 	    headers: { 'Content-Type': 'application/json' },
-	    body: JSON.stringify({ email })
+	    body: JSON.stringify({
+	        email: email,
+	        mode: "signup" 
+	      })
 	  })
 	  .then(res => res.json())
 	  .then(result => {
 	    statusEl.textContent = result.message;
 
 	    if (result.success) {
+	   	  alert("인증번호가 이메일로 전송되었습니다.");
 	      startCountdown(300); // 5분 = 300초
 	      
 	      emailCodeInput.value = "";

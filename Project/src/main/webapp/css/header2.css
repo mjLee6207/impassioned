@@ -30,7 +30,7 @@ body {
 
 .top-text-links a {
     text-decoration: none;
-    color: black;
+    color: #696969;
    /*  padding: 4px 6px; */
     transition: color 0.2s ease-in-out;
     font-weight: 600;
@@ -41,7 +41,7 @@ body {
 }
 
 .app-menu-container {
-	color: black;
+	color: #696969;
     position: relative;
     margin-top: 10px;
     margin-left: 10px;

@@ -55,6 +55,26 @@ body {
    box-shadow: 0 0 5px #4CAF50;
 }
 
+.home-shortcut-bar {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: -170px; 
+  margin-bottom: 170px;
+  color: #2E7832;
+}
+
+.home-shortcut-bar a {
+  color: #2E7832;
+  text-decoration: none;
+  padding: 0 12px;
+  transition: color 0.2s;
+}
+
+.home-shortcut-bar a:hover {
+  color: #117744;
+} 
+
 .block-inner {
   max-width: 1100px;
   margin: 0 auto;

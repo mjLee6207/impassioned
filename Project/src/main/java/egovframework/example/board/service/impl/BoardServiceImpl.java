@@ -64,7 +64,7 @@ public class BoardServiceImpl implements BoardService {
        likeService.deleteAllByBoardId(boardId);  // LikeServiceImpl에 구현 필요
 
        // 3. 첨부파일 전체 삭제
-       fileService.deleteAllByTargetIdAndType(boardId, "board");  // FileServiceImpl에 구현 필요
+       fileService.deleteAllByTargetIdAndType((long) boardId, "board");  // FileServiceImpl에 구현 필요
 
        // 4. 게시글 삭제
        return boardMapper.delete(boardVO);
@@ -79,7 +79,7 @@ public class BoardServiceImpl implements BoardService {
        likeService.deleteAllByBoardId(boardId);  // LikeServiceImpl에 구현 필요
 
        // 3. 첨부파일 전체 삭제
-       fileService.deleteAllByTargetIdAndType(boardId, "board");  // FileServiceImpl에 구현 필요
+       fileService.deleteAllByTargetIdAndType((long) boardId, "board");  // FileServiceImpl에 구현 필요
 
        // 4. 게시글 삭제
        boardMapper.adminDeleteBoard(boardId); 

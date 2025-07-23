@@ -44,4 +44,6 @@ public interface BoardMapper {
    List<BoardVO> selectBestPostsByCategory(@Param("category") String category);
    
    void updateThumbnail(BoardVO boardVO);
+   
+   List<BoardVO> selectByMemberIdx(@Param("memberIdx") Long memberIdx); // 탈퇴할떄 모든게시글 삭제를 위한 회원번호로 검색
 }

@@ -26,5 +26,5 @@ public interface FileMapper {
     FileVO selectProfileFileByMemberId(Long memberId);
     
     // 7/11 민중 게시글삭제를위한 달려있는 모든 파일 삭제 기능
-    void deleteByTargetIdAndType(@Param("targetId") int targetId, @Param("useType") String useType);
+    void deleteByTargetIdAndType(@Param("targetId") Long targetId, @Param("useType") String useType);
 }

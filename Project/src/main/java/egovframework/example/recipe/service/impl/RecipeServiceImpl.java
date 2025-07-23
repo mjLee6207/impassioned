@@ -43,4 +43,11 @@ public class RecipeServiceImpl implements RecipeService {
 	    return recipeMapper.selectBestRecipes();
 	}
 
+	@Override
+	public void deleteRecipe(String recipeId) {
+		
+		recipeMapper.deleteRecipeLike(recipeId);
+		recipeMapper.deleteRecipe(recipeId);
+	}
+
 }

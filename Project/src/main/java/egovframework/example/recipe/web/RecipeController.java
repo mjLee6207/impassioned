@@ -2,12 +2,15 @@ package egovframework.example.recipe.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -74,5 +77,11 @@ public class RecipeController {
         model.addAttribute("recipeVO", recipeVO);
         
         return "/recipe/recipeview";
+    }
+    
+    @PostMapping("/recipe/delete.do")
+    public String deletePost(@RequestParam("recipeId") String recipeId, HttpSession session) {
+    	recipeService.deleteRecipe(recipeId);
+        return "redirect:/recipe/list.do";
     }
 }

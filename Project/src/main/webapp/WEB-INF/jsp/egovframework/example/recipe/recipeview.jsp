@@ -83,6 +83,10 @@
           ${recipeVO.instructionKr}
         </div>
       </div>
+      <!-- 레시피 삭제 admin만 -->
+      <form action="/recipe/delete.do?recipeId=${recipeVO.recipeId}" method="post">
+        <button type="submit">삭제</button>
+      </form>
       
 </div>
 </div>

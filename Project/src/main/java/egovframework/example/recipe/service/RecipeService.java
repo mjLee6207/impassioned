@@ -19,4 +19,6 @@ public interface RecipeService {
     List<RecipeVO> selectRandomRecipesByCategory(String categoryKr, int count);  // 랜덤레시피
     //	7월21일 메인페이지 인기 레시피 조회를 위해 추가
     List<RecipeVO> selectBestRecipes();
+    
+    void deleteRecipe(String recipeId);
 }

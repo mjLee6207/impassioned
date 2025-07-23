@@ -80,4 +80,13 @@
     ORDER BY LIKE_COUNT DESC, RECIPE_ID DESC
     FETCH FIRST 10 ROWS ONLY
 </select>
+
+<delete id="deleteRecipeLike" parameterType="String">
+    DELETE FROM BOARD_LIKE WHERE RECIPE_ID = #{recipeId}
+</delete>
+
+<delete id="deleteRecipe" parameterType="String">
+    DELETE FROM API_RECIPE WHERE RECIPE_ID = #{recipeId}
+</delete>
+
 </mapper>

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -328,20 +329,39 @@ public class MemberController {
     
 //  회원 탈퇴
     @PostMapping("/member/delete.do")
-    public String deleteMember(@RequestParam("memberIdx") Long memberIdx, HttpSession session) {
+    public String deleteMember(@RequestParam("memberIdx") Long memberIdx, HttpSession session, HttpServletRequest request, RedirectAttributes rttr) {
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         Long sessionIdx = loginUser.getMemberIdx();
 
-        if (sessionIdx.longValue() != memberIdx) {
+        if (!sessionIdx.equals(memberIdx)) {
             throw new RuntimeException("접근 권한이 없습니다.");
         }
 
         try {
-            memberService.deleteMember(memberIdx);
+            // 1. 게시글 삭제 (댓글, 좋아요, 파일 포함)
+            List<BoardVO> boardList = boardMapper.selectByMemberIdx(memberIdx);
+            for (BoardVO board : boardList) {
+                boardService.delete(board);  // 내부에서 댓글, 좋아요, 파일까지 정리해야 함
+            }
+
+            // 2. 좋아요 삭제
+            likeMapper.deleteAllByMemberIdx(memberIdx);
+
+            // 3. 첨부파일 삭제 (예: 프로필 이미지)
+            fileService.deleteAllByTargetIdAndType(memberIdx, "member");
+
+            // 4. 회원 삭제
+            memberMapper.deleteMember(memberIdx);
+
+            // 5. 세션 정리
             session.invalidate();
+            request.getSession(true).removeAttribute("loginUser");
+
             return "redirect:/";
+
         } catch (Exception e) {
             log.error("❌ 회원 탈퇴 중 오류", e);
+            rttr.addFlashAttribute("message", "회원 탈퇴 처리 중 오류가 발생했습니다.");
             return "redirect:/member/mypage.do?error=deleteFail";
         }
     }
@@ -450,7 +470,7 @@ public class MemberController {
     
 //  카카오 회원 탈퇴
     @GetMapping("/member/kakao-delete.do")
-    public String kakaoDelete(HttpSession session, RedirectAttributes rttr) {
+    public String kakaoDelete(HttpSession session, HttpServletRequest request, RedirectAttributes rttr) {
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
         if (loginUser == null || loginUser.getKakaoId() == null) {
@@ -458,34 +478,43 @@ public class MemberController {
             return "redirect:/home.do";
         }
 
+        Long kakaoId = loginUser.getKakaoId();
+        Long memberIdx = loginUser.getMemberIdx();
+
         try {
-        	// 1. 카카오 연결 해제
-        	Long kakaoId = loginUser.getKakaoId();
-        	Long memberIdx = loginUser.getMemberIdx();
-        	memberService.unlinkKakaoUser(kakaoId);
+            // 1. 카카오 연결 해제 (실패해도 탈퇴 계속 진행)
+            try {
+                memberService.unlinkKakaoUser(kakaoId);
+            } catch (HttpClientErrorException e) {
+                log.warn("⚠️ 카카오 연결 해제 실패 또는 이미 해제됨: {}", e.getMessage());
+                // 탈퇴는 계속 진행
+            }
 
-        	// 2. 게시글 전체 삭제 (댓글, 좋아요, 첨부파일 포함)
-        	List<BoardVO> boardList = boardMapper.selectByMemberIdx(memberIdx);
-        	for (BoardVO board : boardList) {
-        	    boardService.delete(board);  // ✅ 내부적으로 댓글도 삭제됨
-        	}
+            // 2. 게시글 전체 삭제 (댓글, 좋아요, 첨부파일 포함)
+            List<BoardVO> boardList = boardMapper.selectByMemberIdx(memberIdx);
+            for (BoardVO board : boardList) {
+                boardService.delete(board);  // 댓글, 좋아요, 첨부파일까지 삭제됨
+            }
 
-        	// 3. 좋아요 및 첨부파일 정리
-        	likeMapper.deleteAllByMemberIdx(memberIdx);
-        	fileService.deleteAllByTargetIdAndType(memberIdx, "member");
+            // 3. 좋아요 및 첨부파일 정리
+            likeMapper.deleteAllByMemberIdx(memberIdx);
+            fileService.deleteAllByTargetIdAndType(memberIdx, "member");
 
-        	// 4. 회원 삭제
-        	memberMapper.deleteMember(memberIdx);
+            // 4. 회원 삭제
+            memberMapper.deleteMember(memberIdx);
 
-        	// 5. 세션 종료
-        	session.invalidate();
+            // 5. 세션 완전 종료
+            session.invalidate(); // 기존 세션 무효화
+            request.getSession(true).removeAttribute("loginUser"); // 혹시 모를 로그인 정보 제거
+
             rttr.addFlashAttribute("message", "카카오 회원 탈퇴가 완료되었습니다.");
             return "redirect:/";
 
         } catch (Exception e) {
             log.error("❌ 카카오 탈퇴 실패", e);
             rttr.addFlashAttribute("message", "카카오 탈퇴 처리 중 오류가 발생했습니다.");
-            return "redirect:/member/mypage.do";
+            return "redirect:/member/mycorrection.do";
         }
     }
+
 }

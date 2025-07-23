@@ -49,4 +49,7 @@ public interface MemberService {
     
 //  카카오 닉네임 중복 확인
     boolean isNicknameDuplicate(String nickname);
+    
+//  카카오 회원 탈퇴
+    void unlinkKakaoUser(Long kakaoId) throws Exception;
 }

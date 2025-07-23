@@ -118,7 +118,7 @@
 	</update>
 	
 	<!-- 회원 탈퇴 -->
-	<delete id="deleteMember" parameterType="int">
+	<delete id="deleteMember" parameterType="long">
 	    DELETE FROM MEMBER
 	    WHERE MEMBER_IDX = #{memberIdx}
 	</delete>

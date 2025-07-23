@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
@@ -47,9 +48,13 @@ public class MemberController {
 
     // ✅ [회원가입 처리]
     @PostMapping("/member/register.do")
-    public String register(MemberVO memberVO, Model model) {
+    public String register(MemberVO memberVO, RedirectAttributes rttr, Model model) {
         try {
             memberService.register(memberVO);
+
+            // 성공 시 플래시 메시지 추가
+            rttr.addFlashAttribute("signupSuccess", true);
+
             return "redirect:/member/login.do";
         } catch (Exception e) {
             model.addAttribute("errorMsg", e.getMessage());
@@ -419,5 +424,34 @@ public class MemberController {
     @GetMapping("/redirect/nicknameConfirm.do")
     public String showNicknameConfirmPage() {
         return "member/nicknameWarning";
+    }
+    
+//  카카오 회원 탈퇴
+    @GetMapping("/member/kakao-delete.do")
+    public String kakaoDelete(HttpSession session, RedirectAttributes rttr) {
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+
+        if (loginUser == null || loginUser.getKakaoId() == null) {
+            rttr.addFlashAttribute("message", "잘못된 접근입니다.");
+            return "redirect:/home.do";
+        }
+
+        try {
+            // 1. 카카오 연결 끊기
+        	memberService.unlinkKakaoUser(loginUser.getKakaoId());
+
+            // 2. 회원 DB 삭제
+            memberService.deleteMember(loginUser.getMemberIdx());
+
+            // 3. 세션 무효화
+            session.invalidate();
+
+            rttr.addFlashAttribute("message", "카카오 회원 탈퇴가 완료되었습니다.");
+            return "redirect:/";
+        } catch (Exception e) {
+            log.error("❌ 카카오 탈퇴 실패", e);
+            rttr.addFlashAttribute("message", "카카오 탈퇴 처리 중 오류가 발생했습니다.");
+            return "redirect:/member/mypage.do";
+        }
     }
 }

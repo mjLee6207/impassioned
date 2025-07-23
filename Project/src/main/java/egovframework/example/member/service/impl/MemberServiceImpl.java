@@ -6,7 +6,15 @@ import java.util.UUID;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
@@ -17,6 +25,12 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
    
     @Autowired
     private MemberMapper memberMapper;
+    
+    // 카카오 탈퇴 
+    @Value("${kakao.admin-key}")
+    private String kakaoAdminKey;
+    
+    private final RestTemplate restTemplate = new RestTemplate();
 
     // 회원가입
     @Override
@@ -161,5 +175,25 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
     @Override
     public boolean isNicknameDuplicate(String nickname) {
         return memberMapper.countByNickname(nickname) > 0;
+    }
+    
+    @Override
+    public void unlinkKakaoUser(Long kakaoId) throws Exception {
+        String url = "https://kapi.kakao.com/v1/user/unlink";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "KakaoAK " + kakaoAdminKey);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("target_id_type", "user_id");
+        params.add("target_id", kakaoId.toString());
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("카카오 unlink 요청 실패: " + response.getBody());
+        }
     }
 } 

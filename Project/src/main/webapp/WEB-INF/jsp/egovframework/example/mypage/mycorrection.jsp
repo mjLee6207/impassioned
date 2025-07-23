@@ -96,11 +96,6 @@
     </div>
 </form>
 
-<c:if test="${updateSuccess}">
-<script>
-    alert("회원 정보가 성공적으로 수정되었습니다.");
-</script>
-</c:if>
 
 <!-- JS 스크립트는 동일하게 유지 -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -120,8 +115,10 @@ function readURL(input) {
 </script>
 <script>
 let nicknameChecked = true;
+
 const isKakaoUser = ${member.kakaoId != null ? 'true' : 'false'};
 const originalNickname = "${member.nickname}";
+
 $(document).ready(function () {
     $("#nickname").on("blur", function () {
         const nickname = $(this).val().trim();
@@ -154,16 +151,29 @@ $(document).ready(function () {
     $("#deleteBtn").on("click", function () {
         if (!confirm("정말 회원 탈퇴하시겠습니까?")) return;
 
-        $.post("/member/delete.do", {
-            memberIdx: ${member.memberIdx}  // 서버로 보낼 데이터
-        })
-        .done(function () {
-            alert("탈퇴 완료되었습니다.");
-            location.href = "/";  // 홈으로 이동
-        })
-        .fail(function () {
-            alert("탈퇴 중 오류가 발생했습니다.");
-        });
+        if (isKakaoUser) {
+            // 카카오 회원
+            fetch("/member/kakao-delete.do")
+                .then(() => {
+                    alert("탈퇴되었습니다. 이용해주셔서 감사합니다.");
+                    location.href = "/";
+                })
+                .catch(() => {
+                    alert("탈퇴 처리 중 오류가 발생했습니다.");
+                });
+        } else {
+            // 일반 회원
+            $.post("/member/delete.do", {
+                memberIdx: ${member.memberIdx}
+            })
+            .done(function () {
+                alert("탈퇴되었습니다. 이용해주셔서 감사합니다.");
+                location.href = "/";
+            })
+            .fail(function () {
+                alert("탈퇴 처리 중 오류가 발생했습니다.");
+            });
+        }
     });
     	
     $("#addForm").on("submit", function () {

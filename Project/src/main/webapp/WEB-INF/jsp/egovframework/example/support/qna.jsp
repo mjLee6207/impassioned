@@ -76,8 +76,8 @@
                     <div class="faq-answer">상단 마이페이지에서 “내가 쓴 글”, “좋아요한 글”을 확인하실 수 있습니다.</div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-question">Q. 요리 레시피를 비공개로 등록할 수 있나요?</button>
-                    <div class="faq-answer">현재는 모든 레시피가 공개됩니다. 향후 비공개 기능도 준비 중입니다.</div>
+                    <button class="faq-question">Q. 게시글을 비공개로 등록할 수 있나요?</button>
+                    <div class="faq-answer">현재는 모든 게시글이 공개됩니다. 향후 비공개 기능도 준비 중입니다.</div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-question">Q. 사이트 회원 탈퇴는 어떻게 하나요?</button>

@@ -167,20 +167,23 @@
 	        likedPostsCriteria.setPageUnit(10);
 	        likedPostsCriteria.setCategory(category);
 	        likedPostsCriteria.setSearchKeyword(searchKeyword);
-
-	        likedPostsCriteria.setFirstIndex(myPostsPaginationInfo.getFirstRecordIndex()); // 이거는 별도 계산 필요 시 따로 처리
+	        PaginationInfo likedPostsPaginationInfo = new PaginationInfo();
+	        likedPostsPaginationInfo.setCurrentPageNo(likedPostsCriteria.getPageIndex());
+	        likedPostsPaginationInfo.setRecordCountPerPage(likedPostsCriteria.getPageUnit());
+	        likedPostsPaginationInfo.setPageSize(10);
+	        likedPostsCriteria.setFirstIndex(likedPostsPaginationInfo.getFirstRecordIndex());  // 이거는 별도 계산 필요 시 따로 처리
 
 	        List<?> likedRecipes = mypageService.selectMyLikeList(likedPostsCriteria, memberIdx, "RECIPE");
 	        int likedRecipesTotCnt = mypageService.selectMyLikeListTotCnt(likedPostsCriteria, memberIdx, "RECIPE");
 
 	        List<?> likedBoardPosts = mypageService.selectMyLikeList(likedPostsCriteria, memberIdx, "BOARD");
 	        int likedBoardPostsTotCnt = mypageService.selectMyLikeListTotCnt(likedPostsCriteria, memberIdx, "BOARD");
-
+	        likedPostsPaginationInfo.setTotalRecordCount(likedRecipesTotCnt);
 	        model.addAttribute("likedRecipes", likedRecipes);
 	        model.addAttribute("likedRecipesTotalCount", likedRecipesTotCnt);
 	        model.addAttribute("likedPosts", likedBoardPosts);
 	        model.addAttribute("likedPostsTotalCount", likedBoardPostsTotCnt);
-
+	        model.addAttribute("likedPostsPaginationInfo", likedPostsPaginationInfo);
 	        // ✅ 회원 정보 수정 성공 alert 표시 (세션 → 모델)
 	        Boolean updateSuccess = (Boolean) session.getAttribute("updateSuccess");
 	        if (updateSuccess != null && updateSuccess) {

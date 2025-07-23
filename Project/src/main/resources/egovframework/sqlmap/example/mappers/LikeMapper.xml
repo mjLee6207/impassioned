@@ -117,4 +117,9 @@
 	        OR 
 	        (RECIPE_ID = #{recipeId} AND #{recipeId} IS NOT NULL)
 	</delete>
+	
+	<!-- 회원이 누른 좋아요 삭제(탈퇴) -->
+	<delete id="deleteAllByMemberIdx" parameterType="long">
+	    DELETE FROM LIKE WHERE MEMBER_IDX = #{memberIdx}
+	</delete>
 </mapper>

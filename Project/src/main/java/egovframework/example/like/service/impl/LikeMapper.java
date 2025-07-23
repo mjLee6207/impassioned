@@ -60,4 +60,8 @@ public interface LikeMapper {
 
     // [레시피 전용] 레시피 삭제 시 좋아요 전체 삭제
     void deleteAllByRecipeId(@Param("recipeId") String recipeId);
+    
+    // 회원이 누른 좋아요 삭제(탈퇴)
+    void deleteAllByMemberIdx(@Param("memberIdx") Long memberIdx);
+
 }

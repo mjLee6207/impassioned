@@ -162,4 +162,9 @@
 	<delete id="adminDeleteBoard" parameterType="int">
 	  DELETE FROM BOARD WHERE BOARD_ID = #{boardId}
 	</delete>
+	
+	<!-- 맴버넘버로 서치 -->
+	<select id="selectByMemberIdx" parameterType="long" resultType="egovframework.example.board.service.BoardVO">
+    SELECT * FROM BOARD WHERE MEMBER_IDX = #{memberIdx}
+</select>
 </mapper>

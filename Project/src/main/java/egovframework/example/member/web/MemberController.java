@@ -3,6 +3,7 @@ package egovframework.example.member.web;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -31,9 +32,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import egovframework.example.board.service.BoardService;
+import egovframework.example.board.service.BoardVO;
+import egovframework.example.board.service.impl.BoardMapper;
+import egovframework.example.file.service.FileService;
+import egovframework.example.like.service.impl.LikeMapper;
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
 import egovframework.example.member.service.impl.EmailService;
+import egovframework.example.member.service.impl.MemberMapper;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -45,6 +52,21 @@ public class MemberController {
     
     @Autowired
     private EmailService emailService;
+    
+    @Autowired
+    private BoardMapper boardMapper;
+    
+    @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private LikeMapper likeMapper;
+
+    @Autowired
+    private FileService fileService;
+
+    @Autowired
+    private MemberMapper memberMapper;
 
     // ✅ [회원가입 처리]
     @PostMapping("/member/register.do")
@@ -437,17 +459,29 @@ public class MemberController {
         }
 
         try {
-            // 1. 카카오 연결 끊기
-        	memberService.unlinkKakaoUser(loginUser.getKakaoId());
+        	// 1. 카카오 연결 해제
+        	Long kakaoId = loginUser.getKakaoId();
+        	Long memberIdx = loginUser.getMemberIdx();
+        	memberService.unlinkKakaoUser(kakaoId);
 
-            // 2. 회원 DB 삭제
-            memberService.deleteMember(loginUser.getMemberIdx());
+        	// 2. 게시글 전체 삭제 (댓글, 좋아요, 첨부파일 포함)
+        	List<BoardVO> boardList = boardMapper.selectByMemberIdx(memberIdx);
+        	for (BoardVO board : boardList) {
+        	    boardService.delete(board);  // ✅ 내부적으로 댓글도 삭제됨
+        	}
 
-            // 3. 세션 무효화
-            session.invalidate();
+        	// 3. 좋아요 및 첨부파일 정리
+        	likeMapper.deleteAllByMemberIdx(memberIdx);
+        	fileService.deleteAllByTargetIdAndType(memberIdx, "member");
 
+        	// 4. 회원 삭제
+        	memberMapper.deleteMember(memberIdx);
+
+        	// 5. 세션 종료
+        	session.invalidate();
             rttr.addFlashAttribute("message", "카카오 회원 탈퇴가 완료되었습니다.");
             return "redirect:/";
+
         } catch (Exception e) {
             log.error("❌ 카카오 탈퇴 실패", e);
             rttr.addFlashAttribute("message", "카카오 탈퇴 처리 중 오류가 발생했습니다.");

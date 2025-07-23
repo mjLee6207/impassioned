@@ -187,6 +187,12 @@
 		</div>
 	</div>
 
+
+<c:if test="${updateSuccess}">
+<script>
+    alert("회원 정보가 성공적으로 수정되었습니다.");
+</script>
+</c:if>
 	<!-- ====== 스크립트 ====== -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script

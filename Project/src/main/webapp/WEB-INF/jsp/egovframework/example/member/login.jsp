@@ -102,6 +102,12 @@
   </div>
 </div>
 
+<c:if test="${signupSuccess}">
+<script>
+    alert("회원가입이 완료되었습니다.");
+</script>
+</c:if>
+
 <script>
 /* 로그인 이미지 슬라이드 */
 	document.addEventListener('DOMContentLoaded', function () {

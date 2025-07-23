@@ -37,8 +37,7 @@
 					onclick="showSection('likedPostsSection', this)">
     <i class="bi bi-heart-fill"></i>
     <span>좋아요 남긴 글
-        <span class="like-count">(
-            <span id="likedCountNum">${likedRecipesTotalCount}</span>개)
+        <span class="like-count">(<span id="likedCountNum">${likedRecipesTotalCount}</span>개)
         </span>
     </span>
 </div>

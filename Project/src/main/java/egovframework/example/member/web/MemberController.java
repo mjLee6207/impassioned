@@ -3,7 +3,6 @@ package egovframework.example.member.web;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -33,15 +32,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import egovframework.example.board.service.BoardService;
-import egovframework.example.board.service.BoardVO;
-import egovframework.example.board.service.impl.BoardMapper;
-import egovframework.example.file.service.FileService;
-import egovframework.example.like.service.impl.LikeMapper;
 import egovframework.example.member.service.MemberService;
 import egovframework.example.member.service.MemberVO;
 import egovframework.example.member.service.impl.EmailService;
-import egovframework.example.member.service.impl.MemberMapper;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -53,23 +46,8 @@ public class MemberController {
     
     @Autowired
     private EmailService emailService;
-    
-    @Autowired
-    private BoardMapper boardMapper;
-    
-    @Autowired
-    private BoardService boardService;
 
-    @Autowired
-    private LikeMapper likeMapper;
-
-    @Autowired
-    private FileService fileService;
-
-    @Autowired
-    private MemberMapper memberMapper;
-
-    // ✅ [회원가입 처리]
+// 회원가입 처리
     @PostMapping("/member/register.do")
     public String register(MemberVO memberVO, RedirectAttributes rttr, Model model) {
         try {
@@ -85,7 +63,7 @@ public class MemberController {
         }
     }
 
-    // ✅ [닉네임 중복 검사 - AJAX]
+//  닉네임 중복 검사 - AJAX
     @ResponseBody
     @GetMapping("/member/nicknameCheck.do")
     public Map<String, Boolean> nicknameCheck(@RequestParam("nickname") String nickname, HttpSession session) {
@@ -96,7 +74,7 @@ public class MemberController {
         return Collections.singletonMap("available", available);
     }
 
-    // ✅ [아이디 중복 검사 - AJAX]
+//  아이디 중복 검사 - AJAX
     @ResponseBody
     @GetMapping("/member/idCheck.do")
     public Map<String, Boolean> idCheck(@RequestParam("id") String id) {
@@ -104,7 +82,7 @@ public class MemberController {
         return Collections.singletonMap("available", available);
     }
 
-    // ✅ [로그인 처리]
+//  로그인 처리
     @PostMapping("/member/login.do")
     public String login(MemberVO memberVO,
                         HttpSession session,
@@ -114,13 +92,13 @@ public class MemberController {
             MemberVO loginUser = memberService.authenticate(memberVO);
             session.setAttribute("loginUser", loginUser);
 
-            // ✅ TEMP_PASSWORD_YN = 'Y' 이면서 일반 회원인 경우에만 분기
+            // TEMP_PASSWORD_YN = 'Y' 이면서 일반 회원인 경우에만 분기
             if ("Y".equals(loginUser.getTempPasswordYn()) && loginUser.getKakaoId() == null) {
                 session.setAttribute("redirectAfterLogin", redirect != null ? redirect : "/");
                 return "redirect:/redirect/confirm.do";
             }
 
-            // ✅ redirect가 유효하면 이동
+            // redirect가 유효하면 이동
             if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
                 return "redirect:" + redirect;
             }
@@ -139,7 +117,7 @@ public class MemberController {
         return "member/redirectConfirm";
     }
     
-    // ✅ [로그인 폼 페이지]
+//  로그인 페이지
     @GetMapping("/member/login.do")
     public String loginPage(@RequestParam(value = "redirect", required = false) String redirect,
 		            		HttpServletRequest request) {
@@ -155,10 +133,10 @@ public class MemberController {
 		
 		request.setAttribute("kakaoLink", kakaoLink);
 		
-		return "member/login"; // 로그인 폼 JSP
+		return "member/login";
     }
     
-    // ✅ [로그아웃 처리]
+//  로그아웃
     @GetMapping("/member/logout.do")
     public String logout(HttpSession session,
                          @RequestParam(value = "redirect", required = false) String redirect) {
@@ -169,7 +147,7 @@ public class MemberController {
         return "redirect:/";
     }
 
-    // ✅ [이메일 인증번호 전송]
+//  이메일 인증번호 전송
     @ResponseBody
     @PostMapping(value = "/member/sendEmailCode.do", produces = "application/json;charset=UTF-8")
     public Map<String, Object> sendEmailCode(@RequestBody Map<String, String> data, HttpSession session) {
@@ -213,7 +191,7 @@ public class MemberController {
             result.put("message", "인증번호가 이메일로 전송되었습니다.");
             log.info("이메일 발송 성공: {}", email);
         } catch (Exception e) {
-        	log.info("❌ 이메일 인증번호 전송 중 예외 발생: {}", e.getMessage());
+        	log.info("이메일 인증번호 전송 중 예외 발생: {}", e.getMessage());
             result.put("success", false);
             result.put("message", "이메일 전송에 실패했습니다. 관리자에게 문의하세요.");
         }
@@ -221,7 +199,7 @@ public class MemberController {
         return result;
     }
 
-    // [이메일 인증번호 확인]
+//  이메일 인증번호 확인
     @ResponseBody
     @PostMapping("/member/verifyCode.do")
     public Map<String, Object> verifyCode(@RequestBody Map<String, String> data, HttpSession session) {
@@ -258,13 +236,13 @@ public class MemberController {
     }
 
 
-    // ✅ [아이디 찾기 폼]
+//  아이디 찾기 폼
     @GetMapping("/member/findidform.do")
     public String findIdForm() {
         return "member/findidform";
     }
 
-    // ✅ [아이디 찾기 처리]
+//  아이디 찾기 처리
     @PostMapping("/member/findId.do")
     public String findId(@RequestParam("email") String email,
                          HttpSession session,
@@ -288,13 +266,13 @@ public class MemberController {
         return "member/findidform";
     }
 
-    // ✅ [비밀번호 찾기 폼]
+//  비밀번호 찾기 폼
     @GetMapping("/member/findpasswordform.do")
     public String findPasswordForm() {
         return "member/findpasswordform";
     }
 
-    // ✅ [비밀번호 찾기 처리]
+//  비밀번호 찾기 처리
     @PostMapping("/member/findPassword.do")
     public String findPassword(@RequestParam("id") String id,
                                @RequestParam("email") String email,
@@ -329,34 +307,33 @@ public class MemberController {
     
 //  회원 탈퇴
     @PostMapping("/member/delete.do")
-    public String deleteMember(@RequestParam("memberIdx") Long memberIdx,
-                               HttpSession session,
+    public String deleteMember(HttpSession session,
                                HttpServletRequest request,
                                RedirectAttributes rttr) {
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
-        if (!loginUser.getMemberIdx().equals(memberIdx)) {
-            throw new RuntimeException("접근 권한이 없습니다.");
+        if (loginUser == null) {
+            rttr.addFlashAttribute("message", "로그인이 필요합니다.");
+            return "redirect:/member/login.do";
         }
 
         try {
-            log.info("🔥 3. 회원 정보 초기화 시작");
+            Long memberIdx = loginUser.getMemberIdx();
+            log.info("회원 정보 초기화 시작: memberIdx={}", memberIdx);
             memberService.softDeleteMember(memberIdx);
-            log.info("✅ 3. 회원 정보 초기화 완료");
+            log.info("회원 정보 초기화 완료");
 
-            // 3. 세션 종료
             session.invalidate();
             request.getSession(true).removeAttribute("loginUser");
 
             return "redirect:/";
 
         } catch (Exception e) {
-            log.error("❌ 일반 회원 탈퇴 오류", e);
+            log.error("회원 탈퇴 오류", e);
             rttr.addFlashAttribute("message", "회원 탈퇴 처리 중 오류가 발생했습니다.");
             return "redirect:/member/mypage.do?error=deleteFail";
         }
     }
-
     
 //  카카오로그인
     @GetMapping("/kakaoLogin.do")
@@ -365,7 +342,7 @@ public class MemberController {
                              HttpSession session,
                              HttpServletRequest request) {
         try {
-            // === [1] 토큰 요청 ===
+            // === 1) 토큰 요청 ===
             String tokenUrl = "https://kauth.kakao.com/oauth/token";
             RestTemplate restTemplate = new RestTemplate();
 
@@ -375,7 +352,7 @@ public class MemberController {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("grant_type", "authorization_code");
             params.add("client_id", "d779fae0a4d9df6ea88f8bfed6e1b315"); // REST API 키
-            params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do"); // ⚠️ 쿼리스트링 제외
+            params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do"); // 쿼리스트링 제외
             params.add("code", code);
 
             HttpEntity<MultiValueMap<String, String>> tokenRequest = new HttpEntity<>(params, headers);
@@ -384,7 +361,7 @@ public class MemberController {
             JSONObject tokenJson = (JSONObject) new JSONParser().parse(tokenResponse.getBody());
             String accessToken = (String) tokenJson.get("access_token");
 
-            // === [2] 사용자 정보 요청 ===
+            // === 2) 사용자 정보 요청 ===
             HttpHeaders infoHeaders = new HttpHeaders();
             infoHeaders.set("Authorization", "Bearer " + accessToken);
             HttpEntity<?> infoRequest = new HttpEntity<>(infoHeaders);
@@ -393,7 +370,7 @@ public class MemberController {
             ResponseEntity<String> userInfoResponse = restTemplate.exchange(infoUrl, HttpMethod.GET, infoRequest, String.class);
             JSONObject userJson = (JSONObject) new JSONParser().parse(userInfoResponse.getBody());
 
-            log.info("✅ userJson 전체: {}", userJson.toJSONString());
+            log.info("userJson 전체: {}", userJson.toJSONString());
 
             Long kakaoId = ((Number) userJson.get("id")).longValue();
             JSONObject kakaoAccount = (JSONObject) userJson.get("kakao_account");
@@ -402,23 +379,23 @@ public class MemberController {
             String email = (String) kakaoAccount.get("email");
             String nickname = (String) profile.get("nickname");
 
-            log.info("✅ kakaoId: {}", kakaoId);
-            log.info("✅ nickname: {}", nickname);
+            log.info("kakaoId: {}", kakaoId);
+            log.info("nickname: {}", nickname);
 
-            // === [3] 기존 회원 여부 확인
+            // === 3) 기존 회원 여부 확인
             MemberVO member = memberService.selectByKakaoId(kakaoId);
 
             if (member != null) {
                 session.setAttribute("loginUser", member);
             } else {
-            	 // ✅ 닉네임 중복 검사 + 자동 유니크 처리
+            	 // 닉네임 중복 검사 + 자동 유니크 처리
                 String finalNickname = nickname;
                 int suffix = 1;
                 while (memberService.isNicknameDuplicate(finalNickname)) {
                     finalNickname = nickname + suffix++;
                 }
 
-                // ✅ 자동 변경된 경우: 세션에 표시
+                // 자동 변경된 경우: 세션에 표시
                 if (!finalNickname.equals(nickname)) {
                     session.setAttribute("nicknameAutoRenamedYn", "Y");
                     session.setAttribute("nicknameBefore", nickname);
@@ -437,12 +414,12 @@ public class MemberController {
                 session.setAttribute("loginUser", member);
             }
 
-            // === [4] 닉네임 자동 변경 시 경고 페이지로 리다이렉트
+            // === 4) 닉네임 자동 변경 시 경고 페이지로 리다이렉트
             if ("Y".equals(session.getAttribute("nicknameAutoRenamedYn"))) {
                 return "redirect:/redirect/nicknameConfirm.do";
             }
 
-            // === [5] 그 외 정상 리다이렉트
+            // === 5) 그 외 정상 리다이렉트
             if (redirect != null && !redirect.trim().isEmpty() && !redirect.contains("/WEB-INF")) {
                 return "redirect:" + redirect;
             }
@@ -454,7 +431,7 @@ public class MemberController {
         }
     }
     
-//  카카오 이용자 닉네임 자동 변경 안내 confirm창
+//  카카오 이용자 중복 닉네임 변경 안내 경고창
     @GetMapping("/redirect/nicknameConfirm.do")
     public String showNicknameConfirmPage() {
         return "member/nicknameWarning";
@@ -476,17 +453,17 @@ public class MemberController {
         Long memberIdx = loginUser.getMemberIdx();
 
         try {
-            // 1. 카카오 연결 해제 (실패해도 계속)
+            // 1) 카카오 연결 해제 (실패해도 계속)
             try {
                 memberService.unlinkKakaoUser(kakaoId);
             } catch (HttpClientErrorException e) {
-                log.warn("⚠️ 카카오 연결 해제 실패 또는 이미 해제됨: {}", e.getMessage());
+                log.warn("카카오 연결 해제 실패 또는 이미 해제됨: {}", e.getMessage());
             }
 
-            // 3. 회원 정보 초기화 (닉네임 → 탈퇴한 회원 등)
+            // 2) 회원 정보 초기화 (닉네임 → 탈퇴한 회원 등)
             memberService.softDeleteMember(memberIdx);
 
-            // 4. 세션 종료
+            // 3) 세션 종료
             session.invalidate();
             request.getSession(true).removeAttribute("loginUser");
 
@@ -494,7 +471,7 @@ public class MemberController {
             return "redirect:/";
 
         } catch (Exception e) {
-            log.error("❌ 카카오 탈퇴 실패", e);
+            log.error("카카오 탈퇴 실패", e);
             rttr.addFlashAttribute("message", "카카오 탈퇴 처리 중 오류가 발생했습니다.");
             return "redirect:/member/mycorrection.do";
         }

@@ -127,11 +127,6 @@
 		WHERE MEMBER_IDX = #{memberId}
 	</update>
 
-	<!-- 회원 탈퇴 -->
-	<delete id="deleteMember" parameterType="long">
-		DELETE FROM MEMBER
-		WHERE MEMBER_IDX = #{memberIdx}
-	</delete>
 	<!-- 임시탈퇴 -->
 	<update id="softDeleteMember" parameterType="long">
 		UPDATE MEMBER

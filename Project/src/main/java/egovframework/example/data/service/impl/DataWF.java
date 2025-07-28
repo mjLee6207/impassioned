@@ -34,15 +34,15 @@ public class DataWF implements DataManager {
     private static final List<String> CATEGORIES = List.of("Dessert");
     private volatile boolean isRunning = false;
 
-    // ✅ 전체 번역 누적 글자 수
+    // 전체 번역 누적 글자 수
     private static int totalTranslatedChars = 0;
-    // ✅ 저장된 레시피 수 카운터
+    // 저장된 레시피 수 카운터
     private static int savedRecipeCount = 0;
     
     @Override
     public List<DataVO> fetch() {
-        log.warn("⚠️ DataWF는 fetch()를 지원하지 않습니다.");
-        return List.of(); // 빈 리스트 반환
+        log.warn("DataWF는 fetch()를 지원하지 않습니다.");
+        return List.of();
     }
     
     @Override
@@ -84,21 +84,21 @@ public class DataWF implements DataManager {
             if (meals.isArray()) {
                 for (JsonNode meal : meals) {
                     if (!isRunning) {
-                        log.warn("⚠ 중지 요청 감지 → 반복 중단");
+                        log.warn("중지 요청 감지 → 반복 중단");
                         break;
                     }
 
                     String idMeal = meal.path("idMeal").asText();
-                    log.info("🚀 {}번째 레시피 처리 중: idMeal={}", count++, idMeal);
+                    log.info("{}번째 레시피 처리 중: idMeal={}", count++, idMeal);
 
                     boolean saved = saveDetailRecipe(idMeal, area, category);
 
                     if (saved) {
                         try {
-                            Thread.sleep(20000); // ✅ 저장된 경우만 대기
+                            Thread.sleep(20000);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
-                            log.warn("⚠ 인터럽트로 중단됨");
+                            log.warn("인터럽트로 중단됨");
                             break;
                         }
                     }
@@ -112,7 +112,7 @@ public class DataWF implements DataManager {
     private boolean saveDetailRecipe(String idMeal, String area, String category) {
         try {
             String url = "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + idMeal;
-            String json = restTemplate.getForObject(url, String.class); // ✅ 리팩토링
+            String json = restTemplate.getForObject(url, String.class);
 
             DataVO data = parseAuto(json);
             if (data == null) {
@@ -121,15 +121,15 @@ public class DataWF implements DataManager {
             }
 
             if (dataMapper.existsRecipe(data.getRecipeId()) > 0) {
-                log.warn("⏭ 중복 레시피 건너뜀: {}", data.getRecipeId());
+                log.warn("중복 레시피 건너뜀: {}", data.getRecipeId());
                 return false;
             }
 
             JsonNode node = new ObjectMapper().readTree(json).get("meals").get(0);
-            parseManual(data, node);   // ✅ 영문 재료/계량 분리
-            translateAll(data);        // ✅ 번역 (재료 + 제목/설명)
+            parseManual(data, node);   // 영문 재료/계량 분리
+            translateAll(data);        // 번역 (재료 + 제목/설명)
 
-            // ✅ 분류 및 지역 설정
+            // 분류 및 지역 설정
             if (area != null) {
                 data.setArea(area);
                 data.setCategoryEn(area);
@@ -142,11 +142,11 @@ public class DataWF implements DataManager {
             dataMapper.insertRecipe(data);
             savedRecipeCount++;
 
-            log.info("✅ 저장 성공: {} ({}) - 누적 저장 {}건", data.getTitleEn(), data.getCategoryKr(), savedRecipeCount);
+            log.info("저장 성공: {} ({}) - 누적 저장 {}건", data.getTitleEn(), data.getCategoryKr(), savedRecipeCount);
             return true;
 
         } catch (Exception e) {
-            log.error("❌ 레시피 저장 실패: idMeal={}", idMeal, e);
+            log.error("레시피 저장 실패: idMeal={}", idMeal, e);
             return false;
         }
     }
@@ -171,13 +171,11 @@ public class DataWF implements DataManager {
             }
         }
 
-        data.setIngredientEn(ingredient); // ✅ 리스트 저장
+        data.setIngredientEn(ingredient); // 리스트 저장
         data.setMeasureEn(measure);
-        data.setIngredientEnStr(String.join(",", ingredient)); // ✅ CSV 저장
+        data.setIngredientEnStr(String.join(",", ingredient)); // CSV 저장
         data.setMeasureEnStr(String.join(",", measure));
     }
-
-
 
     private String clean(String s) {
         if (s == null) return "";
@@ -191,14 +189,14 @@ public class DataWF implements DataManager {
     private void translateAll(DataVO data) {
         String instruction = data.getInstructionEn();
         if (instruction != null && instruction.length() > 4500) {
-            log.warn("⚠ 조리 설명이 너무 깁니다 ({}자)", instruction.length());
+            log.warn("조리 설명이 너무 깁니다 ({}자)", instruction.length());
         }
 
-        // ✅ 제목, 설명 번역
+        // 제목, 설명 번역
         data.setTitleKr(translator.translate(data.getTitleEn(), "KO"));
         data.setInstructionKr(translator.translate(instruction, "KO"));
 
-        // ✅ 재료+계량 결합
+        // 재료+계량 결합
         List<String> ingredients = data.getIngredientEn();
         List<String> measures = data.getMeasureEn();
         int len = Math.min(ingredients.size(), measures.size());
@@ -216,7 +214,7 @@ public class DataWF implements DataManager {
                      + (instruction != null ? instruction.length() : 0)
                      + combinedText.length();
         totalTranslatedChars += totalLen;
-        log.info("🧾 번역 글자 수: {} / 누적: {}", totalLen, totalTranslatedChars);
+        log.info("번역 글자 수: {} / 누적: {}", totalLen, totalTranslatedChars);
 
         Set<String> knownUnits = Set.of("작은술", "큰술", "컵", "파운드", "그램", "꼬집음", "꼬집", "ml", "l", "tsp", "tbsp", "tbs", "개", "장", "방울");
 
@@ -261,7 +259,7 @@ public class DataWF implements DataManager {
 
         data.setIngredientKr(ingredientKr);
         data.setMeasureKr(measureKr);
-        data.setIngredientKrStr(String.join(",", ingredientKr)); // ✅ 문자열 저장용
+        data.setIngredientKrStr(String.join(",", ingredientKr));
         data.setMeasureKrStr(String.join(",", measureKr));
     }
 
@@ -283,7 +281,7 @@ public class DataWF implements DataManager {
     
     @PreDestroy
     public void shutdown() {
-        log.warn("🛑 서버 종료 감지 → DataWF 작업 중단 시도");
-        this.stop(); // isRunning = false 설정
+        log.warn("서버 종료 감지 → DataWF 작업 중단 시도");
+        this.stop();
     }
 }

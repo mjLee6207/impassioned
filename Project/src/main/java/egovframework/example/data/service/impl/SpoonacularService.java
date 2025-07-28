@@ -174,6 +174,7 @@ public class SpoonacularService implements DataManager {
         return isRunning;
     }
 
+//  HTML 태그 필터링 로직
     private String stripHtml(String html) {
         if (html == null) return "";
         return html

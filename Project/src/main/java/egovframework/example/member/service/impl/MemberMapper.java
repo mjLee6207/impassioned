@@ -57,4 +57,8 @@ public interface MemberMapper {
 
 //  카카오 회원 자동 등록
     void insertKakaoMember(MemberVO memberVO);
+    
+
+    // 회원 탈퇴 (소프트 삭제)
+    void softDeleteMember(Long memberIdx);
 }

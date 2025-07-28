@@ -196,4 +196,8 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
             throw new RuntimeException("카카오 unlink 요청 실패: " + response.getBody());
         }
     }
+    @Override
+    public void softDeleteMember(Long memberIdx) {
+        memberMapper.softDeleteMember(memberIdx);
+    }
 } 

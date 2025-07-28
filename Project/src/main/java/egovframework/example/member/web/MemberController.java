@@ -329,42 +329,34 @@ public class MemberController {
     
 //  회원 탈퇴
     @PostMapping("/member/delete.do")
-    public String deleteMember(@RequestParam("memberIdx") Long memberIdx, HttpSession session, HttpServletRequest request, RedirectAttributes rttr) {
+    public String deleteMember(@RequestParam("memberIdx") Long memberIdx,
+                               HttpSession session,
+                               HttpServletRequest request,
+                               RedirectAttributes rttr) {
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-        Long sessionIdx = loginUser.getMemberIdx();
 
-        if (!sessionIdx.equals(memberIdx)) {
+        if (!loginUser.getMemberIdx().equals(memberIdx)) {
             throw new RuntimeException("접근 권한이 없습니다.");
         }
 
         try {
-            // 1. 게시글 삭제 (댓글, 좋아요, 파일 포함)
-            List<BoardVO> boardList = boardMapper.selectByMemberIdx(memberIdx);
-            for (BoardVO board : boardList) {
-                boardService.delete(board);  // 내부에서 댓글, 좋아요, 파일까지 정리해야 함
-            }
+            log.info("🔥 3. 회원 정보 초기화 시작");
+            memberService.softDeleteMember(memberIdx);
+            log.info("✅ 3. 회원 정보 초기화 완료");
 
-            // 2. 좋아요 삭제
-            likeMapper.deleteAllByMemberIdx(memberIdx);
-
-            // 3. 첨부파일 삭제 (예: 프로필 이미지)
-            fileService.deleteAllByTargetIdAndType(memberIdx, "member");
-
-            // 4. 회원 삭제
-            memberMapper.deleteMember(memberIdx);
-
-            // 5. 세션 정리
+            // 3. 세션 종료
             session.invalidate();
             request.getSession(true).removeAttribute("loginUser");
 
             return "redirect:/";
 
         } catch (Exception e) {
-            log.error("❌ 회원 탈퇴 중 오류", e);
+            log.error("❌ 일반 회원 탈퇴 오류", e);
             rttr.addFlashAttribute("message", "회원 탈퇴 처리 중 오류가 발생했습니다.");
             return "redirect:/member/mypage.do?error=deleteFail";
         }
     }
+
     
 //  카카오로그인
     @GetMapping("/kakaoLogin.do")
@@ -470,7 +462,9 @@ public class MemberController {
     
 //  카카오 회원 탈퇴
     @GetMapping("/member/kakao-delete.do")
-    public String kakaoDelete(HttpSession session, HttpServletRequest request, RedirectAttributes rttr) {
+    public String kakaoDelete(HttpSession session,
+                              HttpServletRequest request,
+                              RedirectAttributes rttr) {
         MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 
         if (loginUser == null || loginUser.getKakaoId() == null) {
@@ -482,30 +476,19 @@ public class MemberController {
         Long memberIdx = loginUser.getMemberIdx();
 
         try {
-            // 1. 카카오 연결 해제 (실패해도 탈퇴 계속 진행)
+            // 1. 카카오 연결 해제 (실패해도 계속)
             try {
                 memberService.unlinkKakaoUser(kakaoId);
             } catch (HttpClientErrorException e) {
                 log.warn("⚠️ 카카오 연결 해제 실패 또는 이미 해제됨: {}", e.getMessage());
-                // 탈퇴는 계속 진행
             }
 
-            // 2. 게시글 전체 삭제 (댓글, 좋아요, 첨부파일 포함)
-            List<BoardVO> boardList = boardMapper.selectByMemberIdx(memberIdx);
-            for (BoardVO board : boardList) {
-                boardService.delete(board);  // 댓글, 좋아요, 첨부파일까지 삭제됨
-            }
+            // 3. 회원 정보 초기화 (닉네임 → 탈퇴한 회원 등)
+            memberService.softDeleteMember(memberIdx);
 
-            // 3. 좋아요 및 첨부파일 정리
-            likeMapper.deleteAllByMemberIdx(memberIdx);
-            fileService.deleteAllByTargetIdAndType(memberIdx, "member");
-
-            // 4. 회원 삭제
-            memberMapper.deleteMember(memberIdx);
-
-            // 5. 세션 완전 종료
-            session.invalidate(); // 기존 세션 무효화
-            request.getSession(true).removeAttribute("loginUser"); // 혹시 모를 로그인 정보 제거
+            // 4. 세션 종료
+            session.invalidate();
+            request.getSession(true).removeAttribute("loginUser");
 
             rttr.addFlashAttribute("message", "카카오 회원 탈퇴가 완료되었습니다.");
             return "redirect:/";
@@ -516,5 +499,4 @@ public class MemberController {
             return "redirect:/member/mycorrection.do";
         }
     }
-
 }

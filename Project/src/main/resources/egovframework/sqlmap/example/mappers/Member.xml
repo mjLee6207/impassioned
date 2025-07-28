@@ -2,156 +2,180 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="egovframework.example.member.service.impl.MemberMapper">
-  
-  <!-- 로그인 인증 -->
-  <select id="authenticate" parameterType="MemberVO" resultType="MemberVO">
-    SELECT
-    MEMBER_IDX AS memberIdx,    
-    ID,
-    EMAIL,
-    PASSWORD,
-    ROLE,
-    NICKNAME,
-    JOIN_DATE AS joinDate,
-    PROFILE, 
-    TEMP_PASSWORD_YN AS tempPasswordYn
-    FROM MEMBER WHERE ID = #{id} 
-  </select>
+<mapper
+	namespace="egovframework.example.member.service.impl.MemberMapper">
 
-   <!-- 회원가입 -->
-   <insert id="register" parameterType="MemberVO">
-     INSERT INTO MEMBER (MEMBER_IDX, ID, EMAIL, PASSWORD, ROLE, NICKNAME, JOIN_DATE)
-     VALUES (MEMBER_SEQ.NEXTVAL, #{id}, #{email}, #{password}, 'USER', #{nickname}, SYSDATE)
-   </insert>
-
-    <!-- 회원가입 닉네임 중복 검사 -->
-    <select id="countByNickname" parameterType="string" resultType="int">
-      SELECT COUNT(*) FROM MEMBER WHERE NICKNAME = #{nickname} AND MEMBER_IDX != #{memberIdx}
-    </select>
-    
-    <!-- 프로필 수정 닉네임 중복 검사 -->
-    <select id="countNicknameExcludingSelf" resultType="int">
-	    SELECT COUNT(*) 
-	    FROM MEMBER 
-	    WHERE NICKNAME = #{nickname}
-	    AND MEMBER_IDX != #{currentMemberIdx}
+	<!-- 로그인 인증 -->
+	<select id="authenticate" parameterType="MemberVO"
+		resultType="MemberVO">
+		SELECT
+		MEMBER_IDX AS memberIdx,
+		ID,
+		EMAIL,
+		PASSWORD,
+		ROLE,
+		NICKNAME,
+		JOIN_DATE AS joinDate,
+		PROFILE,
+		TEMP_PASSWORD_YN AS tempPasswordYn
+		FROM MEMBER WHERE ID = #{id}
 	</select>
-	  
-    <!-- 아이디 중복 검사 -->
+
+	<!-- 회원가입 -->
+	<insert id="register" parameterType="MemberVO">
+		INSERT INTO MEMBER (MEMBER_IDX, ID, EMAIL, PASSWORD, ROLE, NICKNAME,
+		JOIN_DATE)
+		VALUES (MEMBER_SEQ.NEXTVAL, #{id}, #{email}, #{password}, 'USER',
+		#{nickname}, SYSDATE)
+	</insert>
+
+	<!-- 회원가입 닉네임 중복 검사 -->
+	<select id="countByNickname" parameterType="string"
+		resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE NICKNAME = #{nickname}
+	</select>
+
+	<!-- 프로필 수정 닉네임 중복 검사 -->
+	<select id="countNicknameExcludingSelf" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE NICKNAME = #{nickname}
+		AND MEMBER_IDX != #{currentMemberIdx}
+	</select>
+
+	<!-- 아이디 중복 검사 -->
 	<select id="countById" parameterType="String" resultType="int">
-	  SELECT COUNT(*) FROM MEMBER WHERE ID = #{id}
+		SELECT COUNT(*) FROM MEMBER WHERE ID = #{id}
 	</select>
-	
-	<!-- 인증 이메일 중복 검사 -->	
-	<select id="countByEmail" resultType="int" parameterType="String">
-	   SELECT COUNT(*) FROM MEMBER WHERE EMAIL = #{email}
+
+	<!-- 인증 이메일 중복 검사 -->
+	<select id="countByEmail" resultType="int"
+		parameterType="String">
+		SELECT COUNT(*) FROM MEMBER WHERE EMAIL = #{email}
 	</select>
 
 	<!-- 회원 정보 조회 -->
-	<select id="selectMemberByIdx" parameterType="long" resultType="MemberVO">
-	    SELECT 
-	        MEMBER_IDX,
-	        ID,
-	        PASSWORD,
-	        EMAIL,
-	        ROLE,
-	        NICKNAME,
-	        JOIN_DATE,
-	        PROFILE,
-	        TEMP_PASSWORD_YN,
-	        KAKAO_ID
-	    FROM MEMBER
-	    WHERE MEMBER_IDX = #{memberIdx}
+	<select id="selectMemberByIdx" parameterType="long"
+		resultType="MemberVO">
+		SELECT
+		MEMBER_IDX,
+		ID,
+		PASSWORD,
+		EMAIL,
+		ROLE,
+		NICKNAME,
+		JOIN_DATE,
+		PROFILE,
+		TEMP_PASSWORD_YN,
+		KAKAO_ID
+		FROM MEMBER
+		WHERE MEMBER_IDX = #{memberIdx}
 	</select>
-	
+
 	<!-- 비밀번호 조회 (위에서 기존 값 유지 시 필요) -->
-	<select id="selectPasswordByIdx" parameterType="long" resultType="string">
-	    SELECT PASSWORD 
-	    FROM MEMBER 
-	    WHERE MEMBER_IDX = #{memberIdx}
+	<select id="selectPasswordByIdx" parameterType="long"
+		resultType="string">
+		SELECT PASSWORD
+		FROM MEMBER
+		WHERE MEMBER_IDX = #{memberIdx}
 	</select>
-	
+
 	<!-- 임시비밀번호 회원인지 확인 -->
-	<select id="selectTempPasswordYnByIdx" parameterType="long" resultType="string">
-	    SELECT TEMP_PASSWORD_YN
-	    FROM MEMBER
-	    WHERE MEMBER_IDX = #{memberIdx}
+	<select id="selectTempPasswordYnByIdx" parameterType="long"
+		resultType="string">
+		SELECT TEMP_PASSWORD_YN
+		FROM MEMBER
+		WHERE MEMBER_IDX = #{memberIdx}
 	</select>
-	
+
 	<!-- 회원 정보 수정 -->
 	<update id="updateMember" parameterType="MemberVO">
-	    UPDATE MEMBER
-	    SET 
-	        EMAIL = #{email},
-	        PASSWORD = #{password},
-	        NICKNAME = #{nickname},
-	        PROFILE = #{profile},
-	        TEMP_PASSWORD_YN = #{tempPasswordYn}	        
-	    WHERE MEMBER_IDX = #{memberIdx}
+		UPDATE MEMBER
+		SET
+		EMAIL = #{email},
+		PASSWORD = #{password},
+		NICKNAME = #{nickname},
+		PROFILE = #{profile},
+		TEMP_PASSWORD_YN = #{tempPasswordYn}
+		WHERE MEMBER_IDX = #{memberIdx}
 	</update>
 
 	<!-- 아이디 찾기 -->
-	<select id="findIdByEmail" parameterType="string" resultType="string">
-	    SELECT id FROM MEMBER WHERE email = #{email}
+	<select id="findIdByEmail" parameterType="string"
+		resultType="string">
+		SELECT id FROM MEMBER WHERE email = #{email}
 	</select>
-	
+
 	<!-- 비밀번호 찾기 시 사용자 존재 여부를 확인 -->
 	<select id="findByIdAndEmail" resultType="MemberVO">
-        SELECT * FROM MEMBER WHERE id = #{id} AND email = #{email}
-    </select>
+		SELECT * FROM MEMBER WHERE id = #{id} AND email = #{email}
+	</select>
 
 	<!-- 비밀번호 찾기 -->
-    <update id="updatePassword" parameterType="MemberVO">
-        UPDATE MEMBER 
-        SET 
-        	password = #{password},
-        	TEMP_PASSWORD_YN = #{tempPasswordYn}
-        WHERE id = #{id}
-    </update>
-    
-    <!-- 프로필 이미지 경로를 갱신하는 메소드  -->
-    <update id="updateProfileImage">
-	    UPDATE MEMBER
-	    SET PROFILE = #{profileUrl}
-	    WHERE MEMBER_IDX = #{memberId}
+	<update id="updatePassword" parameterType="MemberVO">
+		UPDATE MEMBER
+		SET
+		password = #{password},
+		TEMP_PASSWORD_YN = #{tempPasswordYn}
+		WHERE id = #{id}
 	</update>
-	
+
+	<!-- 프로필 이미지 경로를 갱신하는 메소드 -->
+	<update id="updateProfileImage">
+		UPDATE MEMBER
+		SET PROFILE = #{profileUrl}
+		WHERE MEMBER_IDX = #{memberId}
+	</update>
+
 	<!-- 회원 탈퇴 -->
 	<delete id="deleteMember" parameterType="long">
-	    DELETE FROM MEMBER
-	    WHERE MEMBER_IDX = #{memberIdx}
+		DELETE FROM MEMBER
+		WHERE MEMBER_IDX = #{memberIdx}
 	</delete>
-	
+	<!-- 임시탈퇴 -->
+	<update id="softDeleteMember" parameterType="long">
+		UPDATE MEMBER
+		SET
+		ID = CONCAT('deleted_', MEMBER_IDX),
+		PASSWORD = 'deleted',
+		EMAIL = NULL,
+		NICKNAME = CONCAT('탈퇴한 회원_', MEMBER_IDX), -- ✅ 유니크하게 처리
+		PROFILE = NULL,
+		TEMP_PASSWORD_YN = 'N',
+		KAKAO_ID = NULL
+		WHERE MEMBER_IDX = #{memberIdx}
+	</update>
+
 	<!-- 카카오 ID로 회원 조회 -->
-	<select id="selectByKakaoId" resultType="egovframework.example.member.service.MemberVO">
-	    SELECT *
-	    FROM MEMBER
-	    WHERE KAKAO_ID = #{kakaoId}
+	<select id="selectByKakaoId"
+		resultType="egovframework.example.member.service.MemberVO">
+		SELECT *
+		FROM MEMBER
+		WHERE KAKAO_ID = #{kakaoId}
 	</select>
-	
+
 	<!-- 카카오 회원 등록 -->
 	<insert id="insertKakaoMember" parameterType="MemberVO">
-	  INSERT INTO MEMBER (
-	    MEMBER_IDX,
-	    KAKAO_ID,
-	    NICKNAME,
-	    EMAIL,
-	    PROFILE,
-	    PASSWORD,        
-	    TEMP_PASSWORD_YN,
-	    ROLE,
-	    JOIN_DATE
-	  ) VALUES (
-	    MEMBER_SEQ.NEXTVAL,
-	    #{kakaoId},
-	    #{nickname},
-	    #{email},
-	    #{profile},
-	    #{password},         
-	    #{tempPasswordYn},   
-	    #{role},
-	    SYSDATE
-	  )
+		INSERT INTO MEMBER (
+		MEMBER_IDX,
+		KAKAO_ID,
+		NICKNAME,
+		EMAIL,
+		PROFILE,
+		PASSWORD,
+		TEMP_PASSWORD_YN,
+		ROLE,
+		JOIN_DATE
+		) VALUES (
+		MEMBER_SEQ.NEXTVAL,
+		#{kakaoId},
+		#{nickname},
+		#{email},
+		#{profile},
+		#{password},
+		#{tempPasswordYn},
+		#{role},
+		SYSDATE
+		)
 	</insert>
 </mapper>

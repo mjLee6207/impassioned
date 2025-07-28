@@ -120,6 +120,6 @@
 	
 	<!-- 회원이 누른 좋아요 삭제(탈퇴) -->
 	<delete id="deleteAllByMemberIdx" parameterType="long">
-	    DELETE FROM LIKE WHERE MEMBER_IDX = #{memberIdx}
+	    DELETE FROM BOARD_LIKE WHERE MEMBER_IDX = #{memberIdx}
 	</delete>
 </mapper>

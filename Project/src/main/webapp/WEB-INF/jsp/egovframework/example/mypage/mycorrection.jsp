@@ -151,29 +151,20 @@ $(document).ready(function () {
     $("#deleteBtn").on("click", function () {
         if (!confirm("정말 회원 탈퇴하시겠습니까?")) return;
 
-        if (isKakaoUser) {
-            // 카카오 회원
-            fetch("/member/kakao-delete.do")
-                .then(() => {
-                    alert("탈퇴되었습니다. 이용해주셔서 감사합니다.");
-                    location.href = "/";
-                })
-                .catch(() => {
-                    alert("탈퇴 처리 중 오류가 발생했습니다.");
-                });
-        } else {
-            // 일반 회원
-            $.post("/member/delete.do", {
-                memberIdx: ${member.memberIdx}
-            })
-            .done(function () {
+        const url = isKakaoUser ? "/member/kakao-delete.do" : "/member/delete.do";
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            success: function () {
                 alert("탈퇴되었습니다. 이용해주셔서 감사합니다.");
                 location.href = "/";
-            })
-            .fail(function () {
+            },
+            error: function (xhr, status, error) {
+                console.error("탈퇴 요청 실패:", status, error);
                 alert("탈퇴 처리 중 오류가 발생했습니다.");
-            });
-        }
+            }
+        });
     });
     	
     $("#addForm").on("submit", function () {

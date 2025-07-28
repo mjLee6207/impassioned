@@ -13,7 +13,7 @@ public class SpoonacularController {
     @Autowired
     private SpoonacularService spoonacularService;
 
-    // ✅ Spoonacular API 실행
+    // Spoonacular API 실행
     @GetMapping(value = "/import.do", produces = "text/html; charset=UTF-8")
     @ResponseBody
     public String runSpoonacularImport() {
@@ -26,11 +26,11 @@ public class SpoonacularController {
         }
     }
 
-    // ✅ Spoonacular API 중지
+    // Spoonacular API 중지
     @GetMapping(value = "/import/stop.do", produces = "text/plain; charset=UTF-8")
     @ResponseBody
     public String stopSpoonacularImport() {
         spoonacularService.stop();
-        return "🚫 Spoonacular 데이터 저장 중지 요청 완료";
+        return "Spoonacular 데이터 저장 중지 요청 완료";
     }
 }

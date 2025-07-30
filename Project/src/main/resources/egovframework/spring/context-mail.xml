@@ -8,13 +8,13 @@
 		<property name="host" value="smtp.gmail.com"/>
 		<property name="port" value="587"/>
 		<property name="username" value="cheforest2@gmail.com"/>
-		<property name="password" value="jqztalcgogysxkag"/>
+		<property name="password" value="이메일 비밀번호를 입력해주세요"/>
 		<property name="javaMailProperties">
 			<props>
 	            <prop key="mail.smtp.auth">true</prop>
 	            <prop key="mail.smtp.starttls.enable">true</prop>
 	            <prop key="mail.smtp.starttls.required">true</prop>
-	            <prop key="mail.smtp.ssl.protocols">TLSv1.2</prop> <!-- ✅ 핵심 추가 -->
+	            <prop key="mail.smtp.ssl.protocols">TLSv1.2</prop> 
 	            <prop key="mail.smtp.timeout">5000</prop>
 			</props>
 		</property>

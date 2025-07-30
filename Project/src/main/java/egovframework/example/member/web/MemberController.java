@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -46,6 +47,9 @@ public class MemberController {
     
     @Autowired
     private EmailService emailService;
+    
+    @Value("${kakao.client-id}")
+    private String kakaoClientId;
 
 // 회원가입 처리
     @PostMapping("/member/register.do")
@@ -126,7 +130,7 @@ public class MemberController {
 		}
 		
 		String kakaoLink = "https://kauth.kakao.com/oauth/authorize?" +
-		"client_id=d779fae0a4d9df6ea88f8bfed6e1b315" +
+		"client_id =" + kakaoClientId  +
 		"&redirect_uri=http://localhost:8080/kakaoLogin.do" +
 		"&response_type=code" +
 		"&state=" + java.net.URLEncoder.encode(redirect, java.nio.charset.StandardCharsets.UTF_8);
@@ -351,7 +355,7 @@ public class MemberController {
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("grant_type", "authorization_code");
-            params.add("client_id", "d779fae0a4d9df6ea88f8bfed6e1b315"); // REST API 키
+            params.add("client_id", kakaoClientId); // REST API 키
             params.add("redirect_uri", "http://localhost:8080/kakaoLogin.do"); // 쿼리스트링 제외
             params.add("code", code);
 
